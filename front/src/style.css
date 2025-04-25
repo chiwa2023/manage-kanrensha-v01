@@ -92,6 +92,11 @@ textarea {
   font-weight: bold;
   width: 75%;
 }
+.max-input {
+  font-size: 1.25em;
+  font-weight: bold;
+  width: 75%;
+}
 
 .overComponent {
   position: fixed;
