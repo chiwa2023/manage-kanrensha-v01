@@ -3,19 +3,18 @@ import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
 import SearchHoujinNo from '../search_houjin_no/SearchHoujinNo.vue';
 import type HoujinNoInterface from '../../../dto/partner_corp/houjinNoDto';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
-import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import ViewInputAddress from '../input_address/ViewInputAddress.vue';
 import InputAddressDto from '../../../dto/Input_address/inputAddressDto';
 import CheckRegistCorpResultInterface from '../../../dto/partner_corp/checkRegistCorpResultDto';
 import mockCheckAlreadyRegist from './mock/mockCheckAlreadyRegist';
 import HoujinSbtsConstants from '../../../dto/partner_corp/houjinSbtsConstants';
-import SearchCorpNo from '../search_corp_no/SearchCorpNo.vue';
 import SearchPersonNo from '../search_person_no/SearchPersonNo.vue';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
 
+const props = defineProps<{ editDto: CorpNoInterface }>();
+const editCorpDto: ComputedRef<CorpNoInterface> = computed(() => { return props.editDto });
+
 // 編集用Dto
-const editCorpDto: Ref<CorpNoInterface> = ref(new CorpNoDto());
-const addressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
 const addressDtoStored: Ref<InputAddressDto> = ref(new InputAddressDto());
 
 // 検索リスト
@@ -28,25 +27,6 @@ const corpNameKana: Ref<string> = ref("");
 const branchName: Ref<string> = ref("");
 const branchNamekana: Ref<string> = ref("");
 const isGaikokuHoujin: ComputedRef<boolean> = computed(() => HoujinSbtsConstants.GAIKOKU === editCorpDto.value.houjinSbts);
-
-// 住所・法人名とも支店フラグがOnなら編集許可Offなら検索時データを強制設定
-const allAddress: ComputedRef<string> = computed(() => {
-    if (editCorpDto.value.isShiten) {
-        // return addressDto.value.addressPostal + addressDto.value.addressBlock + addressDto.value.addressBuilding;
-        return addressDto.value.addressPostal;
-    }
-    else {
-        // return addressDtoStored.value.addressPostal + addressDtoStored.value.addressBlock + addressDtoStored.value.addressBuilding;
-        return addressDtoStored.value.addressPostal;
-    }
-});
-const allname: ComputedRef<string> = computed(() => {
-    if (editCorpDto.value.isShiten) {
-        return corpName.value + branchName.value;
-    } else {
-        return corpName.value;
-    }
-});
 
 function onHoujinSearch() {
     isCorpSearch.value = true;
@@ -66,16 +46,16 @@ function recieveCorpNoInterface(sendDto: HoujinNoInterface) {
     const postalCode: string = sendDto.postalcode;
     // 郵便番号が正常7桁の場合は分割
     if (7 === postalCode.length) {
-        addressDto.value.postalcode1 = postalCode.substring(0, 3);
-        addressDto.value.postalcode2 = postalCode.substring(3, 7);
+        editCorpDto.value.inputAddress.postalcode1 = postalCode.substring(0, 3);
+        editCorpDto.value.inputAddress.postalcode2 = postalCode.substring(3, 7);
     } else {
-        addressDto.value.postalcode1 = postalCode;
+        editCorpDto.value.inputAddress.postalcode1 = postalCode;
     }
-    addressDto.value.addressPostal = sendDto.addressPrefecture + sendDto.addressCity;
-    addressDto.value.addressBlock = sendDto.addressBlock;
-    addressDto.value.addressBuilding = "";
+    editCorpDto.value.inputAddress.addressPostal = sendDto.addressPrefecture + sendDto.addressCity;
+    editCorpDto.value.inputAddress.addressBlock = sendDto.addressBlock;
+    editCorpDto.value.inputAddress.addressBuilding = "";
     // 支店フラグ悪用防止用に検索時情報をストア
-    addressDtoStored.value = structuredClone(toRaw(addressDto.value));
+    addressDtoStored.value = structuredClone(toRaw(editCorpDto.value.inputAddress));
 
     // 法人番号DBに代表者情報はないので初期化
     editCorpDto.value.orgDelegateCode = "";
@@ -89,22 +69,22 @@ function recieveCorpNoInterface(sendDto: HoujinNoInterface) {
 }
 
 
-function onSelectRow(selectedDto: CorpNoInterface) {
-    // 検索データからコピーすべき元データを抽出
-    // 取得情報の設定
-    editCorpDto.value.corpNo = selectedDto.corpNo;
-    editCorpDto.value.houjinNo = selectedDto.houjinNo;
-    editCorpDto.value.houjinSbts = selectedDto.houjinSbts;
-    editCorpDto.value.corpName = selectedDto.corpName;
-    corpName.value = selectedDto.corpName;
-    corpNameKana.value = selectedDto.corpNameKana;
-    addressDto.value = selectedDto.addressDto;
-    // 支店フラグ悪用防止用に検索時情報をストア
-    addressDtoStored.value = structuredClone(toRaw(addressDto.value));
+// function onSelectRow(selectedDto: CorpNoInterface) {
+//     // 検索データからコピーすべき元データを抽出
+//     // 取得情報の設定
+//     editCorpDto.value.corpNo = selectedDto.corpNo;
+//     editCorpDto.value.houjinNo = selectedDto.houjinNo;
+//     editCorpDto.value.houjinSbts = selectedDto.houjinSbts;
+//     editCorpDto.value.corpName = selectedDto.corpName;
+//     corpName.value = selectedDto.corpName;
+//     corpNameKana.value = selectedDto.corpNameKana;
+//     editCorpDto.value.inputAddress = selectedDto.inputAddress;
+//     // 支店フラグ悪用防止用に検索時情報をストア
+//     addressDtoStored.value = structuredClone(toRaw(editCorpDto.value.inputAddress));
 
-    editCorpDto.value.orgDelegateCode = selectedDto.orgDelegateCode;
-    editCorpDto.value.orgDelegate = selectedDto.orgDelegate;
-}
+//     editCorpDto.value.orgDelegateCode = selectedDto.orgDelegateCode;
+//     editCorpDto.value.orgDelegate = selectedDto.orgDelegate;
+// }
 
 /**
 * 法人番号キャンセル
@@ -163,16 +143,12 @@ function onSave() {
 }
 </script>
 <template>
-    <h3>企業・団体編集</h3>
-    <SearchCorpNo :list="listCorp" :is-footer="false" @send-corp-no-interface="onSelectRow"></SearchCorpNo>
-    <br>
-    <hr>
-    <h3>収支報告書公開情報</h3>
+     <h3>収支報告書公開情報</h3>
     <div class="left-area">
         企業／団体名称
     </div>
     <div class="right-area">
-        <input type="text" v-model="allname" disabled="true" class="max-input">
+        <input type="text" v-model="editCorpDto.corpName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -180,7 +156,7 @@ function onSave() {
         住所
     </div>
     <div class="right-area">
-        <input type="text" v-model="allAddress" disabled="true" class="max-input">
+        <input type="text" v-model="editCorpDto.inputAddress.addressPostal" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -226,7 +202,7 @@ function onSave() {
         商号名称カナ
     </div>
     <div class="right-area">
-        <input type="text" v-model="corpNameKana" class="text-input" disabled="true">
+        <input type="text" v-model="editCorpDto.corpNameKana" class="text-input" disabled="true">
         <span class="left-space" v-if="editCorpDto.isShiten">支店：<input type="text" v-model="branchNamekana"
                 class="text-input" :disabled="!editCorpDto.isShiten"></span>
     </div>
@@ -236,13 +212,13 @@ function onSave() {
         商号名称
     </div>
     <div class="right-area">
-        <input type="text" v-model="corpName" class="text-input" disabled="true">
+        <input type="text" v-model="editCorpDto.corpName" class="text-input" disabled="true">
         <span class="left-space" v-if="editCorpDto.isShiten">支店：<input type="text" v-model="branchName"
                 class="text-input" :disabled="!editCorpDto.isShiten"></span>
     </div>
     <div class="clear-both"></div>
     <br>
-    <ViewInputAddress :edit-dto="addressDto" :is-raise-edit-view="editCorpDto.isShiten"></ViewInputAddress>
+    <ViewInputAddress :edit-dto="editCorpDto.inputAddress" :is-raise-edit-view="editCorpDto.isShiten"></ViewInputAddress>
     <br>
     <div class="left-area">
         団体代表者

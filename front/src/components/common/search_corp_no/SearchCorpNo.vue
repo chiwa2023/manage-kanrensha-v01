@@ -5,7 +5,7 @@ import mockGetCorpList from './mock/mockGetCorpList';
 
 //props,emit
 const props = defineProps<{ list: CorpNoInterface[], isFooter: boolean }>();
-const emits = defineEmits(["sendCorpNoInterface","sendCanceelCorpNo"]);
+const emits = defineEmits(["sendCorpNoInterface", "sendCanceelCorpNo"]);
 
 
 //const listProps: ComputedRef<CorpInterface[]> = computed(() => { return props.list });
@@ -36,8 +36,6 @@ function sendCancelCorpNo() {
 
 </script>
 <template>
-    <h3>関連者企業／団体検索</h3>
-
     <h3>検索条件</h3>
     <div class="left-area">
         法人番号(前方一致)
@@ -88,26 +86,31 @@ function sendCancelCorpNo() {
     <div class="clear-both"></div>
     <hr>
     <h3>検索結果</h3>
-    <table>
-        <tbody>
-            <tr>
-                <th>関連者コード(企業／団体)</th>
-                <th>法人番号</th>
-                <th>法人名</th>
-                <th>住所</th>
-                <th>代表者</th>
-                <th>&nbsp;</th>
-            </tr>
-            <tr v-for="dto of listCorp" :key="dto.corpNo">
-                <td>{{ dto.corpNo }}</td>
-                <td>{{ dto.houjinNo }}</td>
-                <td>{{ dto.corpName }}</td>
-                <td>{{ dto.juusho }}</td>
-                <td>{{ dto.orgDelegate }}</td>
-                <td><button @click="onSelectRow(dto.corpNo)">選択</button></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="one-line">
+
+        <table>
+            <tbody>
+                <tr>
+                    <th>関連者コード(企業／団体)</th>
+                    <th>法人番号</th>
+                    <th>法人名</th>
+                    <th>住所</th>
+                    <th>代表者</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr v-for="dto of listCorp" :key="dto.corpNo">
+                    <td>{{ dto.corpNo }}</td>
+                    <td>{{ dto.houjinNo }}</td>
+                    <td>{{ dto.corpName }}</td>
+                    <td>{{ dto.inputAddress.addressPostal }}</td>
+                    <td>{{ dto.orgDelegate }}</td>
+                    <td><button @click="onSelectRow(dto.corpNo)">選択</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="clear-both"><br></div>
 
     <div class="footer" v-if="props.isFooter">
         <button @click="sendCancelCorpNo" class="footer-button">キャンセル</button>

@@ -30,8 +30,7 @@ function createDto(index: number): CorpNoInterface {
     addressDto.postalcode1 = "12" + index;
     addressDto.postalcode2 = "345" + index;
     addressDto.addressAll = addressDto.addressPostal + addressDto.addressBlock + addressDto.addressBuilding;
-    dto.addressDto = addressDto;
-    dto.juusho = addressDto.addressAll;
+    dto.inputAddress = addressDto;
 
     addressDto.tel1 = "11" +index;
     addressDto.tel2 = "22" +index;

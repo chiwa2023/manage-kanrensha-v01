@@ -55,7 +55,6 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
     inputAddressDto.value.tel2 = sendDto.tel2;
     inputAddressDto.value.tel3 = sendDto.tel3;
 
-    emits("sendInputAddressInterface",inputAddressDto.value);
     //非表示
     isInput.value = false;
 }
@@ -123,7 +122,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
     <div v-if="isInput" class="overBackground"></div>
     <div v-if="isInput">
         <div class="overComponent">
-            <InputAddress v-if="isInput" @send-cancel-input-address="recieveCancelInputAddress"
+            <InputAddress v-if="isInput" :edit-dto="inputAddressDto" @send-cancel-input-address="recieveCancelInputAddress"
                 @send-input-address-interface="recieveInputAddressInterface">
                 ></InputAddress>
         </div>

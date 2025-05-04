@@ -4,23 +4,15 @@ import InputAddressDto from '../../../dto/Input_address/inputAddressDto';
 import ViewInputAddress from '../input_address/ViewInputAddress.vue';
 import SearchCorpNo from '../search_corp_no/SearchCorpNo.vue';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
-import SearchPersonNo from '../search_person_no/SearchPersonNo.vue';
+import ViewInputPersonName from '../input_person_name/ViewInputPersonName.vue';
+import InputPersonNameInterface from '../../../dto/input_person_name/inputPersonNameDto';
+import InputPersonNameDto from '../../../dto/input_person_name/inputPersonNameDto';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
 
+const props = defineProps<{ editDto: PersonNoInterface }>();
+const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => { return props.editDto });
+
 const BLANK: string = "";
-
-// 住所入力用
-const editAddressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
-const allJuusho: ComputedRef<string> = computed(() => {
-    // return editAddressDto.value.addressPostal + editAddressDto.value.addressBlock + editAddressDto.value.addressBuilding;
-    return editAddressDto.value.addressPostal;
-});
-
-// 名前入力用
-const allName: ComputedRef<string> = computed(() => firstName.value + "　" + middleName.value + lastName.value);
-const firstName: Ref<string> = ref("");
-const middleName: Ref<string> = ref("");
-const lastName: Ref<string> = ref("");
 
 // 職業入力定義
 const yakushokuFree: string = "所属なし";
@@ -32,45 +24,42 @@ const yakushokuNoJob: string = "定職なし";
 const allShokugyou: ComputedRef<string> = computed(() => {
     // return gyoushu.value + yakushoku.value; 
 
-    switch (yakushoku.value) {
+    switch (inputPersonNoDto.value.yakushoku) {
         // フリーランス
         case yakushokuFree:
             isShokugyoEdit.value = false;
-            if (BLANK === shokugyouUserWrite.value) {
-                return gyoushu.value + "業従事者";
+            if (BLANK === inputPersonNoDto.value.shokugyouUserWrite) {
+                return inputPersonNoDto.value.gyoushu + "業従事者";
             } else {
-                return shokugyouUserWrite.value;
+                return inputPersonNoDto.value.shokugyouUserWrite;
             }
         // 団体所属者
         case yakushokuGeneral:
             isShokugyoEdit.value = false;
-            if (BLANK === shokugyouUserWrite.value) {
-                return gyoushu.value + "業社員・職員";
+            if (BLANK === inputPersonNoDto.value.shokugyouUserWrite) {
+                return inputPersonNoDto.value.gyoushu + "業社員・職員";
             } else {
-                return shokugyouUserWrite.value;
+                return inputPersonNoDto.value.shokugyouUserWrite;
             }
 
         // 役職者
         case yakushokuDirector:
             isShokugyoEdit.value = true;
             if (BLANK === corpNo.value) {
-                return gyoushu.value + "業役職者(社名記載拒否)";
+                return inputPersonNoDto.value.gyoushu + "業役職者(社名記載拒否)";
             } else {
                 return corpName.value + "(" + corpPrefecture.value + ")" + "役員";
             }
         // 定職なし
         case yakushokuNoJob:
             isShokugyoEdit.value = false;
-            return shokugyouUserWrite.value;
+            return inputPersonNoDto.value.shokugyouUserWrite;
         default:
             isShokugyoEdit.value = true;
             return "";
     }
 });
 const isShokugyoEdit: Ref<boolean> = ref(true);
-const gyoushu: Ref<string> = ref("");
-const yakushoku: Ref<string> = ref("");
-const shokugyouUserWrite: Ref<string> = ref("");
 
 /**
  * 法人情報受信
@@ -78,7 +67,7 @@ const shokugyouUserWrite: Ref<string> = ref("");
 function recieveCorpNoInterface(sendDto: CorpNoInterface) {
 
     corpNo.value = sendDto.corpNo;
-    corpPrefecture.value = sendDto.addressDto.addressPostal;
+    corpPrefecture.value = sendDto.inputAddress.addressPostal;
     corpName.value = sendDto.corpName;
 
     //非表示
@@ -96,23 +85,6 @@ function recieveCancelCorpNo() {
 // 検索リスト
 const listCorp: Ref<CorpNoInterface[]> = ref([]);
 
-/** 選択された関連者個人を受信する */
-function recievePersonNoInterface(sendDto: PersonNoInterface) {
-
-    // 住所
-    editAddressDto.value = sendDto.inputAddress;
-
-    // 名前
-    firstName.value = sendDto.firstName;
-    middleName.value = sendDto.middleName;
-    lastName.value = sendDto.lastName;
-
-    // 職業
-    gyoushu.value = sendDto.gyoushu;
-    yakushoku.value = sendDto.yakushoku;
-    shokugyouUserWrite.value = sendDto.shokugyouUserWrite;
-
-}
 
 function onCancel() {
     alert("キャンセル");
@@ -138,15 +110,51 @@ function onSearchCorpNo() {
  *住所編集受信
  */
 function recieveInputAddressInterface(sendDto: InputAddressDto) {
-    editAddressDto.value.addressPostal = sendDto.addressPostal;
-    editAddressDto.value.addressBlock = sendDto.addressBlock;
-    editAddressDto.value.addressBuilding = sendDto.addressBuilding;
+    inputPersonNoDto.value.inputAddress = sendDto;
 }
+
+
+function resetData() {
+    // コードのリセット
+    inputPersonNoDto.value.personNo = BLANK;
+    // 名前情報のリセット
+    inputPersonNoDto.value.inputName = new InputPersonNameDto();
+    // 住所情報のリセット   
+    inputPersonNoDto.value.inputAddress = new InputAddressDto();
+    // 職業情報のリセット   
+    inputPersonNoDto.value.gyoushu = BLANK;
+    inputPersonNoDto.value.yakushoku = BLANK;
+    inputPersonNoDto.value.shokugyouUserWrite = BLANK;
+
+}
+
+function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
+
+    inputPersonNoDto.value.inputName = sendDto;
+}
+
+/**
+ * すでに同じ法人番号で登録されているかチェック
+ */
+ function onCheckAlreadyRegist() {
+    if(inputPersonNoDto.value.personNo !== BLANK){
+        alert("現在既存または新規と確定したデータを編集中です");
+    }else{
+        // 仮で時効の秒数基準で既存だったり新規だったり動作を変更する
+        // TOD Back側で同一判定処理ができたら連結する
+        const date:Date = new Date();
+        if(date.getSeconds() % 2 == 0){
+            alert("新規データでした");
+            inputPersonNoDto.value.personNo = "新規";
+        }else{
+            alert("既存データが存在します。変更が必要な場合はデータ検索からやり直してください");
+            inputPersonNoDto.value.personNo = "12-tye12er";
+        }
+    }
+}
+
 </script>
 <template>
-    <h3>個人編集</h3>
-    <SearchPersonNo :is-footer="false" @send-person-no-interface="recievePersonNoInterface"></SearchPersonNo>
-    <hr>
 
     <h3>収支報告書公開情報</h3>
 
@@ -154,7 +162,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
         姓名
     </div>
     <div class="right-area">
-        <input type="text" v-model="allName" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputName.allName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -162,7 +170,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
         住所
     </div>
     <div class="right-area">
-        <input type="text" v-model="allJuusho" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputAddress.addressPostal" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -177,32 +185,37 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
     <hr>
 
     <h3>収支報告書公開入力</h3>
+
+    <div class="left-area">
+        (編集→)新規作成
+    </div>
+    <div class="right-area">
+        <button @click="resetData">入力情報のリセット</button>
+    </div>
+    <div class="clear-both"></div>
+
     <div class="left-area">
         政治資金関連者コード(個人)
     </div>
     <div class="right-area">
-        <input type="text" disabled="true">
+        <input type="text" v-model="inputPersonNoDto.personNo" disabled="true"><button class="left-space"
+        @click="onCheckAlreadyRegist">重複確認</button>
     </div>
     <div class="clear-both"></div>
 
-    <div class="left-area">
-        姓名
-    </div>
-    <div class="right-area">
-        <span>姓<input v-model="firstName" type="text"></span>
-        <span class="left-space">ミドルネーム<input type="text" v-model="middleName"></span>
-        <span class="left-space">名<input type="text" v-model="lastName"></span>
-    </div>
-    <div class="clear-both"></div>
+    <!-- 姓名入力 -->
+    <ViewInputPersonName :edit-dto="inputPersonNoDto.inputName" :is-raise-edit-view="true"
+        @send-input-person-name-interface="recieveInputPersonNameInterface"></ViewInputPersonName>
 
-    <ViewInputAddress :edit-dto="editAddressDto" :is-raise-edit-view="true"
+    <!-- 住所入力 -->
+    <ViewInputAddress :edit-dto="inputPersonNoDto.inputAddress" :is-raise-edit-view="true"
         @send-input-address-interface="recieveInputAddressInterface"></ViewInputAddress>
 
     <div class="left-area">
         職業(1)
     </div>
     <div class="right-area">
-        <span>業種(日本標準産業分類)&nbsp;<select v-model="gyoushu">
+        <span>業種(日本標準産業分類)&nbsp;<select v-model="inputPersonNoDto.gyoushu">
                 <option value=""></option>
                 <option value="農林"> A.農業，林業</option>
                 <option value="水産">B.漁業</option>
@@ -225,7 +238,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
                 <option value="公務">S.公務（他に分類されるものを除く）</option>
                 <option value="分類不能">T.分類不能の産業</option>
             </select></span>
-        <span class="left-space">役職&nbsp;<select v-model="yakushoku">
+        <span class="left-space">役職&nbsp;<select v-model="inputPersonNoDto.yakushoku">
                 <option :value="yakushokuFree">フリーランス(所属団体なし・法人登記なし)</option>
                 <option :value="yakushokuGeneral">課長級以下職員(パート含む)</option>
                 <option :value="yakushokuDirector">法人役員(一人企業の社長)</option>
@@ -237,9 +250,9 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
         職業(2)
     </div>
     <div class="right-area">
-        <div v-if="yakushokuDirector !== yakushoku"><input type="text" v-model="shokugyouUserWrite"
+        <div v-if="yakushokuDirector !== inputPersonNoDto.yakushoku"><input type="text" v-model="inputPersonNoDto.shokugyouUserWrite"
                 :disabled="isShokugyoEdit" class="max-input"></div>
-        <div v-if="yakushokuDirector === yakushoku">
+        <div v-if="yakushokuDirector === inputPersonNoDto.yakushoku">
             <input type="text" v-model="corpNo" class="code-input">
             <input type="text" v-model="corpPrefecture" class="code-input left-space">
             <input type="text" v-model="corpName" class="left-space text-input">

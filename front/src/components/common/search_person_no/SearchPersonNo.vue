@@ -25,7 +25,7 @@ function sendCancelPersonNo() {
 
 </script>
 <template>
-    <h2>関連者個人検索</h2>
+    <h3>関連者個人検索</h3>
 
     <div class="left-area">
         名前(前方一致)
@@ -86,6 +86,7 @@ function sendCancelPersonNo() {
             </tr>
         </tbody>
     </table>
+    <div class="clear-both"><br></div>
 
     <div class="footer" v-if="props.isFooter">
         <button @click="sendCancelPersonNo" class="footer-button">キャンセル</button>

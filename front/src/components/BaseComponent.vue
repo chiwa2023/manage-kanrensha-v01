@@ -20,10 +20,11 @@ const editDto:sendInputAddressInterface = new InputAddressDto();
     <SearchCorpNo></SearchCorpNo>
     <PartnerCorpEdit></PartnerCorpEdit>
     <PartnerPoliOrgEdit></PartnerPoliOrgEdit>
-    <PartnerPoliOrgEdit></PartnerPoliOrgEdit>
-   -->
-
     <ViewInputPersonName></ViewInputPersonName>
+
+    -->
+
+    <PartnerPersonEdit></PartnerPersonEdit>
 
 </template>
 <style scoped></style>
