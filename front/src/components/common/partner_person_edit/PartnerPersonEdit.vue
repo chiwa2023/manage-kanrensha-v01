@@ -136,23 +136,71 @@ function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
 /**
  * すでに同じ法人番号で登録されているかチェック
  */
- function onCheckAlreadyRegist() {
-    if(inputPersonNoDto.value.personNo !== BLANK){
+function onCheckAlreadyRegist() {
+    if (inputPersonNoDto.value.personNo !== BLANK) {
         alert("現在既存または新規と確定したデータを編集中です");
-    }else{
+    } else {
         // 仮で時効の秒数基準で既存だったり新規だったり動作を変更する
         // TOD Back側で同一判定処理ができたら連結する
-        const date:Date = new Date();
-        if(date.getSeconds() % 2 == 0){
+        const date: Date = new Date();
+        if (date.getSeconds() % 2 == 0) {
             alert("新規データでした");
             inputPersonNoDto.value.personNo = "新規";
-        }else{
+        } else {
             alert("既存データが存在します。変更が必要な場合はデータ検索からやり直してください");
             inputPersonNoDto.value.personNo = "12-tye12er";
         }
     }
 }
 
+/**国籍を確認する */
+function nationarityConfirm() {
+
+    // チェックされた対象だけに絞る
+    // const list: PersonNoInterface[] = ref([]);
+    // list.push(inputPersonNoDto);
+
+    // // API接続時には不要な回答リスト初期処理
+    // listInquireAnswer.value.splice(0);
+
+    // // 外部APIに国籍情報問い合わせ
+    // // TODO (現在はRelationPersonNoを送付しているが、PersonNoDtoを送付する形に変更)
+    // // 国籍問い合わせInquireNationality.vueも編集
+    // const url = "http://localhost:7080/inquire-nationarity";
+    // const method = "POST";
+    // const body = JSON.stringify(list.value);
+    // const headers = {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    // };
+    // fetch(url, { method, headers, body })
+    //     .then(async (response) => {
+    //         listInquireAnswer.value = await response.json();
+    //         listInquireAnswer.value[0];
+    //     })
+    //     .catch((error) => { alert(error); });
+
+    // 国籍確認mock実装
+    switch (parseInt(inputPersonNoDto.value.inputAddress.tel3) % 3) {
+        case 0:
+            alert("日本国籍保持");
+            break;
+
+        case 1:
+            alert("外国人籍");
+            break;
+
+        case 2:
+            alert("国籍不明");
+            break;
+
+        default:
+            break;
+    }
+
+
+
+}
 </script>
 <template>
 
@@ -199,7 +247,7 @@ function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
     </div>
     <div class="right-area">
         <input type="text" v-model="inputPersonNoDto.personNo" disabled="true"><button class="left-space"
-        @click="onCheckAlreadyRegist">重複確認</button>
+            @click="onCheckAlreadyRegist">重複確認</button>
     </div>
     <div class="clear-both"></div>
 
@@ -250,8 +298,8 @@ function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
         職業(2)
     </div>
     <div class="right-area">
-        <div v-if="yakushokuDirector !== inputPersonNoDto.yakushoku"><input type="text" v-model="inputPersonNoDto.shokugyouUserWrite"
-                :disabled="isShokugyoEdit" class="max-input"></div>
+        <div v-if="yakushokuDirector !== inputPersonNoDto.yakushoku"><input type="text"
+                v-model="inputPersonNoDto.shokugyouUserWrite" :disabled="isShokugyoEdit" class="max-input"></div>
         <div v-if="yakushokuDirector === inputPersonNoDto.yakushoku">
             <input type="text" v-model="corpNo" class="code-input">
             <input type="text" v-model="corpPrefecture" class="code-input left-space">
@@ -277,6 +325,17 @@ function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
     </div>
     <div class="right-area">
         <input type="email">
+    </div>
+    <div class="clear-both"></div>
+
+    <h3>編集内容(違反判定情報)</h3>
+
+    <div class="left-area">
+        国籍
+    </div>
+    <div class="right-area">
+        <input type="checkbox" v-model="isGaikokuHoujin" disabled="true">外国人である<span class="left-space"><button
+                @click="nationarityConfirm">確認する</button></span>
     </div>
     <div class="clear-both"></div>
 

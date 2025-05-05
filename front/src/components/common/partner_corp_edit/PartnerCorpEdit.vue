@@ -17,6 +17,11 @@ const editCorpDto: ComputedRef<CorpNoInterface> = computed(() => { return props.
 // 編集用Dto
 const addressDtoStored: Ref<InputAddressDto> = ref(new InputAddressDto());
 
+const allCorpName: ComputedRef<string> = computed(() => {
+    if (editCorpDto.value.isShiten) { return editCorpDto.value.corpName + "　" + branchName.value; }
+     else { return editCorpDto.value.corpName; }
+});
+
 // 検索リスト
 const listCorp: Ref<CorpNoInterface[]> = ref([]);
 
@@ -68,24 +73,6 @@ function recieveCorpNoInterface(sendDto: HoujinNoInterface) {
     isCorpSearch.value = false;
 }
 
-
-// function onSelectRow(selectedDto: CorpNoInterface) {
-//     // 検索データからコピーすべき元データを抽出
-//     // 取得情報の設定
-//     editCorpDto.value.corpNo = selectedDto.corpNo;
-//     editCorpDto.value.houjinNo = selectedDto.houjinNo;
-//     editCorpDto.value.houjinSbts = selectedDto.houjinSbts;
-//     editCorpDto.value.corpName = selectedDto.corpName;
-//     corpName.value = selectedDto.corpName;
-//     corpNameKana.value = selectedDto.corpNameKana;
-//     editCorpDto.value.inputAddress = selectedDto.inputAddress;
-//     // 支店フラグ悪用防止用に検索時情報をストア
-//     addressDtoStored.value = structuredClone(toRaw(editCorpDto.value.inputAddress));
-
-//     editCorpDto.value.orgDelegateCode = selectedDto.orgDelegateCode;
-//     editCorpDto.value.orgDelegate = selectedDto.orgDelegate;
-// }
-
 /**
 * 法人番号キャンセル
 */
@@ -127,7 +114,7 @@ function recieveCancelPersonNo() {
 /**
  * 選択された関連者個人を受信を表示する
  */
-function recievePersonNoInterface(sendDto:PersonNoInterface) {
+function recievePersonNoInterface(sendDto: PersonNoInterface) {
     editCorpDto.value.orgDelegate = sendDto.nameAll;
     editCorpDto.value.orgDelegateCode = sendDto.personNo;
 
@@ -143,12 +130,12 @@ function onSave() {
 }
 </script>
 <template>
-     <h3>収支報告書公開情報</h3>
+    <h3>収支報告書公開情報</h3>
     <div class="left-area">
         企業／団体名称
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.corpName" disabled="true" class="max-input">
+        <input type="text" v-model="allCorpName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -218,7 +205,8 @@ function onSave() {
     </div>
     <div class="clear-both"></div>
     <br>
-    <ViewInputAddress :edit-dto="editCorpDto.inputAddress" :is-raise-edit-view="editCorpDto.isShiten"></ViewInputAddress>
+    <ViewInputAddress :edit-dto="editCorpDto.inputAddress" :is-raise-edit-view="editCorpDto.isShiten">
+    </ViewInputAddress>
     <br>
     <div class="left-area">
         団体代表者
@@ -232,7 +220,6 @@ function onSave() {
     <hr>
 
     <h3>編集内容(違反判定情報)</h3>
-
 
     <div class="left-area">
         外国籍企業
