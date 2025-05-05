@@ -1,4 +1,6 @@
 import InputAddressDto from "../Input_address/inputAddressDto"
+import InputPersonNameInterface from "../input_person_name/inputPersonNameDto"
+import InputPersonNameDto from "../input_person_name/inputPersonNameDto"
 
 export default interface PersonNoInterface {
 
@@ -21,12 +23,8 @@ export default class PersonNoDto implements PersonNoInterface {
     /** 入力職業 */
     inputAddress: InputAddressDto;
 
-    /** 姓名の名 */
-    firstName: string;
-    /** 姓名のミドルネーム */
-    middleName: string;
-    /** 姓名の姓 */
-    lastName: string;
+    /** 入力姓名 */
+    inputName:InputPersonNameInterface;
 
     /** 職業の業種 */
     gyoushu: string;
@@ -44,9 +42,7 @@ export default class PersonNoDto implements PersonNoInterface {
         this.shokugyou = INIT_STRING;
 
         this.inputAddress = new InputAddressDto();
-        this.firstName = INIT_STRING;
-        this.middleName = INIT_STRING;
-        this.lastName = INIT_STRING;
+        this.inputName = new InputPersonNameDto();        
 
         this.gyoushu = INIT_STRING;
         this.yakushoku = INIT_STRING;

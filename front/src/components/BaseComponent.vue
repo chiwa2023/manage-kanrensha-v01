@@ -11,7 +11,17 @@ import InputPersonName from './common/input_person_name/InputPersonName.vue';
 import ViewInputPersonName from './common/input_person_name/ViewInputPersonName.vue';
 
 
-const editDto:sendInputAddressInterface = new InputAddressDto();
+
+const inputAddressDto:sendInputAddressInterface = new InputAddressDto();
+
+function recieveCancelInputAddress(){
+    alert("受信");
+}
+function recieveInputAddressInterface(){
+    alert("キャンセル");
+}
+
+
 </script>
 <template>
     <h1>コンポーネントをページと関係なく作成するための台紙</h1>
@@ -20,10 +30,12 @@ const editDto:sendInputAddressInterface = new InputAddressDto();
     <SearchCorpNo></SearchCorpNo>
     <PartnerCorpEdit></PartnerCorpEdit>
     <PartnerPoliOrgEdit></PartnerPoliOrgEdit>
-    <PartnerPoliOrgEdit></PartnerPoliOrgEdit>
-   -->
-
     <ViewInputPersonName></ViewInputPersonName>
+    <PartnerPersonEdit></PartnerPersonEdit>
+    -->
+    <ViewInputAddress :edit-dto="inputAddressDto" :is-raise-edit-view="true">
+    </ViewInputAddress>
+
 
 </template>
 <style scoped></style>

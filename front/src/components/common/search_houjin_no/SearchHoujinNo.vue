@@ -1,15 +1,14 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type HoujinInterface from '../../../dto/partner_corp/houjinDto';
-import type HoujinDto from '../../../dto/partner_corp/houjinDto';
 import mockGetHoujinList from './mock/mockGetHoujinList';
 import HoujinShoriKbnConstants from '../../../dto/partner_corp/houjinShoriKbnConstants';
 import HoujinSbtsConstants from '../../../dto/partner_corp/houjinSbtsConstants';
+import type HoujinNoInterface from '../../../dto/partner_corp/houjinNoDto';
 
 //props,emit
 const emits = defineEmits(["sendCancelHoujinNo", "sendHoujinNoInterface"]);
 
-const houjinList: Ref<HoujinInterface[]> = ref([])
+const houjinList: Ref<HoujinNoInterface[]> = ref([])
 const selectedRow: Ref<String> = ref("");
 
 function onSearch() {
@@ -29,7 +28,7 @@ function onCancel() {
  */
 function onSave() {
     // Idでフィルタしているので1件だけ取得できる
-    const selectedDto: HoujinDto = houjinList.value.filter((e) => e.houjinNo === selectedRow.value)[0];
+    const selectedDto: HoujinNoInterface = houjinList.value.filter((e) => e.houjinNo === selectedRow.value)[0];
     emits("sendHoujinNoInterface", selectedDto);
 }
 

@@ -19,7 +19,10 @@ function createDto(index: number): PoliOrgNoInterface {
 
     const dto: PoliOrgNoInterface = new PoliOrgNoDto();
     dto.poliOrgNo = "124-3455" + index;
-    dto.poliOrgName = "ちゃらんぽらん政治団体" + index;
+
+    dto.inputName.orgName = "ちゃらんぽらん政治団体" + index;
+    dto.inputName.orgNameKana = "ちゃらんぽらんせいじだんたい" + index;
+
     dto.delegateNo = "980987" + index;
     dto.delegateName = "代表者　太郎" + index;
 

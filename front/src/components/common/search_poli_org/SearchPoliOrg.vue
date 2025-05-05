@@ -30,7 +30,6 @@ function onSave(selectedRow: string) {
 
 </script>
 <template>
-    <h2>政治団体検索</h2>
     <h3>検索条件</h3>
     <div class="left-area">
         関連者政治団体番号(前方一致)
@@ -62,8 +61,7 @@ function onSave(selectedRow: string) {
     <div class="right-area">
         <input type="text" class="max-input">
     </div>
-    <div class="clear-both"><br></div>
-
+    <div class="clear-both"></div>
     <div class="left-area">
         検索
     </div>
@@ -71,6 +69,8 @@ function onSave(selectedRow: string) {
         <button @click="onSearch">検索</button>
     </div>
     <div class="clear-both"></div>
+
+    <hr>
 
 
     <h3>検索結果</h3>
@@ -87,7 +87,7 @@ function onSave(selectedRow: string) {
                 </tr>
                 <tr v-for="dto in poliOrgList" :key="dto.poliOrgNo">
                     <td>{{ dto.poliOrgNo }}</td>
-                    <td>{{ dto.poliOrgName }}</td>
+                    <td>({{ dto.inputName.orgNameKana }}) <br>{{ dto.inputName.orgName }}</td>
                     <td>{{ dto.inputAddress.addressPostal }}</td>
                     <td>({{ dto.delegateNo }})<br> {{ dto.delegateName }}</td>
                     <td><button @click="onSave(dto.poliOrgNo)">選択</button>
