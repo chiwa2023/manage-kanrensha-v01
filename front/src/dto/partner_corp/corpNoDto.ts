@@ -24,14 +24,11 @@ export default class CorpNoDto implements CorpNoInterface {
     /** 企業・団体名称かな */
     corpNameKana: string;
 
-    /** 住所 */
-    juusho: string;
-
     /** 住所詳細Dto */
-    addressDto:InputAddressDto;
+    inputAddress: InputAddressDto;
 
-        /** 代表者コード */
-        orgDelegateCode: string;
+    /** 代表者コード */
+    orgDelegateCode: string;
 
     /** 代表者名 */
     orgDelegate: string;
@@ -46,8 +43,7 @@ export default class CorpNoDto implements CorpNoInterface {
         this.houjinSbts = INIT_STRING;
         this.corpName = INIT_STRING;
         this.corpNameKana = INIT_STRING;
-        this.juusho = INIT_STRING;
-        this.addressDto = new InputAddressDto();
+        this.inputAddress = new InputAddressDto();
         this.orgDelegateCode = INIT_STRING;
         this.orgDelegate = INIT_STRING;
     }

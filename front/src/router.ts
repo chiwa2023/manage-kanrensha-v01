@@ -5,6 +5,10 @@ const routes = [
     { path: "/", name: "TopPage", component: TopPage },
     { path: "/component", name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },
 
+
+    { path: "/partner_manage", name: "PartnerManage", component: () => import("./components/pages/partner_manage/PartnerManage.vue") },
+    { path: "/partner_edit", name: "PartnerEdit", component: () => import("./components/pages/partner_edit/PartnerEdit.vue") },
+
 ];
 
 const router = createRouter({
