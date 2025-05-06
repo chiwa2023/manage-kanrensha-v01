@@ -1,0 +1,3 @@
+DELETE FROM `houjin_no_history`;
+ALTER TABLE `houjin_no_history` auto_increment = 0;
+INSERT INTO `houjin_no_history` (`houjin_no_history_id`,`houjin_no_latest_id`,`corporate_number`,`process`,`correct`,`update_date`,`change_date`,`name`,`kind`,`prefecture_name`,`city_name`,`street_number`,`prefecture_code`,`city_code`,`post_code`,`address_outside`,`close_date`,`close_cause`,`successor_corporate_number`,`change_cause`,`assignment_date`,`latest`,`furigana`,`hihyoji`) VALUES (1,245,'1010001007380','01',1,'2021-06-13','2021-06-14','株式会社藤原硝子店','301','東京都','文京区','本郷３丁目８番５号','13','105','1130033','ccc','2021-06-15','01','1234567890123','変更理由1','2021-06-16',1,'フジワラガラステン',0);
