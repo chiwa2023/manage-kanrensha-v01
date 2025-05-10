@@ -19,11 +19,22 @@ public interface HoujinNoLatestRepository extends JpaRepository<HoujinNoLatestEn
      * @param searchWords 検索語
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM houjin_no_latest WHERE latest= 1 AND MATCH(houjin_no_latest_name) AGAINST (?1 IN NATURAL LANGUAGE MODE)", nativeQuery = true)
+    @Query(value = "SELECT * FROM houjin_no_latest WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE)", nativeQuery = true)
     List<HoujinNoLatestEntity> findFullText(String searchWords, Pageable pageable);
+    
+    @Query(value = "SELECT COUNT(*) FROM houjin_no_latest WHERE MATCH(search_text) AGAINST (?1 IN BOOLEAN MODE)", nativeQuery = true)
+    Long getCountByFullText(String searchWords);
+    
 
+    @Query(value = "SELECT COUNT(*) FROM houjin_no_latest WHERE corporate_number LIKE ?1 ", nativeQuery = true)
+    Long getCountByHoujinNumber(String searchWords);
+
+    @Query(value = "SELECT * FROM houjin_no_latest WHERE corporate_number LIKE ?1 ORDER BY corporate_number ASC", nativeQuery = true)
+    List<HoujinNoLatestEntity> findByHoujinNumber(String searchWords,Pageable pageable);
+
+    
     /**
-     * 法人番号が同一かつ才子尾のデータを取得する
+     * 法人番号が同一かつ最新のデータを取得する
      *
      * @param houjinNo 法人番号
      * @param latest 最新
