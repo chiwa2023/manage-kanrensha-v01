@@ -64,7 +64,6 @@ function createDto(index: number): CorpNoInterface {
     addressDto.postalcode2 = "765" + index;
     addressDto.addressAll = addressDto.addressPostal + addressDto.addressBlock + addressDto.addressBuilding;
     dto.inputAddress = addressDto;
-    dto.inputAddress.addressAll = addressDto.addressAll;
 
     dto.orgDelegate = "代表者　太郎" + index;
 
