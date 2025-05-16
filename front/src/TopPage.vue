@@ -21,8 +21,9 @@
     </div>
     -->
 
-    <RouterLink to="/partner_manage">関連者管理</RouterLink><br>
-    <RouterLink to="/partner_edit">関連者編集</RouterLink><br>
+    <RouterLink to="/partner-manage">関連者管理</RouterLink><br>
+    <RouterLink to="/partner-edit">関連者編集</RouterLink><br>
+    <RouterLink to="/works-approval">作業内容承認</RouterLink><br>
 
     <div style="clear: both;"></div>
 

@@ -40,15 +40,15 @@ switch (viewStatus) {
     <h1>関連者編集</h1>
     <!-- 編集対象が法人／個人 -->
     <div v-if="viewStatus == 1">
-        <PartnerPersonEdit :edit-dto="inputPersonDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="false"></PartnerPersonEdit>
     </div>
     <!-- 編集対象が法人／団体 -->
     <div v-if="viewStatus == 2">
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="false"></PartnerCorpEdit>
     </div>
     <!-- 編集対象が政治団体 -->
     <div v-if="viewStatus == 3">
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto"></PartnerPoliOrgEdit>
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="false"></PartnerPoliOrgEdit>
     </div>
 </template>
 <style scoped></style>

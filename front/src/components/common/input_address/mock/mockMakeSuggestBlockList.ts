@@ -22,11 +22,10 @@ export default function mockMakeSuggestBlockList():PostalCodeBlockResultInterfac
     dto3.value = "架空市湖畔町1990番地";
     dto3.text= "1990番地";
 
-    //list.push(dto0);
+    list.push(dto0);
     list.push(dto1);
-    //list.push(dto2);
-    //list.push(dto3);
-
+    list.push(dto2);
+    list.push(dto3);
 
     const resultDto:PostalCodeBlockResultInterface = new PostalCodeBlockResultDto();
     resultDto.isGyouseikuData = false;

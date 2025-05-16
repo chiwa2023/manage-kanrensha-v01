@@ -1,12 +1,12 @@
 import InputAddressDto from "../../../../dto/Input_address/inputAddressDto";
 import InputPersonNameInterface from "../../../../dto/input_person_name/inputPersonNameDto";
 import InputPersonNameDto from "../../../../dto/input_person_name/inputPersonNameDto";
-import PersonNoInterface from "../../../../dto/partner_person/personNoDto";
-import PersonNoDto from "../../../../dto/partner_person/personNoDto";
+import PersonNoApprovalInterface from "../../../../dto/partner_person/personNoApprovalDto";
+import PersonNoApprovalDto from "../../../../dto/partner_person/personNoApprovalDto";
 
-export default function mockGetPersonList(): PersonNoInterface[] {
+export default function mockGetPersonApprovalList(): PersonNoApprovalInterface[] {
 
-    const list: PersonNoInterface[] = [];
+    const list: PersonNoApprovalInterface[] = [];
 
     list.push(createDto(1));
     list.push(createDto(2));
@@ -14,12 +14,29 @@ export default function mockGetPersonList(): PersonNoInterface[] {
     list.push(createDto(4));
     list.push(createDto(5));
 
+    list[0].inputAddress.isEditAddressPostal = true;
+    list[0].inputAddress.addressPostal = "和歌山県実在市架空町1丁目";
+    list[0].rsdtAddressPostl = "和歌山県実在市架空町一丁目";
+
+    list[1].inputAddress.isEditAddressBlock = true;
+    list[1].inputAddress.addressBlock = "４４４番地－1";
+    list[1].rsdtAddressBlock = "444番地1号";
+
+    list[2].inputAddress.isEditAddressBuilding = true;
+    list[2].inputAddress.addressBuilding = "四角ビル109";
+    list[2].rsdtAddressBuilding = "";
+
+    list[3].inputShokugyou.gyoushu = "林業";
+    list[3].inputShokugyou.yakushoku = "一般職員";
+    list[3].allShokugyou = "林業社員・職員";
+    list[3].inputShokugyou.shokugyouUserWrite = "";
+
     return list;
 }
 
 
-function createDto(index: number): PersonNoInterface {
-    const dto: PersonNoInterface = new PersonNoDto();
+function createDto(index: number): PersonNoApprovalInterface {
+    const dto: PersonNoApprovalInterface = new PersonNoApprovalDto();
     dto.personNo = "11-333" + index;
     dto.nameAll = "迂回　献金太郎" + index;
     dto.juushoAll = "山梨県架空市湖畔町" + index;
@@ -62,7 +79,15 @@ function createDto(index: number): PersonNoInterface {
     dto.inputShokugyou.gyoushu = "建設";
     dto.inputShokugyou.yakushoku = "一般職員";
     dto.inputShokugyou.shokugyouUserWrite = "申告職業" + index;
-    dto.inputShokugyou.allShokugyou = "申告職業";
+    dto.shokugyou = dto.inputShokugyou.shokugyouUserWrite;
+
+    // 初期値がfalseだが明示
+    dto.isApproval = false;
+
+    // 住所比較部分は後で直すのでいったん同じに
+    dto.inputAddress.rsdtAddressPostl = dto.inputAddress.addressPostal;
+    dto.inputAddress.rsdtAddressBlock = dto.inputAddress.addressBlock;
+    dto.inputAddress.rsdtAddressBuilding = dto.inputAddress.addressBuilding;
 
     return dto;
 }

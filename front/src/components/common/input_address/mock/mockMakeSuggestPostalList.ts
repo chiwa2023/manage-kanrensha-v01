@@ -21,10 +21,10 @@ export default function mockMakeSuggestPostalList():PostalCodePostalResultInterf
     dto3.value = 348;
     dto3.text= "山形県実在市湖畔町";
 
-    //list.push(dto0);
+    list.push(dto0);
     list.push(dto1);
-    //list.push(dto2);
-    //list.push(dto3);
+    list.push(dto2);
+    list.push(dto3);
 
     const resultDto:PostalCodePostalResultInterface = new PostalCodePostalResultDto();
     resultDto.listOptions = list;

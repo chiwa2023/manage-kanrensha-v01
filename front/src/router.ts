@@ -6,8 +6,9 @@ const routes = [
     { path: "/component", name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },
 
 
-    { path: "/partner_manage", name: "PartnerManage", component: () => import("./components/pages/partner_manage/PartnerManage.vue") },
-    { path: "/partner_edit", name: "PartnerEdit", component: () => import("./components/pages/partner_edit/PartnerEdit.vue") },
+    { path: "/partner-manage", name: "PartnerManage", component: () => import("./components/pages/partner_manage/PartnerManage.vue") },
+    { path: "/partner-edit", name: "PartnerEdit", component: () => import("./components/pages/partner_edit/PartnerEdit.vue") },
+    { path: "/works-approval", name: "WorksApproval", component: () => import("./components/pages/works_approval/WorksApproval.vue") },
 
 ];
 

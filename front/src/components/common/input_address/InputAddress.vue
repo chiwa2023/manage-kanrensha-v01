@@ -17,9 +17,9 @@ const emits = defineEmits(["sendCancelInputAddress", "sendInputAddressInterface"
 
 /** 入力用Dto */
 const inputAddressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
-const addressPostal: Ref<string> = ref(props.editDto.addressPostal);
-const addressBlock: Ref<string> = ref(props.editDto.addressBlock);
-
+inputAddressDto.value = structuredClone(toRaw(props.editDto));    
+//onst addressPostal: Ref<string> = ref(props.editDto.addressPostal);
+//const addressBlock: Ref<string> = ref(props.editDto.addressBlock);
 
 /** 住所郵便番号まで */
 const selectedAddressPostal: Ref<number> = ref(-1);
@@ -81,7 +81,9 @@ function getAddressPostal() {
 /** 住所郵便番号候補選択時 */
 function selectSuggestPostal() {
     const text: string = listPostalSuggest.value.filter(e => e.value === selectedAddressPostal.value)[0].text;
-    addressPostal.value = text;
+    inputAddressDto.value.addressPostal = text;
+    inputAddressDto.value.rsdtAddressPostl = text;
+
     searchBlock();
 }
 
@@ -123,8 +125,9 @@ function searchBlock() {
 
 /** 住所番地候補選択時 */
 function selectSuggestBlock() {
-    addressBlock.value = listBlockSuggest.value.filter(e => e.value === selectedAddressBlock.value)[0].text;
-
+    const text = listBlockSuggest.value.filter(e => e.value === selectedAddressBlock.value)[0].text;
+    inputAddressDto.value.addressBlock = text;
+    inputAddressDto.value.rsdtAddressBlock = text;
     // TODO 現状は選択肢でコードと名称だけだが、公共団体コードなどを紐づけて利用する
     inputAddressDto.value.machiazaId = "2345678";
     inputAddressDto.value.blkId = "123";
@@ -167,6 +170,7 @@ function searchBuilding() {
 /** 住所建物候補選択時 */
 function selectSuggestBuilding() {
     inputAddressDto.value.addressBuilding = selectedAddressBuilding.value;
+    inputAddressDto.value.rsdtAddressBuilding  = selectedAddressBuilding.value;
 }
 
 /** 住所郵便番号フィルタ時 */
@@ -195,8 +199,8 @@ function onCancel() {
  * 入力内容を保存する
  */
 function onSave() {
-    inputAddressDto.value.addressPostal = addressPostal.value;
-    inputAddressDto.value.addressBlock = addressBlock.value;
+    // inputAddressDto.value.addressPostal = inputAddressDto.value.addressPostal;
+    // inputAddressDto.value.addressBlock = addressBlock.value;
     emits("sendInputAddressInterface", inputAddressDto.value);
 }
 
@@ -225,7 +229,7 @@ function onSave() {
             </select><span class="left-space">フィルタ<input v-model="filterPostal" type="text"
                     @input="filterSuggestPostal"></span><span class="left-space"><input
                     v-model="inputAddressDto.isEditAddressPostal" type="checkbox">編集</span><br>
-            <textarea v-model="addressPostal" :disabled="!inputAddressDto.isEditAddressPostal"></textarea>
+            <textarea v-model="inputAddressDto.addressPostal" :disabled="!inputAddressDto.isEditAddressPostal"></textarea>
         </div>
         <div class="clear-both"><br></div>
 
@@ -239,7 +243,7 @@ function onSave() {
             </select><span class="left-space">フィルタ<input v-model="filterBlock" type="text"
                     @input="filterSuggestBlock"></span><span class="left-space"><input
                     v-model="inputAddressDto.isEditAddressBlock" type="checkbox">編集</span><br>
-            <textarea v-model="addressBlock" :disabled="!inputAddressDto.isEditAddressBlock"></textarea>
+            <textarea v-model="inputAddressDto.addressBlock" :disabled="!inputAddressDto.isEditAddressBlock"></textarea>
         </div>
         <div class="clear-both"></div>
 
