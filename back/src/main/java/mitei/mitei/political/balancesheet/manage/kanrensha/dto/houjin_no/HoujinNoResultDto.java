@@ -10,7 +10,8 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.HoujinNoLatest
 /**
  * 法人番号検索結果Dto
  */
-public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Serializable {
+public class HoujinNoResultDto extends AbstractPagingLongResultDto // NOPMD DataClass
+        implements Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -20,7 +21,6 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
 
     /** 初期データ(Integer) */
     private static final Integer INIT_Integer = 0;
-
 
     /** 法人番号検索結果 */
     private List<HoujinNoLatestEntity> listHoujinNo = new ArrayList<>();
@@ -43,7 +43,6 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
         this.listHoujinNo = listHoujinNo;
     }
 
-    
     /** 全件数 */
     private Long allCount = INIT_Long;
 
@@ -58,6 +57,7 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
      *
      * @return 全件数
      */
+    @Override
     public Long getAllCount() {
         return allCount;
     }
@@ -67,6 +67,7 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
      *
      * @param allCount 全件数全件数
      */
+    @Override
     public void setAllCount(final Long allCount) {
         this.allCount = allCount;
     }
@@ -76,6 +77,7 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
      *
      * @return 抽出件数
      */
+    @Override
     public Integer getLimit() {
         return limit;
     }
@@ -85,6 +87,7 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
      *
      * @param limit 抽出件数
      */
+    @Override
     public void setLimit(final Integer limit) {
         this.limit = limit;
     }
@@ -94,6 +97,7 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
      *
      * @return ページ番号
      */
+    @Override
     public Integer getPageNumber() {
         return pageNumber;
     }
@@ -103,9 +107,9 @@ public class HoujinNoResultDto extends AbstractPagingLongResultDto implements Se
      *
      * @param pageNumber ページ番号
      */
+    @Override
     public void setPageNumber(final Integer pageNumber) {
         this.pageNumber = pageNumber;
     }
 
-    
 }

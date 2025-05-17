@@ -44,9 +44,6 @@ class SearchHoujinNoByNaturalSearchSearviceTest {
         List<HoujinNoLatestEntity> list = resultDto.getListHoujinNo();
         assertEquals(14, list.size());
 
-        for (HoujinNoLatestEntity entity : list) {
-            System.out.println(entity.getName() + "---" + entity.getCorporateNumber());
-        }        
         
         
         HoujinNoLatestEntity entity01 = list.get(0);

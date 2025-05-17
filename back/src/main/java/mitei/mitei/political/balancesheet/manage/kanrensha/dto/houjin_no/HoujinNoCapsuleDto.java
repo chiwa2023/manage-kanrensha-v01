@@ -86,7 +86,7 @@ public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements 
     public void setSearchNaturaloWords(final String searchNaturaloWords) {
         this.searchNaturaloWords = searchNaturaloWords;
     }
-    
+
     /** 全件数 */
     private Long allCount = INIT_Long;
 
@@ -101,6 +101,7 @@ public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements 
      *
      * @return 全件数
      */
+    @Override
     public Long getAllCount() {
         return allCount;
     }
@@ -110,6 +111,7 @@ public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements 
      *
      * @param allCount 全件数全件数
      */
+    @Override
     public void setAllCount(final Long allCount) {
         this.allCount = allCount;
     }
@@ -137,6 +139,7 @@ public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements 
      *
      * @return ページ番号
      */
+    @Override
     public Integer getPageNumber() {
         return pageNumber;
     }
@@ -146,6 +149,7 @@ public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements 
      *
      * @param pageNumber ページ番号
      */
+    @Override
     public void setPageNumber(final Integer pageNumber) {
         this.pageNumber = pageNumber;
     }
