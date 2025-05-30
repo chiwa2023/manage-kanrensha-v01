@@ -1,9 +1,7 @@
 ﻿<script setup lang="ts">
-import ManagerInfo from './components/common/user_info/ManagerInfo.vue';
-
+import PartnerInfo from './components/common/user_info/PartnerInfo.vue';
 
 // function getLoginInfo() {
-
 //     const jwtText: string | null = sessionStorage.getItem("jwtToken");
 //     let jwtToken: JwtTokenInterface = new JwtTokenDto();
 //     if (jwtText === null) {
@@ -52,19 +50,17 @@ import ManagerInfo from './components/common/user_info/ManagerInfo.vue';
 //             alert("エラーのつもり");
 //         }
 //     });
-
 // }
 
 </script>
 <template>
     <!-- ユーザメニュー兼チェック -->
-    <ManagerInfo></ManagerInfo>
+    <PartnerInfo></PartnerInfo>
     <hr>
 
-    <h2>管理者用メニュー</h2>
+    <h2>関連者用メニュー</h2>
 
-    <RouterLink to="/partner_manage">関連者管理</RouterLink><br>
-    <RouterLink to="/">ログインページ</RouterLink><br>
+    <RouterLink to="/partner_edit">関連者編集</RouterLink><br>
 
 </template>
 <style scoped></style>

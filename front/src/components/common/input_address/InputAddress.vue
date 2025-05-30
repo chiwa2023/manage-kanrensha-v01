@@ -51,28 +51,28 @@ function getAddressPostal() {
         conditionDto.postal2 = inputAddressDto.value.postalcode2;
         const url = "http://localhost:6080/postal-search/postal";
         const method = "POST";
-        const body = JSON.stringify(conditionDto);
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+         const body = JSON.stringify(conditionDto);
+         const headers = {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json',
         };
-        fetch(url, { method, headers, body })
-            .then(async (response) => {
-                const resultDto = await response.json();
-                listPostalSuggest.value = resultDto.listOptions;
-                listBackupPostalSuggest.value = structuredClone(toRaw(listPostalSuggest.value));
-                isGyouseiku.value = resultDto.isGyouseikuData;
+         fetch(url, { method, headers, body })
+             .then(async (response) => {
+                 const resultDto = await response.json();
+                 listPostalSuggest.value = resultDto.listOptions;
+                 listBackupPostalSuggest.value = structuredClone(toRaw(listPostalSuggest.value));
+                 isGyouseiku.value = resultDto.isGyouseikuData;
 
-                // 1件だけの時は値を決定して番地までデータを検索
-                if (listPostalSuggest.value !== null) {
-                    if (listPostalSuggest.value.length === 1) {
-                        selectedAddressPostal.value = listBackupPostalSuggest.value[0].value;
-                        selectSuggestPostal();
-                        searchBlock();
-                    }
-                }
-            })
-            .catch((error) => { alert(error); });
+                 // 1件だけの時は値を決定して番地までデータを検索
+                 if (listPostalSuggest.value !== null) {
+                     if (listPostalSuggest.value.length === 1) {
+                         selectedAddressPostal.value = listBackupPostalSuggest.value[0].value;
+                         selectSuggestPostal();
+                         searchBlock();
+                     }
+                 }
+             })
+             .catch((e) => { alert(e); });
     }
 }
 
@@ -104,6 +104,7 @@ function searchBlock() {
             listBackupBlockSuggest.value = structuredClone(toRaw(listBlockSuggest.value));
             inputAddressDto.value.lgCode = resultDto.lgCode;
             listBlockSuggest.value;
+            
             // 1件だけの時は値を決定して建物までデータを検索
             if (listBlockSuggest.value !== undefined) {
                 if (listBlockSuggest.value.length === 1) {

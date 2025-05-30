@@ -12,10 +12,9 @@ import mockGetPoliOrgNoList from '../../common/search_poli_org/mock/mockGetPoliO
 import CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import mockGetCorpList from '../../common/search_corp_no/mock/mockGetCorpList';
-import PartnerInfo from '../../common/user_info/PartnerInfo.vue';
 import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
 
-// 編集用Dto
+// 編集Dto
 const inputPersonDto: Ref<PersonNoInterface> = ref(new PersonNoDto());
 const inputPoliOrgDto: Ref<PoliOrgNoInterface> = ref(new PoliOrgNoDto());
 const inputCorpNoDto: Ref<CorpNoInterface> = ref(new CorpNoDto());
@@ -29,7 +28,6 @@ if (userDtoText !== null) {
     userDto.value = JSON.parse(userDtoText);
     role = userDto.value.listRoles[0];
 }
-
 let viewStatus: number = 1;
 switch (role) {
     case "ROLE_partner_person":
@@ -50,10 +48,7 @@ switch (role) {
 
 </script>
 <template>
-    <!-- ユーザメニュー兼チェック -->
-    <PartnerInfo></PartnerInfo><hr>
-
-    <h1>関連者編集</h1>
+    <h1>新規関連者登録</h1>
     <!-- 編集対象が法人／個人 -->
     <div v-if="viewStatus == 1">
         <PartnerPersonEdit :edit-dto="inputPersonDto"></PartnerPersonEdit>

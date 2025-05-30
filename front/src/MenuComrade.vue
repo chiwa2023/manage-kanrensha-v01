@@ -1,6 +1,5 @@
 ﻿<script setup lang="ts">
-import ManagerInfo from './components/common/user_info/ManagerInfo.vue';
-
+import ComradeInfo from './components/common/user_info/ComradeInfo.vue';
 
 // function getLoginInfo() {
 
@@ -58,12 +57,13 @@ import ManagerInfo from './components/common/user_info/ManagerInfo.vue';
 </script>
 <template>
     <!-- ユーザメニュー兼チェック -->
-    <ManagerInfo></ManagerInfo>
+    <ComradeInfo></ComradeInfo>
     <hr>
 
-    <h2>管理者用メニュー</h2>
+    <h2>APIユーザ用メニュー</h2>
 
-    <RouterLink to="/partner_manage">関連者管理</RouterLink><br>
+    <RouterLink to="/partner_edit">関連者編集</RouterLink><br>
+
     <RouterLink to="/">ログインページ</RouterLink><br>
 
 </template>
