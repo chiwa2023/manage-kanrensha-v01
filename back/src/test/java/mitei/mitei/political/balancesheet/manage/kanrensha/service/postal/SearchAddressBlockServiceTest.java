@@ -33,7 +33,7 @@ class SearchAddressBlockServiceTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() {
+    void test() throws Exception {
 
         PostalCodeBlockResultDto resultDto0 = searchAddressBlockService.practice(124790, true);
         assertEquals("011029", resultDto0.getLgCode());

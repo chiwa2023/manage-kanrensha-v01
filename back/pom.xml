@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.5</version>
+		<version>3.5.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mitei.mitei.political.balancesheet</groupId>
@@ -100,6 +100,34 @@
 			<artifactId>spring-batch-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Spring Boot Security-->
+		<dependency>
+   	    	 <groupId>org.springframework.boot</groupId>
+   	    	 <artifactId>spring-boot-starter-security</artifactId>
+    	</dependency>
+   		<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    	</dependency>
+		<dependency>
+        	<groupId>org.springframework.security</groupId>
+        	<artifactId>spring-security-oauth2-jose</artifactId>
+    	</dependency>
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-test</artifactId>
+    		<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>4.5.0</version>
+		</dependency>
+		
+		
 		<!--
 		https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
 		<dependency>
