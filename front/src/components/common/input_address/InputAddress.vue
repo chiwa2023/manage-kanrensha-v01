@@ -10,6 +10,7 @@ import PostalCodeCapsuleDto from "../../../dto/postal/postalCodeCapsuleDto";
 import type SelectOptionNumberInterface from "../../../dto/selectOptionNumberDto";
 import type PostalCodeBlockResultInterface from "../../../dto/postal/postalCodeBlockResultDto";
 import type PostalCodeBuildingResultInterface from "../../../dto/postal/postalCodeBuildingResultDto";
+import mockGetAuthorizedPromiseArea from "../../../dto/login/mock/mockGetAuthorizedPromiseArea";
 
 //props,emit
 const props = defineProps<{ editDto: InputAddressDto }>();
@@ -17,7 +18,7 @@ const emits = defineEmits(["sendCancelInputAddress", "sendInputAddressInterface"
 
 /** 入力用Dto */
 const inputAddressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
-inputAddressDto.value = structuredClone(toRaw(props.editDto));    
+inputAddressDto.value = structuredClone(toRaw(props.editDto));
 //onst addressPostal: Ref<string> = ref(props.editDto.addressPostal);
 //const addressBlock: Ref<string> = ref(props.editDto.addressBlock);
 
@@ -45,36 +46,47 @@ function getAddressPostal() {
     //  郵便番号の形式となったらリストを取得する
     if (3 === inputAddressDto.value.postalcode1.length && 4 === inputAddressDto.value.postalcode2.length) {
 
-        // 検索条件の設定
-        const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
-        conditionDto.postal1 = inputAddressDto.value.postalcode1;
-        conditionDto.postal2 = inputAddressDto.value.postalcode2;
 
-        // TODO 住所候補をBack側から取得する
-        // const url = "http://localhost:7080/postal-search/postal";
-        // const method = "POST";
-        // const body = JSON.stringify(conditionDto);
-        // const headers = {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json'
-        // };
-        // fetch(url, { method, headers, body })
-        //     .then(async (response) => {
-        //         listInquireAnswer.value = await response.json();
-        //         listInquireAnswer.value[0];
-        //     })
-        //     .catch((error) => { alert(error); });
+        // トークンの有効確認
+        mockGetAuthorizedPromiseArea().then(token => {
+            if (token !== "") {
+                // 検索条件の設定
+                const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
+                conditionDto.postal1 = inputAddressDto.value.postalcode1;
+                conditionDto.postal2 = inputAddressDto.value.postalcode2;
 
-        const resultDto = mockMakeSuggestPostalList();
-        listPostalSuggest.value = resultDto.listOptions;
-        listBackupPostalSuggest.value = structuredClone(toRaw(listPostalSuggest.value));
-        isGyouseiku.value = resultDto.isGyouseikuData;
+                // TODO 住所候補をBack側から取得する
+                // const url = "http://localhost:7080/postal-search/postal";
+                // const method = "POST";
+                // const body = JSON.stringify(conditionDto);
+                // const headers = {
+                //     'Accept': 'application/json',
+                //     'Content-Type': 'application/json'
+                // };
+                // fetch(url, { method, headers, body })
+                //     .then(async (response) => {
+                //         listInquireAnswer.value = await response.json();
+                //         listInquireAnswer.value[0];
+                //     })
+                //     .catch((error) => { alert(error); });
 
-        // 1件だけの時は値を決定して番地までデータを検索
-        if (listPostalSuggest.value.length === 1) {
-            selectedAddressPostal.value = listPostalSuggest.value[0].value;
-            searchBlock();
-        }
+                const resultDto = mockMakeSuggestPostalList();
+                listPostalSuggest.value = resultDto.listOptions;
+                listBackupPostalSuggest.value = structuredClone(toRaw(listPostalSuggest.value));
+                isGyouseiku.value = resultDto.isGyouseikuData;
+
+                // 1件だけの時は値を決定して番地までデータを検索
+                if (listPostalSuggest.value.length === 1) {
+                    selectedAddressPostal.value = listPostalSuggest.value[0].value;
+                    searchBlock();
+                }
+            } else {
+                alert("TODO エラーのつもり");
+            }
+        });
+
+
+
     }
 }
 
@@ -89,38 +101,45 @@ function selectSuggestPostal() {
 
 /** 住所番地までを検索 */
 function searchBlock() {
-    // 検索条件の設定
-    const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
-    conditionDto.selectedPostal = selectedAddressPostal.value;
-    conditionDto.isGyouseikuData = isGyouseiku.value;
 
-    // TODO 番地まで住所候補をBack側から取得する
-    // const url = "http://localhost:7080/postal-search/block";
-    // const method = "POST";
-    // const body = JSON.stringify(conditionDto);
-    // const headers = {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    // };
-    // fetch(url, { method, headers, body })
-    //     .then(async (response) => {
-    //         listInquireAnswer.value = await response.json();
-    //         listInquireAnswer.value[0];
-    //     })
-    //     .catch((error) => { alert(error); });
+    // トークンの有効確認
+    mockGetAuthorizedPromiseArea().then(token => {
+        if (token !== "") {
+            // 検索条件の設定
+            const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
+            conditionDto.selectedPostal = selectedAddressPostal.value;
+            conditionDto.isGyouseikuData = isGyouseiku.value;
 
-    const resultDto: PostalCodeBlockResultInterface = mockMakeSuggestBlockList();
-    listBlockSuggest.value = resultDto.listOptions;
-    listBackupBlockSuggest.value = structuredClone(toRaw(listBlockSuggest.value));
-    isGyouseiku.value = resultDto.isGyouseikuData;
-    inputAddressDto.value.lgCode = resultDto.lgCode;
+            // TODO 番地まで住所候補をBack側から取得する
+            // const url = "http://localhost:7080/postal-search/block";
+            // const method = "POST";
+            // const body = JSON.stringify(conditionDto);
+            // const headers = {
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json'
+            // };
+            // fetch(url, { method, headers, body })
+            //     .then(async (response) => {
+            //         listInquireAnswer.value = await response.json();
+            //         listInquireAnswer.value[0];
+            //     })
+            //     .catch((error) => { alert(error); });
 
-    // 1件だけの時は値を決定して建物までデータを検索
-    if (listBlockSuggest.value.length === 1) {
-        selectedAddressBlock.value = listBlockSuggest.value[0].value;
-        searchBuilding();
-    }
+            const resultDto: PostalCodeBlockResultInterface = mockMakeSuggestBlockList();
+            listBlockSuggest.value = resultDto.listOptions;
+            listBackupBlockSuggest.value = structuredClone(toRaw(listBlockSuggest.value));
+            isGyouseiku.value = resultDto.isGyouseikuData;
+            inputAddressDto.value.lgCode = resultDto.lgCode;
 
+            // 1件だけの時は値を決定して建物までデータを検索
+            if (listBlockSuggest.value.length === 1) {
+                selectedAddressBlock.value = listBlockSuggest.value[0].value;
+                searchBuilding();
+            }
+        } else {
+            alert("TODO エラーのつもり");
+        }
+    });
 }
 
 /** 住所番地候補選択時 */
@@ -139,38 +158,44 @@ function selectSuggestBlock() {
 
 function searchBuilding() {
 
-    // 検索条件の設定
-    const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
-    conditionDto.selectedBlock = selectedAddressBlock.value;
-    conditionDto.postalCode = inputAddressDto.value.postalcode1 + inputAddressDto.value.postalcode2;
-    conditionDto.lgCode = inputAddressDto.value.lgCode;
-    conditionDto.isGyouseikuData = isGyouseiku.value;
+    // トークンの有効確認
+    mockGetAuthorizedPromiseArea().then(token => {
+        if (token !== "") {
+            // 検索条件の設定
+            const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
+            conditionDto.selectedBlock = selectedAddressBlock.value;
+            conditionDto.postalCode = inputAddressDto.value.postalcode1 + inputAddressDto.value.postalcode2;
+            conditionDto.lgCode = inputAddressDto.value.lgCode;
+            conditionDto.isGyouseikuData = isGyouseiku.value;
 
-    // TODO 建物まで住所候補をBack側から取得する
-    // const url = "http://localhost:7080/postal-search/building";
-    // const method = "POST";
-    // const body = JSON.stringify(conditionDto);
-    // const headers = {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    // };
-    // fetch(url, { method, headers, body })
-    //     .then(async (response) => {
-    //         listInquireAnswer.value = await response.json();
-    //         listInquireAnswer.value[0];
-    //     })
-    //     .catch((error) => { alert(error); });
+            // TODO 建物まで住所候補をBack側から取得する
+            // const url = "http://localhost:7080/postal-search/building";
+            // const method = "POST";
+            // const body = JSON.stringify(conditionDto);
+            // const headers = {
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json'
+            // };
+            // fetch(url, { method, headers, body })
+            //     .then(async (response) => {
+            //         listInquireAnswer.value = await response.json();
+            //         listInquireAnswer.value[0];
+            //     })
+            //     .catch((error) => { alert(error); });
 
-    const resultDto: PostalCodeBuildingResultInterface = mockMakeSuggestBuildingList();
-    listBuildingSuggest.value = resultDto.listOptions;
-
+            const resultDto: PostalCodeBuildingResultInterface = mockMakeSuggestBuildingList();
+            listBuildingSuggest.value = resultDto.listOptions;
+        } else {
+            alert("TODO エラーのつもり");
+        }
+    });
 }
 
 
 /** 住所建物候補選択時 */
 function selectSuggestBuilding() {
     inputAddressDto.value.addressBuilding = selectedAddressBuilding.value;
-    inputAddressDto.value.rsdtAddressBuilding  = selectedAddressBuilding.value;
+    inputAddressDto.value.rsdtAddressBuilding = selectedAddressBuilding.value;
 }
 
 /** 住所郵便番号フィルタ時 */
@@ -229,7 +254,8 @@ function onSave() {
             </select><span class="left-space">フィルタ<input v-model="filterPostal" type="text"
                     @input="filterSuggestPostal"></span><span class="left-space"><input
                     v-model="inputAddressDto.isEditAddressPostal" type="checkbox">編集</span><br>
-            <textarea v-model="inputAddressDto.addressPostal" :disabled="!inputAddressDto.isEditAddressPostal"></textarea>
+            <textarea v-model="inputAddressDto.addressPostal"
+                :disabled="!inputAddressDto.isEditAddressPostal"></textarea>
         </div>
         <div class="clear-both"><br></div>
 

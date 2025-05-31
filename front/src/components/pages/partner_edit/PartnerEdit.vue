@@ -12,6 +12,7 @@ import mockGetPoliOrgNoList from '../../common/search_poli_org/mock/mockGetPoliO
 import CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import mockGetCorpList from '../../common/search_corp_no/mock/mockGetCorpList';
+import MockPartnerInfo from '../../common/user_info/MockPartnerInfo.vue';
 
 // ログインユーザの属性により、どのデータを作成するか決定されている
 // 個人の想定
@@ -37,8 +38,13 @@ switch (viewStatus) {
 
 </script>
 <template>
+    <!-- 関連者メニュー兼チェック -->
+    <MockPartnerInfo></MockPartnerInfo>
+    <hr>
+
     <h1>関連者編集</h1>
-    <!-- 編集対象が法人／個人 -->
+
+    <!-- 編集対象が法人／個人    -->
     <div v-if="viewStatus == 1">
         <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="false"></PartnerPersonEdit>
     </div>
@@ -46,9 +52,11 @@ switch (viewStatus) {
     <div v-if="viewStatus == 2">
         <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="false"></PartnerCorpEdit>
     </div>
+    
     <!-- 編集対象が政治団体 -->
     <div v-if="viewStatus == 3">
         <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="false"></PartnerPoliOrgEdit>
     </div>
+    
 </template>
 <style scoped></style>

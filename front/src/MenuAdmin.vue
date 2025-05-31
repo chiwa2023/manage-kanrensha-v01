@@ -1,13 +1,8 @@
 ﻿<script setup lang="ts">
-import MockManagerInfo from './components/common/user_info/MockManagerInfo.vue';
 
 </script>
 <template>
-    <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
-    <hr>
-
-    <h1>管理者用メニュー</h1>
+    <h1>SE権限メニュー</h1>
 
     <RouterLink to="/partner-manage">関連者管理</RouterLink><br>
     <RouterLink to="/works-approval">作業内容承認</RouterLink><br>

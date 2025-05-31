@@ -9,6 +9,7 @@ import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
 import InputShokugyou from '../input_shokugyou/InputShokugyou.vue';
 import InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
+import mockGetAuthorizedPromiseArea from '../../../dto/login/mock/mockGetAuthorizedPromiseArea';
 
 const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean }>();
 const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => props.editDto);
@@ -111,48 +112,56 @@ function onCheckAlreadyRegist() {
 
 /**国籍を確認する */
 function nationarityConfirm() {
+    
+    // トークンの有効確認
+    mockGetAuthorizedPromiseArea().then(token => {
+        if (token !== "") {
+            // チェックされた対象だけに絞る
+            // const list: PersonNoInterface[] = ref([]);
+            // list.push(inputPersonNoDto);
 
-    // チェックされた対象だけに絞る
-    // const list: PersonNoInterface[] = ref([]);
-    // list.push(inputPersonNoDto);
+            // // API接続時には不要な回答リスト初期処理
+            // listInquireAnswer.value.splice(0);
 
-    // // API接続時には不要な回答リスト初期処理
-    // listInquireAnswer.value.splice(0);
+            // // 外部APIに国籍情報問い合わせ
+            // // TODO (現在はRelationPersonNoを送付しているが、PersonNoDtoを送付する形に変更)
+            // // 国籍問い合わせInquireNationality.vueも編集
+            // const url = "http://localhost:7080/inquire-nationarity";
+            // const method = "POST";
+            // const body = JSON.stringify(list.value);
+            // const headers = {
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json'
+            // };
+            // fetch(url, { method, headers, body })
+            //     .then(async (response) => {
+            //         listInquireAnswer.value = await response.json();
+            //         listInquireAnswer.value[0];
+            //     })
+            //     .catch((error) => { alert(error); });
 
-    // // 外部APIに国籍情報問い合わせ
-    // // TODO (現在はRelationPersonNoを送付しているが、PersonNoDtoを送付する形に変更)
-    // // 国籍問い合わせInquireNationality.vueも編集
-    // const url = "http://localhost:7080/inquire-nationarity";
-    // const method = "POST";
-    // const body = JSON.stringify(list.value);
-    // const headers = {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    // };
-    // fetch(url, { method, headers, body })
-    //     .then(async (response) => {
-    //         listInquireAnswer.value = await response.json();
-    //         listInquireAnswer.value[0];
-    //     })
-    //     .catch((error) => { alert(error); });
+            // 国籍確認mock実装
+            switch (parseInt(inputPersonNoDto.value.inputAddress.tel3) % 3) {
+                case 0:
+                    alert("日本国籍保持");
+                    break;
 
-    // 国籍確認mock実装
-    switch (parseInt(inputPersonNoDto.value.inputAddress.tel3) % 3) {
-        case 0:
-            alert("日本国籍保持");
-            break;
+                case 1:
+                    alert("外国人籍");
+                    break;
 
-        case 1:
-            alert("外国人籍");
-            break;
+                case 2:
+                    alert("国籍不明");
+                    break;
 
-        case 2:
-            alert("国籍不明");
-            break;
+                default:
+                    break;
+            }
+        } else {
+            alert("TODO エラーのつもり");
+        }
+    });
 
-        default:
-            break;
-    }
 }
 
 const isGaikokuHoujin: Ref<boolean> = ref(false);
@@ -254,7 +263,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
     <div class="clear-both"></div>
 
     <hr>
-    
+
     <h3>変更履歴</h3>
 
     <div class="left-area">

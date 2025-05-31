@@ -12,6 +12,7 @@ import SearchCorpNo from '../../common/search_corp_no/SearchCorpNo.vue';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import SearchPoliOrg from '../../common/search_poli_org/SearchPoliOrg.vue';
+import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 
 // 表示
 const viewStatus: Ref<number> = ref(1);
@@ -39,6 +40,10 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
 
 </script>
 <template>
+    <!-- 管理者メニュー兼チェック -->
+    <MockManagerInfo></MockManagerInfo>
+    <hr>
+
     <h1>関連者管理</h1>
     ※複数の関連者の編集権限があるので検索画面必要
 
