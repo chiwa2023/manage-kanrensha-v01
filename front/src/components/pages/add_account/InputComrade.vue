@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
-
+//仮
 </script>
 <template>
-    <h2>ユーザ用メニュー</h2>
+    <h1>新規APIユーザ登録</h1>
 </template>
 <style scoped></style>

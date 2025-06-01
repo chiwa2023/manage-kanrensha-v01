@@ -8,49 +8,49 @@ import java.time.LocalDateTime;
 public interface AllTabeDataHistoryInterface {
 
     /**
-     * 最新区分を取得する
+     * 最新該否を取得する
      *
-     * @return 最新区分
+     * @return 最新該否
      */
-    Short getLatestKbn();
+    Boolean getIsLatest();
 
     /**
-     * 最新区分を設定する
+     * 最新該否を設定する
      *
-     * @param latestKbn 最新区分
+     * @param isLatest 最新該否
      */
-    void setLatestKbn(Short latestKbn);
+    void setIsLatest(Boolean isLatest);
 
     /**
      * 挿入ユーザIdを取得する
      *
      * @return 挿入ユーザId
      */
-    Long getInsertUserId();
+    Integer getInsertUserId();
 
     /**
      * 挿入ユーザIdを設定する
      *
      * @param insertUserId 挿入ユーザId
      */
-    void setInsertUserId(Long insertUserId);
+    void setInsertUserId(Integer insertUserId);
 
     /**
-     * 挿入ユーザ同一識別コードを取得する
+     * 挿入ユーザコードを取得する
      *
-     * @return 挿入ユーザ同一識別コード
+     * @return 挿入ユーザコード
      */
     Integer getInsertUserCode();
 
     /**
-     * 挿入ユーザ同一識別コードを設定する
+     * 挿入ユーザコードを設定する
      *
-     * @param insertUserCode 挿入ユーザ同一識別コード
+     * @param insertUserCode 挿入ユーザコード
      */
     void setInsertUserCode(Integer insertUserCode);
 
     /**
-     * 挿入ユーザ名称を取得するを設定する
+     * 挿入ユーザ名称を取得する
      *
      * @return 挿入ユーザ名称
      */
@@ -78,59 +78,58 @@ public interface AllTabeDataHistoryInterface {
     void setInsertTimestamp(LocalDateTime insertTimestamp);
 
     /**
-     * 更新ユーザIdを取得する
+     * 無効ユーザIdを取得する
      *
-     * @return 更新ユーザId
+     * @return 無効ユーザId
      */
-    Long getUpdateUserId();
+    Integer getDeleteUserId();
 
     /**
-     * 更新ユーザIdを設定する
+     * 無効ユーザIdを設定する
      *
-     * @param updatetUserId 更新ユーザId
+     * @param deleteUserId 無効ユーザId
      */
-    void setUpdateUserId(Long updatetUserId);
+    void setDeleteUserId(Integer deleteUserId);
 
     /**
-     * 更新ユーザ同一識別コードを取得する
+     * 無効ユーザコードを取得する
      *
-     * @return 更新ユーザ同一識別コード
+     * @return 無効ユーザコード
      */
-    Integer getUpdateUserCode();
+    Integer getDeleteUserCode();
 
     /**
-     * 更新ユーザ同一識別コードを設定する
+     * 無効ユーザコードを設定する
      *
-     * @param updateUserCode 更新ユーザ同一識別コード
+     * @param deleteUserCode 無効ユーザコード
      */
-    void setUpdateUserCode(Integer updateUserCode);
+    void setDeleteUserCode(Integer deleteUserCode);
 
     /**
-     * 更新ユーザ名称を取得する
+     * 無効ユーザ名称を取得する
      *
-     * @return 更新ユーザ名称
+     * @return 無効ユーザ名称
      */
-    String getUpdateUserName();
+    String getDeleteUserName();
 
     /**
-     * 更新ユーザ名称を設定する
+     * 無効ユーザ名称を設定する
      *
-     * @param updateUserName 更新ユーザ名称
-     * 
+     * @param deleteUserName 無効ユーザ名称
      */
-    void setUpdateUserName(String updateUserName);
+    void setDeleteUserName(String deleteUserName);
 
     /**
-     * 更新日時を取得する
+     * 無効日時を取得する
      *
-     * @return 更新日時
+     * @return 無効日時
      */
-    LocalDateTime getUpdateTimestamp();
+    LocalDateTime getDeleteTimestamp();
 
     /**
-     * 更新日時を設定する
+     * 無効日時を設定する
      *
-     * @param updateTimestamp 更新日時
+     * @param deleteTimestamp 無効日時
      */
-    void setUpdateTimestamp(LocalDateTime updateTimestamp);
+    void setDeleteTimestamp(LocalDateTime deleteTimestamp);
 }

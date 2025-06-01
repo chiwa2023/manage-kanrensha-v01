@@ -12,24 +12,37 @@ import mockGetPoliOrgNoList from '../../common/search_poli_org/mock/mockGetPoliO
 import CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import mockGetCorpList from '../../common/search_corp_no/mock/mockGetCorpList';
+import PartnerInfo from '../../common/user_info/PartnerInfo.vue';
+import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
 
-// ログインユーザの属性により、どのデータを作成するか決定されている
-// 個人の想定
-const viewStatus: number = 1;
-
+// 編集用Dto
 const inputPersonDto: Ref<PersonNoInterface> = ref(new PersonNoDto());
 const inputPoliOrgDto: Ref<PoliOrgNoInterface> = ref(new PoliOrgNoDto());
 const inputCorpNoDto: Ref<CorpNoInterface> = ref(new CorpNoDto());
 
-switch (viewStatus) {
-    case 1:
+// 権限取得
+const userDto: Ref<UserPersonLeastDto> = ref(new UserPersonLeastDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+let role:string = "";
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+    role = userDto.value.listRoles[0];
+}
+
+let viewStatus: number = 1;
+switch (role) {
+    case "ROLE_partner_person":
         inputPersonDto.value = mockGetPersonList()[0];
+        viewStatus = 1;
         break;
-    case 2:
+    case "ROLE_partner_corp":
         inputCorpNoDto.value = mockGetCorpList()[0];
+        viewStatus = 2;
         break;
-    case 3:
+    case "ROLE_partner_poli_org":
         inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
+        viewStatus = 3;
         break;
     default:
         break;
@@ -37,6 +50,9 @@ switch (viewStatus) {
 
 </script>
 <template>
+    <!-- ユーザメニュー兼チェック -->
+    <PartnerInfo></PartnerInfo><hr>
+
     <h1>関連者編集</h1>
     <!-- 編集対象が法人／個人 -->
     <div v-if="viewStatus == 1">
