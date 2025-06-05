@@ -1,4 +1,6 @@
 ﻿<script setup lang="ts">
+import RoutePathConstants from './routePathConstants';
+
 
 </script>
 <template>
@@ -6,12 +8,12 @@
 
     <h2>ログイン処理を省略・・・</h2>
 
-    <RouterLink to="/menu-manager">管理者メニュー</RouterLink><br>
-    <RouterLink to="/menu-comrade">APIユーザメニュー</RouterLink><br>
-    <RouterLink to="/menu-partner">関連者メニュー</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_MANAGER>管理者メニュー</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_COMRADE>APIユーザメニュー</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER>関連者メニュー</RouterLink><br>
 
     <hr>
-    <RouterLink to="/component">コンポーネント作成台紙</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_COMPONENT>コンポーネント作成台紙</RouterLink><br>
 
 </template>
 <style scoped></style>

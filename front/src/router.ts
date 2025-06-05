@@ -1,15 +1,16 @@
 ﻿import { createRouter, createWebHistory } from "vue-router";
 import TopPage from "./TopPage.vue";
+import RoutePathConstants from "./routePathConstants";
 
 const routes = [
     // トップと開発用台紙
-    { path: "/", name: "TopPage", component: TopPage },
-    { path: "/component", name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },
+    { path: RoutePathConstants.PAGE_LOGIN, name: "TopPage", component: TopPage },
+    { path: RoutePathConstants.PAGE_COMPONENT, name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },
 
     // ユーザ区分ごとメニュー
-    { path: "/menu-manager", name: "MenuManager", component: () => import("./MenuManager.vue") },
-    { path: "/menu-partner", name: "MenuPartner", component: () => import("./MenuPartner.vue") },
-    { path: "/menu-comrade", name: "MenuComrade", component: () => import("./MenuComrade.vue") },
+    { path: RoutePathConstants.PAGE_MENU_MANAGER, name: "MenuManager", component: () => import("./MenuManager.vue") },
+    { path: RoutePathConstants.PAGE_MENU_PARTNER, name: "MenuPartner", component: () => import("./MenuPartner.vue") },
+    { path: RoutePathConstants.PAGE_MENU_COMRADE, name: "MenuComrade", component: () => import("./MenuComrade.vue") },
 
 
     // 関連者編集
@@ -18,6 +19,16 @@ const routes = [
 
     // 入力内容承認
     { path: "/works-approval", name: "WorksApproval", component: () => import("./components/pages/works_approval/WorksApproval.vue") },
+
+    // 郵便番号編集
+    { path: RoutePathConstants.PAGE_POSTAL_BUILDING, name: "PostalCodeBuilding", component: () => import("./components/pages/postal_code_repair/PostalCodeBuilding.vue") },
+    { path: RoutePathConstants.PAGE_POSTAL_EDIT, name: "PostalCodeEdit", component: () => import("./components/pages/postal_code_repair/PostalCodeEdit.vue") },
+    { path: RoutePathConstants.PAGE_POSTAL_SABUN, name: "PostalCodeSabun", component: () => import("./components/pages/postal_code_repair/PostalCodeSabun.vue") },
+
+    // アドレス・ベース・レジストリ編集
+   { path: RoutePathConstants.PAGE_ADDRESS_REGI_EDIT, name: "AddressRegistryEdit", component: () => import("./components/pages/address_registry_repair/AddressRegistryEdit.vue") },
+    { path: RoutePathConstants.PAGE_ADDRESS_REGI_SABUN, name: "AddressRegistrySabun", component: () => import("./components/pages/address_registry_repair/AddressRegistrySabun.vue") },
+
 
 ];
 

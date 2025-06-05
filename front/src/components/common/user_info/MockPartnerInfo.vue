@@ -17,7 +17,6 @@ const moveRole: Ref<string> = ref("");
 function onMoveRole() {
     const route: string = listRouter.value.filter((e) => { return e.text === moveRole.value })[0].value;
     router.push(route);
-    router.go(0);
 }
 const isMoveMenu: ComputedRef<boolean> = computed(() => listRouter.value.length > 0);
 

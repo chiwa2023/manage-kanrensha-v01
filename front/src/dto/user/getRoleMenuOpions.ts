@@ -1,3 +1,4 @@
+import RoutePathConstants from "../../routePathConstants";
 import type SelectOptionStringInterface from "../selectOptionStringDto";
 import SelectOptionStringDto from "../selectOptionStringDto";
 
@@ -14,19 +15,19 @@ export default function getRoleMenuOpions(listRole: string[]) {
 
     // 管理者メニューを追加
     if (listRole.includes(ROLE_MANAGER)) {
-        list.push(createDto("/menu-manager", "管理者　メニュー"))
+        list.push(createDto(RoutePathConstants.PAGE_MENU_MANAGER, "管理者　メニュー"))
     }
 
     // APIユーザメニューを追加
     if (listRole.includes(ROLE_COMRADE)) {
-        list.push(createDto("/menu-comrade", "APIユーザ　メニュー"))
+        list.push(createDto(RoutePathConstants.PAGE_MENU_COMRADE, "APIユーザ　メニュー"))
     }
 
     // 関連者メニューを追加
     if (listRole.includes(ROLE_PARTNER_PERSON)
         || listRole.includes(ROLE_PARTNER_CORP)
         || listRole.includes(ROLE_PARTNER_POLI_ORG)) {
-        list.push(createDto("/menu-partner", "関連者　メニュー"))
+        list.push(createDto(RoutePathConstants.PAGE_MENU_PARTNER, "関連者　メニュー"))
     }
 
     list.push(createDto("", ""))

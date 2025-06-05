@@ -151,6 +151,8 @@ function recieveCancelInputShokugyou() {
 
 function onCancel() {
     alert("キャンセル");
+    history.back();
+
 }
 function onSave() {
     alert("保存");
