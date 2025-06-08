@@ -1,50 +1,47 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.dto.houjin_no;
+package mitei.mitei.political.balancesheet.manage.kanrensha.dto.postal;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.AbstractPagingLongDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.HoujinNoLatestEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.AbstractPagingIntegerDto;
 
 /**
- * 法人番号検索結果Dto
+ * 郵便番号不規則建物検索Dto
  */
-public class HoujinNoResultDto extends AbstractPagingLongDto // NOPMD DataClass
+public class GetDetailPostalIllegularCapsuleDto extends AbstractPagingIntegerDto // NOPMD DataClass
         implements Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(Long) */
-    private static final Long INIT_Long = 0L;
-
     /** 初期データ(Integer) */
     private static final Integer INIT_Integer = 0;
 
-    /** 法人番号検索結果 */
-    private List<HoujinNoLatestEntity> listHoujinNo = new ArrayList<>();
+    /** 初期データ(String) */
+    private static final String INIT_String = "";
+
+    /** 住所検索語 */
+    private String addressWords = INIT_String;
 
     /**
-     * 法人番号検索結果を取得する
+     * 住所検索語を取得する
      *
-     * @return 法人番号検索結果
+     * @return 住所検索語
      */
-    public List<HoujinNoLatestEntity> getListHoujinNo() {
-        return listHoujinNo;
+    public String getAddressWords() {
+        return addressWords;
     }
 
     /**
-     * 法人番号検索結果を設定する
+     * 住所検索語を設定する
      *
-     * @param listHoujinNo 法人番号検索結果
+     * @param addressWords 住所検索語
      */
-    public void setListHoujinNo(final List<HoujinNoLatestEntity> listHoujinNo) {
-        this.listHoujinNo = listHoujinNo;
+    public void setAddressWords(final String addressWords) {
+        this.addressWords = addressWords;
     }
 
     /** 全件数 */
-    private Long allCount = INIT_Long;
+    private Integer allCount = INIT_Integer;
 
     /** 抽出件数 */
     private Integer limit = INIT_Integer;
@@ -58,7 +55,7 @@ public class HoujinNoResultDto extends AbstractPagingLongDto // NOPMD DataClass
      * @return 全件数
      */
     @Override
-    public Long getAllCount() {
+    public Integer getAllCount() {
         return allCount;
     }
 
@@ -68,7 +65,7 @@ public class HoujinNoResultDto extends AbstractPagingLongDto // NOPMD DataClass
      * @param allCount 全件数全件数
      */
     @Override
-    public void setAllCount(final Long allCount) {
+    public void setAllCount(final Integer allCount) {
         this.allCount = allCount;
     }
 

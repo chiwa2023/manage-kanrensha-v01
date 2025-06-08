@@ -51,7 +51,6 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
     @Query(value = "SELECT * FROM address_postal_irregular WHERE lg_code LIKE ?1 AND (address_org LIKE '%その他%' OR address_org LIKE '%次のビルを除く%')", nativeQuery = true)
     Page<AddressPostalIrregularEntity> findOtherAddress(String lgCode, Pageable pageable);
 
-    
     /**
      * 郵便番号から住所を取得する
      *
@@ -61,5 +60,22 @@ public interface AddressPostalIrregularRepository extends JpaRepository<AddressP
     @Query(value = "SELECT address_postal_irregular_id AS value , address_postal AS text"
             + " FROM address_postal_irregular WHERE postal1 = ?1", nativeQuery = true)
     List<SelectOptionNumberDto> findByPostalCode(String postal1);
-    
+
+    /**
+     * 同一建物=住所名称を取得する
+     *
+     * @param words        建物名
+     * @param isRepairRsdt 修正完了の有無
+     * @return 検索結果
+     */
+    List<AddressPostalIrregularEntity> findByAddressOrgContainingAndIsRepairRsdt(String words, Boolean isRepairRsdt);
+
+    /**
+     * 住所名称が一致する郵便番号不規則を取得する
+     *
+     * @param words 住所名
+     * @return 住所名が一致するデータ
+     */
+    List<AddressPostalIrregularEntity> findByAddressName(String words);
+
 }

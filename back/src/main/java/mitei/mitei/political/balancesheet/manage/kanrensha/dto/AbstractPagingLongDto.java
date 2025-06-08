@@ -3,7 +3,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto;
 /**
  * ページング検索結果(全件数Long)Dto
  */
-public abstract class AbstractPagingLongResultDto {
+public abstract class AbstractPagingLongDto {
 
     /**
      * 全件数を取得する
