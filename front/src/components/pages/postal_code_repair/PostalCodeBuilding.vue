@@ -22,8 +22,34 @@ function isChangeview() {
     isVisibleDetail.value = !isVisibleDetail.value;
 }
 
-// 編集対象リスト
+// 初期で建物住所を全件取得する
 const capsuleDtoItem: Ref<SearchPostalIllegularCapsuleInterface> = ref(new SearchPostalIllegularCapsuleDto());
+// 建物の地階データを全件取得する
+// getAuthorizedPromiseArea().then(token => {
+//     if (token !== "") {
+//         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+//         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+//
+//         const url = "http://localhost:6080/postal-irregular/building";
+//         const method = "POST";
+//         const body = JSON.stringify(null);
+//         const headers = {
+//             'Accept': 'application/json',
+//             'Content-Type': 'application/json',
+//             'X-AUTH-TOKEN': 'Bearer ' + token
+//         };
+//         fetch(url, { method, headers, body })
+//             .then(async (response) => {
+//                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+//
+//                 // alert(resultDto.message);
+//             })
+//             .catch((e) => { alert(e); });
+//     } else {
+//         alert("エラーのつもり");
+//     }
+// });
+
 const resultDtoItem: Ref<SearchPostalIllegularResultInterface> = ref(mockGetIllegularItem());
 const pageOptionIllegular: Ref<SelectOptionNumberInterface[]> = ref([]);
 pageOptionIllegular.value = getPagingOption(resultDtoItem.value);
@@ -31,6 +57,7 @@ pageOptionIllegular.value = getPagingOption(resultDtoItem.value);
 // 編集対象の詳細リスト
 const capsuleDtoIllegular: Ref<GetDetailPostalIllegularCapsuleInterface> = ref(new GetDetailPostalIllegularCapsuleDto());
 const resultDtoIllegular: Ref<GetDetailPostalIllegularResultInterface> = ref(new GetDetailPostalIllegularResultDto());
+
 // 編集対象の変更
 const selectedId: Ref<number> = ref(0);
 const dtoEdit: Ref<PostalIrregularItemInterface> = ref(new PostalIrregularItemDto());
@@ -38,6 +65,33 @@ function onChangeEdit(id: number) {
     dtoEdit.value = structuredClone(toRaw(resultDtoItem.value.listItem.filter(e => e.addressPostalIrregularId === id)[0]));
     capsuleDtoIllegular.value.lgCode = dtoEdit.value.lgCode;
     resultDtoIllegular.value = mockGetIllegularAddress(dtoEdit.value.addressName);
+
+    // 選択された建物の全フロアデータを取得する
+    // getAuthorizedPromiseArea().then(token => {
+    //     if (token !== "") {
+    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+    //
+    //         const url = "http://localhost:6080/postal-irregular/building-detail";
+    //         const method = "POST";
+    //         const body = JSON.stringify(null);
+    //         const headers = {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-AUTH-TOKEN': 'Bearer ' + token
+    //         };
+    //         fetch(url, { method, headers, body })
+    //             .then(async (response) => {
+    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+    //
+    //                 // alert(resultDto.message);
+    //             })
+    //             .catch((e) => { alert(e); });
+    //     } else {
+    //         alert("エラーのつもり");
+    //     }
+    // });
+
 }
 
 // ページング切り替え
@@ -53,6 +107,33 @@ function onCancel() {
 }
 function onSave() {
     alert("保存");
+
+    // 入力された住所を全フロア住所に展開する
+    // getAuthorizedPromiseArea().then(token => {
+    //     if (token !== "") {
+    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+    //
+    //         const url = "http://localhost:6080/postal-irregular/save-building";
+    //         const method = "POST";
+    //         const body = JSON.stringify(null);
+    //         const headers = {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-AUTH-TOKEN': 'Bearer ' + token
+    //         };
+    //         fetch(url, { method, headers, body })
+    //             .then(async (response) => {
+    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+    //
+    //                 // alert(resultDto.message);
+    //             })
+    //             .catch((e) => { alert(e); });
+    //     } else {
+    //         alert("エラーのつもり");
+    //     }
+    // });
+
 }
 </script>
 <template>
@@ -67,7 +148,7 @@ function onSave() {
         <!-- ページング -->
         <select v-model="capsuleDtoItem.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionIllegular" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
 

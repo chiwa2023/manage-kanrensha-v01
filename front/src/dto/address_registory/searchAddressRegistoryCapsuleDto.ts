@@ -9,11 +9,11 @@ export default interface SearchAddressRegistoryCapsuleInterface extends PagingFr
 export default class SearchAddressRegistoryCapsuleDto extends PagingFrameworkDto
     implements SearchAddressRegistoryCapsuleInterface {
 
-    /** 住所検索語 */
-    addressWords: string;
+    /** 自治体コード */
+    lgCode: string;
 
     constructor() {
         super();
-        this.addressWords = "";
+        this.lgCode = "";
     }
 }

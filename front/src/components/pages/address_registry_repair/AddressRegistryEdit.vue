@@ -26,6 +26,33 @@ const resultDtoLocalGov: Ref<SearchLocalGovernmentResultInterface> = ref(new Sea
 // 地方自治体検索
 function onSearchLocalGov() {
     resultDtoLocalGov.value = mockGetLgList(capsuleDtoLocalGov.value.pageNumber);
+
+    // 住所の部分一致から自治体コードに紐づくアドレス・ベース・レジストリ住居検索処理(0件メッセージあり)
+    // getAuthorizedPromiseArea().then(token => {
+    //     if (token !== "") {
+    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+    //
+    //         const url = "http://localhost:6080/local-gov/search";
+    //         const method = "POST";
+    //         const body = JSON.stringify(null);
+    //         const headers = {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-AUTH-TOKEN': 'Bearer ' + token
+    //         };
+    //         fetch(url, { method, headers, body })
+    //             .then(async (response) => {
+    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+    //
+    //                 // alert(resultDto.message);
+    //             })
+    //             .catch((e) => { alert(e); });
+    //     } else {
+    //         alert("エラーのつもり");
+    //     }
+    // });
+
     pageOptionLocalGov.value = getPagingOption(resultDtoLocalGov.value);
 }
 // 地方自治体検索ページング
@@ -43,6 +70,33 @@ const resultDtoRsdt: Ref<SearchAddressRegistoryResultInterface> = ref(new Search
 function onChangeEditLocalGov(id: number) {
     const entityLg: AddressAllCityInterface = resultDtoLocalGov.value.listAllCity.filter((e) => e.addressAllCityId === id)[0];
     resultDtoRsdt.value = mockGetAddressRsdtList(capsuleDtoRsdt.value.pageNumber, entityLg.lgCode);
+
+    // 自治体コードをキーにした検索処理
+    // getAuthorizedPromiseArea().then(token => {
+    //     if (token !== "") {
+    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+    //
+    //         const url = "http://localhost:6080/address-regi-rsdt/search";
+    //         const method = "POST";
+    //         const body = JSON.stringify(null);
+    //         const headers = {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-AUTH-TOKEN': 'Bearer ' + token
+    //         };
+    //         fetch(url, { method, headers, body })
+    //             .then(async (response) => {
+    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+    //
+    //                 // alert(resultDto.message);
+    //             })
+    //             .catch((e) => { alert(e); });
+    //     } else {
+    //         alert("エラーのつもり");
+    //     }
+    // });
+
     pageOptionRsdt.value = getPagingOption(resultDtoRsdt.value);
 }
 
@@ -71,6 +125,33 @@ function onCancel() {
 }
 function onSave() {
     alert("保存");
+
+    // アドレス・ベース・レジストリ住居　保存処理
+    // getAuthorizedPromiseArea().then(token => {
+    //     if (token !== "") {
+    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+    //
+    //         const url = "http://localhost:6080/address-regi-rsdt/save";
+    //         const method = "POST";
+    //         const body = JSON.stringify(null);
+    //         const headers = {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-AUTH-TOKEN': 'Bearer ' + token
+    //         };
+    //         fetch(url, { method, headers, body })
+    //             .then(async (response) => {
+    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+    //
+    //                 // alert(resultDto.message);
+    //             })
+    //             .catch((e) => { alert(e); });
+    //     } else {
+    //         alert("エラーのつもり");
+    //     }
+    // });
+
 }
 
 </script>
@@ -103,7 +184,7 @@ function onSave() {
         <!-- ページング -->
         <select v-model="capsuleDtoLocalGov.pageNumber" @change="onChangePagingLocalGov">
             <option v-for="option in pageOptionLocalGov" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
 
@@ -132,7 +213,7 @@ function onSave() {
         <!-- ページング -->
         <select v-model="capsuleDtoRsdt.pageNumber" @change="onChangePagingRsdt">
             <option v-for="option in pageOptionRsdt" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
         <table>

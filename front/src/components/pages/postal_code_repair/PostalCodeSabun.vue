@@ -2,9 +2,6 @@
 import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 
-
-
-
 function onCancel() {
     alert("キャンセル");
     history.back();

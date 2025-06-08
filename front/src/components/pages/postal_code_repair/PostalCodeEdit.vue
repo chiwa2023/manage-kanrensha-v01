@@ -23,6 +23,33 @@ const resultDto: Ref<SearchPostalCodeResultInterface> = ref(new SearchPostalCode
 const entityEdit: Ref<AddressPostalInterface> = ref(new AddressPostalDto);
 function onSearch() {
     resultDto.value = mockGetPostalCodeList();
+
+    // 入力された検索語で郵便番号検索をする
+    // getAuthorizedPromiseArea().then(token => {
+    //     if (token !== "") {
+    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+    //
+    //         const url = "http://localhost:6080/postal-code/search";
+    //         const method = "POST";
+    //         const body = JSON.stringify(null);
+    //         const headers = {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-AUTH-TOKEN': 'Bearer ' + token
+    //         };
+    //         fetch(url, { method, headers, body })
+    //             .then(async (response) => {
+    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+    //
+    //                 // alert(resultDto.message);
+    //             })
+    //             .catch((e) => { alert(e); });
+    //     } else {
+    //         alert("エラーのつもり");
+    //     }
+    // });
+
     pageOptionPostal.value = getPagingOption(resultDto.value);
 }
 // ページング切り替え
@@ -49,6 +76,33 @@ function onCancel() {
 }
 function onSave() {
     alert("保存");
+
+    // 編集された郵便番号
+    // getAuthorizedPromiseArea().then(token => {
+    //     if (token !== "") {
+    //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
+    //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
+    //
+    //         const url = "http://localhost:6080/postal-code/save";
+    //         const method = "POST";
+    //         const body = JSON.stringify(null);
+    //         const headers = {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //             'X-AUTH-TOKEN': 'Bearer ' + token
+    //         };
+    //         fetch(url, { method, headers, body })
+    //             .then(async (response) => {
+    //                 // const resultDto: FrameworkMessageAndResultInterface = await response.json();
+    //
+    //                 // alert(resultDto.message);
+    //             })
+    //             .catch((e) => { alert(e); });
+    //     } else {
+    //         alert("エラーのつもり");
+    //     }
+    // });
+
 }
 </script>
 <template>
