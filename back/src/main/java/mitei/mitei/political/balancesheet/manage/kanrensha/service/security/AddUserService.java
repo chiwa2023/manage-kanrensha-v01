@@ -81,7 +81,7 @@ public class AddUserService {
         setTableDataHistoryUtil.practiceInsert(leastDto, userPersonEntity);
         UserPersonEntity insertEntity = userPersonRepository.save(userPersonEntity);
 
-        // 更新処理を行っているが、対象が未設定自分自身のUserIdなので超法規処置で更新時間は変更しない
+        // 更新処理を行っているが、対象が未設定自分自身のUserIdなので超法規的処置で更新時間は変更しない
         if (insertEntity.getUserPersonId() != 0) {
             insertEntity.setInsertUserId(insertEntity.getUserPersonId());
             userPersonRepository.save(insertEntity);

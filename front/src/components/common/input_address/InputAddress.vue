@@ -2,9 +2,6 @@
 import { type Ref, ref, toRaw } from "vue";
 import SelectOptionInterface from "../../../dto/selectOptionDto";
 import InputAddressDto from "../../../dto/Input_address/inputAddressDto";
-import mockMakeSuggestPostalList from "./mock/mockMakeSuggestPostalList";
-import mockMakeSuggestBlockList from "./mock/mockMakeSuggestBlockList";
-import mockMakeSuggestBuildingList from "./mock/mockMakeSuggestBuildingList";
 import PostalCodeCapsuleInterface from "../../../dto/postal/postalCodeCapsuleDto";
 import PostalCodeCapsuleDto from "../../../dto/postal/postalCodeCapsuleDto";
 import type SelectOptionNumberInterface from "../../../dto/selectOptionNumberDto";

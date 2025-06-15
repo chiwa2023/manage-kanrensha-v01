@@ -62,9 +62,16 @@ public class SecurityConfig {
         http.headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
         return http.csrf(AbstractHttpConfigurer::disable) //
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(requests -> {
+                    // 401,403エラー処理
+                    requests.requestMatchers("/","/login", "/reflesh-token", "/add-user/**").permitAll() //
+                            .anyRequest().authenticated();
+                    // TODO roleによる分岐が必要なら設定
+                })
                 .oauth2ResourceServer(
                         oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
-                .addFilterAfter(new AuthorizeFilter(jwtDecoder()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthorizeFilter(jwtDecoder()), UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout.logoutSuccessUrl("/"))
                 .cors(cors -> cors.configurationSource(this.corsConfigurationSource())).build();
     }
 

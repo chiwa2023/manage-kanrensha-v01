@@ -4,23 +4,31 @@ import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
 import router from '../../../router';
 import type SelectOptionStringInterface from '../../../dto/selectOptionStringDto';
 import getRoleMenuOpions from '../../../dto/user/getRoleMenuOpions';
+import RoutePathConstants from '../../../routePathConstants';
+import UserRoleConstants from '../../../dto/user/userRoleConstants';
 
-const THIS_PAGE_ROLE: string = "ROLE_comrade";
+// props,emits
+const emits = defineEmits(["sendUser"]);
+
+const THIS_PAGE_ROLE: string = UserRoleConstants.ROLE_COMRADE;
 // ユーザ情報を持ってくる
 const userDto: Ref<UserPersonLeastDto> = ref(new UserPersonLeastDto());
 const sessionStorage = window["sessionStorage"];
 const userDtoText: string | null = sessionStorage.getItem("userDto");
 if (userDtoText !== null) {
     userDto.value = JSON.parse(userDtoText);
-    if (!userDto.value.listRoles.includes(THIS_PAGE_ROLE)) {
+
+    if (userDto.value.listRoles.includes(THIS_PAGE_ROLE)) {
+        emits("sendUser", userDto.value);
+    } else {
         // roleが存在しない
         alert("操作権限が存在しません。再ログインしてください。");
-        router.push("/");
+        router.push(RoutePathConstants.PAGE_LOGIN);
     }
 } else {
     // ユーザ情報が存在しない
     alert("ユーザ情報が存在しません。再ログインしてください。");
-    router.push("/");
+    router.push(RoutePathConstants.PAGE_LOGIN);
 }
 
 const listRouter: Ref<SelectOptionStringInterface[]> = ref(getRoleMenuOpions(userDto.value.listRoles));
@@ -37,6 +45,7 @@ function onMoveRole() {
     router.push(route);
 }
 const isMoveMenu: ComputedRef<boolean> = computed(() => listRouter.value.length > 0);
+
 </script>
 <template>
     <div style="background-color: darkgreen;padding-left: 0.7%;">

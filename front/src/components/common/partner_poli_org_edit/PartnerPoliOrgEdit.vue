@@ -7,8 +7,15 @@ import SearchPersonNo from '../search_person_no/SearchPersonNo.vue';
 import type PoliOrgNoInterface from '../../../dto/partner_poli_org/poliOrgNoDto';
 import InputOrgNameInterface from '../../../dto/input_org_name/inputOrgNameDto';
 import InputOrgName from '../input_org_name/InputOrgName.vue';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkCapsuleInterface from '../../../dto/frameworkCapsuleDto';
+import FrameworkCapsuleDto from '../../../dto/frameworkCapsuleDto';
+import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
+import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
 
-const props = defineProps<{ editDto: PoliOrgNoInterface }>();
+const props = defineProps<{ editDto: PoliOrgNoInterface, userDto: UserPersonLeastInterface }>();
 const editPoliOrgDto: ComputedRef<PoliOrgNoInterface> = computed(() => { return props.editDto });
 
 const BLANK: string = "";
@@ -76,7 +83,7 @@ function resetData() {
     editPoliOrgDto.value.delegateName = BLANK;
 
     // 会計責任者初期化    
-    editPoliOrgDto.value.accountMgrNo= BLANK;
+    editPoliOrgDto.value.accountMgrNo = BLANK;
     editPoliOrgDto.value.accountMgrName = BLANK;
 }
 
@@ -84,17 +91,17 @@ function resetData() {
 /**
  * すでに同じ法人番号で登録されているかチェック
  */
- function onCheckAlreadyRegist() {
-    if(editPoliOrgDto.value.poliOrgNo !== BLANK){
+function onCheckAlreadyRegist() {
+    if (editPoliOrgDto.value.poliOrgNo !== BLANK) {
         alert("現在既存または新規と確定したデータを編集中です");
-    }else{
+    } else {
         // 仮で時効の秒数基準で既存だったり新規だったり動作を変更する
         // TOD Back側で同一判定処理ができたら連結する
-        const date:Date = new Date();
-        if(date.getSeconds() % 2 == 0){
+        const date: Date = new Date();
+        if (date.getSeconds() % 2 == 0) {
             alert("新規データでした");
             editPoliOrgDto.value.poliOrgNo = "新規";
-        }else{
+        } else {
             alert("既存データが存在します。変更が必要な場合はデータ検索からやり直してください");
             editPoliOrgDto.value.poliOrgNo = "1234-tyeer";
         }
@@ -104,10 +111,36 @@ function resetData() {
 
 
 function onCancel() {
-    alert("キャンセル");
+    router.push(RoutePathConstants.PAGE_LOGIN);
 }
+
 function onSave() {
-    alert("保存");
+
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
+        capsuleDto.value.userPersonLeastDto = props.userDto;
+        if (token !== "") {
+            // パスワード更新
+            const url = "http://localhost:6080/add-user/partner-poli-org";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: FrameworkResultInterface = await response.json();
+                    alert(resultDto.message);
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
+
 }
 
 </script>
@@ -149,13 +182,13 @@ function onSave() {
         <button @click="resetData">入力情報のリセット</button>
     </div>
     <div class="clear-both"></div>
-    
+
     <div class="left-area">
         政治団体仮コード
     </div>
     <div class="right-area">
         <input type="text" v-model="editPoliOrgDto.poliOrgNo" disabled="true"><button class="left-space"
-        @click="onCheckAlreadyRegist">重複確認</button>
+            @click="onCheckAlreadyRegist">重複確認</button>
     </div>
     <div class="clear-both"></div>
 

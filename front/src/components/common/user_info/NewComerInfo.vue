@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { watch } from 'vue';
 import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
 //props,emit
 const props = defineProps<{ registCode: String }>();
 
@@ -9,7 +10,7 @@ const regiCode: string | null = sessionStorage.getItem("regist-code");
 watch(props, () => {
     if (props.registCode !== regiCode) {
         alert("登録コードが異なります。ログインページに戻ります");
-        router.push("/");
+        router.push(RoutePathConstants.PAGE_LOGIN);
     }
 });
 

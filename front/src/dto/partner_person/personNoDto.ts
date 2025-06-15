@@ -24,7 +24,7 @@ export default class PersonNoDto implements PersonNoInterface {
     inputAddress: InputAddressDto;
 
     /** 入力姓名 */
-    inputName:InputPersonNameInterface;
+    inputName: InputPersonNameInterface;
 
     /** 職業の業種 */
     gyoushu: string;
@@ -32,6 +32,10 @@ export default class PersonNoDto implements PersonNoInterface {
     yakushoku: string;
     /** ユーザ記述の職業 */
     shokugyouUserWrite: string;
+
+
+    /** 外国人該否 */
+    isGaikoujin: boolean;
 
     constructor() {
         const INIT_STRING: string = "";
@@ -42,11 +46,12 @@ export default class PersonNoDto implements PersonNoInterface {
         this.shokugyou = INIT_STRING;
 
         this.inputAddress = new InputAddressDto();
-        this.inputName = new InputPersonNameDto();        
+        this.inputName = new InputPersonNameDto();
 
         this.gyoushu = INIT_STRING;
         this.yakushoku = INIT_STRING;
         this.shokugyouUserWrite = INIT_STRING;
+        this.isGaikoujin = false;
 
     }
 }

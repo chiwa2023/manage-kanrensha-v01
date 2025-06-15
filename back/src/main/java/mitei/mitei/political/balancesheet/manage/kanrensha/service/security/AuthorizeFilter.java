@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -49,11 +50,11 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     }
 
     /**
-     *　内部フィルタ処理を行う
+     * 内部フィルタ処理を行う
      */
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
-            final FilterChain filterChain) throws ServletException, IOException {
+            final FilterChain filterChain) throws ServletException, IOException, BadCredentialsException { // NOPMD
 
         if (!this.listMatches(request)) {
 
@@ -63,6 +64,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
             // ヘッダがない時、トークンが埋め込まれていないときは次のフィルタに委譲しているが
             // TODO 挙動確認後委譲処理を削除する(パスを正確に指定することで実現すればよい)
             if (xAuthToken == null || !xAuthToken.startsWith(BEARER)) {
+                //throw new BadCredentialsException("X-AUTH-TOKENが取得できないか、Bearerで設定されていません");
                 filterChain.doFilter(request, response);
                 return;
             }

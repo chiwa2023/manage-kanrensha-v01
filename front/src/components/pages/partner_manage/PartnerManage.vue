@@ -12,11 +12,18 @@ import SearchCorpNo from '../../common/search_corp_no/SearchCorpNo.vue';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import SearchPoliOrg from '../../common/search_poli_org/SearchPoliOrg.vue';
+import AdminInfo from '../../common/user_info/AdminInfo.vue';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+
+// ユーザメニューで取得したユーザを保持
+const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+function recieveUser(user: UserPersonLeastInterface) {
+    userLeastDto.value = user;
+}
 
 // 表示
 const viewStatus: Ref<number> = ref(1);
-
-
 
 /** 選択された関連者個人を受信する */
 const inputPersonDto: Ref<PersonNoInterface> = ref(new PersonNoDto());
@@ -41,6 +48,11 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
 
 </script>
 <template>
+
+    <!-- ユーザメニュー兼チェック -->
+    <AdminInfo @send-user="recieveUser"></AdminInfo>
+    <hr>
+
     <h1>関連者管理</h1>
     ※複数の関連者の編集権限があるので検索画面必要
 
@@ -61,7 +73,7 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
         <!-- 検索 -->
         <SearchPersonNo :is-footer="false" @send-person-no-interface="recievePersonNoInterface"></SearchPersonNo>
         <hr>
-        <PartnerPersonEdit :edit-dto="inputPersonDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto"  :user-dto="userLeastDto"></PartnerPersonEdit>
     </div>
 
     <div v-if="viewStatus == 2" class="one-line">
@@ -69,14 +81,14 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
         <SearchCorpNo :list="listCorp" :is-footer="false" @send-corp-no-interface="recieveCorpCoInterface">
         </SearchCorpNo>
         <hr>
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto"  :user-dto="userLeastDto"></PartnerCorpEdit>
     </div>
 
     <div v-if="viewStatus == 3" class="one-line">
         <!-- 検索 -->
         <SearchPoliOrg :is-footer="false" @send-poli-org-no-interface="recievePoliOrgNoInterface"></SearchPoliOrg>
         <hr>
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto"></PartnerPoliOrgEdit>
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :user-dto="userLeastDto" ></PartnerPoliOrgEdit>
     </div>
 
 

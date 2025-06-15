@@ -14,6 +14,14 @@ import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import mockGetCorpList from '../../common/search_corp_no/mock/mockGetCorpList';
 import PartnerInfo from '../../common/user_info/PartnerInfo.vue';
 import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
+import type UserPersonLeastInterface from './../../../dto/user/userPersonLeastDto';
+import UserRoleConstants from '../../../dto/user/userRoleConstants';
+
+// ユーザメニューで取得したユーザを保持
+const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+function recieveUser(user:UserPersonLeastInterface){
+    userLeastDto.value = user;
+}
 
 // 編集用Dto
 const inputPersonDto: Ref<PersonNoInterface> = ref(new PersonNoDto());
@@ -24,7 +32,7 @@ const inputCorpNoDto: Ref<CorpNoInterface> = ref(new CorpNoDto());
 const userDto: Ref<UserPersonLeastDto> = ref(new UserPersonLeastDto());
 const sessionStorage = window["sessionStorage"];
 const userDtoText: string | null = sessionStorage.getItem("userDto");
-let role:string = "";
+let role: string = "";
 if (userDtoText !== null) {
     userDto.value = JSON.parse(userDtoText);
     role = userDto.value.listRoles[0];
@@ -32,15 +40,15 @@ if (userDtoText !== null) {
 
 let viewStatus: number = 1;
 switch (role) {
-    case "ROLE_partner_person":
+    case UserRoleConstants.ROLE_PARTNER_PERSON:
         inputPersonDto.value = mockGetPersonList()[0];
         viewStatus = 1;
         break;
-    case "ROLE_partner_corp":
+    case UserRoleConstants.ROLE_PARTNER_CORP:
         inputCorpNoDto.value = mockGetCorpList()[0];
         viewStatus = 2;
         break;
-    case "ROLE_partner_poli_org":
+    case UserRoleConstants.ROLE_PARTNER_POLI_ORG:
         inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
         viewStatus = 3;
         break;
@@ -51,20 +59,21 @@ switch (role) {
 </script>
 <template>
     <!-- ユーザメニュー兼チェック -->
-    <PartnerInfo></PartnerInfo><hr>
+    <PartnerInfo @send-user="recieveUser"></PartnerInfo>
+    <hr>
 
     <h1>関連者編集</h1>
     <!-- 編集対象が法人／個人 -->
     <div v-if="viewStatus == 1">
-        <PartnerPersonEdit :edit-dto="inputPersonDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto" :user-dto="userLeastDto"></PartnerPersonEdit>
     </div>
     <!-- 編集対象が法人／団体 -->
     <div v-if="viewStatus == 2">
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :user-dto="userLeastDto"></PartnerCorpEdit>
     </div>
     <!-- 編集対象が政治団体 -->
     <div v-if="viewStatus == 3">
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto"></PartnerPoliOrgEdit>
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :user-dto="userLeastDto"></PartnerPoliOrgEdit>
     </div>
 </template>
 <style scoped></style>

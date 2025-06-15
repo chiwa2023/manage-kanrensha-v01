@@ -8,8 +8,17 @@ import ViewInputPersonName from '../input_person_name/ViewInputPersonName.vue';
 import InputPersonNameInterface from '../../../dto/input_person_name/inputPersonNameDto';
 import InputPersonNameDto from '../../../dto/input_person_name/inputPersonNameDto';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkCapsuleInterface from '../../../dto/frameworkCapsuleDto';
+import FrameworkCapsuleDto from '../../../dto/frameworkCapsuleDto';
+import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
+import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
 
-const props = defineProps<{ editDto: PersonNoInterface }>();
+// props,emmits
+const props = defineProps<{ editDto: PersonNoInterface, userDto: UserPersonLeastInterface }>();
+
 const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => { return props.editDto });
 
 const BLANK: string = "";
@@ -86,12 +95,6 @@ function recieveCancelCorpNo() {
 const listCorp: Ref<CorpNoInterface[]> = ref([]);
 
 
-function onCancel() {
-    alert("キャンセル");
-}
-function onSave() {
-    alert("保存");
-}
 
 // 企業団体検索
 const corpNo: Ref<string> = ref("");
@@ -197,10 +200,39 @@ function nationarityConfirm() {
         default:
             break;
     }
-
-
-
 }
+
+
+function onCancel() {
+    router.push(RoutePathConstants.PAGE_MENU_PARTNER);
+}
+function onSave() {
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
+        capsuleDto.value.userPersonLeastDto = props.userDto;
+        if (token !== "") {
+            // パスワード更新
+            const url = "http://localhost:6080/add-user/partner-person";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: FrameworkResultInterface = await response.json();
+                    alert(resultDto.message);
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
+}
+
 </script>
 <template>
 
@@ -334,8 +366,8 @@ function nationarityConfirm() {
         国籍
     </div>
     <div class="right-area">
-        <input type="checkbox" v-model="isGaikokuHoujin" disabled="true">外国人である<span class="left-space"><button
-                @click="nationarityConfirm">確認する</button></span>
+        <input type="checkbox" v-model="inputPersonNoDto.isGaikoujin" disabled="true">外国人である<span
+            class="left-space"><button @click="nationarityConfirm">確認する</button></span>
     </div>
     <div class="clear-both"></div>
 
@@ -354,7 +386,5 @@ function nationarityConfirm() {
     </div>
 
 </template>
-
-
 
 <style scoped></style>

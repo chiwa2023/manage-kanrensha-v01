@@ -44,9 +44,6 @@ function onCheckSendCode() {
         .catch((error) => { alert(error); });
 }
 
-function changeCode(){
-        newComer.value.registCode = newComer.value.registCode + "x";
-}
 </script>
 <template>
     <NewComerInfo :regist-code="newComer.registCode"></NewComerInfo>

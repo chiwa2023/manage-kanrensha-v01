@@ -11,6 +11,8 @@ export default async function getAuthorizedPromiseArea(): Promise<string | undef
     let jwtToken: JwtTokenInterface = new JwtTokenDto();
     if (jwtText !== null) {
         jwtToken = JSON.parse(jwtText);
+    }else{
+        return "";
     }
 
     // 有効期限の××分(秒?)前ならアクセス可能としてアクセストークンを使用する

@@ -10,8 +10,16 @@ import mockCheckAlreadyRegist from './mock/mockCheckAlreadyRegist';
 import HoujinSbtsConstants from '../../../dto/partner_corp/houjinSbtsConstants';
 import SearchPersonNo from '../search_person_no/SearchPersonNo.vue';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkCapsuleInterface from '../../../dto/frameworkCapsuleDto';
+import FrameworkCapsuleDto from '../../../dto/frameworkCapsuleDto';
+import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
+import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
 
-const props = defineProps<{ editDto: CorpNoInterface }>();
+const props = defineProps<{ editDto: CorpNoInterface, userDto: UserPersonLeastInterface }>();
+
 const editCorpDto: ComputedRef<CorpNoInterface> = computed(() => { return props.editDto });
 
 // 編集用Dto
@@ -19,7 +27,7 @@ const addressDtoStored: Ref<InputAddressDto> = ref(new InputAddressDto());
 
 const allCorpName: ComputedRef<string> = computed(() => {
     if (editCorpDto.value.isShiten) { return editCorpDto.value.corpName + "　" + branchName.value; }
-     else { return editCorpDto.value.corpName; }
+    else { return editCorpDto.value.corpName; }
 });
 
 // 検索リスト
@@ -121,12 +129,35 @@ function recievePersonNoInterface(sendDto: PersonNoInterface) {
     isPersonSearch.value = false;
 }
 
-
 function onCancel() {
-    alert("キャンセル");
+    router.push(RoutePathConstants.PAGE_LOGIN);
 }
 function onSave() {
-    alert("保存");
+
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
+        capsuleDto.value.userPersonLeastDto = props.userDto;
+        if (token !== "") {
+            // パスワード更新
+            const url = "http://localhost:6080/add-user/partner-corp";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: FrameworkResultInterface = await response.json();
+                    alert(resultDto.message);
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
 }
 </script>
 <template>
@@ -228,8 +259,6 @@ function onSave() {
         <input type="checkbox" v-model="isGaikokuHoujin" disabled="true">外国籍企業である
     </div>
     <div class="clear-both"></div>
-
-
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
