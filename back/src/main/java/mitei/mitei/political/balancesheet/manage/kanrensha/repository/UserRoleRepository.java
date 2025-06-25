@@ -20,4 +20,14 @@ public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Intege
      */
     @Query(value = "SELECT role FROM user_role WHERE is_latest = 1 AND email = ?1", nativeQuery = true)
     List<String> findLatestRoleByMail(String email);
+
+    /**
+     * 最新フラグかつemailで検索する
+     *
+     * @param isLatest 最新フラグ
+     * @param email    メールアドレス
+     * @return 権限リスト
+     */
+    List<UserRoleEntity> findByIsLatestAndEmail(boolean isLatest, String email);
+
 }

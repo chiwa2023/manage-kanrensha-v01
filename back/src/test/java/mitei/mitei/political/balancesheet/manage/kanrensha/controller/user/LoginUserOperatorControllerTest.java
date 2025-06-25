@@ -17,6 +17,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,6 +32,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapper
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Sql("../../service/security/sample_login_status.sql")
+@Transactional
 class LoginUserOperatorControllerTest {
 
     /** MockMvc */

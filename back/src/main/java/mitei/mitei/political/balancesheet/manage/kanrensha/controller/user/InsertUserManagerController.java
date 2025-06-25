@@ -1,23 +1,16 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.controller.user;
 
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.LoginUserCapsuleDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.LoginUserResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.LoginStatusEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.UserPersonEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.UserRoleEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.UserPersonRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.UserRoleRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.service.user.EditUserManagerService;
 
 /**
  * 新規ユーザ作成Controller
@@ -26,60 +19,20 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHis
 @RequestMapping("/add-user")
 public class InsertUserManagerController {
 
-    /** ユーザ人物Repository */
+    /** ユーザ管理者編集Service */
     @Autowired
-    private UserPersonRepository userPersonRepository;
-
-    /** ユーザ権限Repository */
-    @Autowired
-    private UserRoleRepository userRoleRepository;
-
-    /** テーブル履歴Util */
-    @Autowired
-    private SetTableDataHistoryUtil setTableDataHistoryUtil;
-
-    /** 権限 */
-    private static final String ROLE_MANAGER = "manager";
+    private EditUserManagerService editUserManagerService;
 
     /**
      * 処理を行う
      *
-     * @param capsuleDto ログインユーザ情報
      * @return ログイン結果
      */
     @PostMapping("/manager")
-    public ResponseEntity<LoginUserResultDto> practice(final @RequestBody LoginUserCapsuleDto capsuleDto) {
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
 
-        LoginStatusEntity loginStatusEntity = new LoginStatusEntity();
+        return ResponseEntity.status(HttpStatus.OK).body(editUserManagerService.practice(capsuleDto));
 
-        LocalDateTime now = LocalDateTime.now();
-
-        loginStatusEntity.setEmail(null);
-        loginStatusEntity.setPassword(null);
-        loginStatusEntity.setPassChangeTime(now);
-        loginStatusEntity.setLoginTime(now);
-
-        // ユーザを挿入
-        UserPersonEntity userPersonEntity = new UserPersonEntity();
-        userPersonEntity.setUserPersonId(0); // auto increment明示
-        userPersonEntity.setEmail(null);
-        userPersonEntity.setUserPersonCode(null);
-        userPersonEntity.setUserPersonName(null);
-        userPersonEntity.setEmail(null);
-
-        UserPersonLeastDto userDto = new UserPersonLeastDto();
-
-        setTableDataHistoryUtil.practiceInsert(userDto, userPersonEntity);
-        userPersonRepository.save(userPersonEntity);
-
-        // 権限を挿入
-        UserRoleEntity userRoleEntity = new UserRoleEntity();
-        userRoleEntity.setUserRoleId(0); // auto increment明示
-        userRoleEntity.setRole(ROLE_MANAGER);
-        setTableDataHistoryUtil.practiceInsert(userDto, userRoleEntity);
-        userRoleRepository.save(userRoleEntity);
-
-        return null;
     }
 
 }

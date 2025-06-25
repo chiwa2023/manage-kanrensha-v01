@@ -56,7 +56,7 @@ class CheckNewUserCodeControllerTest {
         
         String path = "/add-user/check-code";
 
-        // サーバステータスがOK(200)※コードは一致していないが、特にサーバステータスｊは変えていないので・・・
+        // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
                 .perform(post(path).content(objectMapper.writeValueAsString(requestDto)) // リクエストボディを指定
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) // Content Typeを指定
