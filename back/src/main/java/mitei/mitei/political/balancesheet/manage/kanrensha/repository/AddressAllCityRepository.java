@@ -1,5 +1,6 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -29,5 +30,25 @@ public interface AddressAllCityRepository extends JpaRepository<AddressAllCityEn
      * @return 検索結果
      */
     List<AddressAllCityEntity> findByLgCodeStartingWith(String lgStarts);
+
+    /**
+     * 住所部分一致検索件数を取得する
+     *
+     * @param addressWoreds 検索語
+     * @param now           現在日付
+     * @return 検索結果
+     */
+    Integer countByAddressNameContainingAndEffectDateLessThanEqual(String addressWoreds, LocalDate now);
+
+    /**
+     * 住所部分一致検索すう
+     *
+     * @param addressWoreds 検索語
+     * @param now           現在日付
+     * @param pageable      ページング条件
+     * @return 検索結果
+     */
+    List<AddressAllCityEntity> findByAddressNameContainingAndEffectDateLessThanEqual(String addressWoreds,
+            LocalDate now, Pageable pageable);
 
 }

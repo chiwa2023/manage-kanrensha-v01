@@ -1,0 +1,12 @@
+DELETE FROM `address_postal`;
+ALTER TABLE `address_postal` auto_increment = 0;
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (1,'0600000','0000','011011','以下に掲載がない場合','札幌市中央区',1);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (2,'0640941','0941','011011','旭ケ丘','札幌市中央区旭ケ丘',1);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (3,'0600041','0041','011011','大通東','札幌市中央区大通東',1);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (4,'0600042','0042','011011','大通西（１〜１９丁目）','札幌市中央区大通西',0);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (5,'0640820','0820','011011','大通西（２０〜２８丁目）','札幌市中央区大通西',0);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (6,'0600031','0031','011011','北一条東','札幌市中央区北一条東',1);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (7,'0600001','0001','011011','北一条西（１〜１９丁目）','札幌市中央区北一条西',0);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (8,'0640821','0821','011011','北一条西（２０〜２８丁目）','札幌市中央区北一条西',0);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (9,'0600032','0032','011011','北二条東','札幌市中央区北二条東',1);
+INSERT INTO `address_postal` (`address_postal_id`,`postal1`,`postal2`,`lg_code`,`address_org`,`address_name`,`is_gyoseiku_data`) VALUES (10,'0600002','0002','011011','北二条西（１〜１９丁目）','札幌市中央区北二条西',0);

@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.AbstractPagingLongResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.AbstractPagingLongDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.HoujinNoLatestEntity;
 
 /**
  * 法人番号検索結果Dto
  */
-public class HoujinNoResultDto extends AbstractPagingLongResultDto // NOPMD DataClass
+public class HoujinNoResultDto extends AbstractPagingLongDto // NOPMD DataClass
         implements Serializable {
 
     /** Serialize id */

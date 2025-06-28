@@ -24,7 +24,6 @@ public interface AddressPostalRepository extends JpaRepository<AddressPostalEnti
      */
     Page<AddressPostalEntity> findByIsGyoseikuData(Boolean isSearch, Pageable pageable);
 
-
     /**
      * 地方公共団体コードが前方一致する郵便番号データを抽出する
      *
@@ -41,7 +40,6 @@ public interface AddressPostalRepository extends JpaRepository<AddressPostalEnti
      */
     List<AddressPostalEntity> findByPostal1OrderByAddressNameAsc(String postal1);
 
-    
     /**
      * 郵便番号から住所郵便番号までを取得する
      *
@@ -51,6 +49,22 @@ public interface AddressPostalRepository extends JpaRepository<AddressPostalEnti
     @Query(value = "SELECT address_postal_id AS value , address_name AS text"
             + " FROM address_postal WHERE postal1 = ?1 AND is_gyoseiku_data = 1", nativeQuery = true)
     List<SelectOptionNumberDto> findByPostalCodeAndSearchGyoseiku(String postal1);
-    
-    
+
+    /**
+     * 郵便番号住所を部部一致検索し、件数を取得する
+     *
+     * @param addressWords 検索語
+     * @return 検索件数
+     */
+    Integer countByAddressNameContaining(String addressWords);
+
+    /**
+     * 郵便番号住所を部部一致検索する
+     *
+     * @param addressWords 検索語
+     * @param pageable     ページング条件
+     * @return 検索結果
+     */
+    List<AddressPostalEntity> findByAddressNameContaining(String addressWords, Pageable pageable);
+
 }

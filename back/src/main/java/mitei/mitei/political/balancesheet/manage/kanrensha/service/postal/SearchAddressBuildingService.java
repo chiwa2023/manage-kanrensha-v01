@@ -24,7 +24,7 @@ public class SearchAddressBuildingService {
      * 処理を行う
      *
      * @param lgCode 地方自治体コード
-     * @param value 選択された番地まで住所
+     * @param value  選択された番地まで住所
      * @return 検索結果
      */
     @SuppressWarnings("unchecked")

@@ -27,6 +27,9 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleD
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapperWithTimeModuleUtil;
 
+/**
+ * PromoteUserAdminController単体テスト
+ */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
