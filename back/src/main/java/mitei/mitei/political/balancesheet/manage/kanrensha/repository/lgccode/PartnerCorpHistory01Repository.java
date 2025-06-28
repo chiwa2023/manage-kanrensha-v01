@@ -7,6 +7,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.lgcode.Partner
 /**
  * partner_corp_history_01接続用Repository
  */
-public interface PartnerCorpHistory01Repository  extends JpaRepository<PartnerCorpHistory01Entity, Integer>{
+public interface PartnerCorpHistory01Repository extends JpaRepository<PartnerCorpHistory01Entity, Integer> {
 
 }

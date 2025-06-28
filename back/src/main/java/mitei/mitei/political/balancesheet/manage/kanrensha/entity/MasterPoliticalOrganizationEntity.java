@@ -14,11 +14,11 @@ import jakarta.persistence.Table;
 
 
 /**
- * wk_tbl_partner_corp_judge接続用Entity
+ * master_political_organization接続用Entity
  */
 @Entity
-@Table(name = "wk_tbl_partner_corp_judge")
-public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
+@Table(name = "master_political_organization")
+public class MasterPoliticalOrganizationEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -38,49 +38,49 @@ public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHis
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
-    /** テーブルId  */
+    /** テーブルId */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "wk_partner_corp_judge_id")
-    private Integer wkPartnerCorpJudgeId = INIT_Integer;
+    @Column(name = "master_political_organization_id")
+    private Integer masterPoliticalOrganizationId = INIT_Integer;
 
     /**
      * テーブルIdを取得する
      *
      * @return テーブルId
      */
-    public Integer getWkPartnerCorpJudgeId() {
-        return wkPartnerCorpJudgeId;
+    public Integer getMasterPoliticalOrganizationId() {
+        return masterPoliticalOrganizationId;
     }
 
     /**
      * テーブルIdを設定する
      *
-     * @param wkPartnerCorpJudgeId テーブルId
+     * @param masterPoliticalOrganizationId テーブルId
      */
-    public void setWkPartnerCorpJudgeId(final Integer wkPartnerCorpJudgeId) {
-        this.wkPartnerCorpJudgeId = wkPartnerCorpJudgeId;
+    public void setMasterPoliticalOrganizationId(final Integer masterPoliticalOrganizationId) {
+        this.masterPoliticalOrganizationId = masterPoliticalOrganizationId;
     }
 
-    /** 関連者企業・団体履歴Id */
-    @Column(name = "wk_partner_corp_history_id")
-    private Integer wkPartnerCorpHistoryId = INIT_Integer;
+    /** 政治団体関連者コード */
+    @Column(name = "poli_org_kanrensha_code")
+    private String poliOrgKanrenshaCode = INIT_String;
 
     /**
-     * 関連者企業・団体履歴Idを取得する
+     * 政治団体関連者コードを取得する
      *
-     * @return 関連者企業・団体履歴Id
+     * @return 政治団体関連者コード
      */
-    public Integer getWkPartnerCorpHistoryId() {
-        return wkPartnerCorpHistoryId;
+    public String getPoliOrgKanrenshaCode() {
+        return poliOrgKanrenshaCode;
     }
 
     /**
-     * 関連者企業・団体履歴Idを設定する
+     * 政治団体関連者コードを設定する
      *
-     * @param wkPartnerCorpHistoryId 関連者企業・団体履歴Id
+     * @param poliOrgKanrenshaCode 政治団体関連者コード
      */
-    public void setWkPartnerCorpHistoryId(final Integer wkPartnerCorpHistoryId) {
-        this.wkPartnerCorpHistoryId = wkPartnerCorpHistoryId;
+    public void setPoliOrgKanrenshaCode(final String poliOrgKanrenshaCode) {
+        this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
     }
 
     /** 最新該否 */
@@ -107,48 +107,92 @@ public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHis
         this.isLatest = isLatest;
     }
 
-    /** 反映有無 */
-    @Column(name = "is_affected")
-    private Boolean isAffected = INIT_Boolean;
+    /** 企業・団体名 */
+    @Column(name = "partner_name")
+    private String partnerName = INIT_String;
 
     /**
-     * 反映有無を取得する
+     * 企業・団体名を取得する
      *
-     * @return 反映有無
+     * @return 企業・団体名
      */
-    public Boolean getIsAffected() {
-        return isAffected;
+    public String getPartnerName() {
+        return partnerName;
     }
 
     /**
-     * 反映有無を設定する
+     * 企業・団体名を設定する
      *
-     * @param isAffected 反映有無
+     * @param partnerName 企業・団体名
      */
-    public void setIsAffected(final Boolean isAffected) {
-        this.isAffected = isAffected;
+    public void setPartnerName(final String partnerName) {
+        this.partnerName = partnerName;
     }
 
-    /** 判定理由 */
-    @Column(name = "judge_reason")
-    private String judgeReason = INIT_String;
+    /** 企業・団体全住所 */
+    @Column(name = "all_address")
+    private String allAddress = INIT_String;
 
     /**
-     * 判定理由を取得する
+     * 企業・団体全住所を取得する
      *
-     * @return 判定理由
+     * @return 企業・団体全住所
      */
-    public String getJudgeReason() {
-        return judgeReason;
+    public String getAllAddress() {
+        return allAddress;
     }
 
     /**
-     * 判定理由を設定する
+     * 企業・団体全住所を設定する
      *
-     * @param judgeReason 判定理由
+     * @param allAddress 企業・団体全住所
      */
-    public void setJudgeReason(final String judgeReason) {
-        this.judgeReason = judgeReason;
+    public void setAllAddress(final String allAddress) {
+        this.allAddress = allAddress;
+    }
+
+    /** 企業・団体代表者 */
+    @Column(name = "poli_org_delegate")
+    private String poliOrgDelegate = INIT_String;
+
+    /**
+     * 企業・団体代表者を取得する
+     *
+     * @return 企業・団体代表者
+     */
+    public String getPoliOrgDelegate() {
+        return poliOrgDelegate;
+    }
+
+    /**
+     * 企業・団体代表者を設定する
+     *
+     * @param poliOrgDelegate 企業・団体代表者
+     */
+    public void setPoliOrgDelegate(final String poliOrgDelegate) {
+        this.poliOrgDelegate = poliOrgDelegate;
+    }
+
+    /** 名称比較用 */
+    @Column(name = "compare_name_text")
+    private String compareNameText = INIT_String;
+
+    /**
+     * 名称比較用を取得する
+     *
+     * @return 名称比較用
+     */
+    public String getCompareNameText() {
+        return compareNameText;
+    }
+
+    /**
+     * 名称比較用を設定する
+     *
+     * @param compareNameText 名称比較用
+     */
+    public void setCompareNameText(final String compareNameText) {
+        this.compareNameText = compareNameText;
     }
 
     /** 挿入ユーザId */

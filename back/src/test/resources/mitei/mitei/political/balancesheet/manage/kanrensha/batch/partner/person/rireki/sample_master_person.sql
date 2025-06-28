@@ -1,0 +1,4 @@
+DELETE FROM `master_person`;
+ALTER TABLE `master_person` auto_increment = 0;
+INSERT INTO `master_person` (`master_person_id`,`person_kanrensha_code`,`is_latest`,`partner_name`,`all_address`,`person_shokugyou`,`compare_name_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (825,'1-2345-ABCCDEF',1,'迂回献金　太郎','和歌山県架空市実在町','経営者','迂回献金太郎',215,190,'ユーザ','2022-12-05 12:34:56',1,1,'ユーザ','1948-07-29 00:00:00');
+INSERT INTO `master_person` (`master_person_id`,`person_kanrensha_code`,`is_latest`,`partner_name`,`all_address`,`person_shokugyou`,`compare_name_text`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (826,'2-345657-QWERTY',0,'迂回献金　次郎','宮崎県架空市実在町','教師','迂回献金次郎',215,190,'ユーザ','2022-12-05 12:34:56',1,1,'ユーザ','1948-07-29 00:00:00');

@@ -14,11 +14,11 @@ import jakarta.persistence.Table;
 
 
 /**
- * wk_tbl_partner_corp_judge接続用Entity
+ * wk_tbl_partner_poli_org_history接続用Entity
  */
 @Entity
-@Table(name = "wk_tbl_partner_corp_judge")
-public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
+@Table(name = "wk_tbl_partner_poli_org_history")
+public class WkTblPartnerPoliOrgHistoryEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -38,49 +38,49 @@ public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHis
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
-    /** テーブルId  */
+    /** テーブルId */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "wk_partner_corp_judge_id")
-    private Integer wkPartnerCorpJudgeId = INIT_Integer;
+    @Column(name = "wk_partner_poli_org_history_id")
+    private Integer wkPartnerPoliOrgHistoryId = INIT_Integer;
 
     /**
      * テーブルIdを取得する
      *
      * @return テーブルId
      */
-    public Integer getWkPartnerCorpJudgeId() {
-        return wkPartnerCorpJudgeId;
+    public Integer getWkPartnerPoliOrgHistoryId() {
+        return wkPartnerPoliOrgHistoryId;
     }
 
     /**
      * テーブルIdを設定する
      *
-     * @param wkPartnerCorpJudgeId テーブルId
+     * @param wkPartnerPoliOrgHistoryId テーブルId
      */
-    public void setWkPartnerCorpJudgeId(final Integer wkPartnerCorpJudgeId) {
-        this.wkPartnerCorpJudgeId = wkPartnerCorpJudgeId;
+    public void setWkPartnerPoliOrgHistoryId(final Integer wkPartnerPoliOrgHistoryId) {
+        this.wkPartnerPoliOrgHistoryId = wkPartnerPoliOrgHistoryId;
     }
 
-    /** 関連者企業・団体履歴Id */
-    @Column(name = "wk_partner_corp_history_id")
-    private Integer wkPartnerCorpHistoryId = INIT_Integer;
+    /** 関連者企業・団体コード */
+    @Column(name = "wk_partner_poli_org_history_code")
+    private Integer wkPartnerPoliOrgHistoryCode = INIT_Integer;
 
     /**
-     * 関連者企業・団体履歴Idを取得する
+     * 関連者企業・団体コードを取得する
      *
-     * @return 関連者企業・団体履歴Id
+     * @return 関連者企業・団体コード
      */
-    public Integer getWkPartnerCorpHistoryId() {
-        return wkPartnerCorpHistoryId;
+    public Integer getWkPartnerPoliOrgHistoryCode() {
+        return wkPartnerPoliOrgHistoryCode;
     }
 
     /**
-     * 関連者企業・団体履歴Idを設定する
+     * 関連者企業・団体コードを設定する
      *
-     * @param wkPartnerCorpHistoryId 関連者企業・団体履歴Id
+     * @param wkPartnerPoliOrgHistoryCode 関連者企業・団体コード
      */
-    public void setWkPartnerCorpHistoryId(final Integer wkPartnerCorpHistoryId) {
-        this.wkPartnerCorpHistoryId = wkPartnerCorpHistoryId;
+    public void setWkPartnerPoliOrgHistoryCode(final Integer wkPartnerPoliOrgHistoryCode) {
+        this.wkPartnerPoliOrgHistoryCode = wkPartnerPoliOrgHistoryCode;
     }
 
     /** 最新該否 */
@@ -105,6 +105,116 @@ public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHis
     @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
+    }
+
+    /** 処理完了該否 */
+    @Column(name = "is_finish")
+    private Boolean isFinish = INIT_Boolean;
+
+    /**
+     * 処理完了該否を取得する
+     *
+     * @return 処理完了該否
+     */
+    public Boolean getIsFinish() {
+        return isFinish;
+    }
+
+    /**
+     * 処理完了該否を設定する
+     *
+     * @param isFinish 処理完了該否
+     */
+    public void setIsFinish(final Boolean isFinish) {
+        this.isFinish = isFinish;
+    }
+
+    /** 企業・団体名 */
+    @Column(name = "partner_name")
+    private String partnerName = INIT_String;
+
+    /**
+     * 企業・団体名を取得する
+     *
+     * @return 企業・団体名
+     */
+    public String getPartnerName() {
+        return partnerName;
+    }
+
+    /**
+     * 企業・団体名を設定する
+     *
+     * @param partnerName 企業・団体名
+     */
+    public void setPartnerName(final String partnerName) {
+        this.partnerName = partnerName;
+    }
+
+    /** 企業・団体全住所 */
+    @Column(name = "all_address")
+    private String allAddress = INIT_String;
+
+    /**
+     * 企業・団体全住所を取得する
+     *
+     * @return 企業・団体全住所
+     */
+    public String getAllAddress() {
+        return allAddress;
+    }
+
+    /**
+     * 企業・団体全住所を設定する
+     *
+     * @param allAddress 企業・団体全住所
+     */
+    public void setAllAddress(final String allAddress) {
+        this.allAddress = allAddress;
+    }
+
+    /** 企業・団体代表者 */
+    @Column(name = "poli_org_delegate")
+    private String poliOrgDelegate = INIT_String;
+
+    /**
+     * 企業・団体代表者を取得する
+     *
+     * @return 企業・団体代表者
+     */
+    public String getPoliOrgDelegate() {
+        return poliOrgDelegate;
+    }
+
+    /**
+     * 企業・団体代表者を設定する
+     *
+     * @param poliOrgDelegate 企業・団体代表者
+     */
+    public void setPoliOrgDelegate(final String poliOrgDelegate) {
+        this.poliOrgDelegate = poliOrgDelegate;
+    }
+
+    /** 企業・団体関連者コード */
+    @Column(name = "poli_org_kanrensha_code")
+    private String poliOrgKanrenshaCode = INIT_String;
+
+    /**
+     * 企業・団体関連者コードを取得する
+     *
+     * @return 企業・団体関連者コード
+     */
+    public String getPoliOrgKanrenshaCode() {
+        return poliOrgKanrenshaCode;
+    }
+
+    /**
+     * 企業・団体関連者コードを設定する
+     *
+     * @param poliOrgKanrenshaCode 企業・団体関連者コード
+     */
+    public void setPoliOrgKanrenshaCode(final String poliOrgKanrenshaCode) {
+        this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
     }
 
     /** 反映有無 */

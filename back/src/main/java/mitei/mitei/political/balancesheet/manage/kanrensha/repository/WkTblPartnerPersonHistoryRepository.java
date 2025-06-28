@@ -10,13 +10,13 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 
 import jakarta.persistence.LockModeType;
-import mitei.mitei.political.balancesheet.manage.kanrensha.batch.partner.corp.rireki.PartnerCorpUniquekeyDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerCorpHistoryEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.batch.partner.person.rireki.PartnerPersonUniquekeyDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerPersonHistoryEntity;
 
 /**
- * wk_tbl_partner_corp_history接続用Repository
+ * wk_tbl_partner_person_history接続用Repository
  */
-public interface WkTblPartnerCorpHistoryRepository extends JpaRepository<WkTblPartnerCorpHistoryEntity, Integer> {
+public interface WkTblPartnerPersonHistoryRepository extends JpaRepository<WkTblPartnerPersonHistoryEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -32,7 +32,7 @@ public interface WkTblPartnerCorpHistoryRepository extends JpaRepository<WkTblPa
      * @return 最大コードをもつEntity
      */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<WkTblPartnerCorpHistoryEntity> findFirstByOrderByWkPartnerCorpHistoryCodeDesc();
+    Optional<WkTblPartnerPersonHistoryEntity> findFirstByOrderByWkPartnerPersonHistoryCodeDesc();
 
     /**
      * 操作者のコードで検索する
@@ -41,7 +41,7 @@ public interface WkTblPartnerCorpHistoryRepository extends JpaRepository<WkTblPa
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblPartnerCorpHistoryEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
+    Page<WkTblPartnerPersonHistoryEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
             Pageable pageable);
 
     /**
@@ -50,9 +50,9 @@ public interface WkTblPartnerCorpHistoryRepository extends JpaRepository<WkTblPa
      * @param userCode ユーザコード
      * @return 検索結果
      */
-    @Query(value = "SELECT distinct partner_name, all_address, corp_delegate, corp_kanrensha_code FROM wk_tbl_partner_corp_history WHERE insert_user_code = ?1 "
-            + "GROUP BY partner_name, all_address, corp_delegate, corp_kanrensha_code HAVING count(*) >1", nativeQuery = true)
-    List<PartnerCorpUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
+    @Query(value = "SELECT distinct partner_name, all_address, person_shokugyou, person_kanrensha_code FROM wk_tbl_partner_person_history WHERE insert_user_code = ?1 "
+            + "GROUP BY partner_name, all_address, person_shokugyou, person_kanrensha_code HAVING count(*) >1", nativeQuery = true)
+    List<PartnerPersonUniquekeyDto> findDuplicateUniqueKey(Integer userCode);
 
     /**
      * 全項目が合致するリストを取得する(重複除去用)
@@ -64,7 +64,7 @@ public interface WkTblPartnerCorpHistoryRepository extends JpaRepository<WkTblPa
      * @param userCode      ユーザコード
      * @return 検索結果
      */
-    List<WkTblPartnerCorpHistoryEntity> findByPartnerNameAndAllAddressAndCorpDelegateAndCorpKanrenshaCodeAndInsertUserCodeOrderByWkPartnerCorpHistoryIdAsc( // NOPMD
+    List<WkTblPartnerPersonHistoryEntity> findByPartnerNameAndAllAddressAndPersonShokugyouAndPersonKanrenshaCodeAndInsertUserCodeOrderByWkPartnerPersonHistoryIdAsc( // NOPMD
             String partnerName, String allAddress, String corpDelegate, String kanrenshaCode, Integer userCode);
 
 }

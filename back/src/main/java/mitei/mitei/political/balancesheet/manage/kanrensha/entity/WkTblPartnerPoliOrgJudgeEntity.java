@@ -11,14 +11,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
-
-
 /**
- * wk_tbl_partner_corp_judge接続用Entity
+ * wk_tbl_partner_poli_org_judge接続用Entity
  */
 @Entity
-@Table(name = "wk_tbl_partner_corp_judge")
-public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
+@Table(name = "wk_tbl_partner_poli_org_judge")
+public class WkTblPartnerPoliOrgJudgeEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -33,54 +31,55 @@ public class WkTblPartnerCorpJudgeEntity  implements Serializable,AllTabeDataHis
     private static final Boolean INIT_Boolean = false;
 
     /** 初期データ(LocalcDate) */
-    private static final LocalDate INIT_LocalDate = LocalDate.of(1948,7,29);
+    private static final LocalDate INIT_LocalDate = LocalDate.of(1948, 7, 29);
 
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
-    /** テーブルId  */
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "wk_partner_corp_judge_id")
-    private Integer wkPartnerCorpJudgeId = INIT_Integer;
+    /** テーブルId */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "wk_partner_poli_org_judge_id")
+    private Integer wkPartnerPoliOrgJudgeId = INIT_Integer;
 
     /**
      * テーブルIdを取得する
      *
      * @return テーブルId
      */
-    public Integer getWkPartnerCorpJudgeId() {
-        return wkPartnerCorpJudgeId;
+    public Integer getWkPartnerPoliOrgJudgeId() {
+        return wkPartnerPoliOrgJudgeId;
     }
 
     /**
      * テーブルIdを設定する
      *
-     * @param wkPartnerCorpJudgeId テーブルId
+     * @param wkPartnerPoliOrgJudgeId テーブルId
      */
-    public void setWkPartnerCorpJudgeId(final Integer wkPartnerCorpJudgeId) {
-        this.wkPartnerCorpJudgeId = wkPartnerCorpJudgeId;
+    public void setWkPartnerPoliOrgJudgeId(final Integer wkPartnerPoliOrgJudgeId) {
+        this.wkPartnerPoliOrgJudgeId = wkPartnerPoliOrgJudgeId;
     }
 
     /** 関連者企業・団体履歴Id */
-    @Column(name = "wk_partner_corp_history_id")
-    private Integer wkPartnerCorpHistoryId = INIT_Integer;
+    @Column(name = "wk_partner_poli_org_history_id")
+    private Integer wkPartnerPoliOrgHistoryId = INIT_Integer;
 
     /**
      * 関連者企業・団体履歴Idを取得する
      *
      * @return 関連者企業・団体履歴Id
      */
-    public Integer getWkPartnerCorpHistoryId() {
-        return wkPartnerCorpHistoryId;
+    public Integer getWkPartnerPoliOrgHistoryId() {
+        return wkPartnerPoliOrgHistoryId;
     }
 
     /**
      * 関連者企業・団体履歴Idを設定する
      *
-     * @param wkPartnerCorpHistoryId 関連者企業・団体履歴Id
+     * @param wkPartnerPoliOrgHistoryId 関連者企業・団体履歴Id
      */
-    public void setWkPartnerCorpHistoryId(final Integer wkPartnerCorpHistoryId) {
-        this.wkPartnerCorpHistoryId = wkPartnerCorpHistoryId;
+    public void setWkPartnerPoliOrgHistoryId(final Integer wkPartnerPoliOrgHistoryId) {
+        this.wkPartnerPoliOrgHistoryId = wkPartnerPoliOrgHistoryId;
     }
 
     /** 最新該否 */
