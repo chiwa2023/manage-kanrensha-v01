@@ -21,4 +21,14 @@ public interface MasterCorporationRepository extends JpaRepository<MasterCorpora
      */
     List<MasterCorporationEntity> findByCorpKanrenshaCodeAndCompareNameTextAndIsLatest(String code, String nameText,
             Boolean isLatest);
+
+    /**
+     * 団体名で検索する
+     *
+     * @param nameText 団体名自然検索用名称
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterCorporationEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
+
 }
