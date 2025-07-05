@@ -37,25 +37,25 @@ public class PartnerPoliOrgHistory01Entity implements Serializable, AllTabeDataH
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
-    /** 関連者企業・団体履歴Id */
+    /** 関連者政治団体履歴Id */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "partner_poli_org_history_id")
     private Integer partnerPoliOrgHistoryId = INIT_Integer;
 
     /**
-     * 関連者企業・団体履歴Idを取得する
+     * 関連者政治団体履歴Idを取得する
      *
-     * @return 関連者企業・団体履歴Id
+     * @return 関連者政治団体履歴Id
      */
     public Integer getPartnerPoliOrgHistoryId() {
         return partnerPoliOrgHistoryId;
     }
 
     /**
-     * 関連者企業・団体履歴Idを設定する
+     * 関連者政治団体履歴Idを設定する
      *
-     * @param partnerPoliOrgHistoryId 関連者企業・団体履歴Id
+     * @param partnerPoliOrgHistoryId 関連者政治団体履歴Id
      */
     public void setPartnerPoliOrgHistoryId(final Integer partnerPoliOrgHistoryId) {
         this.partnerPoliOrgHistoryId = partnerPoliOrgHistoryId;
@@ -85,89 +85,89 @@ public class PartnerPoliOrgHistory01Entity implements Serializable, AllTabeDataH
         this.isLatest = isLatest;
     }
 
-    /** 企業・団体名 */
+    /** 政治団体名 */
     @Column(name = "partner_name")
     private String partnerName = INIT_String;
 
     /**
-     * 企業・団体名を取得する
+     * 政治団体名を取得する
      *
-     * @return 企業・団体名
+     * @return 政治団体名
      */
     public String getPartnerName() {
         return partnerName;
     }
 
     /**
-     * 企業・団体名を設定する
+     * 政治団体名を設定する
      *
-     * @param partnerName 企業・団体名
+     * @param partnerName 政治団体名
      */
     public void setPartnerName(final String partnerName) {
         this.partnerName = partnerName;
     }
 
-    /** 企業・団体全住所 */
+    /** 政治団体全住所 */
     @Column(name = "all_address")
     private String allAddress = INIT_String;
 
     /**
-     * 企業・団体全住所を取得する
+     * 政治団体全住所を取得する
      *
-     * @return 企業・団体全住所
+     * @return 政治団体全住所
      */
     public String getAllAddress() {
         return allAddress;
     }
 
     /**
-     * 企業・団体全住所を設定する
+     * 政治団体全住所を設定する
      *
-     * @param allAddress 企業・団体全住所
+     * @param allAddress 政治団体全住所
      */
     public void setAllAddress(final String allAddress) {
         this.allAddress = allAddress;
     }
 
-    /** 企業・団体代表者 */
+    /** 政治団体代表者 */
     @Column(name = "poli_org_delegate")
     private String poliOrgDelegate = INIT_String;
 
     /**
-     * 企業・団体代表者を取得する
+     * 政治団体代表者を取得する
      *
-     * @return 企業・団体代表者
+     * @return 政治団体代表者
      */
     public String getPoliOrgDelegate() {
         return poliOrgDelegate;
     }
 
     /**
-     * 企業・団体代表者を設定する
+     * 政治団体代表者を設定する
      *
-     * @param poliOrgDelegate 企業・団体代表者
+     * @param poliOrgDelegate 政治団体代表者
      */
     public void setPoliOrgDelegate(final String poliOrgDelegate) {
         this.poliOrgDelegate = poliOrgDelegate;
     }
 
-    /** 企業・団体関連者コード */
+    /** 政治団体関連者コード */
     @Column(name = "poli_org_kanrensha_code")
     private String poliOrgKanrenshaCode = INIT_String;
 
     /**
-     * 企業・団体関連者コードを取得する
+     * 政治団体関連者コードを取得する
      *
-     * @return 企業・団体関連者コード
+     * @return 政治団体関連者コード
      */
     public String getPoliOrgKanrenshaCode() {
         return poliOrgKanrenshaCode;
     }
 
     /**
-     * 企業・団体関連者コードを設定する
+     * 政治団体関連者コードを設定する
      *
-     * @param poliOrgKanrenshaCode 企業・団体関連者コード
+     * @param poliOrgKanrenshaCode 政治団体関連者コード
      */
     public void setPoliOrgKanrenshaCode(final String poliOrgKanrenshaCode) {
         this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
