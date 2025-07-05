@@ -22,6 +22,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.repository.WkTblPartn
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.lgccode.PartnerCorpHistory01Repository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateDokujiCodeForCorpUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateUserLeastDtoByBatchParamUtil;
+import mitei.mitei.political.balancesheet.manage.kanrensha.utils.FormatNaturalSearchTextUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
 
 /**
@@ -41,6 +42,10 @@ public class PartnerCorpAddMiniRecordItemWriter extends JpaItemWriter<WkTblPartn
     /** 関連者企業・団体マスタ履歴処理結果Repository */
     @Autowired
     private WkTblPartnerCorpAddMinResultRepository wkTblPartnerCorpAddMinResultRepository;
+
+    /** 全文検索用フォーマットUtility */
+    @Autowired
+    private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
 
     /** バッチ起動条件からユーザ最低限作成Utility */
     @Autowired
@@ -109,6 +114,7 @@ public class PartnerCorpAddMiniRecordItemWriter extends JpaItemWriter<WkTblPartn
         MasterCorporationEntity entity = new MasterCorporationEntity();
         BeanUtils.copyProperties(entityWkTbl, entity);
         entity.setCorpKanrenshaCode(kanrenshaCode);
+        entity.setCompareNameText(formatNaturalSearchTextUtil.practice(entity.getPartnerName()));
 
         setTableDataHistoryUtil.practiceInsert(userDto, entity);
         entity.setMasterCorporationId(0); // auto_increment明示

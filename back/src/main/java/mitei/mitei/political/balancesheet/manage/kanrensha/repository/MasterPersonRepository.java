@@ -22,4 +22,13 @@ public interface MasterPersonRepository  extends JpaRepository<MasterPersonEntit
     List<MasterPersonEntity> findByPersonKanrenshaCodeAndCompareNameTextAndIsLatest(String code, String nameText,
             Boolean isLatest);
 
+    /**
+     * 個人名で検索する
+     *
+     * @param nameText 個人名自然検索用名称
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPersonEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
+
 }

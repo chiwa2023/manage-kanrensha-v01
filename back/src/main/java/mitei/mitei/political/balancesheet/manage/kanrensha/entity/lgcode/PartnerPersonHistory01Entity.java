@@ -12,14 +12,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.AllTabeDataHistoryInterface;
 
-
-
 /**
  * partner_person_history_01接続用Entity
  */
 @Entity
 @Table(name = "partner_person_history_01")
-public class PartnerPersonHistory01Entity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
+public class PartnerPersonHistory01Entity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -34,29 +32,30 @@ public class PartnerPersonHistory01Entity  implements Serializable,AllTabeDataHi
     private static final Boolean INIT_Boolean = false;
 
     /** 初期データ(LocalcDate) */
-    private static final LocalDate INIT_LocalDate = LocalDate.of(1948,7,29);
+    private static final LocalDate INIT_LocalDate = LocalDate.of(1948, 7, 29);
 
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
-    /** 関連者企業・団体履歴Id */
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /** 関連者個人履歴Id */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "partner_person_history_id")
     private Integer partnerPersonHistoryId = INIT_Integer;
 
     /**
-     * 関連者企業・団体履歴Idを取得する
+     * 関連者個人履歴Idを取得する
      *
-     * @return 関連者企業・団体履歴Id
+     * @return 関連者個人履歴Id
      */
     public Integer getPartnerPersonHistoryId() {
         return partnerPersonHistoryId;
     }
 
     /**
-     * 関連者企業・団体履歴Idを設定する
+     * 関連者個人履歴Idを設定する
      *
-     * @param partnerPersonHistoryId 関連者企業・団体履歴Id
+     * @param partnerPersonHistoryId 関連者個人履歴Id
      */
     public void setPartnerPersonHistoryId(final Integer partnerPersonHistoryId) {
         this.partnerPersonHistoryId = partnerPersonHistoryId;
@@ -86,89 +85,89 @@ public class PartnerPersonHistory01Entity  implements Serializable,AllTabeDataHi
         this.isLatest = isLatest;
     }
 
-    /** 企業・団体名 */
+    /** 個人名 */
     @Column(name = "partner_name")
     private String partnerName = INIT_String;
 
     /**
-     * 企業・団体名を取得する
+     * 個人名を取得する
      *
-     * @return 企業・団体名
+     * @return 個人名
      */
     public String getPartnerName() {
         return partnerName;
     }
 
     /**
-     * 企業・団体名を設定する
+     * 個人名を設定する
      *
-     * @param partnerName 企業・団体名
+     * @param partnerName 個人名
      */
     public void setPartnerName(final String partnerName) {
         this.partnerName = partnerName;
     }
 
-    /** 企業・団体全住所 */
+    /** 個人全住所 */
     @Column(name = "all_address")
     private String allAddress = INIT_String;
 
     /**
-     * 企業・団体全住所を取得する
+     * 個人全住所を取得する
      *
-     * @return 企業・団体全住所
+     * @return 個人全住所
      */
     public String getAllAddress() {
         return allAddress;
     }
 
     /**
-     * 企業・団体全住所を設定する
+     * 個人全住所を設定する
      *
-     * @param allAddress 企業・団体全住所
+     * @param allAddress 個人全住所
      */
     public void setAllAddress(final String allAddress) {
         this.allAddress = allAddress;
     }
 
-    /** 企業・団体代表者 */
+    /** 個人職業 */
     @Column(name = "person_shokugyou")
     private String personShokugyou = INIT_String;
 
     /**
-     * 企業・団体代表者を取得する
+     * 個人職業を取得する
      *
-     * @return 企業・団体代表者
+     * @return 個人職業
      */
     public String getPersonShokugyou() {
         return personShokugyou;
     }
 
     /**
-     * 企業・団体代表者を設定する
+     * 個人職業を設定する
      *
-     * @param personShokugyou 企業・団体代表者
+     * @param personShokugyou 個人職業
      */
     public void setPersonShokugyou(final String personShokugyou) {
         this.personShokugyou = personShokugyou;
     }
 
-    /** 企業・団体関連者コード */
+    /** 個人関連者コード */
     @Column(name = "person_kanrensha_code")
     private String personKanrenshaCode = INIT_String;
 
     /**
-     * 企業・団体関連者コードを取得する
+     * 個人関連者コードを取得する
      *
-     * @return 企業・団体関連者コード
+     * @return 個人関連者コード
      */
     public String getPersonKanrenshaCode() {
         return personKanrenshaCode;
     }
 
     /**
-     * 企業・団体関連者コードを設定する
+     * 個人関連者コードを設定する
      *
-     * @param personKanrenshaCode 企業・団体関連者コード
+     * @param personKanrenshaCode 個人関連者コード
      */
     public void setPersonKanrenshaCode(final String personKanrenshaCode) {
         this.personKanrenshaCode = personKanrenshaCode;
