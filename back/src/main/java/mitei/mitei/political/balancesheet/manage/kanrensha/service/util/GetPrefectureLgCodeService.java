@@ -105,6 +105,8 @@ public class GetPrefectureLgCodeService {
     /** その他 */
     public static final int PREF_99 = 99;
 
+    /** 文字コード出力する際の0付加上限 */
+    private static final int PLUS_ZERO_NUM = 9;
     /**
      * 処理を行う
      *
@@ -112,7 +114,7 @@ public class GetPrefectureLgCodeService {
      * @return 県の地方自治体コード前2桁
      */
     public int practice(final String address) { // SUPPRESS CHECKSTYLE ReturnCount NOPMD
-
+        
         // 東京都 14,047,594人
         // 130001,東京都
         if (address.startsWith("東京都")) {
@@ -398,6 +400,22 @@ public class GetPrefectureLgCodeService {
 
         // その他
         return PREF_99;
+    }
+
+    /**
+     * 該当する県コードを取得する
+     *
+     * @param address 住所
+     * @return 県コード
+     */
+    public String practiceString(final String address) {
+
+        int code = this.practice(address);
+        if (code < PLUS_ZERO_NUM) {
+            return "0" + code;
+        } else {
+            return String.valueOf(code);
+        }
     }
 
 }

@@ -60,12 +60,22 @@ public interface HoujinNoLatestRepository extends JpaRepository<HoujinNoLatestEn
     List<HoujinNoLatestEntity> findByCorporateNumberAndLatest(String houjinNo, boolean latest);
 
     /**
-     * 履歴テーブルに存在するが最新テーブルから見削除データを抽出する
+     * 履歴テーブルに存在するが最新テーブルから未削除データを抽出する
      *
      * @return 検索結果
      */
     @Query(value = "SELECT * FROM houjin_no_latest WHERE houjin_no_latest_id IN ("
             + "    SELECT houjin_no_latest_id FROM houjin_no_history WHERE houjin_no_latest_id <> 0)", nativeQuery = true)
     List<HoujinNoLatestEntity> findRestLatestData();
+
+    /**
+     * 法人名と住所都道府県から該当を取得する
+     *
+     * @param name           名称
+     * @param latest         最新
+     * @param prefectureCode 都道府県コード
+     * @return 検索結果
+     */
+    List<HoujinNoLatestEntity> findByNameAndLatestAndPrefectureCode(String name, boolean latest, String prefectureCode);
 
 }
