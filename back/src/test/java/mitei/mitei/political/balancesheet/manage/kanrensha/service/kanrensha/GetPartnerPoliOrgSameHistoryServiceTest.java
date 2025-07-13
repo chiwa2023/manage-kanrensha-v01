@@ -25,6 +25,8 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.PartnerPoliOrg
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional
+@Sql( "sample_partner_poli_org_history.sql")
 class GetPartnerPoliOrgSameHistoryServiceTest {
 
     /** テスト対象 */
@@ -45,12 +47,20 @@ class GetPartnerPoliOrgSameHistoryServiceTest {
                 delegate);
 
         assertEquals(1, list.size());
-
+    }
+    
+    void test01() throws Exception {
+        final String name = "ちゃらんぽらん政治団体";
+        final String address = "北海道架空市山麓町";
+        final String delegate = "代表者　太郎";
+        
+        List<PartnerPoliOrgHistoryBaseEntity> list = getPartnerPoliOrgSameHistoryService.practice(name, address, delegate);
+        assertEquals(1, list.size());
+        
         PartnerPoliOrgHistoryBaseEntity entity = list.get(0);
         assertEquals(name, entity.getPartnerName());
         assertEquals(address, entity.getAllAddress());
         assertEquals(delegate, entity.getPoliOrgDelegate());
-
     }
 
 }

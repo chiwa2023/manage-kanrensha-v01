@@ -106,7 +106,7 @@ public class GetPrefectureLgCodeService {
     public static final int PREF_99 = 99;
 
     /** 文字コード出力する際の0付加上限 */
-    private static final int PLUS_ZERO_NUM = 9;
+    private static final int PLUS_ZERO_NUM = 10;
     /**
      * 処理を行う
      *
@@ -327,7 +327,6 @@ public class GetPrefectureLgCodeService {
 
         // 山形県 1,068,027人
         // 060003,山形県,ヤマガタケン,Yamagata,1947-04-17,,
-        // public static final int PREF_06 = 1;
         if (address.startsWith("山形県")) {
             return PREF_06;
         }

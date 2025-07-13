@@ -25,12 +25,14 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.PartnerPersonH
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Transactional
+@Sql( "sample_partner_person_history.sql")
 class GetPartnerPersonSameHistoryServiceTest {
 
-    /** テスト対象 */
+    /** */
     @Autowired
     private GetPartnerPersonSameHistoryService getPartnerPersonSameHistoryService;
-
+    
     @Test
     @Tag("TableTruncate")
     @Transactional
@@ -45,12 +47,21 @@ class GetPartnerPersonSameHistoryServiceTest {
                 shokugyou);
 
         assertEquals(1, list.size());
-
+    }
+    
+    @Test
+    void test01()throws Exception {
+        final String name = "迂回献金　太郎";
+        final String address = "北海道架空市山麓町";
+        final String shokugyou = "経営者";
+        
+        List<PartnerPersonHistoryBaseEntity> list = getPartnerPersonSameHistoryService.practice(name, address, shokugyou);
+        assertEquals(1, list.size());
+        
         PartnerPersonHistoryBaseEntity entity = list.get(0);
         assertEquals(name, entity.getPartnerName());
         assertEquals(address, entity.getAllAddress());
         assertEquals(shokugyou, entity.getPersonShokugyou());
-
     }
 
 }
