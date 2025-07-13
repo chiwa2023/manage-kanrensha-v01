@@ -30,7 +30,7 @@ public class DumpPartnerCorpHistory01ItemWriter extends FlatFileItemWriter<Partn
         lineAggregator.setQuoteCharacter("\"");
         BeanWrapperFieldExtractor<PartnerCorpHistory01Entity> fieldExtractor = new BeanWrapperFieldExtractor<>();
         fieldExtractor.setNames(
-                new String[] { "corpKanrenshaCode", "partnerName", "allAddress", "corpDelegate", "insertTimestamp" }); // 書き出すフィールド名を設定
+                new String[] { "corpKanrenshaCode" , "partnerName", "allAddress", "corpDelegate", "insertTimestamp" }); // 書き出すフィールド名を設定
         lineAggregator.setFieldExtractor(fieldExtractor);
         String[] headers = { "\"関連者番号\"", "\"名称\"", "\"全住所\"", "\"代表者名\"", "\"登録日時\"" };
         super.setHeaderCallback(writer1 -> writer1.write(String.join(",", headers)));

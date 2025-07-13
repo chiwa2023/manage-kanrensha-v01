@@ -26,19 +26,19 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
- * DumpMasterCorporationItemWriter単体テスト
+ * DumpMasterPersonItemWriter単体テスト
  */
 @SpringJUnitConfig
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ConfigurationProperties(prefix = "mitei.mitei.political.balancesheet.manage.kanrensha")
-class DumpMasterCorporationItemWriterTest {
+class DumpMasterPersonItemWriterTest {
     // CHECKSTYLE:OFF
 
     /** テスト対象 */
     @Autowired
-    private DumpMasterCorporationItemWriter dumpMasterCorporationItemWriter;
+    private DumpMasterPersonItemWriter dumpMasterPersonItemWriter;
 
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
     private String storageFolder;
@@ -65,33 +65,31 @@ class DumpMasterCorporationItemWriterTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        String output = "/output_test/master_corp.csv";
+        String output = "/output_test/master_person.csv";
         Path path = Paths.get(storageFolder, output);
 
         StepExecution stepExecution = this.getStepExecution(path.toString());
 
-        dumpMasterCorporationItemWriter.beforeStep(stepExecution);
+        dumpMasterPersonItemWriter.beforeStep(stepExecution);
 
-        MasterCorporationDto dto = new MasterCorporationDto();
-        dto.setCorpKanrenshaCode("123-4567");
-        dto.setHoujinNo("987-6543");
-        dto.setPartnerName("超元素製造組合");
+        MasterPersonDto dto = new MasterPersonDto();
+        dto.setPersonKanrenshaCode("123-4567");
+        dto.setPartnerName("迂回献金　太郎");
         dto.setAllAddress("和歌山県架空市山麓町");
-        dto.setCorpDelegate("組合長　花子");
-        dto.setInsertTimestamp(LocalDateTime.of(2022,12,5,1,2,3));
+        dto.setPersonShokugyou("教師");
+        dto.setInsertTimestamp(LocalDateTime.of(2022, 12, 5, 1, 2, 3));
 
-        List<MasterCorporationDto> list = new ArrayList<>();
+        List<MasterPersonDto> list = new ArrayList<>();
         list.add(dto);
 
         // Chunkを作成してセット
-        Chunk<? extends MasterCorporationDto> items = new Chunk<>(list);
-        dumpMasterCorporationItemWriter.open(stepExecution.getExecutionContext());
-        dumpMasterCorporationItemWriter.write(items);
+        Chunk<? extends MasterPersonDto> items = new Chunk<>(list);
+        dumpMasterPersonItemWriter.open(stepExecution.getExecutionContext());
+        dumpMasterPersonItemWriter.write(items);
 
         List<String> listAns = Files.readAllLines(path);
 
-        assertEquals("\"123-4567\",\"987-6543\",\"超元素製造組合\",\"和歌山県架空市山麓町\",\"組合長　花子\",\"2022-12-05T01:02:03\"",
-                listAns.get(1));
+        assertEquals("\"123-4567\",\"迂回献金　太郎\",\"和歌山県架空市山麓町\",\"教師\",\"2022-12-05T01:02:03\"", listAns.get(1));
     }
 
     private StepExecution getStepExecution(final String output) {

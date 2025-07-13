@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.sabun;
+package mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,7 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import mitei.mitei.political.balancesheet.manage.kanrensha.BackApplication;
 
 /**
- * DumpSabunMasterCorporationBatchConfiguration単体テスト
+ * DumpMasterPoliticalOrganizationBatchConfiguration単体テスト
  */
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -35,8 +35,8 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.BackApplication;
 @ContextConfiguration(classes = BackApplication.class) // 全体起動
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @ConfigurationProperties(prefix = "mitei.mitei.political.balancesheet.manage.kanrensha")
-@Sql("master_corporation.sql")
-class DumpSabunMasterCorporationBatchConfigurationTest {
+@Sql("master_political_organization.sql")
+class DumpMasterPoliticalOrganizationBatchConfigurationTest {
     // CHECKSTYLE:OFF
 
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
@@ -65,28 +65,27 @@ class DumpSabunMasterCorporationBatchConfigurationTest {
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     /** 起動をするJob */
-    @Qualifier(DumpSabunMasterCorporationBatchConfiguration.JOB_NAME)
+    @Qualifier(DumpMasterPoliticalOrganizationBatchConfiguration.JOB_NAME)
     @Autowired
-    private Job dumpSabunMasterCorporation;
+    private Job dumpMasterPoliticalOrganization;
 
     @Test
     @Tag("TableTruncate")
     void testJob() {
-        assertEquals(DumpSabunMasterCorporationBatchConfiguration.JOB_NAME, dumpSabunMasterCorporation.getName(),
-                "Job名が一致");
+        assertEquals(DumpMasterPoliticalOrganizationBatchConfiguration.JOB_NAME,
+                dumpMasterPoliticalOrganization.getName(), "Job名が一致");
     }
 
     @Test
     @Tag("TableTruncate")
     void testExecute() throws Exception {
 
-        jobLauncherTestUtils.setJob(dumpSabunMasterCorporation);
+        jobLauncherTestUtils.setJob(dumpMasterPoliticalOrganization);
         JobParameters jobParameters = new JobParametersBuilder(
-                dumpSabunMasterCorporation.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
+                dumpMasterPoliticalOrganization.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now())
-                .addLocalDateTime("datetimeStart", LocalDateTime.of(2024, 1, 1, 0, 0, 0))
-                .addLocalDateTime("datetimeEnd", LocalDateTime.of(2025, 1, 1, 0, 0, 0))
-                .addString("writeFilePath", Paths.get(storageFolder, "sabun_master_corp.csv").toString())
+                .addLocalDateTime("datetimeEnd", LocalDateTime.of(2024, 1, 1, 0, 0, 0))
+                .addString("writeFilePath", Paths.get(storageFolder, "master_poli_org.csv").toString())
                 .toJobParameters();
 
         JobExecution jobExecution = jobLauncherTestUtils.launchJob(jobParameters);

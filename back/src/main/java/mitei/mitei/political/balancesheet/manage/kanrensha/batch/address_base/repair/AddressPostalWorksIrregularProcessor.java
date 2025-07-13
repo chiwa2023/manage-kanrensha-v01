@@ -22,10 +22,8 @@ public class AddressPostalWorksIrregularProcessor
 
         AddressPostalIrregularEntity entity = new AddressPostalIrregularEntity();
         BeanUtils.copyProperties(item, entity);
-        
+
         return entity;
     }
 
-    
-    
 }

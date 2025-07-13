@@ -12,25 +12,26 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
 /**
- * 関連者企業・団体マスタCsv出力ItemWriter
+ * 関連者個人マスタCsv出力ItemWriter
  */
 @Component
-public class DumpMasterCorporationItemWriter extends FlatFileItemWriter<MasterCorporationDto> {
+public class DumpMasterPersonItemWriter extends FlatFileItemWriter<MasterPersonDto> {
+
 
     /**
      * コンストラクタ
      *
      */
-    public DumpMasterCorporationItemWriter() {
+    public DumpMasterPersonItemWriter() {
         super();
-        DelimitedLineAggregator<MasterCorporationDto> lineAggregator = new DelimitedLineAggregator<>();
+        DelimitedLineAggregator<MasterPersonDto> lineAggregator = new DelimitedLineAggregator<>();
         lineAggregator.setDelimiter(","); // 区切り文字をカンマに設定
         lineAggregator.setQuoteCharacter("\"");
-        BeanWrapperFieldExtractor<MasterCorporationDto> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[] { "corpKanrenshaCode", "houjinNo", "partnerName", "allAddress",
-                "corpDelegate", "insertTimestamp" }); // 書き出すフィールド名を設定
+        BeanWrapperFieldExtractor<MasterPersonDto> fieldExtractor = new BeanWrapperFieldExtractor<>();
+        fieldExtractor.setNames(new String[] { "personKanrenshaCode", "partnerName", "allAddress",
+                "personShokugyou", "insertTimestamp" }); // 書き出すフィールド名を設定
         lineAggregator.setFieldExtractor(fieldExtractor);
-        String[] headers = { "\"関連者番号\"", "\"法人番号\"", "\"名称\"", "\"全住所\"", "\"代表者名\"", "\"登録日時\"" };
+        String[] headers = { "\"関連者番号\"", "\"名称\"", "\"全住所\"", "\"職業\"", "\"登録日時\"" };
         super.setHeaderCallback(writer1 -> writer1.write(String.join(",", headers)));
         super.setLineAggregator(lineAggregator);
     }

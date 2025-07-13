@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.sabun.history;
+package mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.sabun.history; // NOPMD
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

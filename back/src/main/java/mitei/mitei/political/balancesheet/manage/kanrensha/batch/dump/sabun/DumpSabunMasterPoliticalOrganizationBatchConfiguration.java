@@ -12,19 +12,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.DumpMasterCorporationItemWriter;
-import mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.DumpMasterCorporationProcessor;
-import mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.MasterCorporationDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporationEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.DumpMasterPoliticalOrganizationItemWriter;
+import mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.DumpMasterPoliticalOrganizationProcessor;
+import mitei.mitei.political.balancesheet.manage.kanrensha.batch.dump.MasterPoliticalOrganizationDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationEntity;
 
 /**
- * 関連者企業・団体マスタ差分Csv出力BatchConfiguration
+ * 関連者政治団体マスタ差分Csv出力BatchConfiguration
  */
 @Configuration
-public class DumpSabunMasterCorporationBatchConfiguration {
+public class DumpSabunMasterPoliticalOrganizationBatchConfiguration {
 
     /** 機能名 */
-    private static final String FUNCTION_NAME = "dumpSabunMasterCorporation";
+    private static final String FUNCTION_NAME = "dumpSabunMasterPoliticalOrganization";
 
     /** Step(接尾語) */
     private static final String STEP = "Step";
@@ -43,15 +43,15 @@ public class DumpSabunMasterCorporationBatchConfiguration {
 
     /** 関連者企業・団体マスタCsv出力ItemReader */
     @Autowired
-    private DumpSabunMasterCorporationItemReader dumpSabunMasterCorporationItemReader;
+    private DumpSabunMasterPoliticalOrganizationItemReader dumpSabunMasterPoliticalOrganizationItemReader;
 
     /** 関連者企業・団体マスタCsv出力Processor */
     @Autowired
-    private DumpMasterCorporationProcessor dumpMasterCorporationProcessor;
+    private DumpMasterPoliticalOrganizationProcessor dumpMasterPoliticalOrganizationProcessor;
 
     /** 関連者企業・団体マスタCsv出力ItemWriter */
     @Autowired
-    private DumpMasterCorporationItemWriter dumpMasterCorporationItemWriter;
+    private DumpMasterPoliticalOrganizationItemWriter dumpMasterPoliticalOrganizationItemWriter;
 
     /**
      * Jobを返却する
@@ -77,9 +77,11 @@ public class DumpSabunMasterCorporationBatchConfiguration {
     protected Step getStepDump(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
 
         return new StepBuilder(STEP_DUMP, jobRepository)
-                .<MasterCorporationEntity, MasterCorporationDto>chunk(CHUNK_SIZE, transactionManager)
-                .reader(dumpSabunMasterCorporationItemReader).processor(dumpMasterCorporationProcessor)
-                .writer(dumpMasterCorporationItemWriter).build();
+                .<MasterPoliticalOrganizationEntity, MasterPoliticalOrganizationDto>chunk(CHUNK_SIZE,
+                        transactionManager)
+                .reader(dumpSabunMasterPoliticalOrganizationItemReader)
+                .processor(dumpMasterPoliticalOrganizationProcessor).writer(dumpMasterPoliticalOrganizationItemWriter)
+                .build();
     }
 
 }

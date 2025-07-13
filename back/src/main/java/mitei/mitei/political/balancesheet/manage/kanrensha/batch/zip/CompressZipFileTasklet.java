@@ -2,6 +2,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.batch.zip;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -44,8 +45,8 @@ public class CompressZipFileTasklet implements Tasklet, StepExecutionListener {
     @Override
     public void beforeStep(final StepExecution stepExecution) {
         String path = stepExecution.getJobParameters().getString("srcPath");
-        srcPath =  path + "/";
-        zipFilePath = path+".zip";
+        srcPath = path + "/";
+        zipFilePath = path + ".zip";
     }
 
     /**
@@ -55,7 +56,7 @@ public class CompressZipFileTasklet implements Tasklet, StepExecutionListener {
     public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
 
         // 圧縮先ファイルの出力ストリームを作成
-        try (FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(zipFilePath); // NOPMD
                 ZipOutputStream zipOutputStream = new ZipOutputStream(fileOutputStream)) {
 
             Path entryPath = Paths.get(srcPath);
@@ -72,23 +73,32 @@ public class CompressZipFileTasklet implements Tasklet, StepExecutionListener {
             throws IOException {
 
         // フォルダ内のフォルダとファイルを取得
-        try (DirectoryStream<Path> ds = Files.newDirectoryStream(targetPath)) {
-            for (Path filePath : ds) {
-                ZipEntry zipEntry = new ZipEntry(parentDirName + "/" + filePath.getFileName().toString());
-                zipOutputStream.putNextEntry(zipEntry);
-
-                try (FileInputStream fileInputStream = new FileInputStream(filePath.toFile());
-                        BufferedInputStream bis = new BufferedInputStream(fileInputStream)) {
-
-                    byte[] buffer = new byte[BUFFER_SIZE];
-                    int len = -1;
-                    while ((len = bis.read(buffer, 0, buffer.length)) != -1) {
-                        zipOutputStream.write(buffer, 0, len);
-                    }
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(targetPath)) {
+            for (Path filePath : directoryStream) {
+                zipOutputStream.putNextEntry(this.createEntry(parentDirName, filePath));
+                if (this.copyByte(zipOutputStream, filePath)) {
+                    zipOutputStream.closeEntry();
                 }
-
-                zipOutputStream.closeEntry();
             }
         }
     }
+
+    private ZipEntry createEntry(final String parentDirName, final Path filePath) {
+        return new ZipEntry(parentDirName + "/" + filePath.getFileName().toString());
+    }
+
+    private boolean copyByte(final ZipOutputStream zipOutputStream, final Path filePath)
+            throws FileNotFoundException, IOException {
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int length;
+        try (FileInputStream fileInputStream = new FileInputStream(filePath.toFile()); // NOPMD
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream)) {
+            while ((length = bufferedInputStream.read(buffer, 0, buffer.length)) != -1) {
+                zipOutputStream.write(buffer, 0, length);
+            }
+        }
+
+        return true;
+    }
+
 }
