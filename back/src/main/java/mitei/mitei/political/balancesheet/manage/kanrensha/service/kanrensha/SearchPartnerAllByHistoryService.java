@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.PartnerPersonHistoryBaseEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner.PartnerCommonInfoDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.lgccode.PartnerPersonHistory01Repository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.lgccode.PartnerPersonHistory02Repository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.lgccode.PartnerPersonHistory03Repository;
@@ -57,10 +57,10 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.repository.lgccode.Pa
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.util.GetPrefectureLgCodeService;
 
 /**
- * 関連者個人の同属性リスト取得Service
+ * 関連者を個人と企業・団体と政治団体を対象に一括検索Service
  */
 @Service
-public class GetPartnerPersonSameHistoryService {
+public class SearchPartnerAllByHistoryService {
 
     /** 住所から県 地方公共団体コード(2桁)取得Service */
     @Autowired
@@ -214,111 +214,110 @@ public class GetPartnerPersonSameHistoryService {
     /**
      * 処理を行う
      *
-     * @param name      個人名
-     * @param address   住所
-     * @param shokugyou 個人職業
+     * @param name          名称
+     * @param address       住所
+     * @param recognizedKey 認識キー
      * @return 検索結果
      */
-    public List<PartnerPersonHistoryBaseEntity> practice( // SUPPRESS CHECKSTYLE ReturnCount NOPMD
-            final String name, final String address, final String shokugyou) {
-
+    public List<PartnerCommonInfoDto> practice( // SUPPRESS CHECKSTYLE ReturnCount NOPMD
+            final String name, final String address, final String recognizedKey) {
         switch (getPrefectureLgCodeService.practice(address)) {
             case GetPrefectureLgCodeService.PREF_01:
-                return partnerPersonHistory01Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory01Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_02:
-                return partnerPersonHistory02Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory02Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_03:
-                return partnerPersonHistory03Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory03Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_04:
-                return partnerPersonHistory04Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory04Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_05:
-                return partnerPersonHistory05Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory05Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_06:
-                return partnerPersonHistory06Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory06Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_07:
-                return partnerPersonHistory07Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory07Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_08:
-                return partnerPersonHistory08Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory08Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_09:
-                return partnerPersonHistory09Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory09Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_10:
-                return partnerPersonHistory10Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory10Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_11:
-                return partnerPersonHistory11Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory11Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_12:
-                return partnerPersonHistory12Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory12Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_13:
-                return partnerPersonHistory13Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory13Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_14:
-                return partnerPersonHistory14Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory14Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_15:
-                return partnerPersonHistory15Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory15Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_16:
-                return partnerPersonHistory16Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory16Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_17:
-                return partnerPersonHistory17Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory17Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_18:
-                return partnerPersonHistory18Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory18Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_19:
-                return partnerPersonHistory19Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory19Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_20:
-                return partnerPersonHistory20Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory20Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_21:
-                return partnerPersonHistory21Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory21Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_22:
-                return partnerPersonHistory22Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory22Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_23:
-                return partnerPersonHistory23Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory23Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_24:
-                return partnerPersonHistory24Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory24Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_25:
-                return partnerPersonHistory25Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory25Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_26:
-                return partnerPersonHistory26Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory26Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_27:
-                return partnerPersonHistory27Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory27Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_28:
-                return partnerPersonHistory28Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory28Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_29:
-                return partnerPersonHistory29Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory29Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_30:
-                return partnerPersonHistory30Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory30Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_31:
-                return partnerPersonHistory31Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory31Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_32:
-                return partnerPersonHistory32Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory32Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_33:
-                return partnerPersonHistory33Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory33Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_34:
-                return partnerPersonHistory34Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory34Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_35:
-                return partnerPersonHistory35Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory35Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_36:
-                return partnerPersonHistory36Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory36Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_37:
-                return partnerPersonHistory37Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory37Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_38:
-                return partnerPersonHistory38Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory38Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_39:
-                return partnerPersonHistory39Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory39Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_40:
-                return partnerPersonHistory40Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory40Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_41:
-                return partnerPersonHistory41Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory41Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_42:
-                return partnerPersonHistory42Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory42Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_43:
-                return partnerPersonHistory43Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory43Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_44:
-                return partnerPersonHistory44Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory44Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_45:
-                return partnerPersonHistory45Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory45Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_46:
-                return partnerPersonHistory46Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory46Repository.findAllKanrensha(name, address, recognizedKey);
             case GetPrefectureLgCodeService.PREF_47:
-                return partnerPersonHistory47Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory47Repository.findAllKanrensha(name, address, recognizedKey);
             default:
-                return partnerPersonHistory99Repository.selectByProperty(name, address, shokugyou);
+                return partnerPersonHistory99Repository.findAllKanrensha(name, address, recognizedKey);
         }
     }
 

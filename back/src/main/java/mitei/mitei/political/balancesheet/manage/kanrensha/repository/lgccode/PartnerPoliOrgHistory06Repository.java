@@ -24,7 +24,7 @@ public interface PartnerPoliOrgHistory06Repository extends JpaRepository<Partner
      * @param delegate 代表者名
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM partner_poli_org_history_01 " + " WHERE partner_name = ?1 AND all_address = ?2 "
+    @Query(value = "SELECT * FROM partner_poli_org_history_06 " + " WHERE partner_name = ?1 AND all_address = ?2 "
             + "   AND poli_org_delegate = ?3 AND is_latest=1", nativeQuery = true)
     List<PartnerPoliOrgHistoryBaseEntity> selectByProperty(String name, String address, String delegate);
 
