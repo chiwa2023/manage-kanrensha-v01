@@ -26,15 +26,6 @@ public interface MasterPersonRepository extends JpaRepository<MasterPersonEntity
             Boolean isLatest);
 
     /**
-     * 個人名で検索する
-     *
-     * @param nameText 個人名自然検索用名称
-     * @param isLatest 最新該否
-     * @return 検索結果
-     */
-    List<MasterPersonEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
-
-    /**
      * 基準時間より前の最新データを取得する
      *
      * @param dateTime 基準日時開始
@@ -56,5 +47,15 @@ public interface MasterPersonRepository extends JpaRepository<MasterPersonEntity
      */
     Page<MasterPersonEntity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
+
+
+    /**
+     * 団体名で検索する
+     *
+     * @param nameText 団体名自然検索用名称
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPersonEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
 
 }

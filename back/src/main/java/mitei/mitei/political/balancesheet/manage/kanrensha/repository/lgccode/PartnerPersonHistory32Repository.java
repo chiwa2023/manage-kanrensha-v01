@@ -8,11 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner.PartnerCommonInfoDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.PartnerPersonHistoryBaseEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.lgcode.PartnerPersonHistory32Entity;
 
 /**
- * partner_person_history_01接続用Repository
+ * partner_person_history_32接続用Repository
  */
 public interface PartnerPersonHistory32Repository extends JpaRepository<PartnerPersonHistory32Entity, Integer> {
 
@@ -50,5 +51,36 @@ public interface PartnerPersonHistory32Repository extends JpaRepository<PartnerP
      */
     Page<PartnerPersonHistory32Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
+
+    /**
+     * 履歴を検索条件に全関連者テーブルから取得する
+     *
+     * @param name 名称
+     * @param address 住所
+     * @param recognizedKey 認識キー
+     * @return 検索結果
+     */
+    @Query(value = "SELECT  1 AS kanrensha_kbn ,partner_name ,all_address "
+            + " ,person_shokugyou AS recognized_key"
+            + " ,person_kanrensha_code AS kanrensha_code"
+            + "   FROM partner_person_history_32 "
+            + "       WHERE partner_name = ?1 AND all_address = ?2 AND person_shokugyou = ?3"
+            + "           AND is_latest = 1"
+            + " UNION "
+            + "SELECT 2 AS kanrensha_kbn ,partner_name ,all_address "
+            + " ,corp_delegate AS recognized_key "
+            + " ,corp_kanrensha_code AS kanrensha_code "
+            + "   FROM partner_corp_history_32 "
+            + "       WHERE partner_name = ?1 AND all_address = ?2 AND corp_delegate = ?3"
+            + "           AND is_latest = 1"
+            + " UNION "
+            + "SELECT  3 AS kanrensha_kbn ,partner_name ,all_address "
+            + " ,poli_org_delegate AS recognized_key "
+            + " ,poli_org_kanrensha_code AS kanrensha_code "
+            + "   FROM partner_poli_org_history_32 "
+            + "       WHERE partner_name = ?1 AND all_address = ?2 AND poli_org_delegate = ?3"
+            + "           AND is_latest = 1"
+            , nativeQuery = true)
+    List<PartnerCommonInfoDto> findAllKanrensha(String name, String address, String recognizedKey);
 
 }
