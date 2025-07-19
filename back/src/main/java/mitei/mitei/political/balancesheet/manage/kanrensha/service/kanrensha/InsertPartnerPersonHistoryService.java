@@ -269,154 +269,156 @@ public class InsertPartnerPersonHistoryService { // NOPMD
      *
      * @param userDto    ユーザ最低限Dto
      * @param baseEntity 関連者企業・団体BaseEntity
+     * @return 保存Id
      */
-    public void practice(final UserPersonLeastDto userDto, final PartnerPersonHistoryBaseEntity baseEntity) { // NOPMD
+    public int practice( // NOPMD SUPPRESS CHECKSTYLE ReturnCount
+            final UserPersonLeastDto userDto, final PartnerPersonHistoryBaseEntity baseEntity) {
 
         switch (getPrefectureLgCodeService.practice(baseEntity.getAllAddress())) {
             case GetPrefectureLgCodeService.PREF_01:
-                partnerPersonHistory01Repository.saveAndFlush(this.createEntity01(userDto, baseEntity));
-                break;
+                return partnerPersonHistory01Repository.saveAndFlush(this.createEntity01(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_02:
-                partnerPersonHistory02Repository.saveAndFlush(this.createEntity02(userDto, baseEntity));
-                break;
+                return partnerPersonHistory02Repository.saveAndFlush(this.createEntity02(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_03:
-                partnerPersonHistory03Repository.saveAndFlush(this.createEntity03(userDto, baseEntity));
-                break;
+                return partnerPersonHistory03Repository.saveAndFlush(this.createEntity03(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_04:
-                partnerPersonHistory04Repository.saveAndFlush(this.createEntity04(userDto, baseEntity));
-                break;
+                return partnerPersonHistory04Repository.saveAndFlush(this.createEntity04(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_05:
-                partnerPersonHistory05Repository.saveAndFlush(this.createEntity05(userDto, baseEntity));
-                break;
+                return partnerPersonHistory05Repository.saveAndFlush(this.createEntity05(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_06:
-                partnerPersonHistory06Repository.saveAndFlush(this.createEntity06(userDto, baseEntity));
-                break;
+                return partnerPersonHistory06Repository.saveAndFlush(this.createEntity06(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_07:
-                partnerPersonHistory07Repository.saveAndFlush(this.createEntity07(userDto, baseEntity));
-                break;
+                return partnerPersonHistory07Repository.saveAndFlush(this.createEntity07(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_08:
-                partnerPersonHistory08Repository.saveAndFlush(this.createEntity08(userDto, baseEntity));
-                break;
+                return partnerPersonHistory08Repository.saveAndFlush(this.createEntity08(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_09:
-                partnerPersonHistory09Repository.saveAndFlush(this.createEntity09(userDto, baseEntity));
-                break;
+                return partnerPersonHistory09Repository.saveAndFlush(this.createEntity09(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_10:
-                partnerPersonHistory10Repository.saveAndFlush(this.createEntity10(userDto, baseEntity));
-                break;
+                return partnerPersonHistory10Repository.saveAndFlush(this.createEntity10(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_11:
-                partnerPersonHistory11Repository.saveAndFlush(this.createEntity11(userDto, baseEntity));
-                break;
+                return partnerPersonHistory11Repository.saveAndFlush(this.createEntity11(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_12:
-                partnerPersonHistory12Repository.saveAndFlush(this.createEntity12(userDto, baseEntity));
-                break;
+                return partnerPersonHistory12Repository.saveAndFlush(this.createEntity12(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_13:
-                partnerPersonHistory13Repository.saveAndFlush(this.createEntity13(userDto, baseEntity));
-                break;
+                return partnerPersonHistory13Repository.saveAndFlush(this.createEntity13(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_14:
-                partnerPersonHistory14Repository.saveAndFlush(this.createEntity14(userDto, baseEntity));
-                break;
+                return partnerPersonHistory14Repository.saveAndFlush(this.createEntity14(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_15:
-                partnerPersonHistory15Repository.saveAndFlush(this.createEntity15(userDto, baseEntity));
-                break;
+                return partnerPersonHistory15Repository.saveAndFlush(this.createEntity15(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_16:
-                partnerPersonHistory16Repository.saveAndFlush(this.createEntity16(userDto, baseEntity));
-                break;
+                return partnerPersonHistory16Repository.saveAndFlush(this.createEntity16(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_17:
-                partnerPersonHistory17Repository.saveAndFlush(this.createEntity17(userDto, baseEntity));
-                break;
+                return partnerPersonHistory17Repository.saveAndFlush(this.createEntity17(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_18:
-                partnerPersonHistory18Repository.saveAndFlush(this.createEntity18(userDto, baseEntity));
-                break;
+                return partnerPersonHistory18Repository.saveAndFlush(this.createEntity18(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_19:
-                partnerPersonHistory19Repository.saveAndFlush(this.createEntity19(userDto, baseEntity));
-                break;
+                return partnerPersonHistory19Repository.saveAndFlush(this.createEntity19(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_20:
-                partnerPersonHistory20Repository.saveAndFlush(this.createEntity20(userDto, baseEntity));
-                break;
+                return partnerPersonHistory20Repository.saveAndFlush(this.createEntity20(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_21:
-                partnerPersonHistory21Repository.saveAndFlush(this.createEntity21(userDto, baseEntity));
-                break;
+                return partnerPersonHistory21Repository.saveAndFlush(this.createEntity21(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_22:
-                partnerPersonHistory22Repository.saveAndFlush(this.createEntity22(userDto, baseEntity));
-                break;
+                return partnerPersonHistory22Repository.saveAndFlush(this.createEntity22(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_23:
-                partnerPersonHistory23Repository.saveAndFlush(this.createEntity23(userDto, baseEntity));
-                break;
+                return partnerPersonHistory23Repository.saveAndFlush(this.createEntity23(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_24:
-                partnerPersonHistory24Repository.saveAndFlush(this.createEntity24(userDto, baseEntity));
-                break;
+                return partnerPersonHistory24Repository.saveAndFlush(this.createEntity24(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_25:
-                partnerPersonHistory25Repository.saveAndFlush(this.createEntity25(userDto, baseEntity));
-                break;
+                return partnerPersonHistory25Repository.saveAndFlush(this.createEntity25(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_26:
-                partnerPersonHistory26Repository.saveAndFlush(this.createEntity26(userDto, baseEntity));
-                break;
+                return partnerPersonHistory26Repository.saveAndFlush(this.createEntity26(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_27:
-                partnerPersonHistory27Repository.saveAndFlush(this.createEntity27(userDto, baseEntity));
-                break;
+                return partnerPersonHistory27Repository.saveAndFlush(this.createEntity27(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_28:
-                partnerPersonHistory28Repository.saveAndFlush(this.createEntity28(userDto, baseEntity));
-                break;
+                return partnerPersonHistory28Repository.saveAndFlush(this.createEntity28(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_29:
-                partnerPersonHistory29Repository.saveAndFlush(this.createEntity29(userDto, baseEntity));
-                break;
+                return partnerPersonHistory29Repository.saveAndFlush(this.createEntity29(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_30:
-                partnerPersonHistory30Repository.saveAndFlush(this.createEntity30(userDto, baseEntity));
-                break;
+                return partnerPersonHistory30Repository.saveAndFlush(this.createEntity30(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_31:
-                partnerPersonHistory31Repository.saveAndFlush(this.createEntity31(userDto, baseEntity));
-                break;
+                return partnerPersonHistory31Repository.saveAndFlush(this.createEntity31(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_32:
-                partnerPersonHistory32Repository.saveAndFlush(this.createEntity32(userDto, baseEntity));
-                break;
+                return partnerPersonHistory32Repository.saveAndFlush(this.createEntity32(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_33:
-                partnerPersonHistory33Repository.saveAndFlush(this.createEntity33(userDto, baseEntity));
-                break;
+                return partnerPersonHistory33Repository.saveAndFlush(this.createEntity33(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_34:
-                partnerPersonHistory34Repository.saveAndFlush(this.createEntity34(userDto, baseEntity));
-                break;
+                return partnerPersonHistory34Repository.saveAndFlush(this.createEntity34(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_35:
-                partnerPersonHistory35Repository.saveAndFlush(this.createEntity35(userDto, baseEntity));
-                break;
+                return partnerPersonHistory35Repository.saveAndFlush(this.createEntity35(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_36:
-                partnerPersonHistory36Repository.saveAndFlush(this.createEntity36(userDto, baseEntity));
-                break;
+                return partnerPersonHistory36Repository.saveAndFlush(this.createEntity36(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_37:
-                partnerPersonHistory37Repository.saveAndFlush(this.createEntity37(userDto, baseEntity));
-                break;
+                return partnerPersonHistory37Repository.saveAndFlush(this.createEntity37(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_38:
-                partnerPersonHistory38Repository.saveAndFlush(this.createEntity38(userDto, baseEntity));
-                break;
+                return partnerPersonHistory38Repository.saveAndFlush(this.createEntity38(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_39:
-                partnerPersonHistory39Repository.saveAndFlush(this.createEntity39(userDto, baseEntity));
-                break;
+                return partnerPersonHistory39Repository.saveAndFlush(this.createEntity39(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_40:
-                partnerPersonHistory40Repository.saveAndFlush(this.createEntity40(userDto, baseEntity));
-                break;
+                return partnerPersonHistory40Repository.saveAndFlush(this.createEntity40(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_41:
-                partnerPersonHistory41Repository.saveAndFlush(this.createEntity41(userDto, baseEntity));
-                break;
+                return partnerPersonHistory41Repository.saveAndFlush(this.createEntity41(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_42:
-                partnerPersonHistory42Repository.saveAndFlush(this.createEntity42(userDto, baseEntity));
-                break;
+                return partnerPersonHistory42Repository.saveAndFlush(this.createEntity42(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_43:
-                partnerPersonHistory43Repository.saveAndFlush(this.createEntity43(userDto, baseEntity));
-                break;
+                return partnerPersonHistory43Repository.saveAndFlush(this.createEntity43(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_44:
-                partnerPersonHistory44Repository.saveAndFlush(this.createEntity44(userDto, baseEntity));
-                break;
+                return partnerPersonHistory44Repository.saveAndFlush(this.createEntity44(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_45:
-                partnerPersonHistory45Repository.saveAndFlush(this.createEntity45(userDto, baseEntity));
-                break;
+                return partnerPersonHistory45Repository.saveAndFlush(this.createEntity45(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_46:
-                partnerPersonHistory46Repository.saveAndFlush(this.createEntity46(userDto, baseEntity));
-                break;
+                return partnerPersonHistory46Repository.saveAndFlush(this.createEntity46(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             case GetPrefectureLgCodeService.PREF_47:
-                partnerPersonHistory47Repository.saveAndFlush(this.createEntity47(userDto, baseEntity));
-                break;
+                return partnerPersonHistory47Repository.saveAndFlush(this.createEntity47(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
             default:
-                partnerPersonHistory99Repository.saveAndFlush(this.createEntity99(userDto, baseEntity));
-                break;
+                return partnerPersonHistory99Repository.saveAndFlush(this.createEntity99(userDto, baseEntity))
+                        .getPartnerPersonHistoryId();
         }
     }
 
