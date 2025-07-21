@@ -20,7 +20,7 @@ public class MasterPersonAddStdCsvItemReader extends FlatFileItemReader<PartnerP
     /**
      * コンストラクタ
      *
-     * @param lineMapper 関連者企業・団体csv読み取りLineMapper
+     * @param lineMapper 関連者個人csv読み取りLineMapper
      */
     public MasterPersonAddStdCsvItemReader(final @Autowired PartnerPersonAddStdLineMapper lineMapper) {
         super();

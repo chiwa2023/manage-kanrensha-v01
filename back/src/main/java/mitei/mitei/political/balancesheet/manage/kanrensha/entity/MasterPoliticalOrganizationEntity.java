@@ -188,7 +188,7 @@ public class MasterPoliticalOrganizationEntity implements Serializable, AllTabeD
     /**
      * 政治団体区分を設定する
      *
-     * @param dantaiKbn 政治団体区分政治団体区分
+     * @param dantaiKbn 政治団体区分
      */
     public void setDantaiKbn(final String dantaiKbn) {
         this.dantaiKbn = dantaiKbn;

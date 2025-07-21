@@ -7,7 +7,7 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * 関連者企業・団体最小登録LineMapper
+ * 関連者個人最小登録LineMapper
  */
 @Component
 public class PartnerPersonAddStdLineMapper implements LineMapper<PartnerPersonAddStdDto> {

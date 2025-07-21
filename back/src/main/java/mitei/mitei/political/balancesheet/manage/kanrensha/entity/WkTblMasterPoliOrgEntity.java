@@ -91,6 +91,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 最新該否
      */
+    @Override
     public Boolean getIsLatest() {
         return isLatest;
     }
@@ -100,6 +101,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param isLatest 最新該否
      */
+    @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
     }
@@ -280,26 +282,48 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
         this.addressBuilding = addressBuilding;
     }
 
-    /** 郵便番号 */
-    @Column(name = "postal_code")
-    private String postalCode = INIT_String;
+    /** 郵便番号1 */
+    @Column(name = "postal1")
+    private String postal1 = INIT_String;
 
     /**
-     * 郵便番号を取得する
+     * 郵便番号1を取得する
      *
-     * @return 郵便番号
+     * @return 郵便番号1
      */
-    public String getPostalCode() {
-        return postalCode;
+    public String getPostal1() {
+        return postal1;
     }
 
     /**
-     * 郵便番号を設定する
+     * 郵便番号1を設定する
      *
-     * @param postalCode 郵便番号
+     * @param postal1 郵便番号1
      */
-    public void setPostalCode(final String postalCode) {
-        this.postalCode = postalCode;
+    public void setPostal1(final String postal1) {
+        this.postal1 = postal1;
+    }
+
+    /** 郵便番号2 */
+    @Column(name = "postal2")
+    private String postal2 = INIT_String;
+
+    /**
+     * 郵便番号2を取得する
+     *
+     * @return 郵便番号2
+     */
+    public String getPostal2() {
+        return postal2;
+    }
+
+    /**
+     * 郵便番号2を設定する
+     *
+     * @param postal2 郵便番号2
+     */
+    public void setPostal2(final String postal2) {
+        this.postal2 = postal2;
     }
 
     /** 地方自治体コード */
@@ -500,70 +524,26 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
         this.email = email;
     }
 
-    /** 自分が所持(公式)Url */
+    /** 所有(代表)サイトurl */
     @Column(name = "my_portal_url")
     private String myPortalUrl = INIT_String;
 
     /**
-     * 自分が所持(公式)Urlを取得する
+     * 所有(代表)サイトurlを取得する
      *
-     * @return 自分が所持(公式)Url
+     * @return 所有(代表)サイトurl
      */
     public String getMyPortalUrl() {
         return myPortalUrl;
     }
 
     /**
-     * 自分が所持(公式)Urlを設定する
+     * 所有(代表)サイトurlを設定する
      *
-     * @param myPortalUrl 自分が所持(公式)Url
+     * @param myPortalUrl 所有(代表)サイトurl
      */
     public void setMyPortalUrl(final String myPortalUrl) {
         this.myPortalUrl = myPortalUrl;
-    }
-
-    /** SNSサービスコード */
-    @Column(name = "sns_service_id")
-    private Integer snsServiceId = INIT_Integer;
-
-    /**
-     * SNSサービスコードを取得する
-     *
-     * @return SNSサービスコード
-     */
-    public Integer getSnsServiceId() {
-        return snsServiceId;
-    }
-
-    /**
-     * SNSサービスコードを設定する
-     *
-     * @param snsServiceId SNSサービスコード
-     */
-    public void setSnsServiceId(final Integer snsServiceId) {
-        this.snsServiceId = snsServiceId;
-    }
-
-    /** SNSサービスコード */
-    @Column(name = "sns_service_code")
-    private Integer snsServiceCode = INIT_Integer;
-
-    /**
-     * SNSサービスコードを取得する
-     *
-     * @return SNSサービスコード
-     */
-    public Integer getSnsServiceCode() {
-        return snsServiceCode;
-    }
-
-    /**
-     * SNSサービスコードを設定する
-     *
-     * @param snsServiceCode SNSサービスコード
-     */
-    public void setSnsServiceCode(final Integer snsServiceCode) {
-        this.snsServiceCode = snsServiceCode;
     }
 
     /** SNSサービス名称 */
@@ -588,28 +568,6 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
         this.snsServiceName = snsServiceName;
     }
 
-    /** SNS玄関Url */
-    @Column(name = "sns_portal_url")
-    private String snsPortalUrl = INIT_String;
-
-    /**
-     * SNS玄関Urlを取得する
-     *
-     * @return SNS玄関Url
-     */
-    public String getSnsPortalUrl() {
-        return snsPortalUrl;
-    }
-
-    /**
-     * SNS玄関Urlを設定する
-     *
-     * @param snsPortalUrl SNS玄関Url
-     */
-    public void setSnsPortalUrl(final String snsPortalUrl) {
-        this.snsPortalUrl = snsPortalUrl;
-    }
-
     /** SNSサービスアカウント */
     @Column(name = "sns_account")
     private String snsAccount = INIT_String;
@@ -630,6 +588,94 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      */
     public void setSnsAccount(final String snsAccount) {
         this.snsAccount = snsAccount;
+    }
+
+    /** 関連者団体名称かな */
+    @Column(name = "org_name_kana")
+    private String orgNameKana = INIT_String;
+
+    /**
+     * 関連者団体名称かなを取得する
+     *
+     * @return 関連者団体名称かな
+     */
+    public String getOrgNameKana() {
+        return orgNameKana;
+    }
+
+    /**
+     * 関連者団体名称かなを設定する
+     *
+     * @param orgNameKana 関連者団体名称かな
+     */
+    public void setOrgNameKana(final String orgNameKana) {
+        this.orgNameKana = orgNameKana;
+    }
+
+    /** 団体代表者関連者コード */
+    @Column(name = "org_delegate_code")
+    private String orgDelegateCode = INIT_String;
+
+    /**
+     * 団体代表者関連者コードを取得する
+     *
+     * @return 団体代表者関連者コード
+     */
+    public String getOrgDelegateCode() {
+        return orgDelegateCode;
+    }
+
+    /**
+     * 団体代表者関連者コードを設定する
+     *
+     * @param orgDelegateCode 団体代表者関連者コード
+     */
+    public void setOrgDelegateCode(final String orgDelegateCode) {
+        this.orgDelegateCode = orgDelegateCode;
+    }
+
+    /** 会計責任者関連者個人コード */
+    @Column(name = "account_mgr_code")
+    private String accountMgrCode = INIT_String;
+
+    /**
+     * 会計責任者関連者個人コードを取得する
+     *
+     * @return 会計責任者関連者個人コード
+     */
+    public String getAccountMgrCode() {
+        return accountMgrCode;
+    }
+
+    /**
+     * 会計責任者関連者個人コードを設定する
+     *
+     * @param accountMgrCode 会計責任者関連者個人コード
+     */
+    public void setAccountMgrCode(final String accountMgrCode) {
+        this.accountMgrCode = accountMgrCode;
+    }
+
+    /** 会計責任者関連者個人氏名 */
+    @Column(name = "account_mgr_name")
+    private String accountMgrName = INIT_String;
+
+    /**
+     * 会計責任者関連者個人氏名を取得する
+     *
+     * @return 会計責任者関連者個人氏名
+     */
+    public String getAccountMgrName() {
+        return accountMgrName;
+    }
+
+    /**
+     * 会計責任者関連者個人氏名を設定する
+     *
+     * @param accountMgrName 会計責任者関連者個人氏名
+     */
+    public void setAccountMgrName(final String accountMgrName) {
+        this.accountMgrName = accountMgrName;
     }
 
     /** 反映有無 */
@@ -685,6 +731,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 挿入ユーザId
      */
+    @Override
     public Integer getInsertUserId() {
         return insertUserId;
     }
@@ -694,6 +741,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param insertUserId 挿入ユーザId
      */
+    @Override
     public void setInsertUserId(final Integer insertUserId) {
         this.insertUserId = insertUserId;
     }
@@ -707,6 +755,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 挿入ユーザコード
      */
+    @Override
     public Integer getInsertUserCode() {
         return insertUserCode;
     }
@@ -716,6 +765,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param insertUserCode 挿入ユーザコード
      */
+    @Override
     public void setInsertUserCode(final Integer insertUserCode) {
         this.insertUserCode = insertUserCode;
     }
@@ -729,6 +779,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 挿入ユーザ名称
      */
+    @Override
     public String getInsertUserName() {
         return insertUserName;
     }
@@ -738,6 +789,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param insertUserName 挿入ユーザ名称
      */
+    @Override
     public void setInsertUserName(final String insertUserName) {
         this.insertUserName = insertUserName;
     }
@@ -751,6 +803,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 挿入日時
      */
+    @Override
     public LocalDateTime getInsertTimestamp() {
         return insertTimestamp;
     }
@@ -760,6 +813,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param insertTimestamp 挿入日時
      */
+    @Override
     public void setInsertTimestamp(final LocalDateTime insertTimestamp) {
         this.insertTimestamp = insertTimestamp;
     }
@@ -773,6 +827,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 無効ユーザId
      */
+    @Override
     public Integer getDeleteUserId() {
         return deleteUserId;
     }
@@ -782,6 +837,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param deleteUserId 無効ユーザId
      */
+    @Override
     public void setDeleteUserId(final Integer deleteUserId) {
         this.deleteUserId = deleteUserId;
     }
@@ -795,6 +851,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 無効ユーザコード
      */
+    @Override
     public Integer getDeleteUserCode() {
         return deleteUserCode;
     }
@@ -804,6 +861,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param deleteUserCode 無効ユーザコード
      */
+    @Override
     public void setDeleteUserCode(final Integer deleteUserCode) {
         this.deleteUserCode = deleteUserCode;
     }
@@ -817,6 +875,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 無効ユーザ名称
      */
+    @Override
     public String getDeleteUserName() {
         return deleteUserName;
     }
@@ -826,6 +885,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param deleteUserName 無効ユーザ名称
      */
+    @Override
     public void setDeleteUserName(final String deleteUserName) {
         this.deleteUserName = deleteUserName;
     }
@@ -839,6 +899,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @return 無効日時
      */
+    @Override
     public LocalDateTime getDeleteTimestamp() {
         return deleteTimestamp;
     }
@@ -848,6 +909,7 @@ public class WkTblMasterPoliOrgEntity implements Serializable, AllTabeDataHistor
      *
      * @param deleteTimestamp 無効日時
      */
+    @Override
     public void setDeleteTimestamp(final LocalDateTime deleteTimestamp) {
         this.deleteTimestamp = deleteTimestamp;
     }

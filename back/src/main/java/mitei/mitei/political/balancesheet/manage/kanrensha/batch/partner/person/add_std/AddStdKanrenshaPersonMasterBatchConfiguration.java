@@ -55,7 +55,7 @@ public class AddStdKanrenshaPersonMasterBatchConfiguration {
     @Autowired
     private EraseWkTblMasterPersonAddStdTasklet eraseWkTblMasterPersonAddStdTasklet;
 
-    /** 関連者企業・団体Csv読み取りItemReader */
+    /** 関連者個人Csv読み取りItemReader */
     @Autowired
     private MasterPersonAddStdCsvItemReader masterPersonAddStdCsvItemReader;
 
@@ -71,23 +71,23 @@ public class AddStdKanrenshaPersonMasterBatchConfiguration {
     @Autowired
     private SuspendDuplicateWkTblMasterPersonAddStdTasklet suspendDuplicateWkTblMasterPersonAddStdTasklet;
 
-    /** 関連者企業・団体マスタ登録ItemReader */
+    /** 関連者個人マスタ登録ItemReader */
     @Autowired
     private MasterPersonAddStdRecordItemReader masterPersonAddStdRecordItemReader;
 
-    /** 関連者企業・団体マスタ登録ItemWriter */
+    /** 関連者個人マスタ登録ItemWriter */
     @Autowired
     private MasterPersonAddStdRecordItemWriter masterPersonAddStdRecordItemWriter;
 
-    /** 関連者企業・団体処理結果判定ItemReader */
+    /** 関連者個人処理結果判定ItemReader */
     @Autowired
     private MasterPersonAddStdWkTblFixItemReader masterPersonAddStdWkTblFixItemReader;
 
-    /** 関連者企業・団体処理結果判定ItemProcessor */
+    /** 関連者個人処理結果判定ItemProcessor */
     @Autowired
     private MasterPersonAddStdWkTblFixProcessor masterPersonAddStdWkTblFixProcessor;
 
-    /** 関連者企業・団体処理結果判定ItemWriter */
+    /** 関連者個人処理結果判定ItemWriter */
     @Autowired
     private MasterPersonAddStdWkTblFixItemWriter masterPersonAddStdWkTblFixItemWriter;
 
