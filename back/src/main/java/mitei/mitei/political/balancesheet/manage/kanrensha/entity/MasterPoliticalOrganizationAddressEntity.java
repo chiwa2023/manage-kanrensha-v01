@@ -105,23 +105,23 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
         this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
     }
 
-    /** 関連者政治団体名 */
+    /** 関連者政治団体名称 */
     @Column(name = "partner_name")
     private String partnerName = INIT_String;
 
     /**
-     * 関連者政治団体名を取得する
+     * 関連者政治団体名称を取得する
      *
-     * @return 関連者政治団体名
+     * @return 関連者政治団体名称
      */
     public String getPartnerName() {
         return partnerName;
     }
 
     /**
-     * 関連者政治団体名を設定する
+     * 関連者政治団体名称を設定する
      *
-     * @param partnerName 関連者政治団体名
+     * @param partnerName 関連者政治団体名称
      */
     public void setPartnerName(final String partnerName) {
         this.partnerName = partnerName;
@@ -136,6 +136,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 最新該否
      */
+    @Override
     public Boolean getIsLatest() {
         return isLatest;
     }
@@ -145,6 +146,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param isLatest 最新該否
      */
+    @Override
     public void setIsLatest(final Boolean isLatest) {
         this.isLatest = isLatest;
     }
@@ -215,26 +217,48 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
         this.addressBuilding = addressBuilding;
     }
 
-    /** 郵便番号 */
-    @Column(name = "postal_code")
-    private String postalCode = INIT_String;
+    /** 郵便番号1 */
+    @Column(name = "postal1")
+    private String postal1 = INIT_String;
 
     /**
-     * 郵便番号を取得する
+     * 郵便番号1を取得する
      *
-     * @return 郵便番号
+     * @return 郵便番号1
      */
-    public String getPostalCode() {
-        return postalCode;
+    public String getPostal1() {
+        return postal1;
     }
 
     /**
-     * 郵便番号を設定する
+     * 郵便番号1を設定する
      *
-     * @param postalCode 郵便番号
+     * @param postal1 郵便番号1
      */
-    public void setPostalCode(final String postalCode) {
-        this.postalCode = postalCode;
+    public void setPostal1(final String postal1) {
+        this.postal1 = postal1;
+    }
+
+    /** 郵便番号2 */
+    @Column(name = "postal2")
+    private String postal2 = INIT_String;
+
+    /**
+     * 郵便番号2を取得する
+     *
+     * @return 郵便番号2
+     */
+    public String getPostal2() {
+        return postal2;
+    }
+
+    /**
+     * 郵便番号2を設定する
+     *
+     * @param postal2 郵便番号2
+     */
+    public void setPostal2(final String postal2) {
+        this.postal2 = postal2;
     }
 
     /** 地方自治体コード */
@@ -347,6 +371,138 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
         this.rsdt2Id = rsdt2Id;
     }
 
+    /** 住所郵便番号編集該否 */
+    @Column(name = "is_postal_edit")
+    private Boolean isPostalEdit = INIT_Boolean;
+
+    /**
+     * 住所郵便番号編集該否を取得する
+     *
+     * @return 住所郵便番号編集該否
+     */
+    public Boolean getIsPostalEdit() {
+        return isPostalEdit;
+    }
+
+    /**
+     * 住所郵便番号編集該否を設定する
+     *
+     * @param isPostalEdit 住所郵便番号編集該否
+     */
+    public void setIsPostalEdit(final Boolean isPostalEdit) {
+        this.isPostalEdit = isPostalEdit;
+    }
+
+    /** 住所番地編集該否 */
+    @Column(name = "is_block_edit")
+    private Boolean isBlockEdit = INIT_Boolean;
+
+    /**
+     * 住所番地編集該否を取得する
+     *
+     * @return 住所番地編集該否
+     */
+    public Boolean getIsBlockEdit() {
+        return isBlockEdit;
+    }
+
+    /**
+     * 住所番地編集該否を設定する
+     *
+     * @param isBlockEdit 住所番地編集該否
+     */
+    public void setIsBlockEdit(final Boolean isBlockEdit) {
+        this.isBlockEdit = isBlockEdit;
+    }
+
+    /** 住所建物編集該否 */
+    @Column(name = "is_building_edit")
+    private Boolean isBuildingEdit = INIT_Boolean;
+
+    /**
+     * 住所建物編集該否を取得する
+     *
+     * @return 住所建物編集該否
+     */
+    public Boolean getIsBuildingEdit() {
+        return isBuildingEdit;
+    }
+
+    /**
+     * 住所建物編集該否を設定する
+     *
+     * @param isBuildingEdit 住所建物編集該否
+     */
+    public void setIsBuildingEdit(final Boolean isBuildingEdit) {
+        this.isBuildingEdit = isBuildingEdit;
+    }
+
+    /** 住所郵便番号承認該否 */
+    @Column(name = "is_postal_accept")
+    private Boolean isPostalAccept = INIT_Boolean;
+
+    /**
+     * 住所郵便番号承認該否を取得する
+     *
+     * @return 住所郵便番号承認該否
+     */
+    public Boolean getIsPostalAccept() {
+        return isPostalAccept;
+    }
+
+    /**
+     * 住所郵便番号承認該否を設定する
+     *
+     * @param isPostalAccept 住所郵便番号承認該否
+     */
+    public void setIsPostalAccept(final Boolean isPostalAccept) {
+        this.isPostalAccept = isPostalAccept;
+    }
+
+    /** 住所番地承認該否 */
+    @Column(name = "is_block_accept")
+    private Boolean isBlockAccept = INIT_Boolean;
+
+    /**
+     * 住所番地承認該否を取得する
+     *
+     * @return 住所番地承認該否
+     */
+    public Boolean getIsBlockAccept() {
+        return isBlockAccept;
+    }
+
+    /**
+     * 住所番地承認該否を設定する
+     *
+     * @param isBlockAccept 住所番地承認該否
+     */
+    public void setIsBlockAccept(final Boolean isBlockAccept) {
+        this.isBlockAccept = isBlockAccept;
+    }
+
+    /** 住所建物承認該否 */
+    @Column(name = "is_building_accept")
+    private Boolean isBuildingAccept = INIT_Boolean;
+
+    /**
+     * 住所建物承認該否を取得する
+     *
+     * @return 住所建物承認該否
+     */
+    public Boolean getIsBuildingAccept() {
+        return isBuildingAccept;
+    }
+
+    /**
+     * 住所建物承認該否を設定する
+     *
+     * @param isBuildingAccept 住所建物承認該否
+     */
+    public void setIsBuildingAccept(final Boolean isBuildingAccept) {
+        this.isBuildingAccept = isBuildingAccept;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_Integer;
@@ -356,6 +512,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 挿入ユーザId
      */
+    @Override
     public Integer getInsertUserId() {
         return insertUserId;
     }
@@ -365,6 +522,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param insertUserId 挿入ユーザId
      */
+    @Override
     public void setInsertUserId(final Integer insertUserId) {
         this.insertUserId = insertUserId;
     }
@@ -378,6 +536,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 挿入ユーザコード
      */
+    @Override
     public Integer getInsertUserCode() {
         return insertUserCode;
     }
@@ -387,6 +546,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param insertUserCode 挿入ユーザコード
      */
+    @Override
     public void setInsertUserCode(final Integer insertUserCode) {
         this.insertUserCode = insertUserCode;
     }
@@ -400,6 +560,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 挿入ユーザ名称
      */
+    @Override
     public String getInsertUserName() {
         return insertUserName;
     }
@@ -409,6 +570,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param insertUserName 挿入ユーザ名称
      */
+    @Override
     public void setInsertUserName(final String insertUserName) {
         this.insertUserName = insertUserName;
     }
@@ -422,6 +584,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 挿入日時
      */
+    @Override
     public LocalDateTime getInsertTimestamp() {
         return insertTimestamp;
     }
@@ -431,6 +594,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param insertTimestamp 挿入日時
      */
+    @Override
     public void setInsertTimestamp(final LocalDateTime insertTimestamp) {
         this.insertTimestamp = insertTimestamp;
     }
@@ -444,6 +608,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 無効ユーザId
      */
+    @Override
     public Integer getDeleteUserId() {
         return deleteUserId;
     }
@@ -453,6 +618,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param deleteUserId 無効ユーザId
      */
+    @Override
     public void setDeleteUserId(final Integer deleteUserId) {
         this.deleteUserId = deleteUserId;
     }
@@ -466,6 +632,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 無効ユーザコード
      */
+    @Override
     public Integer getDeleteUserCode() {
         return deleteUserCode;
     }
@@ -475,6 +642,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param deleteUserCode 無効ユーザコード
      */
+    @Override
     public void setDeleteUserCode(final Integer deleteUserCode) {
         this.deleteUserCode = deleteUserCode;
     }
@@ -488,6 +656,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 無効ユーザ名称
      */
+    @Override
     public String getDeleteUserName() {
         return deleteUserName;
     }
@@ -497,6 +666,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param deleteUserName 無効ユーザ名称
      */
+    @Override
     public void setDeleteUserName(final String deleteUserName) {
         this.deleteUserName = deleteUserName;
     }
@@ -510,6 +680,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @return 無効日時
      */
+    @Override
     public LocalDateTime getDeleteTimestamp() {
         return deleteTimestamp;
     }
@@ -519,6 +690,7 @@ public class MasterPoliticalOrganizationAddressEntity  implements Serializable,A
      *
      * @param deleteTimestamp 無効日時
      */
+    @Override
     public void setDeleteTimestamp(final LocalDateTime deleteTimestamp) {
         this.deleteTimestamp = deleteTimestamp;
     }

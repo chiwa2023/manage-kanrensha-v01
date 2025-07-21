@@ -67,4 +67,14 @@ public interface MasterPoliticalOrganizationRepository
             + " ,poli_org_kanrensha_code AS kanrensha_code "
             + "   FROM  master_political_organization  WHERE poli_org_kanrensha_code = ?1 AND is_latest = 1 ", nativeQuery = true)
     List<PartnerCommonInfoDto> findKanrenshaCode(String kanrenshaCode);
+
+    /**
+     * 最新かつ比較用名称リストを取得する
+     *
+     * @param nameText 比較用名称
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPoliticalOrganizationEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
+
 }

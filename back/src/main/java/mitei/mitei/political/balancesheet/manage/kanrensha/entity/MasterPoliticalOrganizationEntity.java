@@ -11,14 +11,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
-
-
 /**
  * master_political_organization接続用Entity
  */
 @Entity
 @Table(name = "master_political_organization")
-public class MasterPoliticalOrganizationEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
+public class MasterPoliticalOrganizationEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -33,13 +31,14 @@ public class MasterPoliticalOrganizationEntity  implements Serializable,AllTabeD
     private static final Boolean INIT_Boolean = false;
 
     /** 初期データ(LocalcDate) */
-    private static final LocalDate INIT_LocalDate = LocalDate.of(1948,7,29);
+    private static final LocalDate INIT_LocalDate = LocalDate.of(1948, 7, 29);
 
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
     /** テーブルId */
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "master_political_organization_id")
     private Integer masterPoliticalOrganizationId = INIT_Integer;
 
@@ -171,6 +170,28 @@ public class MasterPoliticalOrganizationEntity  implements Serializable,AllTabeD
      */
     public void setPoliOrgDelegate(final String poliOrgDelegate) {
         this.poliOrgDelegate = poliOrgDelegate;
+    }
+
+    /** 政治団体区分 */
+    @Column(name = "dantai_kbn")
+    private String dantaiKbn = INIT_String;
+
+    /**
+     * 政治団体区分を取得する
+     *
+     * @return 政治団体区分
+     */
+    public String getDantaiKbn() {
+        return dantaiKbn;
+    }
+
+    /**
+     * 政治団体区分を設定する
+     *
+     * @param dantaiKbn 政治団体区分
+     */
+    public void setDantaiKbn(final String dantaiKbn) {
+        this.dantaiKbn = dantaiKbn;
     }
 
     /** 名称比較用 */

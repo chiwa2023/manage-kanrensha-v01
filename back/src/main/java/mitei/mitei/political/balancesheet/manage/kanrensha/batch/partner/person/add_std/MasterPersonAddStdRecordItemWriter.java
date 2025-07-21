@@ -30,6 +30,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.repository.WkTblMaste
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.InsertPartnerPersonHistoryService;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateDokujiCodeForPersonUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateUserLeastDtoByBatchParamUtil;
+import mitei.mitei.political.balancesheet.manage.kanrensha.utils.FormatNaturalSearchTextUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
 
 /**
@@ -70,11 +71,15 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblMaste
     @Autowired
     private CreateUserLeastDtoByBatchParamUtil createUserLeastDtoByBatchParamUtil;
 
+    /** 全文自然検索整形Utility */
+    @Autowired
+    private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
+
     /** テーブル履歴設定Utility */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
-    /** 関連者コード企業・団体用発行Utility */
+    /** 関連者コード個人用発行Utility */
     @Autowired
     private CreateDokujiCodeForPersonUtil createDokujiCodeForPersonUtil;
 
@@ -139,15 +144,17 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblMaste
         // マスタ本体登録
         MasterPersonEntity masterPersonEntity = new MasterPersonEntity();
         BeanUtils.copyProperties(entityWkTbl, masterPersonEntity);
+        masterPersonEntity.setPersonKanrenshaCode(kanrenshaCode);
         setTableDataHistoryUtil.practiceInsert(userDto, masterPersonEntity);
+        masterPersonEntity.setCompareNameText(formatNaturalSearchTextUtil.practice(masterPersonEntity.getPartnerName()));
         int masterId = masterPersonRepository.save(masterPersonEntity).getMasterPersonId();
 
         // マスタ住所登録
         MasterPersonAddressEntity addressEntity = new MasterPersonAddressEntity();
         addressEntity.setPersonKanrenshaCode(kanrenshaCode);
         addressEntity.setMasterPersonId(masterId);
-        setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
         BeanUtils.copyProperties(entityWkTbl, addressEntity);
+        setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
         // 各住所項目に記載がある場合はチェック対象とする
         if (!EMPTY.equals(entityWkTbl.getAddressPostal())) {
             addressEntity.setIsPostalEdit(true);
@@ -167,16 +174,16 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblMaste
         MasterPersonAccessEntity accessEntity = new MasterPersonAccessEntity();
         accessEntity.setPersonKanrenshaCode(kanrenshaCode);
         accessEntity.setMasterPersonId(masterId);
-        setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         BeanUtils.copyProperties(entityWkTbl, accessEntity);
+        setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         masterPersonAccessRepository.save(accessEntity);
 
         // マスタ基本登録
         MasterPersonBaseEntity baseEntity = new MasterPersonBaseEntity();
         baseEntity.setPersonKanrenshaCode(kanrenshaCode);
         baseEntity.setMasterPersonId(masterId);
-        setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
         BeanUtils.copyProperties(entityWkTbl, baseEntity);
+        setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
         if (!EMPTY.equals(entityWkTbl.getShokugyouUserWrite())) {
             baseEntity.setIsShokyouEdit(true);
             baseEntity.setIsShokyouAccept(false);
@@ -187,8 +194,8 @@ public class MasterPersonAddStdRecordItemWriter extends JpaItemWriter<WkTblMaste
         MasterPersonPropertyEntity propertyEntity = new MasterPersonPropertyEntity();
         propertyEntity.setPersonKanrenshaCode(kanrenshaCode);
         propertyEntity.setMasterPersonId(masterId);
-        setTableDataHistoryUtil.practiceInsert(userDto, propertyEntity);
         BeanUtils.copyProperties(entityWkTbl, propertyEntity);
+        setTableDataHistoryUtil.practiceInsert(userDto, propertyEntity);
         masterPersonPropertyRepository.save(propertyEntity);
 
         return masterId;

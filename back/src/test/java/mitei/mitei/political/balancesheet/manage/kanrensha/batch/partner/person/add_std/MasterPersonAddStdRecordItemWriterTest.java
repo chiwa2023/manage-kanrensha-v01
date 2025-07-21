@@ -164,6 +164,8 @@ class MasterPersonAddStdRecordItemWriterTest {
         assertEquals(entity00.getPartnerName(), entity11.getPartnerName());
         assertEquals(entity00.getAllAddress(), entity11.getAllAddress());
         assertEquals(entity00.getPersonShokugyou(), entity11.getPersonShokugyou());
+        assertEquals("迂回献金太郎", entity11.getCompareNameText());
+        assertEquals(entity10.getPersonKanrenshaCode(), entity11.getPersonKanrenshaCode());
 
         // マスタ住所に正常登録
         List<MasterPersonAddressEntity> listAddress = masterPersonAddressRepository.findAll();

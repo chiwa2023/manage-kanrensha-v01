@@ -5,7 +5,7 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 
 /**
- * 関連者企業・団体履歴Dto
+ * 関連者個人履歴Dto
  */
 public class PartnerPersonAddStdDto implements Serializable { // NOPMD DataClass
 
