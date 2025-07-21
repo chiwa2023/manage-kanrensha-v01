@@ -73,9 +73,9 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
         if (BLANK.equals(item.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getPersonShokugyou())) {
-            stringBuilder.append("職業が入力されていません;");
-        }
+        // if (BLANK.equals(item.getPersonShokugyou())) {
+        //     stringBuilder.append("職業が入力されていません;");
+        // }
         if (BLANK.equals(item.getAddressPostal())) {
             stringBuilder.append("住所郵便番号までが入力されていません;");
         }

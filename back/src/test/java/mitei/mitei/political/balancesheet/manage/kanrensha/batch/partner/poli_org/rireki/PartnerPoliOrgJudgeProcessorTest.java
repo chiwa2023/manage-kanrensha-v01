@@ -40,7 +40,7 @@ class PartnerPoliOrgJudgeProcessorTest {
         WkTblPartnerPoliOrgJudgeEntity judgeEntity00 = partnerPoliOrgJudgeProcessor
                 .process(new WkTblPartnerPoliOrgHistoryEntity());
         assertEquals(false, judgeEntity00.getIsAffected());
-        assertEquals("名称が入力されていません;住所が入力されていません;代表者が入力されていません;関連者コードが入力されていません;", judgeEntity00.getJudgeReason());
+        assertEquals("名称が入力されていません;住所が入力されていません;関連者コードが入力されていません;", judgeEntity00.getJudgeReason());
 
         // マスタに登録がないと追加作業をしません
         WkTblPartnerPoliOrgHistoryEntity historyEntity01 = new WkTblPartnerPoliOrgHistoryEntity();

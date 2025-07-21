@@ -49,9 +49,9 @@ public class PartnerCorpJudgeProcessor
         if (BLANK.equals(item.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getCorpDelegate())) {
-            stringBuilder.append("代表者が入力されていません;");
-        }
+        // if (BLANK.equals(item.getCorpDelegate())) {
+        //     stringBuilder.append("代表者が入力されていません;");
+        // }
         if (BLANK.equals(item.getCorpKanrenshaCode())) {
             stringBuilder.append("関連者コードが入力されていません;");
         }

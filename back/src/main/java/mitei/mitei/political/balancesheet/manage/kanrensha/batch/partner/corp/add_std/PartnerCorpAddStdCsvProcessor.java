@@ -73,9 +73,9 @@ public class PartnerCorpAddStdCsvProcessor implements ItemProcessor<PartnerCorpA
         if (BLANK.equals(item.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getCorpDelegate())) {
-            stringBuilder.append("代表者が入力されていません;");
-        }
+        // if (BLANK.equals(item.getCorpDelegate())) {
+        //     stringBuilder.append("代表者が入力されていません;");
+        // }
         if (BLANK.equals(item.getHoujinNo())) {
             stringBuilder.append("法人番号が入力されていません;");
         }

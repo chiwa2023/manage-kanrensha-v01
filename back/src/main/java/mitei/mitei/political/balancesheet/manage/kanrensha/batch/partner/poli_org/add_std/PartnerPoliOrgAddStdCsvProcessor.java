@@ -73,9 +73,9 @@ public class PartnerPoliOrgAddStdCsvProcessor implements ItemProcessor<PartnerPo
         if (BLANK.equals(item.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getPoliOrgDelegate())) {
-            stringBuilder.append("代表者が入力されていません;");
-        }
+        // if (BLANK.equals(item.getPoliOrgDelegate())) {
+        //     stringBuilder.append("代表者が入力されていません;");
+        // }
         if (BLANK.equals(item.getDantaiKbn())) {
             stringBuilder.append("団体区分が入力されていません;");
         }

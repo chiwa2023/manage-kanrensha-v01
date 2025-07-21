@@ -49,9 +49,9 @@ public class PartnerPersonJudgeProcessor
         if (BLANK.equals(item.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getPersonShokugyou())) {
-            stringBuilder.append("職業が入力されていません;");
-        }
+        // if (BLANK.equals(item.getPersonShokugyou())) {
+        //     stringBuilder.append("職業が入力されていません;");
+        // }
         if (BLANK.equals(item.getPersonKanrenshaCode())) {
             stringBuilder.append("関連者コードが入力されていません;");
         }
