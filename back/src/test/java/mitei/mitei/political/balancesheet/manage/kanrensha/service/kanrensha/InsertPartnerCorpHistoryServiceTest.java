@@ -290,6 +290,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("北海道実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子"); // NOPMD
         baseEntity.setCorpKanrenshaCode("123-4567"); // NOPMD
+        baseEntity.setOrgDelegateCode("987-6543"); // NOPMD
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -300,6 +301,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         // 件数を数えるだけでは間違いなく挿入されたかの確認にならないので住所を確認する
         PartnerCorpHistory01Entity ansEntity = listAns.get(0);
         assertEquals(baseEntity.getAllAddress(), ansEntity.getAllAddress());
+        assertEquals(baseEntity.getOrgDelegateCode(), ansEntity.getOrgDelegateCode());
 
     }
 
@@ -312,6 +314,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("青森県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -333,6 +336,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("岩手県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -354,6 +358,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("宮城県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -375,6 +380,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("秋田県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -396,6 +402,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("山形県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -417,6 +424,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("福島県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -438,6 +446,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("茨城県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -459,6 +468,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("栃木県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -480,6 +490,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("群馬県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -501,6 +512,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("埼玉県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -522,6 +534,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("千葉県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -543,6 +556,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("東京都実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -564,6 +578,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("神奈川県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -585,6 +600,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("新潟県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -606,6 +622,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("富山県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -627,6 +644,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("石川県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -648,6 +666,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("福井県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -669,6 +688,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("山梨県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -690,6 +710,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("長野県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -711,6 +732,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("岐阜県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -732,6 +754,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("静岡県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -753,6 +776,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("愛知県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -774,6 +798,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("三重県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -795,6 +820,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("滋賀県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -816,6 +842,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("京都府実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -837,6 +864,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("大阪府実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -858,6 +886,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("兵庫県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -879,6 +908,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("奈良県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -900,6 +930,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("和歌山県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -921,6 +952,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("鳥取県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -942,6 +974,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("島根県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -963,6 +996,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("岡山県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -984,6 +1018,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("広島県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1005,6 +1040,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("山口県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1026,6 +1062,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("徳島県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1047,6 +1084,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("香川県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1068,6 +1106,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("愛媛県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1089,6 +1128,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("高知県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1110,6 +1150,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("福岡県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1131,6 +1172,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("佐賀県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1152,6 +1194,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("長崎県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1173,6 +1216,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("熊本県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1194,6 +1238,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("大分県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1215,6 +1260,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("宮崎県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1236,6 +1282,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("鹿児島県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1257,6 +1304,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("沖縄県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 
@@ -1278,6 +1326,7 @@ class InsertPartnerCorpHistoryServiceTest { // NOPMD
         baseEntity.setAllAddress("青県実在市湖畔町");
         baseEntity.setCorpDelegate("組合長　花子");
         baseEntity.setCorpKanrenshaCode("123-4567");
+        baseEntity.setOrgDelegateCode("987-6543");
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
 

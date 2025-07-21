@@ -79,6 +79,7 @@ class DumpPartnerCorpHistory29ItemWriterTest {
         entity00.setAllAddress("全住所");
         entity00.setCorpDelegate("代表者");
         entity00.setCorpKanrenshaCode("123-4556");
+        entity00.setOrgDelegateCode("9876-554");
         entity00.setInsertTimestamp(LocalDateTime.of(2022, 12, 5, 1, 2, 3));
 
         List<PartnerCorpHistory29Entity> list = new ArrayList<>();
@@ -91,7 +92,7 @@ class DumpPartnerCorpHistory29ItemWriterTest {
 
         List<String> listAns = Files.readAllLines(path);
 
-        assertEquals("\"123-4556\",\"団体名\",\"全住所\",\"代表者\",\"2022-12-05T01:02:03\"", listAns.get(1));
+        assertEquals("\"123-4556\",\"団体名\",\"全住所\",\"代表者\",\"9876-554\",\"2022-12-05T01:02:03\"", listAns.get(1));
     }
 
     private StepExecution getStepExecution(final String output) {

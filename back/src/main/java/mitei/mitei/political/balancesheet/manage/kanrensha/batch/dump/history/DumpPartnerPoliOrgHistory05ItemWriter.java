@@ -28,10 +28,10 @@ public class DumpPartnerPoliOrgHistory05ItemWriter extends FlatFileItemWriter<Pa
         lineAggregator.setDelimiter(","); // 区切り文字をカンマに設定
         lineAggregator.setQuoteCharacter("\"");
         BeanWrapperFieldExtractor<PartnerPoliOrgHistory05Entity> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(
-                new String[] { "poliOrgKanrenshaCode", "partnerName", "allAddress", "poliOrgDelegate", "insertTimestamp" }); // 書き出すフィールド名を設定
+        fieldExtractor.setNames(new String[] { "poliOrgKanrenshaCode", "partnerName", "allAddress", "poliOrgDelegate",
+                "orgDelegateCode", "insertTimestamp" }); // 書き出すフィールド名を設定
         lineAggregator.setFieldExtractor(fieldExtractor);
-        String[] headers = { "\"関連者番号\"", "\"名称\"", "\"全住所\"", "\"代表者名\"", "\"登録日時\"" };
+        String[] headers = { "\"関連者番号\"", "\"名称\"", "\"全住所\"", "\"代表者名\"", "\"代表者コード\"", "\"登録日時\"" };
         super.setHeaderCallback(writer1 -> writer1.write(String.join(",", headers)));
         super.setLineAggregator(lineAggregator);
     }

@@ -49,12 +49,12 @@ class CopyFileByPrefectureTaskletTest {
         /* 元ソース */
         //String srcPath = GetCurrentResourcePath.getBackSrcPath("");
         //Path path = Paths.get(srcPath,
-        //        "/main/java/mitei/mitei/political/balancesheet/manage/kanrensha/batch/dump/history/DumpPartnerPoliOrgHistory99ItemWriter.java");
+        //        "/main/java/mitei/mitei/political/balancesheet/manage/kanrensha/entity/lgcode/PartnerPoliOrgHistory99Entity.java");
 
         /* テスト */
         String srcPath = GetCurrentResourcePath.getBackTestFilePath();
         Path path = Paths.get(srcPath,
-                "/mitei/mitei/political/balancesheet/manage/kanrensha/batch/dump/history/DumpPartnerPoliOrgHistory99ItemWriterTest.java");
+                 "/mitei/mitei/political/balancesheet/manage/kanrensha/batch/dump/history/DumpPartnerCorpHistory99ItemWriterTest.java");
         
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
                 .addString("outputPath", "c:/temp/output_test") //

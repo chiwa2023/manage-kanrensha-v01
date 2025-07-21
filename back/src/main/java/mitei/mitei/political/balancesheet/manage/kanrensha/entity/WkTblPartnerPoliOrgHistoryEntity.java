@@ -11,14 +11,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 
-
-
 /**
  * wk_tbl_partner_poli_org_history接続用Entity
  */
 @Entity
 @Table(name = "wk_tbl_partner_poli_org_history")
-public class WkTblPartnerPoliOrgHistoryEntity  implements Serializable,AllTabeDataHistoryInterface{ // NOPMD DataClass
+public class WkTblPartnerPoliOrgHistoryEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -33,13 +31,14 @@ public class WkTblPartnerPoliOrgHistoryEntity  implements Serializable,AllTabeDa
     private static final Boolean INIT_Boolean = false;
 
     /** 初期データ(LocalcDate) */
-    private static final LocalDate INIT_LocalDate = LocalDate.of(1948,7,29);
+    private static final LocalDate INIT_LocalDate = LocalDate.of(1948, 7, 29);
 
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
 
     /** テーブルId */
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wk_partner_poli_org_history_id")
     private Integer wkPartnerPoliOrgHistoryId = INIT_Integer;
 
@@ -81,6 +80,28 @@ public class WkTblPartnerPoliOrgHistoryEntity  implements Serializable,AllTabeDa
      */
     public void setWkPartnerPoliOrgHistoryCode(final Integer wkPartnerPoliOrgHistoryCode) {
         this.wkPartnerPoliOrgHistoryCode = wkPartnerPoliOrgHistoryCode;
+    }
+
+    /** 団体代表者関連者コード */
+    @Column(name = "org_delegate_code")
+    private String orgDelegateCode = INIT_String;
+
+    /**
+     * 団体代表者関連者コードを取得する
+     *
+     * @return 団体代表者関連者コード
+     */
+    public String getOrgDelegateCode() {
+        return orgDelegateCode;
+    }
+
+    /**
+     * 団体代表者関連者コードを設定する
+     *
+     * @param orgDelegateCode 団体代表者関連者コード
+     */
+    public void setOrgDelegateCode(final String orgDelegateCode) {
+        this.orgDelegateCode = orgDelegateCode;
     }
 
     /** 最新該否 */
