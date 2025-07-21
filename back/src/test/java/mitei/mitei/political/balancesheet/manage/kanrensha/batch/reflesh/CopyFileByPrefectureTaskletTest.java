@@ -47,14 +47,17 @@ class CopyFileByPrefectureTaskletTest {
     private StepExecution getStepExecution() {
 
         /* 元ソース */
-        //String srcPath = GetCurrentResourcePath.getBackSrcPath("");
-        //Path path = Paths.get(srcPath,
-        //        "/main/java/mitei/mitei/political/balancesheet/manage/kanrensha/entity/lgcode/PartnerPoliOrgHistory99Entity.java");
+        String srcPath = GetCurrentResourcePath.getBackSrcPath("");
+        Path path = Paths.get(srcPath,
+                "/main/java/mitei/mitei/political/balancesheet/manage/kanrensha/entity/lgcode/PartnerPoliOrgHistory99Entity.java");
 
         /* テスト */
-        String srcPath = GetCurrentResourcePath.getBackTestFilePath();
-        Path path = Paths.get(srcPath,
-                 "/mitei/mitei/political/balancesheet/manage/kanrensha/batch/dump/history/DumpPartnerCorpHistory99ItemWriterTest.java");
+        //String srcPath = GetCurrentResourcePath.getBackTestFilePath();
+        //Path path = Paths.get(srcPath,
+        //         "/mitei/mitei/political/balancesheet/manage/kanrensha/batch/dump/history/DumpPartnerCorpHistory99ItemWriterTest.java");
+
+        
+        //Path path = Paths.get("C:/workspace/git/pg/manage-kanrensha-v01/back/src/main/resources/DDL/partner_poli_org_history_99.sql");
         
         JobParameters jobParameters = new JobParametersBuilder() // NOPMD
                 .addString("outputPath", "c:/temp/output_test") //
