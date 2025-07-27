@@ -4,7 +4,6 @@ export default interface UserPersonLeastInterface {
 
 export default class UserPersonLeastDto implements UserPersonLeastInterface {
 
-
     /** ユーザId  */
     userPersonId: number;
 
@@ -16,7 +15,7 @@ export default class UserPersonLeastDto implements UserPersonLeastInterface {
 
 
     /** 権限リスト */
-    listRoles:string[];
+    listRoles: string[];
 
     constructor() {
 

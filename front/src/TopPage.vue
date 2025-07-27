@@ -13,6 +13,9 @@ import RoutePathConstants from './routePathConstants';
     <RouterLink :to=RoutePathConstants.PAGE_MENU_PARTNER>関連者メニュー</RouterLink><br>
 
     <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_MENU_ADMIN>SEメニュー</RouterLink><br>
+
+    <hr>
     <RouterLink :to=RoutePathConstants.PAGE_COMPONENT>コンポーネント作成台紙</RouterLink><br>
 
 </template>

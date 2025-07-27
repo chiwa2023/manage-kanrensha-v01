@@ -2,7 +2,6 @@ export default interface LoginUserCapsuleInterface {
 
 }
 
-
 export default class LoginUserCapsuleDto implements LoginUserCapsuleInterface {
 
     /** ユーザId  */

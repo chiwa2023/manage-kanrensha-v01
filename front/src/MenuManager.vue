@@ -27,6 +27,21 @@ import RoutePathConstants from './routePathConstants';
     <RouterLink :to=RoutePathConstants.PAGE_ADDRESS_REGI_SABUN>アドレス・ベース・レジストリ差分更新</RouterLink><br>
     <hr>
 
+    <h3>関連者履歴一括登録</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_HISTORY_CORP>企業・団体履歴登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_HISTORY_PERSON>個人履歴登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_HISTORY_POLI_ORG>政治団体履歴登録</RouterLink><br>
+
+    <h3>関連者マスタ一括登録</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_CORP>企業・団体マスタ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_PERSON>個人マスタ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_POLI_ORG>政治団体マスタ登録</RouterLink><br>
+
+    <hr>
+    <h3>関連者XMLから一括登録</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_ADD_XML>関連者XMLから一括登録</RouterLink><br>
+
+    <hr>
     <RouterLink to="/">ログインページ</RouterLink><br>
 
 </template>
