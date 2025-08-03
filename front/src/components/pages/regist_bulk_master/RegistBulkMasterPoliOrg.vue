@@ -1,6 +1,9 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
+import EditWkTblMinPoliOrg from '../../common/wktbl_edit_min/EditWkTblMinPoliOrg.vue';
+import EditWkTblStdPoliOrg from '../../common/wktbl_edit_std/EditWkTblStdPoliOrg.vue';
+import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 
 
 // サンプル表示
@@ -36,6 +39,8 @@ function onSave() {
 }
 </script>
 <template>
+    <!-- 管理者メニュー兼チェック -->
+    <MockManagerInfo></MockManagerInfo>
 
     <h1>関連者政治団体マスタ一括登録</h1>
 
@@ -52,10 +57,23 @@ function onSave() {
     <h3>CSVファイル選択</h3>
     <ReadCsv :is-text="true" @send-text-data="recieveTextDataBlock"></ReadCsv>
 
+    <h3>読み取り結果(最初の10行)</h3>
+    <div class="one-line">
+        <table>
+            <tbody>
+                <tr v-for="row, index of tableData" :key="index">
+                    <td v-for="cell, index of row" :key="index">
+                        {{ removeQuote(cell) }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
     <div class="one-line" v-if="isVisibleFormat === formatMin">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
         <div v-if="isVisibleTemplate">
-            【最小フォーマット】<br>
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
             最初の1列は不要です。(ファイル内は4列)
             <table>
@@ -72,7 +90,8 @@ function onSave() {
                         <th class="explain">必須</th>
                         <th class="explain">必須</th>
                         <th class="explain">必須</th>
-                        <th class="explain">必須<br>政党:01、政党支部:02、政治資金団体:03<br>18条2項1規定団体:04、その他の政治団体:05、その他の政治団体支部:06</th>
+                        <th class="explain">必須<br>政党:01、政党支部:02、政治資金団体:03<br>18条2項1規定団体:04、その他の政治団体:05、その他の政治団体支部:06
+                        </th>
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
@@ -93,13 +112,15 @@ function onSave() {
             <a href="sample_csv/sample_bulk_master_min_poli_org.csv">上記内容サンプルcsvをダウンロード</a>
         </div>
     </div>
+    <!-- 登録結果と編集 -->
+    <EditWkTblMinPoliOrg v-if="isVisibleFormat === formatMin"></EditWkTblMinPoliOrg>
 
+    <h3 v-if="isVisibleFormat !== formatMin">標準フォーマット</h3>
     <div class="one-line" v-if="isVisibleFormat !== formatMin">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
         <div v-if="isVisibleTemplate">
-            【標準フォーマット】<br></br>
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
-            最初の1列は不要です。(ファイル内は4列)
+            最初の1列は不要です。(ファイル内は24列)
             <table class="std">
                 <tbody>
                     <tr>
@@ -135,7 +156,8 @@ function onSave() {
                         <th class="explain">必須</th>
                         <th class="explain">必須</th>
                         <th class="explain">必須</th>
-                        <th class="explain">必須<br>政党:01、政党支部:02、政治資金団体:03<br>18条2項1規定団体:04、その他の政治団体:05、その他の政治団体支部:06</th>
+                        <th class="explain">必須<br>政党:01、政党支部:02、政治資金団体:03<br>18条2項1規定団体:04、その他の政治団体:05、その他の政治団体支部:06
+                        </th>
                         <th class="explain">必須</th>
                         <th class="explain">必須</th>
                         <th class="explain">任意</th>
@@ -219,20 +241,9 @@ function onSave() {
             <a href="sample_csv/sample_bulk_master_std_poli_org.csv">上記内容サンプルcsvをダウンロード</a><br>
         </div>
     </div>
+    <!-- 登録結果と編集 -->
+    <EditWkTblStdPoliOrg v-if="isVisibleFormat !== formatMin"></EditWkTblStdPoliOrg>
 
-    <h3>読み取り結果(最初の10行)</h3>
-    <div class="one-line">
-        <table>
-            <tbody>
-                <tr v-for="row, index of tableData" :key="index">
-                    <td v-for="cell, index of row" :key="index">
-                        {{ removeQuote(cell) }}
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
@@ -242,16 +253,18 @@ function onSave() {
 </template>
 <style scoped>
 :root {
-  --cell_width:200 px;
+    --cell_width: 200 px;
 }
+
 table {
     border-style: solid;
     border-width: 1px;
 }
+
 table.std {
     border-style: solid;
     border-width: 1px;
-    width: calc( 200px * 24);
+    width: calc(200px * 24);
 }
 
 td {

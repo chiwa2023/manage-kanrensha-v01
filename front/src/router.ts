@@ -50,6 +50,20 @@ const routes = [
 
     // XMLから編集
     { path: RoutePathConstants.PAGE_ADD_XML, name: "AddByXml", component: () => import("./components/pages/add_xml/AddByXml.vue") },
+
+    // データダウンロード
+    { path: RoutePathConstants.PAGE_DOWNLOAD_MASTER_STD, name: "DownloadMasterStd", component: () => import("./components/pages/download_data/DownloadMasterStd.vue") },
+    { path: RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN, name: "DownloadMasterMin", component: () => import("./components/pages/download_data/DownloadMasterMin.vue") },
+    { path: RoutePathConstants.PAGE_DOWNLOAD_HISTORY, name: "DownloadHistory", component: () => import("./components/pages/download_data/DownloadHistory.vue") },
+
+    { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD, name: "DownloadSabunMasterStd", component: () => import("./components/pages/download_sabun/DownloadSabunMasterStd.vue") },
+    { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN, name: "DownloadSabunMasterMin", component: () => import("./components/pages/download_sabun/DownloadSabunMasterMin.vue") },
+    { path: RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY, name: "DownloadSabunHistory", component: () => import("./components/pages/download_sabun/DownloadSabunHistory.vue") },
+
+    // 関連者紐づけ
+    { path: RoutePathConstants.PAGE_REGI_COMBINE_CORP, name: "RegistCombinerCorp", component: () => import("./components/pages/regist_combine_org/RegistCombinerCorp.vue") },
+    { path: RoutePathConstants.PAGE_REGI_COMBINE_POLI_ORG, name: "RegistCombinerPoliOrg", component: () => import("./components/pages/regist_combine_org/RegistCombinerPoliOrg.vue") },
+
 ];
 
 const router = createRouter({

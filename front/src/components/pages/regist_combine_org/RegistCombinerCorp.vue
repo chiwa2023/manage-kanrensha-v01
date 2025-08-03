@@ -1,8 +1,8 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
-import EditWkTblHistoryCorp from '../../common/wktbl_edit_history/EditWkTblHistoryCorp.vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
+import EditWkTblCombineOrg from '../../common/wktbl_combine/EditWkTblCombineOrg.vue';
+
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -35,12 +35,12 @@ function onSave() {
     <!-- 管理者メニュー兼チェック -->
     <MockManagerInfo></MockManagerInfo>
 
-    <h1>関連者企業・団体履歴一括登録</h1>
+    <h1>関連者個人－企業／団体紐づけ登録</h1>
 
     <h3>CSVファイル選択</h3>
     <ReadCsv :is-text="true" @send-text-data="recieveTextDataBlock"></ReadCsv>
 
-        <h3>読み取り結果(最初の10行)</h3>
+    <h3>読み取り結果(最初の10行)</h3>
     <div class="one-line">
         <table>
             <tbody>
@@ -54,7 +54,7 @@ function onSave() {
         </table>
     </div>
 
-    <div class="one-line">
+        <div class="one-line">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
         <div v-if="isVisibleTemplate">
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
@@ -63,52 +63,58 @@ function onSave() {
                 <tbody>
                     <tr>
                         <th class="hojo">要件</th>
-                        <th>団体名称</th>
-                        <th>団体住所</th>
-                        <th>団体代表者氏名</th>
-                        <th>関連者コード</th>
+                        <th>個人関連者コード</th>
+                        <th>個人名称</th>
+                        <th>企業・団体関連者コード</th>
+                        <th>企業・団体名称</th>
+                        <th>紐づけ開始年</th>
+                        <th>紐づけ終了年</th>
                     </tr>
                     <tr>
                         <th class="hojo">説明</th>
                         <th class="explain">必須</th>
                         <th class="explain">必須</th>
-                        <th class="explain">任意<br>(項目省略不可)</th>
                         <th class="explain">必須</th>
+                        <th class="explain">必須</th>
+                        <th class="explain">任意</th>
+                        <th class="explain">任意</th>
                     </tr>
                     <tr>
                         <th class="hojo">データ例</th>
+                        <td>12-34567-8901-2345-67890</td>
+                        <td>迂回献金　太郎</td>
+                        <td>1-2345-67-890123-4567890</td>
                         <td>ふんだくり企業</td>
-                        <td>和歌山県実在市山麓町</td>
-                        <td>代表者　太郎</td>
-                        <td>1-234-55678</td>
-                    </tr>
-                    <tr>
-                        <th class="hojo">データ例</th>
-                        <td>超元素製造組合</td>
-                        <td>宮崎県架空市湖畔町</td>
-                        <td></td>
-                        <td>2-345-6789</td>
+                        <td>2021</td>
+                        <td>2024</td>
                     </tr>
                 </tbody>
             </table>
-            <a href="sample_csv/sample_bulk_history_corp.csv">上記内容サンプルcsvをダウンロード</a>
+            <a href="sample_csv/sample_combine_corp.csv">上記内容サンプルcsvをダウンロード</a>
         </div>
+        <!-- 登録結果と編集 -->
+        <EditWkTblCombineOrg></EditWkTblCombineOrg>
     </div>
-
-    <!-- 登録結果と編集 -->
-    <EditWkTblHistoryCorp></EditWkTblHistoryCorp>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>
     </div>
-
 </template>
-
 <style scoped>
+:root {
+    --cell_width: 200 px;
+}
+
 table {
     border-style: solid;
     border-width: 1px;
+}
+
+table.std {
+    border-style: solid;
+    border-width: 1px;
+    width: calc(200px * 26);
 }
 
 td {
@@ -120,10 +126,14 @@ th {
     border-style: solid;
     border-width: 1px;
 }
+
 th.hojo {
     background-color: lightgray;
+    width: --cell_width px;
 }
+
 th.explain {
     background-color: lightcyan;
+    width: --cell_width px;
 }
 </style>

@@ -1,6 +1,9 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
+import EditWkTblMinCorp from '../../common/wktbl_edit_min/EditWkTblMinCorp.vue';
+import EditWkTblStdCorp from '../../common/wktbl_edit_std/EditWkTblStdCorp.vue';
+import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -35,6 +38,9 @@ function onSave() {
 }
 </script>
 <template>
+    <!-- 管理者メニュー兼チェック -->
+    <MockManagerInfo></MockManagerInfo>
+
     <h1>関連者企業・団体マスタ一括登録</h1>
 
     <div class="left-area">
@@ -50,10 +56,24 @@ function onSave() {
     <h3>CSVファイル選択</h3>
     <ReadCsv :is-text="true" @send-text-data="recieveTextDataBlock"></ReadCsv>
 
+    <h3>読み取り結果(最初の10行)</h3>
+    <div class="one-line">
+        <table>
+            <tbody>
+                <tr v-for="row, index of tableData" :key="index">
+                    <td v-for="cell, index of row" :key="index">
+                        {{ removeQuote(cell) }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <h3 v-if="isVisibleFormat === formatMin">最小フォーマット</h3>
     <div class="one-line" v-if="isVisibleFormat === formatMin">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
         <div v-if="isVisibleTemplate">
-            【最小フォーマット】<br>
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
             最初の1列は不要です。(ファイル内は4列)
             <table>
@@ -91,13 +111,15 @@ function onSave() {
             <a href="sample_csv/sample_bulk_master_min_corp.csv">上記内容サンプルcsvをダウンロード</a>
         </div>
     </div>
+    <!-- 登録結果と編集 -->
+    <EditWkTblMinCorp v-if="isVisibleFormat === formatMin"></EditWkTblMinCorp>
 
+    <h3 v-if="isVisibleFormat !== formatMin">標準フォーマット</h3>
     <div class="one-line" v-if="isVisibleFormat !== formatMin">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
         <div v-if="isVisibleTemplate" style="overflow: scroll;">
-            【標準フォーマット】<br></br>
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
-            最初の1列は不要です。(ファイル内は4列)
+            最初の1列は不要です。(ファイル内は23列)
             <table class="std">
                 <tbody>
                     <tr>
@@ -221,20 +243,8 @@ function onSave() {
             <a href="sample_csv/sample_bulk_master_std_corp.csv">上記内容サンプルcsvをダウンロード</a><br>
         </div>
     </div>
-
-    <h3>読み取り結果(最初の10行)</h3>
-    <div class="one-line">
-        <table>
-            <tbody>
-                <tr v-for="row, index of tableData" :key="index">
-                    <td v-for="cell, index of row" :key="index">
-                        {{ removeQuote(cell) }}
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
+    <!-- 登録結果と編集 -->
+    <EditWkTblStdCorp v-if="isVisibleFormat !== formatMin"></EditWkTblStdCorp>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
@@ -243,16 +253,18 @@ function onSave() {
 </template>
 <style scoped>
 :root {
-  --cell_width:200 px;
+    --cell_width: 200 px;
 }
+
 table {
     border-style: solid;
     border-width: 1px;
 }
+
 table.std {
     border-style: solid;
     border-width: 1px;
-    width: calc( 200px * 26);
+    width: calc(200px * 26);
 }
 
 td {

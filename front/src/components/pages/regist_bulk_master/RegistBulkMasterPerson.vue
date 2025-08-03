@@ -1,6 +1,9 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
+import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
+import EditWkTblStdPerson from '../../common/wktbl_edit_std/EditWkTblStdPerson.vue';
+import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 
 
 // サンプル表示
@@ -36,6 +39,8 @@ function onSave() {
 }
 </script>
 <template>
+    <!-- 管理者メニュー兼チェック -->
+    <MockManagerInfo></MockManagerInfo>
 
     <h1>関連者個人マスタ一括登録</h1>
 
@@ -52,12 +57,26 @@ function onSave() {
     <h3>CSVファイル選択</h3>
     <ReadCsv :is-text="true" @send-text-data="recieveTextDataBlock"></ReadCsv>
 
+    <h3>読み取り結果(最初の10行)</h3>
+    <div class="one-line">
+        <table>
+            <tbody>
+                <tr v-for="row, index of tableData" :key="index">
+                    <td v-for="cell, index of row" :key="index">
+                        {{ removeQuote(cell) }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <h3 v-if="isVisibleFormat === formatMin">最小フォーマット</h3>
     <div class="one-line" v-if="isVisibleFormat === formatMin">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
         <div v-if="isVisibleTemplate">
-            【最小フォーマット】<br>
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
-            最初の1列は不要です。(ファイル内は4列)
+            最初の1列は不要です。(ファイル内は3列)
             <table>
                 <tbody>
                     <tr>
@@ -89,13 +108,15 @@ function onSave() {
             <a href="sample_csv/sample_bulk_master_min_person.csv">上記内容サンプルcsvをダウンロード</a>
         </div>
     </div>
+    <!-- 登録結果と編集 -->
+    <EditWkTblMinPerson v-if="isVisibleFormat === formatMin"></EditWkTblMinPerson>
 
+    <h3 v-if="isVisibleFormat !== formatMin">標準フォーマット</h3>
     <div class="one-line" v-if="isVisibleFormat !== formatMin">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
         <div v-if="isVisibleTemplate">
-            【標準フォーマット】<br></br>
             ヘッダ必須。1行目は読み飛ばすので、ないと1行目が登録されません<br>
-            最初の1列は不要です。(ファイル内は4列)
+            最初の1列は不要です。(ファイル内は28列)
             <table class="std">
                 <tbody>
                     <tr>
@@ -126,6 +147,8 @@ function onSave() {
                         <th>職業法人番号</th>
                         <th>職業法人住所</th>
                         <th>職業法人名</th>
+                        <th>SNS名称</th>
+                        <th>SNSアカウント</th>
                         <th>地方公共団体コード</th>
                         <th>町字Id</th>
                         <th>街区Id</th>
@@ -160,6 +183,8 @@ function onSave() {
                         <th class="explain">任意</th>
                         <th class="explain">任意</th>
                         <th class="explain">任意</th>
+                        <th class="explain">任意</th>
+                        <th class="explain">任意</th>
                         <th class="explain">任意<br>7文字まで</th>
                         <th class="explain">任意<br>6文字まで</th>
                         <th class="explain">任意<br>8文字まで</th>
@@ -171,17 +196,17 @@ function onSave() {
                         <td>迂回献金　ミカエル　太郎</td>
                         <td>和歌山県実在市山麓町</td>
                         <td>団体役員</td>
-                        <td>住所郵便番号まで</td>
-                        <td>住所番地まで</td>
-                        <td>住所建物まで</td>
-                        <td>郵便番号1</td>
-                        <td>郵便番号2</td>
-                        <td>電話番号市外局番</td>
-                        <td>電話番号局番</td>
-                        <td>電話番号番号</td>
-                        <td>メールアドレス</td>
-                        <td>自分の公式サイト</td>
-                        <td>外国籍該否</td>
+                        <td>和歌山県実在市山麓町</td>
+                        <td>2丁目6番地</td>
+                        <td>四角ビル7F</td>
+                        <td>012</td>
+                        <td>3456</td>
+                        <td>023</td>
+                        <td>4567</td>
+                        <td>8901</td>
+                        <td>taro@jakusho.net</td>
+                        <td>http://jakusho.net/taro</td>
+                        <td>いいえ</td>
                         <td>迂回献金</td>
                         <td>太郎</td>
                         <td>ミカエル</td>
@@ -194,6 +219,8 @@ function onSave() {
                         <td>1-234-5678</td>
                         <td>三重県架空市湖畔町</td>
                         <td>とこぶし収穫組合</td>
+                        <td>弱小ブログ</td>
+                        <td>@uaikenkin</td>
                         <td>098765</td>
                         <td>1234</td>
                         <td>123</td>
@@ -233,26 +260,17 @@ function onSave() {
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
             <a href="sample_csv/sample_bulk_master_std_person.csv">上記内容サンプルcsvをダウンロード</a><br>
         </div>
     </div>
+    <!-- 登録結果と編集 -->
+    <EditWkTblStdPerson v-if="isVisibleFormat !== formatMin"></EditWkTblStdPerson>
 
-    <h3>読み取り結果(最初の10行)</h3>
-    <div class="one-line">
-        <table>
-            <tbody>
-                <tr v-for="row, index of tableData" :key="index">
-                    <td v-for="cell, index of row" :key="index">
-                        {{ removeQuote(cell) }}
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
@@ -262,16 +280,18 @@ function onSave() {
 
 <style scoped>
 :root {
-  --cell_width:200 px;
+    --cell_width: 200 px;
 }
+
 table {
     border-style: solid;
     border-width: 1px;
 }
+
 table.std {
     border-style: solid;
     border-width: 1px;
-    width: calc( 200px * 31);
+    width: calc(200px * 33);
 }
 
 td {

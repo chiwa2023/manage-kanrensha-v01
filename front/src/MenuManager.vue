@@ -36,10 +36,17 @@ import RoutePathConstants from './routePathConstants';
     <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_CORP>企業・団体マスタ登録</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_PERSON>個人マスタ登録</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_POLI_ORG>政治団体マスタ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_COMBINE_CORP>個人－企業／団体紐づけ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_COMBINE_POLI_ORG>個人－政治団体紐づけ登録</RouterLink><br>
 
     <hr>
     <h3>関連者XMLから一括登録</h3>
     <RouterLink :to=RoutePathConstants.PAGE_ADD_XML>関連者XMLから一括登録</RouterLink><br>
+
+    <hr>
+    <h3>関連者マスタ標準データダウンロード</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_STD>関連者マスタ標準データダウンロード</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>関連者マスタ標準データダウンロード</RouterLink><br>
 
     <hr>
     <RouterLink to="/">ログインページ</RouterLink><br>

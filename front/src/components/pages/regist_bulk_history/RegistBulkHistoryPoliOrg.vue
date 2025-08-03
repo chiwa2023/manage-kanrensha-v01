@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
+import EditWkTblHistoryPoliOrg from '../../common/wktbl_edit_history/EditWkTblHistoryPoliOrg.vue';
+import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -31,10 +33,26 @@ function onSave() {
 
 </script>
 <template>
+    <!-- 管理者メニュー兼チェック -->
+    <MockManagerInfo></MockManagerInfo>
+
     <h1>関連者政治団体履歴一括登録</h1>
 
     <h3>CSVファイル選択</h3>
     <ReadCsv :is-text="true" @send-text-data="recieveTextDataBlock"></ReadCsv>
+    <h3>読み取り結果(最初の10行)</h3>
+    <div class="one-line">
+        <table>
+            <tbody>
+                <tr v-for="row, index of tableData" :key="index">
+                    <td v-for="cell, index of row" :key="index">
+                        {{ removeQuote(cell) }}
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
 
     <div class="one-line">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
@@ -77,19 +95,8 @@ function onSave() {
         </div>
     </div>
 
-    <h3>読み取り結果(最初の10行)</h3>
-    <div class="one-line">
-        <table>
-            <tbody>
-                <tr v-for="row, index of tableData" :key="index">
-                    <td v-for="cell, index of row" :key="index">
-                        {{ removeQuote(cell) }}
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
+    <!-- 登録結果と編集 -->
+    <EditWkTblHistoryPoliOrg></EditWkTblHistoryPoliOrg>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
@@ -112,9 +119,11 @@ th {
     border-style: solid;
     border-width: 1px;
 }
+
 th.hojo {
     background-color: lightgray;
 }
+
 th.explain {
     background-color: lightcyan;
 }

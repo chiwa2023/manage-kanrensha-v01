@@ -60,4 +60,27 @@ export default class RoutePathConstants {
     /** 関連者XML編集登録 */
     static readonly PAGE_ADD_XML: string = "/add-by-xml";
 
+    /** 関連者マスタ標準データダウンロード */
+    static readonly PAGE_DOWNLOAD_MASTER_STD: string = "/download-master-std";
+
+    /** 関連者最小標準データダウンロード */
+    static readonly PAGE_DOWNLOAD_MASTER_MIN: string = "/download-master-min";
+
+    /** 関連者履歴データダウンロード */
+    static readonly PAGE_DOWNLOAD_HISTORY: string = "/download-history";
+
+    /** 関連者マスタ標準データ差分ダウンロード */
+    static readonly PAGE_DOWNLOAD_SABUN_MASTER_STD: string = "/sabun-master-std";
+
+    /** 関連者最小標準データ差分ダウンロード */
+    static readonly PAGE_DOWNLOAD_SABUN_MASTER_MIN: string = "/sabun-master-min";
+
+    /** 関連者履歴データ差分ダウンロード */
+    static readonly PAGE_DOWNLOAD_SABUN_HISTORY: string = "/sabun-history";
+
+    /** 関連者個人－企業／団体紐づけ登録 */
+    static readonly PAGE_REGI_COMBINE_CORP: string = "/combine-corp";
+
+    /** 関連者個人－企業／団体紐づけ登録 */
+    static readonly PAGE_REGI_COMBINE_POLI_ORG: string = "/combine-poli-org";
 }
