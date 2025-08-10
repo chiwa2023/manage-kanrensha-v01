@@ -67,6 +67,7 @@ public class SuspendDuplicateWkTblParnerCorpHistoryTasklet implements Tasklet,St
             list.remove(0); // 1行だけは処理実行行として残す
             for (WkTblPartnerCorpHistoryEntity entity : list) {
                 setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
+                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
                 entity.setIsFinish(true);
                 entity.setJudgeReason("アップロードファイル内で重複しているデータです");
             }

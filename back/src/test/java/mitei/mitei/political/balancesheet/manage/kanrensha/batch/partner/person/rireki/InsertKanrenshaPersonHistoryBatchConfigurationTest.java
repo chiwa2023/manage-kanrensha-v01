@@ -37,9 +37,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.constants.GetCurrentR
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class InsertKanrenshaPersonHistoryBatchConfigurationTest {
 
-    
-    
-
     /** テストユーティリティ */
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils;
@@ -65,8 +62,8 @@ class InsertKanrenshaPersonHistoryBatchConfigurationTest {
 
     @Test
     @Tag("TableTruncate")
-    @Sql({ "sample_wk_tbl_partner_person_history.sql", "sample_wk_tbl_partner_person_judge.sql",
-            "master_person02.sql" ,"sample_history01.sql"})
+    @Sql({ "sample_wk_tbl_partner_person_history.sql", "sample_wk_tbl_partner_person_judge.sql", "master_person02.sql",
+            "sample_history01.sql" })
     void testExecute() throws Exception {
 
         jobLauncherTestUtils.setJob(insertKanrenshaPersonHistory);
@@ -75,8 +72,7 @@ class InsertKanrenshaPersonHistoryBatchConfigurationTest {
 
         JobParameters jobParameters = new JobParametersBuilder(
                 insertKanrenshaPersonHistory.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
-                .addLocalDateTime("executeTime", LocalDateTime.now())
-                .addString("readFilePath", path.toString())
+                .addLocalDateTime("executeTime", LocalDateTime.now()).addString("readFilePath", path.toString())
                 .addLong("userId", Long.parseLong(userId.toString()))
                 .addLong("userCode", Long.parseLong(userCode.toString())).addString("userName", userName)
                 .toJobParameters();

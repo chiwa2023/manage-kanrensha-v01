@@ -18,7 +18,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblMasterCor
  */
 public interface WkTblMasterCorpRepository extends JpaRepository<WkTblMasterCorpEntity, Integer> {
 
-
     /**
      * ユーザが同一であるデータを削除する
      *
@@ -28,14 +27,13 @@ public interface WkTblMasterCorpRepository extends JpaRepository<WkTblMasterCorp
     int deleteByInsertUserCode(Integer userCode);
 
     /**
-     * 操作者のコードで検索する
+     * 操作者コードで検索する
      *
      * @param userCode ユーザコード
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblMasterCorpEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
-            Pageable pageable);
+    Page<WkTblMasterCorpEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest, Pageable pageable);
 
     /**
      * 重複キーを検出する
@@ -50,15 +48,14 @@ public interface WkTblMasterCorpRepository extends JpaRepository<WkTblMasterCorp
     /**
      * 全項目が合致するリストを取得する(重複除去用)
      *
-     * @param partnerName   関連者名称
-     * @param allAddress    全住所
-     * @param corpDelegate  企業・団体代表者
-     * @param userCode      ユーザコード
+     * @param partnerName  関連者名称
+     * @param allAddress   全住所
+     * @param corpDelegate 企業・団体代表者
+     * @param userCode     ユーザコード
      * @return 検索結果
      */
     List<WkTblMasterCorpEntity> findByPartnerNameAndAllAddressAndCorpDelegateAndInsertUserCodeOrderByWkTblMasterCorpIdAsc( // NOPMD
             String partnerName, String allAddress, String corpDelegate, Integer userCode);
-
 
     /**
      * 最大コードを取得する
@@ -68,9 +65,8 @@ public interface WkTblMasterCorpRepository extends JpaRepository<WkTblMasterCorp
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<WkTblMasterCorpEntity> findFirstByOrderByWkTblMasterCorpCodeDesc();
 
-
     /**
-     * 操作者のコードで検索する
+     * 操作者のコードかつ反映対象で検索する
      *
      * @param userCode ユーザコード
      * @param pageable ページング条件
@@ -79,5 +75,29 @@ public interface WkTblMasterCorpRepository extends JpaRepository<WkTblMasterCorp
     Page<WkTblMasterCorpEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode, boolean isLatest,
             boolean isAffected, Pageable pageable);
 
+    /**
+     * 編集用に検索を行う
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @param pageable   ページング
+     * @return 検索結果
+     */
+    List<WkTblMasterCorpEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode,
+            List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish, Pageable pageable);
+
+    /**
+     * 編集用に検索を行う際の該当件数を返却する
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @return 件数
+     */
+    Integer countByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode, List<Boolean> listLatest,
+            List<Boolean> isAffected, List<Boolean> listFinish);
 
 }
