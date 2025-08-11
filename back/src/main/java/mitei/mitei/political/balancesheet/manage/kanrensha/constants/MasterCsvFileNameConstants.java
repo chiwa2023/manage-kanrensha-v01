@@ -16,7 +16,7 @@ public class MasterCsvFileNameConstants {
      */
     public class MasterMin { // NOPMD DataCalss
         /** マスタ最小一括Zip */
-        public static final String MASTER_MIN_ZIP = "01";
+        public static final String MASTER_MIN_ZIP = "master_min_all.zip";
 
         /** マスタ最小企業／団体(ファイル) */
         public static final String MASTER_MIN_CORP = "master_corp_min.csv";
@@ -31,7 +31,7 @@ public class MasterCsvFileNameConstants {
      */
     public class MasterStd { // NOPMD DataCalss
         /** マスタ最小一括Zip */
-        public static final String MASTER_STD_ZIP = "01";
+        public static final String MASTER_STD_ZIP = "master_std_all.zip";
 
         /** マスタ最小企業／団体(ファイル) */
         public static final String MASTER_STD_CORP = "master_corp_std.csv";
@@ -46,7 +46,7 @@ public class MasterCsvFileNameConstants {
      */
     public class SabunMasterMin { // NOPMD DataCalss
         /** マスタ最小差分一括Zip */
-        public static final String SABUN_MIN_ZIP = "01";
+        public static final String SABUN_MIN_ZIP = "sabun_master_min_all.zip";
 
         /** 差分マスタ最小企業／団体(ファイル) */
         public static final String SABUN_MIN_CORP = "sabun_master_corp_min.csv";
@@ -61,7 +61,7 @@ public class MasterCsvFileNameConstants {
      */
     public class SabunMasterStd { // NOPMD DataCalss
         /** マスタ標準差分一括Zip */
-        public static final String SABUN_STD_ZIP = "01";
+        public static final String SABUN_STD_ZIP = "sabun_master_std_all.zip";
 
         /** 差分マスタ標準企業／団体(ファイル) */
         public static final String SABUN_STD_CORP = "sabun_master_corp_std.csv";

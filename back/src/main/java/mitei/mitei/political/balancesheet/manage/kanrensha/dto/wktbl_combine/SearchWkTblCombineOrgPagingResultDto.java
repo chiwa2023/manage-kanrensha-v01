@@ -1,9 +1,15 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_combine;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.AbstractPagingIntegerDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerCombineOrgEntity;
 
+/**
+ * 個人団体紐づけワークテーブル検索条件Dto
+ */
 public class SearchWkTblCombineOrgPagingResultDto extends AbstractPagingIntegerDto // NOPMD DataClass
         implements Serializable {
 
@@ -71,6 +77,24 @@ public class SearchWkTblCombineOrgPagingResultDto extends AbstractPagingIntegerD
     }
 
     /** 企業／団体登録候補リスト */
-    // listCombineOrg: WkTblPartnerCombineOrgInterface[];
+    private List<WkTblPartnerCombineOrgEntity> listCombineOrg = new ArrayList<>();
+
+    /**
+     * 企業／団体登録候補リストを取得する
+     *
+     * @return 企業／団体登録候補リスト
+     */
+    public List<WkTblPartnerCombineOrgEntity> getListCombineOrg() {
+        return listCombineOrg;
+    }
+
+    /**
+     * 企業／団体登録候補リストを設定する
+     *
+     * @param listCombineOrg 企業／団体登録候補リスト
+     */
+    public void setListCombineOrg(final List<WkTblPartnerCombineOrgEntity> listCombineOrg) {
+        this.listCombineOrg = listCombineOrg;
+    }
 
 }

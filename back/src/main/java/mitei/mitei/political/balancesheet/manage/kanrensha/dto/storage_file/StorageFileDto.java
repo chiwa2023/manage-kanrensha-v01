@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * ストレージ保存ファイルDto
  */
-public class StorageFileDto implements Serializable {
+public class StorageFileDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

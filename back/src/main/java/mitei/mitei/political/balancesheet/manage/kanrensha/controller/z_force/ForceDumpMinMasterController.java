@@ -40,12 +40,10 @@ public class ForceDumpMinMasterController {
         }
 
         // TODO タスク登録
-
         asyncForceDumpMinMasterService.practice(capsuleDto);
 
         resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
         return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
-
     }
 
 }

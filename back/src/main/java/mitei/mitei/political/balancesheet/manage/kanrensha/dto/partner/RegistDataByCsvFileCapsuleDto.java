@@ -8,7 +8,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.storage_file.Stor
 /**
  * Csvファイルから登録条件Dto
  */
-public class RegistDataByCsvFileCapsuleDto implements Serializable {
+public class RegistDataByCsvFileCapsuleDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

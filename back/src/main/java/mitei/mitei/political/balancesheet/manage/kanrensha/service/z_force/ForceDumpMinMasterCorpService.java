@@ -1,5 +1,6 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.service.z_force;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -76,11 +77,13 @@ public class ForceDumpMinMasterCorpService {
                 .toString();
         final String folder = frontDumpFolder + MasterCsvFileNameConstants.FOLDER_MASTER;
 
+        Path pathFile = Paths.get(pathSaved, folder, MasterMin.MASTER_MIN_CORP);
+        
         JobParameters jobParameters = new JobParametersBuilder(
                 dumpMasterCorporation.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD
                 .addLocalDateTime("executeTime", LocalDateTime.now())
                 .addLocalDateTime("datetimeEnd", LocalDateTime.of(endDate.plusDays(1L), LocalTime.MIN))
-                .addString("writeFilePath", Paths.get(pathSaved, folder, MasterMin.MASTER_MIN_CORP).toString())
+                .addString("writeFilePath", pathFile.toString())
                 .toJobParameters();
 
         try {
@@ -91,7 +94,6 @@ public class ForceDumpMinMasterCorpService {
             // TODO: handle exception
             writeLogService.practiceError(exception);
         }
-
     }
 
 }
