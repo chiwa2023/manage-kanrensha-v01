@@ -97,4 +97,25 @@ public class PartnerCorpHistoryDto implements Serializable { // NOPMD DataClass
         this.corpKanrenshaCode = corpKanrenshaCode;
     }
 
+    /** 団体代表者関連者コード */
+    private String orgDelegateCode = INIT_String;
+
+    /**
+     * 団体代表者関連者コードを取得する
+     *
+     * @return 団体代表者関連者コード
+     */
+    public String getOrgDelegateCode() {
+        return orgDelegateCode;
+    }
+
+    /**
+     * 団体代表者関連者コードを設定する
+     *
+     * @param orgDelegateCode 団体代表者関連者コード
+     */
+    public void setOrgDelegateCode(final String orgDelegateCode) {
+        this.orgDelegateCode = orgDelegateCode;
+    }
+
 }

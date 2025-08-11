@@ -16,12 +16,13 @@ class PartnerCorpHistoryLineMapperTest {
 
         PartnerCorpHistoryLineMapper lineMapper = new PartnerCorpHistoryLineMapper();
 
-        PartnerCorpHistoryDto dto = lineMapper.mapLine("ちゃらんぽらん政治団体,山形県架空市湖畔町,代表者　太郎,1234-567e", 0);
+        PartnerCorpHistoryDto dto = lineMapper.mapLine("ちゃらんぽらん政治団体,山形県架空市湖畔町,代表者　太郎,1234-567e,9876", 0);
 
         assertEquals("ちゃらんぽらん政治団体", dto.getPartnerName());
         assertEquals("山形県架空市湖畔町", dto.getAllAddress());
         assertEquals("代表者　太郎", dto.getCorpDelegate());
         assertEquals("1234-567e", dto.getCorpKanrenshaCode());
+        assertEquals("9876", dto.getOrgDelegateCode());
 
     }
 

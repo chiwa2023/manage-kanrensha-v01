@@ -47,22 +47,33 @@ public class PartnerPoliOrgAddMiniCsvProcessor
         WkTblPartnerPoliOrgAddMinEntity entity = new WkTblPartnerPoliOrgAddMinEntity();
         BeanUtils.copyProperties(item, entity);
 
+        return this.check(entity);
+    }
+
+    /**
+     * チェック処理のみ行う
+     *
+     * @param entity ワークテーブルEntity
+     * @return 処理後Entity
+     */
+    public WkTblPartnerPoliOrgAddMinEntity check(final WkTblPartnerPoliOrgAddMinEntity entity) {
+
         StringBuilder stringBuilder = new StringBuilder();
-        if (BLANK.equals(item.getPartnerName())) {
+        if (BLANK.equals(entity.getPartnerName())) {
             stringBuilder.append("名称が入力されていません;");
         }
-        if (BLANK.equals(item.getAllAddress())) {
+        if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getPoliOrgDelegate())) {
+        if (BLANK.equals(entity.getPoliOrgDelegate())) {
             stringBuilder.append("代表者が入力されていません;");
         }
-        String dantaiKbn = item.getDantaiKbn();
+        String dantaiKbn = entity.getDantaiKbn();
         List<String> listDantaiKbn = PoliOrgDantaiKbnConstants.getList();
         if (BLANK.equals(dantaiKbn)) {
             stringBuilder.append("政治団体区分が入力されていません;");
         } else {
-            if(!listDantaiKbn.contains(dantaiKbn)) {
+            if (!listDantaiKbn.contains(dantaiKbn)) {
                 stringBuilder.append("政治団体区分の値が不正です;");
             }
         }
@@ -71,14 +82,14 @@ public class PartnerPoliOrgAddMiniCsvProcessor
         List<PartnerPoliOrgHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getPartnerName(),
                 entity.getAllAddress(), entity.getPoliOrgDelegate());
         if (listHistory.isEmpty()) {
-            // マスタに同名の団体があるかどうか確認する
-            // TODO このデータは追加処理しなければならないケース(同名団体)と、してはいけないケースがあるので
-            // バッチ処理後に選択して処理できないと問題がある
-            List<MasterPoliticalOrganizationEntity> listMaster = masterPoliticalOrganizationRepository.findByCompareNameTextAndIsLatest(
-                    formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
-                    SetTableDataHistoryUtil.INSERT_STATE);
-            if (!listMaster.isEmpty()) {
-                stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+            if (!entity.getIsAffected()) {
+                // マスタに同名の団体があるかどうか確認する
+                List<MasterPoliticalOrganizationEntity> listMaster = masterPoliticalOrganizationRepository
+                        .findByCompareNameTextAndIsLatest(formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
+                                SetTableDataHistoryUtil.INSERT_STATE);
+                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
+                    stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+                }
             }
 
         } else {
@@ -106,7 +117,8 @@ public class PartnerPoliOrgAddMiniCsvProcessor
      * @param delegate 代表者名
      * @return 検索結果
      */
-    private List<PartnerPoliOrgHistoryBaseEntity> selectSameRirekiList(final  String name, final String address,final  String delegate) {
+    private List<PartnerPoliOrgHistoryBaseEntity> selectSameRirekiList(final String name, final String address,
+            final String delegate) {
 
         return getPartnerPoliOrgSameHistoryService.practice(name, address, delegate);
     }

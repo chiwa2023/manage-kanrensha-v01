@@ -28,7 +28,7 @@ public class SuspendDuplicateWkTblMasterPersonAddStdTasklet implements Tasklet, 
     /** 関連者個人マスタ標準ワークテーブル */
     @Autowired
     private WkTblMasterPersonRepository wkTblMasterPersonRepository;
-    
+
     /** テーブル履歴設定Util */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
@@ -57,7 +57,6 @@ public class SuspendDuplicateWkTblMasterPersonAddStdTasklet implements Tasklet, 
     @Override
     public RepeatStatus execute(final StepContribution contribution, final ChunkContext chunkContext) throws Exception {
 
-
         Integer userCode = userDto.getUserPersonCode();
 
         List<PartnerPersonMasterUniquekeyDto> listKeyGroup = wkTblMasterPersonRepository
@@ -68,27 +67,20 @@ public class SuspendDuplicateWkTblMasterPersonAddStdTasklet implements Tasklet, 
                     .findByPartnerNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblMasterPersonIdAsc(
                             uniqueDto.getPartnerName(), uniqueDto.getAllAddress(), uniqueDto.getPersonShokugyou(),
                             userCode);
-            
+
             list.remove(0); // 1行だけは処理実行行として残す
             for (WkTblMasterPersonEntity entity : list) {
                 setTableDataHistoryUtil.practiceDelete(userDto, entity); // 削除
+                entity.setIsLatest(SetTableDataHistoryUtil.DELETE_STATE);
                 entity.setIsFinish(true);
                 entity.setJudgeReason("アップロードファイル内で重複しているデータです");
             }
             wkTblMasterPersonRepository.saveAllAndFlush(list);
 
-            
-            
-            
         }
 
-        
-        
-        
-        
         // 処理終了
         return RepeatStatus.FINISHED;
     }
 
-    
 }

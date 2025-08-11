@@ -51,17 +51,28 @@ public class PartnerCorpAddMiniCsvProcessor
         WkTblPartnerCorpAddMinEntity entity = new WkTblPartnerCorpAddMinEntity();
         BeanUtils.copyProperties(item, entity);
 
+        return this.check(entity);
+    }
+
+    /**
+     * チェック処理のみ行う
+     *
+     * @param entity ワークテーブルEntity
+     * @return 処理後Entity
+     */
+    public WkTblPartnerCorpAddMinEntity check(final WkTblPartnerCorpAddMinEntity entity) {
+
         StringBuilder stringBuilder = new StringBuilder();
-        if (BLANK.equals(item.getPartnerName())) {
+        if (BLANK.equals(entity.getPartnerName())) {
             stringBuilder.append("名称が入力されていません;");
         }
-        if (BLANK.equals(item.getAllAddress())) {
+        if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getCorpDelegate())) {
-            stringBuilder.append("代表者が入力されていません;");
-        }
-        String houjinNo = item.getHoujinNo();
+        // if (BLANK.equals(item.getCorpDelegate())) {
+        // stringBuilder.append("代表者が入力されていません;");
+        // }
+        String houjinNo = entity.getHoujinNo();
         if (BLANK.equals(houjinNo)) {
             stringBuilder.append("法人番号が入力されていません;");
         } else {
@@ -75,16 +86,15 @@ public class PartnerCorpAddMiniCsvProcessor
         List<PartnerCorpHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getPartnerName(),
                 entity.getAllAddress(), entity.getCorpDelegate());
         if (listHistory.isEmpty()) {
-            // マスタに同名の団体があるかどうか確認する
-            // TODO このデータは追加処理しなければならないケース(同名団体)と、してはいけないケースがあるので
-            // バッチ処理後に選択して処理できないと問題がある
-            List<MasterCorporationEntity> listMaster = masterCorporationRepository.findByCompareNameTextAndIsLatest(
-                    formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
-                    SetTableDataHistoryUtil.INSERT_STATE);
-            if (!listMaster.isEmpty()) {
-                stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+            if(!entity.getIsAffected()) {
+                // マスタに同名の団体があるかどうか確認する
+                List<MasterCorporationEntity> listMaster = masterCorporationRepository.findByCompareNameTextAndIsLatest(
+                        formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
+                        SetTableDataHistoryUtil.INSERT_STATE);
+                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
+                    stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+                }
             }
-
         } else {
             stringBuilder.append("すでに登録が存在します(").append(listHistory.get(0).getCorpKanrenshaCode()).append(");");
         }
@@ -100,6 +110,7 @@ public class PartnerCorpAddMiniCsvProcessor
         }
 
         return entity;
+
     }
 
     /*
@@ -110,7 +121,8 @@ public class PartnerCorpAddMiniCsvProcessor
      * @param delegate 代表者名
      * @return 検索結果
      */
-    private List<PartnerCorpHistoryBaseEntity> selectSameRirekiList(final  String name, final String address,final  String delegate) {
+    private List<PartnerCorpHistoryBaseEntity> selectSameRirekiList(final String name, final String address,
+            final String delegate) {
 
         return getPartnerCorpSameHistoryService.practice(name, address, delegate);
     }

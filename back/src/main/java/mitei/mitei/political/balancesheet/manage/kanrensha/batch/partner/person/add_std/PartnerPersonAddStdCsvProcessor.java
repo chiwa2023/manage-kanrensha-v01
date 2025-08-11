@@ -41,7 +41,7 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
 
     /** 郵便番号最大桁数 */
     private static final int LIMIT_DIGIT_POSTAL = 6;
-    
+
     /** 地方自治体コード最大桁数 */
     private static final int LIMIT_LGCODE = 8;
 
@@ -60,73 +60,84 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
     /**
      * 変換処理を実行する
      */
-    @Override // SUPPRESS CHECKSTYLE NCSS
+    @Override
     public WkTblMasterPersonEntity process(final PartnerPersonAddStdDto item) throws Exception { // NOPMD
 
         WkTblMasterPersonEntity entity = new WkTblMasterPersonEntity();
         BeanUtils.copyProperties(item, entity);
+
+        return this.check(entity);
+    }
+
+    /**
+     * チェック処理のみ行う
+     *
+     * @param entity ワークテーブルEntity
+     * @return 処理後Entity
+     */
+    public WkTblMasterPersonEntity check(final WkTblMasterPersonEntity entity) { // SUPPRESS CHECKSTYLE NCSS NOPMD
         StringBuilder stringBuilder = new StringBuilder();
-        //  未入力
-        if (BLANK.equals(item.getPartnerName())) {
+        // 未入力
+        if (BLANK.equals(entity.getPartnerName())) {
             stringBuilder.append("名称が入力されていません;");
         }
-        if (BLANK.equals(item.getAllAddress())) {
+        if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getPersonShokugyou())) {
-            stringBuilder.append("職業が入力されていません;");
-        }
-        if (BLANK.equals(item.getAddressPostal())) {
+        // if (BLANK.equals(item.getPersonShokugyou())) {
+        // stringBuilder.append("職業が入力されていません;");
+        // }
+        if (BLANK.equals(entity.getAddressPostal())) {
             stringBuilder.append("住所郵便番号までが入力されていません;");
         }
-        if (BLANK.equals(item.getAddressBlock())) {
+        if (BLANK.equals(entity.getAddressBlock())) {
             stringBuilder.append("住所番地までが入力されていません;");
         }
-        if (BLANK.equals(item.getAddressBuilding())) {
+        if (BLANK.equals(entity.getAddressBuilding())) {
             stringBuilder.append("住所建物までが入力されていません;");
         }
-        if (BLANK.equals(item.getPhon1())) {
+        if (BLANK.equals(entity.getPhon1())) {
             stringBuilder.append("電話番号市外局番が入力されていません;");
         }
-        if (BLANK.equals(item.getPhon2())) {
+        if (BLANK.equals(entity.getPhon2())) {
             stringBuilder.append("電話番号局番が入力されていません;");
         }
-        if (BLANK.equals(item.getPhon3())) {
+        if (BLANK.equals(entity.getPhon3())) {
             stringBuilder.append("電話番号番号が入力されていません;");
         }
-        if (BLANK.equals(item.getEmail())) {
+        if (BLANK.equals(entity.getEmail())) {
             stringBuilder.append("メールアドレスが入力されていません;");
         }
 
         // 文字数制限
-        if (LIMIT_DIGIT_PHON < item.getPhon1().length()) {
+        if (LIMIT_DIGIT_PHON < entity.getPhon1().length()) {
             stringBuilder.append("電話番号市外局番が10文字以上です;");
         }
-        if (LIMIT_DIGIT_PHON < item.getPhon2().length()) {
+        if (LIMIT_DIGIT_PHON < entity.getPhon2().length()) {
             stringBuilder.append("電話番号局番が10文字以上です;");
         }
-        if (LIMIT_DIGIT_PHON < item.getPhon1().length()) {
+        if (LIMIT_DIGIT_PHON < entity.getPhon1().length()) {
             stringBuilder.append("電話番号番号が10文字以上です;");
         }
-        if (LIMIT_DIGIT_POSTAL < item.getPostal1().length()) {
+        if (LIMIT_DIGIT_POSTAL < entity.getPostal1().length()) {
             stringBuilder.append("郵便番号1が6文字以上です;");
         }
-        if (LIMIT_DIGIT_POSTAL < item.getPostal2().length()) {
+        if (LIMIT_DIGIT_POSTAL < entity.getPostal2().length()) {
             stringBuilder.append("郵便番号2が6文字以上です;");
         }
-        if (LIMIT_LGCODE < item.getLgCode().length()) {
+        if (LIMIT_LGCODE < entity.getLgCode().length()) {
             stringBuilder.append("地方自治体コードが8文字以上です;");
         }
-        if (LIMIT_MACHIAZA < item.getMachiazaId().length()) {
+        if (LIMIT_MACHIAZA < entity.getMachiazaId().length()) {
             stringBuilder.append("町字コードが9文字以上です;");
         }
-        if (LIMIT_BLK < item.getBlkId().length()) {
+        if (LIMIT_BLK < entity.getBlkId().length()) {
             stringBuilder.append("街区コードが5文字以上です;");
         }
-        if (LIMIT_RSDT < item.getRsdtId().length()) {
+        if (LIMIT_RSDT < entity.getRsdtId().length()) {
             stringBuilder.append("住居コードが5文字以上です;");
         }
-        if (LIMIT_RSDT2 < item.getRsdt2Id().length()) {
+        if (LIMIT_RSDT2 < entity.getRsdt2Id().length()) {
             stringBuilder.append("住居2コードが7文字以上です;");
         }
 
@@ -134,16 +145,17 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
         List<PartnerPersonHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getPartnerName(),
                 entity.getAllAddress(), entity.getPersonShokugyou());
         if (listHistory.isEmpty()) {
+            // 初回はすべてチェック対象だが、自動・人為的に作業対象にした場合は同名チェックを行わない(同名でも登録できる)
             // マスタに同名の団体があるかどうか確認する
-            // TODO このデータは追加処理しなければならないケース(同名団体)と、してはいけないケースがあるので
-            // バッチ処理後に選択して処理できないと問題がある
-            List<MasterPersonEntity> listMaster = masterPersonRepository.findByCompareNameTextAndIsLatest(
-                    formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
-                    SetTableDataHistoryUtil.INSERT_STATE);
-            if (!listMaster.isEmpty()) {
-                stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+            if(!entity.getIsAffected()) {
+                List<MasterPersonEntity> listMaster = masterPersonRepository.findByCompareNameTextAndIsLatest(
+                        formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
+                        SetTableDataHistoryUtil.INSERT_STATE);
+                // 初回はすでにチェック対象だが
+                if (!listMaster.isEmpty()) { //SUPPRESS CHECKSTYLE NestedIf
+                    stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
+                }
             }
-
         } else {
             stringBuilder.append("すでに登録が存在します(").append(listHistory.get(0).getPersonKanrenshaCode()).append(");");
         }
@@ -159,6 +171,7 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
         }
 
         return entity;
+
     }
 
     /*

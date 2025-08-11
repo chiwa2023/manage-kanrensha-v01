@@ -21,6 +21,9 @@ public class PartnerPoliOrgHistoryLineMapper implements LineMapper<PartnerPoliOr
     /** 団体名称カラム位置 */
     private static final int POS_KANRENSHA_CODE = 3;
 
+    /** 団体代表者コードカラム位置 */
+    private static final int POS_DELEGATE_CODE = 4;
+
     /**
      * 処理を行う
      */
@@ -34,6 +37,7 @@ public class PartnerPoliOrgHistoryLineMapper implements LineMapper<PartnerPoliOr
         historyDto.setAllAddress(this.removeQuote(cell[POS_ADDRESS]));
         historyDto.setPoliOrgDelegate(this.removeQuote(cell[POS_DELEGATE]));
         historyDto.setPoliOrgKanrenshaCode(this.removeQuote(cell[POS_KANRENSHA_CODE]));
+        historyDto.setOrgDelegateCode(this.removeQuote(cell[POS_DELEGATE_CODE]));
 
         return historyDto;
     }

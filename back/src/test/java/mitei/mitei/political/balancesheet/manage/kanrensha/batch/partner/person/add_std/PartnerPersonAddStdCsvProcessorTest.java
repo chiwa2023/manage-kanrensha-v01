@@ -42,7 +42,9 @@ class PartnerPersonAddStdCsvProcessorTest {
         // 未入力エラーメッセージ
         StringBuilder builder0 = new StringBuilder();
         builder0.append("名称が入力されていません;") // NOPMD
-        .append("住所が入力されていません;").append("職業が入力されていません;").append("住所郵便番号までが入力されていません;")
+        .append("住所が入力されていません;")
+        // .append("職業が入力されていません;")
+        .append("住所郵便番号までが入力されていません;")
                 .append("住所番地までが入力されていません;").append("住所建物までが入力されていません;").append("電話番号市外局番が入力されていません;")
                 .append("電話番号局番が入力されていません;").append("電話番号番号が入力されていません;").append("メールアドレスが入力されていません;");
         assertEquals(builder0.toString(), wktblEntity00.getJudgeReason());

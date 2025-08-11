@@ -172,6 +172,28 @@ public class PartnerPoliOrgHistoryBaseEntity implements Serializable, AllTabeDat
         this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
     }
 
+    /** 団体代表者関連者コード */
+    @Column(name = "org_delegate_code")
+    private String orgDelegateCode = INIT_String;
+
+    /**
+     * 団体代表者関連者コードを取得する
+     *
+     * @return 団体代表者関連者コード
+     */
+    public String getOrgDelegateCode() {
+        return orgDelegateCode;
+    }
+
+    /**
+     * 団体代表者関連者コードを設定する
+     *
+     * @param orgDelegateCode 団体代表者関連者コード
+     */
+    public void setOrgDelegateCode(final String orgDelegateCode) {
+        this.orgDelegateCode = orgDelegateCode;
+    }
+
     /** 挿入ユーザId */
     @Column(name = "insert_user_id")
     private Integer insertUserId = INIT_Integer;

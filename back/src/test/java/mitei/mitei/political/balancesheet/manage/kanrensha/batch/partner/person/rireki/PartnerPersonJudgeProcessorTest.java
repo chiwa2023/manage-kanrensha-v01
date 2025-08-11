@@ -39,7 +39,7 @@ class PartnerPersonJudgeProcessorTest {
         WkTblPartnerPersonJudgeEntity judgeEntity00 = partnerPersonJudgeProcessor
                 .process(new WkTblPartnerPersonHistoryEntity());
         assertEquals(false, judgeEntity00.getIsAffected());
-        assertEquals("名称が入力されていません;住所が入力されていません;職業が入力されていません;関連者コードが入力されていません;", judgeEntity00.getJudgeReason());
+        assertEquals("名称が入力されていません;住所が入力されていません;関連者コードが入力されていません;", judgeEntity00.getJudgeReason());
 
         // マスタに登録がないと追加作業をしません(削除済)
         WkTblPartnerPersonHistoryEntity historyEntity01 = new WkTblPartnerPersonHistoryEntity();

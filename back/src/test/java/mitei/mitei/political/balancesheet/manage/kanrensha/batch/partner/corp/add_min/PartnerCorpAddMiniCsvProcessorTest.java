@@ -38,7 +38,7 @@ class PartnerCorpAddMiniCsvProcessorTest {
         // 未入力カラムがあると追加作業をしません
         WkTblPartnerCorpAddMinEntity minEntity00 = partnerCorpAddMiniCsvProcessor.process(new PartnerCorpAddMiniDto());
         assertEquals(false, minEntity00.getIsAffected());
-        assertEquals("名称が入力されていません;住所が入力されていません;代表者が入力されていません;法人番号が入力されていません;", minEntity00.getJudgeReason());
+        assertEquals("名称が入力されていません;住所が入力されていません;法人番号が入力されていません;", minEntity00.getJudgeReason());
 
         // 法人番号が形式通り(ハイフンを除いて数字13桁)でなければ追加作業をしません
         PartnerCorpAddMiniDto dto01 = new PartnerCorpAddMiniDto();

@@ -16,8 +16,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerPe
 /**
  * wk_tbl_partner_person_add_min接続用Repository
  */
-public interface WkTblPartnerPersonAddMinRepository  extends JpaRepository<WkTblPartnerPersonAddMinEntity, Integer>{
-
+public interface WkTblPartnerPersonAddMinRepository extends JpaRepository<WkTblPartnerPersonAddMinEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -26,7 +25,6 @@ public interface WkTblPartnerPersonAddMinRepository  extends JpaRepository<WkTbl
      * @return 削除行数
      */
     int deleteByInsertUserCode(Integer userCode);
-
 
     /**
      * 最大コードを取得する
@@ -43,8 +41,8 @@ public interface WkTblPartnerPersonAddMinRepository  extends JpaRepository<WkTbl
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblPartnerPersonAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode, boolean isLatest,
-            boolean isAffected, Pageable pageable);
+    Page<WkTblPartnerPersonAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode,
+            boolean isLatest, boolean isAffected, Pageable pageable);
 
     /**
      * 重複キーを検出する
@@ -59,13 +57,38 @@ public interface WkTblPartnerPersonAddMinRepository  extends JpaRepository<WkTbl
     /**
      * 全項目が合致するリストを取得する(重複除去用)
      *
-     * @param partnerName  関連者名称
-     * @param allAddress   全住所
+     * @param partnerName     関連者名称
+     * @param allAddress      全住所
      * @param personShokugyou 個人職業
-     * @param userCode     ユーザコード
+     * @param userCode        ユーザコード
      * @return 検索結果
      */
     List<WkTblPartnerPersonAddMinEntity> findByPartnerNameAndAllAddressAndPersonShokugyouAndInsertUserCodeOrderByWkTblPartnerPersonAddMinIdAsc( // NOPMD
             String partnerName, String allAddress, String personShokugyou, Integer userCode);
+
+    /**
+     * 編集用に検索を行う
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @param pageable   ページング
+     * @return 検索結果
+     */
+    List<WkTblPartnerPersonAddMinEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode,
+            List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish, Pageable pageable);
+
+    /**
+     * 編集用に検索を行う際の該当件数を返却する
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @return 件数
+     */
+    Integer countByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode, List<Boolean> listLatest,
+            List<Boolean> isAffected, List<Boolean> listFinish);
 
 }

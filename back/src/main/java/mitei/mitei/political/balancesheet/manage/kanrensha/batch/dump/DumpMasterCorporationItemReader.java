@@ -46,7 +46,7 @@ public class DumpMasterCorporationItemReader extends RepositoryItemReader<Master
     public void beforeStep(final StepExecution stepExecution) {
 
         LocalDateTime datetimeEnd = stepExecution.getJobParameters().getLocalDateTime("datetimeEnd");
-
+        
         List<Object> list = new ArrayList<>();
         list.add(datetimeEnd);
         list.add(SetTableDataHistoryUtil.INSERT_STATE);

@@ -41,32 +41,7 @@ public class PartnerCorpJudgeProcessor
         WkTblPartnerCorpJudgeEntity entity = new WkTblPartnerCorpJudgeEntity();
         BeanUtils.copyProperties(item, entity);
 
-        // どれかの値が入力していなければ情報不足として処理対象外
-        StringBuilder stringBuilder = new StringBuilder();
-        if (BLANK.equals(item.getPartnerName())) {
-            stringBuilder.append("名称が入力されていません;");
-        }
-        if (BLANK.equals(item.getAllAddress())) {
-            stringBuilder.append("住所が入力されていません;");
-        }
-        if (BLANK.equals(item.getCorpDelegate())) {
-            stringBuilder.append("代表者が入力されていません;");
-        }
-        if (BLANK.equals(item.getCorpKanrenshaCode())) {
-            stringBuilder.append("関連者コードが入力されていません;");
-        }
-
-        if (stringBuilder.isEmpty()) {
-
-            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
-            List<MasterCorporationEntity> listMaster = masterCorporationRepository
-                    .findByCorpKanrenshaCodeAndCompareNameTextAndIsLatest(item.getCorpKanrenshaCode(),
-                            formatNaturalSearchTextUtil.practice(item.getPartnerName()),
-                            SetTableDataHistoryUtil.INSERT_STATE);
-            if (listMaster.isEmpty()) {
-                stringBuilder.append("コードと名称に合致する関連者が存在しません;");
-            }
-        }
+        StringBuilder stringBuilder = this.createCheckMessage(item);
 
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
@@ -77,6 +52,58 @@ public class PartnerCorpJudgeProcessor
         }
 
         return entity;
+    }
+
+    /**
+     * チェック処理のみ行う
+     *
+     * @param entity ワークテーブルEnity
+     * @return チェック処理
+     */
+    public WkTblPartnerCorpHistoryEntity check(final WkTblPartnerCorpHistoryEntity entity) {
+
+        StringBuilder stringBuilder = this.createCheckMessage(entity);
+
+        if (stringBuilder.isEmpty()) {
+            entity.setIsAffected(true);
+        } else {
+            // 何らかの未登録メッセージが入っている場合は判定対象外を登録
+            entity.setIsAffected(false);
+            entity.setJudgeReason(stringBuilder.toString());
+        }
+
+        return entity;
+    }
+
+    private StringBuilder createCheckMessage(final WkTblPartnerCorpHistoryEntity entity) {
+
+        // どれかの値が入力していなければ情報不足として処理対象外
+        StringBuilder stringBuilder = new StringBuilder();
+        if (BLANK.equals(entity.getPartnerName())) {
+            stringBuilder.append("名称が入力されていません;");
+        }
+        if (BLANK.equals(entity.getAllAddress())) {
+            stringBuilder.append("住所が入力されていません;");
+        }
+        // if (BLANK.equals(item.getCorpDelegate())) {
+        // stringBuilder.append("代表者が入力されていません;");
+        // }
+        if (BLANK.equals(entity.getCorpKanrenshaCode())) {
+            stringBuilder.append("関連者コードが入力されていません;");
+        }
+
+        if (stringBuilder.isEmpty()) {
+            // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
+            List<MasterCorporationEntity> listMaster = masterCorporationRepository
+                    .findByCorpKanrenshaCodeAndCompareNameTextAndIsLatest(entity.getCorpKanrenshaCode(),
+                            formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
+                            SetTableDataHistoryUtil.INSERT_STATE);
+            if (listMaster.isEmpty()) {
+                stringBuilder.append("コードと名称に合致する関連者が存在しません;");
+            }
+        }
+
+        return stringBuilder;
     }
 
 }

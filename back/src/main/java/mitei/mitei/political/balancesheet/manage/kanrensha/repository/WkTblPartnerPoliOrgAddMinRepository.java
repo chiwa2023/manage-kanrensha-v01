@@ -16,8 +16,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerPo
 /**
  * wk_tbl_partner_poli_org_add_min接続用Repository
  */
-public interface WkTblPartnerPoliOrgAddMinRepository  extends JpaRepository<WkTblPartnerPoliOrgAddMinEntity, Integer>{
-
+public interface WkTblPartnerPoliOrgAddMinRepository extends JpaRepository<WkTblPartnerPoliOrgAddMinEntity, Integer> {
 
     /**
      * ユーザが同一であるデータを削除する
@@ -27,7 +26,6 @@ public interface WkTblPartnerPoliOrgAddMinRepository  extends JpaRepository<WkTb
      */
     int deleteByInsertUserCode(Integer userCode);
 
-
     /**
      * 最大コードを取得する
      *
@@ -36,7 +34,6 @@ public interface WkTblPartnerPoliOrgAddMinRepository  extends JpaRepository<WkTb
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<WkTblPartnerPoliOrgAddMinEntity> findFirstByOrderByWkTblPartnerPoliOrgAddMinCodeDesc();
 
-
     /**
      * 操作者のコードで検索する
      *
@@ -44,8 +41,8 @@ public interface WkTblPartnerPoliOrgAddMinRepository  extends JpaRepository<WkTb
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblPartnerPoliOrgAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode, boolean isLatest,
-            boolean isAffected, Pageable pageable);
+    Page<WkTblPartnerPoliOrgAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode,
+            boolean isLatest, boolean isAffected, Pageable pageable);
 
     /**
      * 重複キーを検出する
@@ -60,13 +57,38 @@ public interface WkTblPartnerPoliOrgAddMinRepository  extends JpaRepository<WkTb
     /**
      * 全項目が合致するリストを取得する(重複除去用)
      *
-     * @param partnerName  関連者名称
-     * @param allAddress   全住所
+     * @param partnerName     関連者名称
+     * @param allAddress      全住所
      * @param personShokugyou 個人職業
-     * @param userCode     ユーザコード
+     * @param userCode        ユーザコード
      * @return 検索結果
      */
     List<WkTblPartnerPoliOrgAddMinEntity> findByPartnerNameAndAllAddressAndPoliOrgDelegateAndInsertUserCodeOrderByWkTblPartnerPoliOrgAddMinIdAsc( // NOPMD
             String partnerName, String allAddress, String personShokugyou, Integer userCode);
 
+    /**
+     * 編集用に検索を行う
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @param pageable   ページング
+     * @return 検索結果
+     */
+    List<WkTblPartnerPoliOrgAddMinEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(
+            Integer userCode, List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish,
+            Pageable pageable);
+
+    /**
+     * 編集用に検索を行う際の該当件数を返却する
+     *
+     * @param userCode   ユーザコード
+     * @param listLatest 検索条件履歴
+     * @param isAffected 検索条件反映行
+     * @param listFinish 検索条件勝利完了
+     * @return 件数
+     */
+    Integer countByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode, List<Boolean> listLatest,
+            List<Boolean> isAffected, List<Boolean> listFinish);
 }

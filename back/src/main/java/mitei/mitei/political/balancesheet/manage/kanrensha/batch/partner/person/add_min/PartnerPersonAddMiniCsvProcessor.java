@@ -46,14 +46,25 @@ public class PartnerPersonAddMiniCsvProcessor
         WkTblPartnerPersonAddMinEntity entity = new WkTblPartnerPersonAddMinEntity();
         BeanUtils.copyProperties(item, entity);
 
+        return this.check(entity);
+    }
+
+    /**
+     * チェック処理のみ行う
+     *
+     * @param entity ワークテーブルEntity
+     * @return 処理後Entity
+     */
+    public WkTblPartnerPersonAddMinEntity check(final WkTblPartnerPersonAddMinEntity entity) {
+
         StringBuilder stringBuilder = new StringBuilder();
-        if (BLANK.equals(item.getPartnerName())) {
+        if (BLANK.equals(entity.getPartnerName())) {
             stringBuilder.append("名称が入力されていません;");
         }
-        if (BLANK.equals(item.getAllAddress())) {
+        if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(item.getPersonShokugyou())) {
+        if (BLANK.equals(entity.getPersonShokugyou())) {
             stringBuilder.append("職業が入力されていません;");
         }
 
@@ -62,13 +73,14 @@ public class PartnerPersonAddMiniCsvProcessor
                 entity.getAllAddress(), entity.getPersonShokugyou());
         if (listHistory.isEmpty()) {
             // マスタに同名の団体があるかどうか確認する
-            // TODO このデータは追加処理しなければならないケース(同名団体)と、してはいけないケースがあるので
-            // バッチ処理後に選択して処理できないと問題がある
-            List<MasterPersonEntity> listMaster = masterPersonRepository.findByCompareNameTextAndIsLatest(
-                    formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
-                    SetTableDataHistoryUtil.INSERT_STATE);
-            if (!listMaster.isEmpty()) {
-                stringBuilder.append("同名の個人があります。確認調査の上、必要に応じて追加してください;");
+            if (!entity.getIsAffected()) {
+                // マスタに同名の団体があるかどうか確認する
+                List<MasterPersonEntity> listMaster = masterPersonRepository.findByCompareNameTextAndIsLatest(
+                        formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
+                        SetTableDataHistoryUtil.INSERT_STATE);
+                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
+                    stringBuilder.append("同名の個人があります。確認調査の上、必要に応じて追加してください;");
+                }
             }
 
         } else {
@@ -96,7 +108,8 @@ public class PartnerPersonAddMiniCsvProcessor
      * @param delegate 代表者名
      * @return 検索結果
      */
-    private List<PartnerPersonHistoryBaseEntity> selectSameRirekiList(final  String name, final String address,final  String delegate) {
+    private List<PartnerPersonHistoryBaseEntity> selectSameRirekiList(final String name, final String address,
+            final String delegate) {
 
         return getPartnerPersonSameHistoryService.practice(name, address, delegate);
     }
