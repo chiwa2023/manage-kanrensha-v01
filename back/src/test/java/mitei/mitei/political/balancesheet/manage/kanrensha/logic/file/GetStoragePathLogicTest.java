@@ -1,8 +1,8 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.logic.file;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -58,15 +58,12 @@ class GetStoragePathLogicTest {
     void test() throws Exception {
 
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
-
         Path path = getStoragePathLogic.practice(userDto);
-        Path pathParent = Paths.get(storageFolder);
 
-        // 生成されたパスは親ディレクトリが同一でユーザコードを指定場所に含む
-        assertTrue(path.toAbsolutePath().toString().startsWith(pathParent.toAbsolutePath().toString()));
-        assertEquals(String.valueOf(userDto.getUserPersonCode()),
-                path.getParent().getParent().getFileName().toString());
-
+        // 生成されたパスはユーザコードで始まる(後の2ディレクトリUnixTimeとランダム文字列はチェックしない)
+        assertTrue(path.toString().startsWith(String.valueOf(userDto.getUserPersonCode())));
+        // ディレクトリはこの時点で生成されている
+        assertTrue(Files.exists(Paths.get(storageFolder, path.toString())));
     }
 
 }

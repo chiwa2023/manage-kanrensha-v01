@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapperWithTimeModuleUtil;
 
@@ -48,14 +48,16 @@ class RetryBatchAddByXmlControllerTest {
     @Tag("TableTruncate")
     void test() throws Exception {
 
-        UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
+        RetryWktblBatchCapsuleDto capsuleDto = new RetryWktblBatchCapsuleDto();
+        capsuleDto.setUserDto(CreateLeastUserForTestUtil.practice());
+        
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
         String path = "/regist-by-xml/retry";
 
         // サーバステータスがOK(200)
         assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
-                .perform(post(path).content(objectMapper.writeValueAsString(userDto)) // リクエストボディを指定
+                .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) // リクエストボディを指定
                         .contentType(MediaType.APPLICATION_JSON_VALUE)) // Content Typeを指定
                 .andExpect(status().isOk()).andReturn().getResponse().getStatus());
     }

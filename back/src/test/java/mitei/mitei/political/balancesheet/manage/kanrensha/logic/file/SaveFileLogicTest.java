@@ -38,7 +38,7 @@ class SaveFileLogicTest {
     /** テスト対象 */
     @Autowired
     private SaveFileLogic saveFileLogic;
-
+    
     /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
     private String storageFolder;
 
@@ -64,7 +64,8 @@ class SaveFileLogicTest {
     void test() throws Exception {
         String fileName = "mt_parcel_city011011.csv";
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
-        Path pathParent = Paths.get(storageFolder, String.valueOf(userDto.getUserPersonCode()));
+        String userDir = String.valueOf(userDto.getUserPersonCode());
+        Path pathParent = Paths.get(storageFolder,userDir );
         Files.createDirectories(pathParent);
         Path pathWrite = Paths.get(pathParent.toString(), fileName);
         File file = new File(pathWrite.toString());
@@ -78,8 +79,8 @@ class SaveFileLogicTest {
         Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/", fileName);
         byte[] bytes = Files.readAllBytes(path);
         String content = Base64.getEncoder().encodeToString(bytes);
-
-        assertTrue(saveFileLogic.practice(pathParent, fileName, content));
+        
+        assertTrue(saveFileLogic.practice(pathWrite , content));
 
         // 実施後にはファイルが存在
         assertTrue(file.exists());
@@ -96,7 +97,8 @@ class SaveFileLogicTest {
 
         String fileName = "src.md";
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
-        Path pathParent = Paths.get(storageFolder, String.valueOf(userDto.getUserPersonCode()));
+        String userDir = String.valueOf(userDto.getUserPersonCode());
+        Path pathParent = Paths.get(storageFolder, userDir);
         Files.createDirectories(pathParent);
         Path pathWrite = Paths.get(pathParent.toString(), fileName);
         File file = new File(pathWrite.toString());
@@ -109,7 +111,7 @@ class SaveFileLogicTest {
         // 読み取りファイルを取得
         Path path = Paths.get(GetCurrentResourcePath.getBackTestResourcePath(), "/file/", "srcmd_base64.txt");
         String content = Files.readString(path);
-        assertTrue(saveFileLogic.practice(pathParent, fileName, content));
+        assertTrue(saveFileLogic.practice(pathWrite, content));
 
         // 実施後にはファイルが存在
         assertTrue(file.exists());

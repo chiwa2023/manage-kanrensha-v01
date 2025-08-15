@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import mitei.mitei.common.publish.politician.balancesheet.report.dto.v5.AllBookDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.RegistDataByXmlCapsuleDto;
 
 /**
  * アップロード済XMLファイル解析ワークテーブル複写Service
@@ -21,11 +22,15 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
      *
      * @throws JsonProcessingException JSOn変換例外
      */
-    public void practice() throws JsonProcessingException {
+    public void practice(final RegistDataByXmlCapsuleDto capsuleDto) throws JsonProcessingException {
+
+        // TODO 仮保存から本保存に複写
+        
         // 公式XML読み取り
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.setSerializationInclusion(Include.ALWAYS);
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        
         AllBookDto allBookDto = xmlMapper.readValue("", new TypeReference<>() {
         });
 

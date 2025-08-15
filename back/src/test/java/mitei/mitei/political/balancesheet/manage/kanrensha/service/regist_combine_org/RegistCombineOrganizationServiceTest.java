@@ -1,6 +1,5 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_combine_org;
 
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -67,7 +66,9 @@ class RegistCombineOrganizationServiceTest {
         WkTblPartnerCombineOrgEntity entityBase = new WkTblPartnerCombineOrgEntity();
         BeanUtils.copyProperties(entityInput01, entityBase);
         entityBase.setOrgName("超元素製造組合");
-        entityBase.setYearArrayText("1234567");
+        entityBase.setYearArrayText("2024");
+        entityBase.setStartyear(Short.valueOf("2024"));
+        entityBase.setEndyear(Short.valueOf("2023"));
         capsuleDto01.setWkTblPartnerCombineOrgEntity(entityBase);
 
         Integer newId = registCombineOrganizationService.practice(capsuleDto01);
@@ -79,11 +80,7 @@ class RegistCombineOrganizationServiceTest {
         assertEquals(entityBase.getOrgName(), entityCopy.getOrgName());
         assertEquals(entityBase.getYearArrayText(), entityCopy.getYearArrayText());
         assertEquals(SetTableDataHistoryUtil.INSERT_STATE, entityCopy.getIsLatest());
-
-        // TODO 判定処理実装後にテストを追加
-        // assertEquals("名称が入力されていません;", entityCopy.getJudgeReason());
-
-        fail("Not yet implemented");
+        assertEquals("終了年より開始年が大きい値です;", entityCopy.getJudgeReason()); // 編集内容に対してチェックが効いています
     }
 
 }

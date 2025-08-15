@@ -2,6 +2,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,5 +77,15 @@ public interface MasterPoliticalOrganizationRepository
      * @return 検索結果
      */
     List<MasterPoliticalOrganizationEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
+
+    /**
+     * 該当コードかつ最新該否でデータを取得する
+     *
+     * @param code     関連者コード
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    Optional<MasterPoliticalOrganizationEntity> findFirstByPoliOrgKanrenshaCodeAndIsLatest(String code,
+            Boolean isLatest);
 
 }

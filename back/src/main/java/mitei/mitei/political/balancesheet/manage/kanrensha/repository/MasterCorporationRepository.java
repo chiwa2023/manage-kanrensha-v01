@@ -2,6 +2,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,4 +57,14 @@ public interface MasterCorporationRepository extends JpaRepository<MasterCorpora
      */
     Page<MasterCorporationEntity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
+
+    /**
+     * 該当コードかつ最新データを取得する
+     *
+     * @param code     関連者コード
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    Optional<MasterCorporationEntity> findFirstByCorpKanrenshaCodeAndIsLatest(String code, Boolean isLatest);
+
 }

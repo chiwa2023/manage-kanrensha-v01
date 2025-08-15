@@ -2,6 +2,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +49,6 @@ public interface MasterPersonRepository extends JpaRepository<MasterPersonEntity
     Page<MasterPersonEntity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
 
-
     /**
      * 団体名で検索する
      *
@@ -57,5 +57,14 @@ public interface MasterPersonRepository extends JpaRepository<MasterPersonEntity
      * @return 検索結果
      */
     List<MasterPersonEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
+
+    /**
+     * 該当コードかつ最新データを取得する
+     *
+     * @param code     関連者コード
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    Optional<MasterPersonEntity> findFirstByPersonKanrenshaCodeAndIsLatest(String code, Boolean isLatest);
 
 }

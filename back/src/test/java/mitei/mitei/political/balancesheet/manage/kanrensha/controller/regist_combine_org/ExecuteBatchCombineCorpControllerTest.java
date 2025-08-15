@@ -1,0 +1,66 @@
+package mitei.mitei.political.balancesheet.manage.kanrensha.controller.regist_combine_org;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner.RegistDataByCsvFileCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUserForTestUtil;
+import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapperWithTimeModuleUtil;
+
+/**
+ * ExecuteBatchCombineCorpController単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+class ExecuteBatchCombineCorpControllerTest {
+
+    /** MockMvc */
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    @Tag("TableTruncate")
+    @Sql({ "../../service/regist_combine_org/sample_wk_tbl_partner_combine_org.sql",
+            "../../service/regist_combine_org/master_person.sql",
+            "../../service/regist_combine_org/master_corporation.sql",
+            "../../service/regist_combine_org/master_political_organization.sql",
+            "../../service/regist_combine_org/delete_partner_combine_org_2025.sql" })
+    void test() throws Exception {
+
+        RegistDataByCsvFileCapsuleDto capsuleDto = new RegistDataByCsvFileCapsuleDto();
+        capsuleDto.setUserPersonLeastDto(CreateLeastUserForTestUtil.practice());
+        capsuleDto.getStorageFileDto().setSavedDir("190/test/");
+        capsuleDto.getStorageFileDto().setFileName("sample_combine_corp.csv");
+
+        ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
+
+        String path = "/regist-combine/execute-corp";
+
+        // サーバステータスがOK(200)
+        assertEquals(HttpStatus.OK.value(), mockMvc // NOPMD LawOfDemeter
+                .perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) // リクエストボディを指定
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)) // Content Typeを指定
+                .andExpect(status().isOk()).andReturn().getResponse().getStatus());
+    }
+
+}
