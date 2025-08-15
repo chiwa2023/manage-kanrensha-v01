@@ -73,7 +73,7 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
         <!-- 検索 -->
         <SearchPersonNo :is-footer="false" @send-person-no-interface="recievePersonNoInterface"></SearchPersonNo>
         <hr>
-        <PartnerPersonEdit :edit-dto="inputPersonDto"  :user-dto="userLeastDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerPersonEdit>
     </div>
 
     <div v-if="viewStatus == 2" class="one-line">
@@ -81,14 +81,15 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
         <SearchCorpNo :list="listCorp" :is-footer="false" @send-corp-no-interface="recieveCorpCoInterface">
         </SearchCorpNo>
         <hr>
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto"  :user-dto="userLeastDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerCorpEdit>
     </div>
 
     <div v-if="viewStatus == 3" class="one-line">
         <!-- 検索 -->
         <SearchPoliOrg :is-footer="false" @send-poli-org-no-interface="recievePoliOrgNoInterface"></SearchPoliOrg>
         <hr>
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :user-dto="userLeastDto" ></PartnerPoliOrgEdit>
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="true" :user-dto="userLeastDto">
+        </PartnerPoliOrgEdit>
     </div>
 
 

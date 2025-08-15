@@ -11,8 +11,10 @@ function recieveUser(user:UserPersonLeastInterface){
     userLeastDto.value = user;
 }
 
+
 </script>
 <template>
+    <h1>SE権限メニュー</h1>
     <!-- ユーザメニュー兼チェック -->
     <AdminInfo @send-user="recieveUser"></AdminInfo>
     <hr>
@@ -22,7 +24,17 @@ function recieveUser(user:UserPersonLeastInterface){
     <RouterLink to="/user/delete">ユーザ削除</RouterLink><br>
     <RouterLink to="/user/change">ユーザ編集</RouterLink><br>
     <RouterLink to="/user/promote-role">管理者からSE権限へ引き上げ</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
+
+    <hr>
     
+    <RouterLink :to=RoutePathConstants.PAGE_DUMP_MASTER>関連者マスタcsvダンプ(指定期間まで)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DUMP_HISTORY>関連者履歴csvダンプ(指定期間まで)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DUMP_SABUN_MASTER>関連者マスタcsv差分ダンプ</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DUMP_SABUN_HISTORY>関連者履歴csv差分ダンプ</RouterLink><br>
+    
+    <hr>
     <RouterLink :to="RoutePathConstants.PAGE_LOGIN">ログインページ</RouterLink><br>
 
 </template>

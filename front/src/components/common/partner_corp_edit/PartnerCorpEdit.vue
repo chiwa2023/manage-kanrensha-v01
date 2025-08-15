@@ -18,9 +18,10 @@ import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 import router from '../../../router';
 import RoutePathConstants from '../../../routePathConstants';
 
-const props = defineProps<{ editDto: CorpNoInterface, userDto: UserPersonLeastInterface }>();
-
+const props = defineProps<{ editDto: CorpNoInterface, userDto: UserPersonLeastInterface, isEditNew: boolean }>();
 const editCorpDto: ComputedRef<CorpNoInterface> = computed(() => { return props.editDto });
+
+const BLANK: string = "";
 
 // 編集用Dto
 const addressDtoStored: Ref<InputAddressDto> = ref(new InputAddressDto());
@@ -129,6 +130,23 @@ function recievePersonNoInterface(sendDto: PersonNoInterface) {
     isPersonSearch.value = false;
 }
 
+function resetData() {
+    // コードのリセット
+    editCorpDto.value.corpNo = BLANK;
+    // 名前情報のリセット
+    editCorpDto.value.corpName = BLANK;
+    editCorpDto.value.corpNameKana = BLANK;
+    // 住所情報のリセット   
+    editCorpDto.value.inputAddress = new InputAddressDto();
+    editCorpDto.value.houjinNo = BLANK;
+
+    // 代表者のリセット   
+    editCorpDto.value.orgDelegate = BLANK;
+    editCorpDto.value.orgDelegateCode = BLANK;
+    branchName.value = BLANK;
+    branchNamekana.value = BLANK;
+}
+
 function onCancel() {
     router.push(RoutePathConstants.PAGE_LOGIN);
 }
@@ -189,6 +207,14 @@ function onSave() {
     <hr>
 
     <h3>編集内容(連絡先)</h3>
+
+    <div class="left-area">
+        (編集→)新規作成
+    </div>
+    <div class="right-area">
+        <button @click="resetData" :disabled="!isEditNew">入力情報のリセット</button>
+    </div>
+    <div class="clear-both"></div>
 
     <div class="left-area">
         政治資金関連者コード(企業団体)
@@ -257,6 +283,16 @@ function onSave() {
     </div>
     <div class="right-area">
         <input type="checkbox" v-model="isGaikokuHoujin" disabled="true">外国籍企業である
+    </div>
+    <div class="clear-both"></div>
+
+    <hr>
+    <h3>変更履歴</h3>
+    <div class="left-area">
+        履歴表示
+    </div>
+    <div class="right-area">
+        <button>展開</button>
     </div>
     <div class="clear-both"></div>
 

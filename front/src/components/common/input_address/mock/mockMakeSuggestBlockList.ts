@@ -31,7 +31,7 @@ export default function mockMakeSuggestBlockList(): PostalCodeBlockResultInterfa
     resultDto.isGyouseikuData = false;
     resultDto.listOptions = list;
     resultDto.lgCode = "123123";
-
+    
     return resultDto;
 
 }

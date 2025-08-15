@@ -15,8 +15,8 @@ import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 import router from '../../../router';
 import RoutePathConstants from '../../../routePathConstants';
 
-const props = defineProps<{ editDto: PoliOrgNoInterface, userDto: UserPersonLeastInterface }>();
-const editPoliOrgDto: ComputedRef<PoliOrgNoInterface> = computed(() => { return props.editDto });
+const props = defineProps<{ editDto: PoliOrgNoInterface, isEditNew: boolean ,userDto: UserPersonLeastInterface}>();
+const editPoliOrgDto: ComputedRef<PoliOrgNoInterface> = computed(() => props.editDto)
 
 const BLANK: string = "";
 
@@ -108,8 +108,6 @@ function onCheckAlreadyRegist() {
     }
 }
 
-
-
 function onCancel() {
     router.push(RoutePathConstants.PAGE_LOGIN);
 }
@@ -179,7 +177,7 @@ function onSave() {
         (編集→)新規作成
     </div>
     <div class="right-area">
-        <button @click="resetData">入力情報のリセット</button>
+        <button @click="resetData" :disabled="!isEditNew">入力情報のリセット</button>
     </div>
     <div class="clear-both"></div>
 
@@ -247,6 +245,18 @@ function onSave() {
         <span class="left-space"><input type="radio" :value="6"> その他の政治団体の支部</span>
     </div>
     <div class="clear-both"></div>
+
+    <hr>
+    <h3>変更履歴</h3>
+
+    <div class="left-area">
+        履歴表示
+    </div>
+    <div class="right-area">
+        <button>展開</button>
+    </div>
+    <div class="clear-both"></div>
+
     <hr>
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>

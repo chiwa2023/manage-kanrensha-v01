@@ -9,14 +9,13 @@ const emits = defineEmits(["sendCancelInputPersonName", "sendInputPersonNameInte
 // 編集Dto
 const inputNameDto: ComputedRef<InputPersonNameInterface> = computed(() => { return props.editDto });
 
-function onCancel() {
-    emits("sendCancelInputPersonName");
-}
-
 function onSave() {
     emits("sendInputPersonNameInterface", inputNameDto.value);
 }
 
+function onCancel() {
+    emits("sendCancelInputPersonName");
+}
 </script>
 <template>
     <h3>姓名入力</h3>

@@ -11,9 +11,9 @@ const sessionStorage = window["sessionStorage"];
 // ログイン後にログイン画面に戻ってきたときはログアウト処理
 const userText: string | null = sessionStorage.getItem("userDto");
 if (userText !== null) {
+    alert("ログアウト処理");
     const url = "http://localhost:6080/logout";
     const method = "POST";
-
     const headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -25,6 +25,7 @@ if (userText !== null) {
                 // TODO ログアウト失敗時の対処方法を修正する
                 alert("ログアウトに失敗しました" + status);
             }
+            sessionStorage.removeItem("userDto")
         })
         .catch((error) => { alert(error); });
 }
@@ -45,6 +46,7 @@ if(loginErrorText !== null){
 
 const user: Ref<LoginUserCapsuleInterface> = ref(new LoginUserCapsuleDto());
 function onLogin() {
+    alert(sessionStorage.getItem("userDto"));
     const url = "http://localhost:6080/login";
     const method = "POST";
     const body = JSON.stringify(user.value);
@@ -141,16 +143,14 @@ function changeVisiblePassword() {
 
     <div style="clear: both;"></div>
 
-    <!--
     <hr>
-    <RouterLink to="/menu-manager">管理者メニュー</RouterLink><br>
-    <RouterLink to="/menu-comrade">APIユーザメニュー</RouterLink><br>
-    <RouterLink to="/menu-kanrensha">関連者メニュー</RouterLink><br>
-     -->
-    <RouterLink to="/user/change-role">権限変更</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_HISTORY>関連者履歴データダウンロード(公開文書記載水準)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN>関連者マスタ最小ダウンロード(公開文書記載水準)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY>関連者履歴データダウンロード差分(公開文書記載水準)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN>関連者マスタ最小ダウンロード差分(公開文書記載水準)</RouterLink><br>
 
     <hr>
-    <RouterLink to="/component">コンポーネント作成台紙</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_COMPONENT>コンポーネント作成台紙</RouterLink><br>
 
 </template>
 <style scoped></style>

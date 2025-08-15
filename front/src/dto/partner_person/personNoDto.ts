@@ -1,6 +1,8 @@
 import InputAddressDto from "../Input_address/inputAddressDto"
 import InputPersonNameInterface from "../input_person_name/inputPersonNameDto"
 import InputPersonNameDto from "../input_person_name/inputPersonNameDto"
+import type InputShokugyouInterface from "../input_shokugyou/inputShokugyouDto"
+import InputShokugyouDto from "../input_shokugyou/inputShokugyouDto"
 
 export default interface PersonNoInterface {
 
@@ -26,12 +28,14 @@ export default class PersonNoDto implements PersonNoInterface {
     /** 入力姓名 */
     inputName: InputPersonNameInterface;
 
+    /** 入力職業 */
+    inputShokugyou: InputShokugyouInterface;
+
     /** 職業の業種 */
-    gyoushu: string;
-    /** 職業の役職 */
-    yakushoku: string;
-    /** ユーザ記述の職業 */
-    shokugyouUserWrite: string;
+    allShokugyou: string;
+
+    /** 承認該否  */
+    isApproval: boolean;
 
 
     /** 外国人該否 */
@@ -47,11 +51,9 @@ export default class PersonNoDto implements PersonNoInterface {
 
         this.inputAddress = new InputAddressDto();
         this.inputName = new InputPersonNameDto();
-
-        this.gyoushu = INIT_STRING;
-        this.yakushoku = INIT_STRING;
-        this.shokugyouUserWrite = INIT_STRING;
         this.isGaikoujin = false;
-
+        this.inputShokugyou = new InputShokugyouDto();
+        this.allShokugyou = INIT_STRING;
+        this.isApproval = false;
     }
 }

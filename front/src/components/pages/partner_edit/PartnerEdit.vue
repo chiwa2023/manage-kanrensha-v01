@@ -23,7 +23,7 @@ function recieveUser(user:UserPersonLeastInterface){
     userLeastDto.value = user;
 }
 
-// 編集用Dto
+
 const inputPersonDto: Ref<PersonNoInterface> = ref(new PersonNoDto());
 const inputPoliOrgDto: Ref<PoliOrgNoInterface> = ref(new PoliOrgNoDto());
 const inputCorpNoDto: Ref<CorpNoInterface> = ref(new CorpNoDto());
@@ -51,6 +51,16 @@ switch (role) {
     case UserRoleConstants.ROLE_PARTNER_POLI_ORG:
         inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
         viewStatus = 3;
+}
+switch (viewStatus) {
+    case 1:
+        inputPersonDto.value = mockGetPersonList()[0];
+        break;
+    case 2:
+        inputCorpNoDto.value = mockGetCorpList()[0];
+        break;
+    case 3:
+        inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
         break;
     default:
         break;
@@ -65,15 +75,16 @@ switch (role) {
     <h1>関連者編集</h1>
     <!-- 編集対象が法人／個人 -->
     <div v-if="viewStatus == 1">
-        <PartnerPersonEdit :edit-dto="inputPersonDto" :user-dto="userLeastDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="false" :user-dto="userLeastDto"></PartnerPersonEdit>
     </div>
     <!-- 編集対象が法人／団体 -->
     <div v-if="viewStatus == 2">
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :user-dto="userLeastDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="false" :user-dto="userLeastDto"></PartnerCorpEdit>
     </div>
     <!-- 編集対象が政治団体 -->
     <div v-if="viewStatus == 3">
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :user-dto="userLeastDto"></PartnerPoliOrgEdit>
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="false" :user-dto="userLeastDto"></PartnerPoliOrgEdit>
     </div>
+    
 </template>
 <style scoped></style>
