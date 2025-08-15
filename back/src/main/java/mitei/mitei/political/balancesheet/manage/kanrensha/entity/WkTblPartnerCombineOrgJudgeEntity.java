@@ -61,25 +61,25 @@ public class WkTblPartnerCombineOrgJudgeEntity implements Serializable, AllTabeD
     }
 
     /** ワークテーブルマスタId */
-    @Column(name = "wk_tbl_partner_combine_org_xml_id")
-    private Integer wkTblPartnerCombineOrgXmlId = INIT_Integer;
+    @Column(name = "wk_tbl_partner_combine_org_id")
+    private Integer wkTblPartnerCombineOrgId = INIT_Integer;
 
     /**
      * ワークテーブルマスタIdを取得する
      *
      * @return ワークテーブルマスタId
      */
-    public Integer getWkTblPartnerCombineOrgXmlId() {
-        return wkTblPartnerCombineOrgXmlId;
+    public Integer getWkTblPartnerCombineOrgId() {
+        return wkTblPartnerCombineOrgId;
     }
 
     /**
      * ワークテーブルマスタIdを設定する
      *
-     * @param wkTblPartnerCombineOrgXmlId ワークテーブルマスタId
+     * @param wkTblPartnerCombineOrgId ワークテーブルマスタId
      */
-    public void setWkTblPartnerCombineOrgXmlId(final Integer wkTblPartnerCombineOrgXmlId) {
-        this.wkTblPartnerCombineOrgXmlId = wkTblPartnerCombineOrgXmlId;
+    public void setWkTblPartnerCombineOrgId(final Integer wkTblPartnerCombineOrgId) {
+        this.wkTblPartnerCombineOrgId = wkTblPartnerCombineOrgId;
     }
 
     /** 最新該否 */

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.RetryWktblBatchCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_by_xml.RetryBatchAddByXmlService;
 
 /**
@@ -25,14 +25,18 @@ public class RetryBatchAddByXmlController {
 
     /**
      * 処理を行う
+     *
+     * @param capsuleDto 編集後再試行条件Dto
+     * @return 処理結果レスポンス
      */
     @PostMapping("/retry")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(final @RequestBody UserPersonLeastDto userDto) {
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+            final @RequestBody RetryWktblBatchCapsuleDto capsuleDto) {
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
 
-        retryBatchAddByXmlService.practice(userDto);
+        retryBatchAddByXmlService.practice(capsuleDto.getUserDto());
 
         return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
     }

@@ -67,7 +67,7 @@ public class GetStoragePathLogic {
         Path fullPath = Paths.get(storageFolder, childDir);
         Files.createDirectories(fullPath);
 
-        return fullPath;
+        return childPath;
     }
 
 }

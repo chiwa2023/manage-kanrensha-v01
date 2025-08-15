@@ -3,6 +3,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.controller.regist_by
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.RegistDataByXmlCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_by_xml.AnalysisUploadXmlWktblCommonByXmlService;
 
 /**
@@ -29,10 +31,11 @@ public class AnalysisUploadXmlWktblCommonByXmlController {
      * @return レスポンス
      */
     @PostMapping("/execute")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice() {
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+            @RequestBody final RegistDataByXmlCapsuleDto capsuleDto) {
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
-            analysisUploadXmlWktblCommonByXmlService.practice();
+            analysisUploadXmlWktblCommonByXmlService.practice(capsuleDto);
             resultDto.setMessage("正常に登録できました");
             return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
 
