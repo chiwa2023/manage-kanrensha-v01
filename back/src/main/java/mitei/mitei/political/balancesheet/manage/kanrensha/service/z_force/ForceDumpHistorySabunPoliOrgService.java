@@ -73,7 +73,7 @@ public class ForceDumpHistorySabunPoliOrgService {
 
         final String pathSaved = Paths.get(GetCurrentResourcePath.getBackSrcPath("")).getParent().getParent()
                 .toString();
-        final String folder = frontDumpFolder + "/dump_hisotry_sabun_poli_org";
+        final String folder = frontDumpFolder + "/dump_history_sabun_poli_org";
 
         JobParameters jobParameters = new JobParametersBuilder(
                 dumpSabunPartnerPoliOrgHistory.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

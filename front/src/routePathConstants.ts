@@ -54,11 +54,15 @@ export default class RoutePathConstants {
     static readonly PAGE_DUMP_MASTER: string = "/dump-master";
     /** 関連者履歴一ダンプ(指定期間まで) */
     static readonly PAGE_DUMP_HISTORY: string = "/dump-history";
+    /** 関連者マスタ一標準ダンプ(指定期間まで) */
+    static readonly PAGE_DUMP_MASTER_STD: string = "/dump-master-std";
 
     /** 関連者マスタ一差分ダンプ */
     static readonly PAGE_DUMP_SABUN_MASTER: string = "/dump-sabun-master";
     /** 関連者履歴一差分ダンプ */
     static readonly PAGE_DUMP_SABUN_HISTORY: string = "/dump-sabun-history";
+    /** 関連者マスタ一(標準)差分ダンプ */
+    static readonly PAGE_DUMP_SABUN_MASTER_STD: string = "/dump-sabun-master-std";
 
     /** 関連者XML編集登録 */
     static readonly PAGE_ADD_XML: string = "/add-by-xml";

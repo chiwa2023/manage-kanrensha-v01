@@ -55,7 +55,7 @@ function recieveUser(user: UserPersonLeastInterface) {
     <hr>
     <h3>関連者マスタ標準データダウンロード</h3>
     <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_STD>関連者マスタ標準データダウンロード</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>関連者マスタ標準データダウンロード</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>差分関連者マスタ標準データダウンロード</RouterLink><br>
 
     <hr>
     <RouterLink to="/">ログインページ</RouterLink><br>

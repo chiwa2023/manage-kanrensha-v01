@@ -1,5 +1,8 @@
 ﻿<script setup lang="ts">
-//仮
+function onCancel() {
+    alert("キャンセル");
+    history.back();
+}
 </script>
 <template>
     <h1>関連者マスタ標準データダウンロード</h1>
@@ -25,6 +28,10 @@
         <a href="/dump/dump_master/master_poli_org_std.csv" class="left-space">関連者政治団体標準(master_person_std.csv)</a><br>
     </div>
     <div class="clear-both"><br></div>
+
+    <div class="footer">
+        <button @click="onCancel" class="footer-button">キャンセル</button>
+    </div>
 
 </template>
 <style scoped></style>

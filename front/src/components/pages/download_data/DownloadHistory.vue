@@ -1,5 +1,8 @@
 ﻿<script setup lang="ts">
-//仮
+function onCancel() {
+    alert("キャンセル");
+    history.back();
+}
 </script>
 <template>
     <h1>関連者履歴データダウンロード</h1>
@@ -447,6 +450,10 @@
         </table>
     </div>
     <div class="clear-both"><br></div>
+
+    <div class="footer">
+        <button @click="onCancel" class="footer-button">キャンセル</button>
+    </div>
 
 </template>
 <style scoped>

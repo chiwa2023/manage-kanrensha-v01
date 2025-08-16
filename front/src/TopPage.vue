@@ -11,7 +11,6 @@ const sessionStorage = window["sessionStorage"];
 // ログイン後にログイン画面に戻ってきたときはログアウト処理
 const userText: string | null = sessionStorage.getItem("userDto");
 if (userText !== null) {
-    alert("ログアウト処理");
     const url = "http://localhost:6080/logout";
     const method = "POST";
     const headers = {
@@ -24,14 +23,15 @@ if (userText !== null) {
             if (status !== 200) {
                 // TODO ログアウト失敗時の対処方法を修正する
                 alert("ログアウトに失敗しました" + status);
+            } else {
+                sessionStorage.removeItem("userDto")
             }
-            sessionStorage.removeItem("userDto")
         })
         .catch((error) => { alert(error); });
 }
 
 const loginErrorText: string | null = sessionStorage.getItem("loginError");
-if(loginErrorText !== null){
+if (loginErrorText !== null) {
     alert(loginErrorText);
     sessionStorage.removeItem("loginError");
 }
@@ -46,7 +46,6 @@ if(loginErrorText !== null){
 
 const user: Ref<LoginUserCapsuleInterface> = ref(new LoginUserCapsuleDto());
 function onLogin() {
-    alert(sessionStorage.getItem("userDto"));
     const url = "http://localhost:6080/login";
     const method = "POST";
     const body = JSON.stringify(user.value);

@@ -2,9 +2,11 @@
 import { ref, watch, type Ref } from 'vue';
 import type ForceDumpCapsuleInterface from '../../../dto/z_force_dump/forceDumpCapsuleDto';
 import ForceDumpCapsuleDto from '../../../dto/z_force_dump/forceDumpCapsuleDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 
 // 実行条件
-const capsuleDto:Ref<ForceDumpCapsuleInterface> = ref( new ForceDumpCapsuleDto());
+const capsuleDto: Ref<ForceDumpCapsuleInterface> = ref(new ForceDumpCapsuleDto());
 
 const isExecuteAll: Ref<boolean> = ref(true);
 
@@ -35,7 +37,24 @@ function onCancel() {
     history.back();
 }
 function onSave() {
-    alert("保存");
+    getAuthorizedPromiseArea().then(token => {
+        // 処理条件再設定なしでそのまま
+        const url = "http://localhost:6080/dump-history/execute";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto:FrameworkResultInterface = await response.json();
+                alert(resultDto.message);
+            })
+            .catch((error) => { alert(error); });
+    });
+
 }
 </script>
 <template>
@@ -51,7 +70,8 @@ function onSave() {
         関連者個別選択
     </div>
     <div class="right-area">
-        <span class="left-space"><input type="checkbox" v-model="capsuleDto.isExecuteCorp" :disabled=isDisabledCorp>関連者企業・団体</span>
+        <span class="left-space"><input type="checkbox" v-model="capsuleDto.isExecuteCorp"
+                :disabled=isDisabledCorp>関連者企業・団体</span>
         <span class="left-space"><input type="checkbox" v-model="capsuleDto.isExecutePerson"
                 :disabled=isDisabledPerson>関連者個人</span>
         <span class="left-space"><input type="checkbox" v-model="capsuleDto.isExecutePoliOrg"
