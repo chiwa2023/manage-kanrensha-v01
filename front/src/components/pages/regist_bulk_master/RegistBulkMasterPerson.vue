@@ -3,8 +3,16 @@ import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 import EditWkTblStdPerson from '../../common/wktbl_edit_std/EditWkTblStdPerson.vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
-
+import type StorageFileInterface from '../../../dto/storage_file/storageFileDto';
+import type RegistDataByCsvFileCapsuleInterface from '../../../dto/storage_file/registDataByCsvFileCapsuleDto';
+import RegistDataByCsvFileCapsuleDto from '../../../dto/storage_file/registDataByCsvFileCapsuleDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkMessageAndResultInterface from '../../../dto/frameworkMessageAndResultDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type RetryWktblBatchCapsuleInterface from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
+import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -13,34 +21,93 @@ function viewSample() {
     isVisibleTemplate.value = !isVisibleTemplate.value;
 }
 
-// csv読み出し
-const tableData: Ref<string[][]> = ref([[]]);
-function recieveTextDataBlock(data: string) {
-    tableData.value = parseCSV(data);
-}
-function parseCSV(data: string): string[][] {
-    return data.split('\r\n').map((row) => row.split(','));
-}
-function removeQuote(data: string): string {
-    return data.replace('"', '').replace('"', '');
-}
-
 // 初期表示データフォーマットは最小
 const formatMin: string = "min";
 const formatStd: string = "std";
 const isVisibleFormat: Ref<string> = ref(formatMin);
 
+// ファイルからバッチ起動条件
+const capsuleDto: Ref<RegistDataByCsvFileCapsuleInterface> = ref(new RegistDataByCsvFileCapsuleDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+capsuleDto.value.userPersonLeastDto = userDto.value;
+
+// 再処理起動条件(ユーザ)
+const retryCapsuleDto:Ref<RetryWktblBatchCapsuleInterface> = ref(new RetryWktblBatchCapsuleDto());
+retryCapsuleDto.value.userDto = userDto.value;
+
+// ファイル保全情報受信
+function recieveStorageFileInterface(storageFileDto: StorageFileInterface) {
+    capsuleDto.value.storageFileDto = storageFileDto;
+}
+
 function onCancel() {
     alert("キャンセル");
     history.back();
 }
+
+let url = "";
+
 function onSave() {
-    alert("保存");
+
+    getAuthorizedPromiseArea().then(token => {
+        if (isVisibleFormat.value === formatMin) {
+            url = "http://localhost:6080/regist-bulk-master-min/retry-person";
+        }
+        if (isVisibleFormat.value === formatStd) {
+            url = "http://localhost:6080/regist-bulk-master-std/retry-person";
+        }
+
+        const method = "POST";
+        const body = JSON.stringify(retryCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto:FrameworkMessageAndResultInterface = await response.json();
+                alert(resultDto.message);
+            })
+            .catch((error) => { alert(error); });
+    });
+}
+
+function onBatchByFile() {
+
+    getAuthorizedPromiseArea().then(token => {
+        // 最小と標準で接続先切り替え(起動条件のパラメータ内容は変わらない)
+        if (isVisibleFormat.value === formatMin) {
+            url = "http://localhost:6080/regist-bulk-master-min/execute-person";
+        }
+        if (isVisibleFormat.value === formatStd) {
+            url = "http://localhost:6080/regist-bulk-master-std/execute-person";
+        }
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultInterface = await response.json();
+                alert(resultDto.message);
+            })
+            .catch((error) => { alert(error); });
+    });
+
 }
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
 
     <h1>関連者個人マスタ一括登録</h1>
 
@@ -54,22 +121,14 @@ function onSave() {
     </div>
     <div class="clear-both"></div>
 
-    <h3>CSVファイル選択</h3>
-    <ReadCsv :is-text="true" @send-text-data="recieveTextDataBlock"></ReadCsv>
+    <!-- csv読み出し10行 -->
+    <ReadCsv @send-storage-file-interface="recieveStorageFileInterface"></ReadCsv>
 
-    <h3>読み取り結果(最初の10行)</h3>
+    <div class="clear-both"><br></div>
     <div class="one-line">
-        <table>
-            <tbody>
-                <tr v-for="row, index of tableData" :key="index">
-                    <td v-for="cell, index of row" :key="index">
-                        {{ removeQuote(cell) }}
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+        <button @click="onBatchByFile">頭出ししたcsvファイルで一括処理</button>
     </div>
+    <div class="clear-both"><br></div>
 
     <h3 v-if="isVisibleFormat === formatMin">最小フォーマット</h3>
     <div class="one-line" v-if="isVisibleFormat === formatMin">

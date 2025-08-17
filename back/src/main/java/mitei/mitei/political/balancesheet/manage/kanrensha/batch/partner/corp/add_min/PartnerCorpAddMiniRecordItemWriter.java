@@ -79,7 +79,6 @@ public class PartnerCorpAddMiniRecordItemWriter extends JpaItemWriter<WkTblPartn
      */
     @BeforeStep
     public void beforeStep(final StepExecution stepExecution) {
-
         userDto = createUserLeastDtoByBatchParamUtil.practice(stepExecution);
     }
 

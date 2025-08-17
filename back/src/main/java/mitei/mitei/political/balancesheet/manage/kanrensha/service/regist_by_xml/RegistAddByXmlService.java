@@ -31,7 +31,7 @@ public class RegistAddByXmlService {
      * @param capsuleDto 編集Dto
      * @return 新たなId
      */
-    public Integer practice(final UpdateWkTblAddByXmlCapsuleDto capsuleDto) {
+    public WkTblMasterAllByXmlEntity practice(final UpdateWkTblAddByXmlCapsuleDto capsuleDto) {
 
         WkTblMasterAllByXmlEntity entityInput = capsuleDto.getWkTblMasterAllByXmlEntity();
 
@@ -40,7 +40,7 @@ public class RegistAddByXmlService {
 
         // 万が一元データが探せない場合は処理中断
         if (optional.isEmpty()) {
-            return 0;
+            return new WkTblMasterAllByXmlEntity();
         }
 
         // TODO プロセッサによるチェック
@@ -55,7 +55,7 @@ public class RegistAddByXmlService {
         entityInput.setWkTblMasterAllByXmlId(0); // 履歴を積むのでauto_increment
         setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
 
-        return wkTblMasterAllByXmlRepository.save(entityInput).getWkTblMasterAllByXmlId();
+        return wkTblMasterAllByXmlRepository.save(entityInput);
     }
 
 }

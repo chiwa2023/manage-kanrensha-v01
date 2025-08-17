@@ -46,7 +46,7 @@ class PartnerPersonHistoryProcessorTest {
 
         assertEquals(false, entity.getIsAffected());
         assertEquals(false, entity.getIsFinish());
-        assertEquals("", entity.getJudgeReason());
+        assertEquals(" ", entity.getJudgeReason());
 
     }
 

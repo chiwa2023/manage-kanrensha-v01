@@ -41,7 +41,7 @@ public interface WkTblPartnerCorpHistoryRepository extends JpaRepository<WkTblPa
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblPartnerCorpHistoryEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
+    Page<WkTblPartnerCorpHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,boolean isAffected,boolean isFinish,
             Pageable pageable);
 
     /**

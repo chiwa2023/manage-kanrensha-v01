@@ -11,7 +11,7 @@ import InputAddress from '../../common/input_address/InputAddress.vue';
 import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyou from '../../common/input_shokugyou/InputShokugyou.vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 const viewStatus: Ref<string> = ref("1");
 const isAddressInput: Ref<boolean> = ref(false);
@@ -160,7 +160,7 @@ function onSave() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
     <hr>
 
     <h1>登録内容承認</h1>

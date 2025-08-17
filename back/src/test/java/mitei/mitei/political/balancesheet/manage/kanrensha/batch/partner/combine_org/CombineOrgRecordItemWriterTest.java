@@ -64,8 +64,8 @@ class CombineOrgRecordItemWriterTest {
         entity00.setPersonName("迂回献金　太郎");
         entity00.setOrgKanrenshaCode("333-555");
         entity00.setOrgName("ちゃらんぽらん政治団体");
-        entity00.setStartyear(Short.valueOf("2025"));
-        entity00.setEndyear(Short.valueOf("2025"));
+        entity00.setStartYear(Short.valueOf("2025"));
+        entity00.setEndYear(Short.valueOf("2025"));
         entity00.setYearArrayText("2025");
         entity00.setIsAffected(true);
         entity00.setIsFinish(false);

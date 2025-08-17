@@ -1,6 +1,5 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 import ViewInputAddress from '../../common/input_address/ViewInputAddress.vue';
 import mockGetIllegularItem from './mock/mockGetIllegularItem';
 import type PostalIrregularItemInterface from '../../../dto/postal/postalIrregularItemDto';
@@ -15,6 +14,7 @@ import type GetDetailPostalIllegularResultInterface from '../../../dto/postal/ge
 import GetDetailPostalIllegularResultDto from '../../../dto/postal/getDetailPostalIllegularResultDto';
 import type GetDetailPostalIllegularCapsuleInterface from '../../../dto/postal/getDetailPostalIllegularCapsuleDto';
 import GetDetailPostalIllegularCapsuleDto from '../../../dto/postal/getDetailPostalIllegularCapsuleDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 const isVisibleDetail: Ref<boolean> = ref(false);
 function isChangeview() {
@@ -138,7 +138,7 @@ function onSave() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
     <hr>
 
     <h1>フロア郵便番号追加</h1>

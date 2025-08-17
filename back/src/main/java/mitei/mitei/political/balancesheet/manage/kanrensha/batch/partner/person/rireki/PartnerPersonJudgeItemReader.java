@@ -32,7 +32,7 @@ public class PartnerPersonJudgeItemReader extends RepositoryItemReader<WkTblPart
         super();
         super.setRepository(wkTblPartnerPersonHistoryRepository);
         super.setSort(new HashMap<String, Direction>()); // NOPMD
-        super.setMethodName("findByInsertUserCodeAndIsLatest");
+        super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish");
 
         List<Object> list = new ArrayList<>();
         super.setArguments(list); // NOPMD
@@ -51,6 +51,8 @@ public class PartnerPersonJudgeItemReader extends RepositoryItemReader<WkTblPart
         List<Object> list = new ArrayList<>();
         list.add(userCode);
         list.add(SetTableDataHistoryUtil.INSERT_STATE);
+        list.add(true);
+        list.add(false);
 
         super.setArguments(list); // NOPMD
     }

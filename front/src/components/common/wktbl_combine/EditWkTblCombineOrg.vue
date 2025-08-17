@@ -6,15 +6,33 @@ import SearchWkTblPagingCapsuleDto from '../../../dto/add_xml/searchWkTbPagingCa
 import getPagingOption from '../../pages/paging/getPagingOption';
 import type SearchWkTblCombineOrgPagingResultInterface from '../../../dto/wktbl_combine/searchWkTblCombineOrgPagingResultDto';
 import SearchWkTblCombineOrgPagingResultDto from '../../../dto/wktbl_combine/searchWkTblCombineOrgPagingResultDto';
-import getMockWkTblCombineOrgList from './mock/getMockWkTblCombineOrgList';
 import KanrenshaKbnConstants from '../../../dto/kanrensha/kanrenshaKbnConstants';
 import type WkTblPartnerCombineOrgInterface from '../../../entity/wkTblPartnerCombineOrgEntity';
 import WkTblPartnerCombineOrgEntity from '../../../entity/wkTblPartnerCombineOrgEntity';
 import YearOption from '../../../dto/wktbl_combine/yearOption';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type UpdateWkTblCombineOrgCapsuleInterface from '../../../dto/wktbl_combine/updateWkTblCombineOrgCapsuleDto';
+import UpdateWkTblCombineOrgCapsuleDto from '../../../dto/wktbl_combine/updateWkTblCombineOrgCapsuleDto';
+import type UpdateWkTblCombineOrgResultInterface from '../../../dto/wktbl_combine/updateWkTblCombineOrgResultDto';
 
-const pageOptionCorp: Ref<SelectOptionNumberInterface[]> = ref([]);
+const props = defineProps<{  orgType: string }>();
+
+const pageOptionCombine: Ref<SelectOptionNumberInterface[]> = ref([]);
 const combineCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
 const combineResultDto: Ref<SearchWkTblCombineOrgPagingResultInterface> = ref(new SearchWkTblCombineOrgPagingResultDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+combineCapsuleDto.value.userLeast = userDto.value;
+combineCapsuleDto.value.limit = 30;
+combineCapsuleDto.value.pageNumber = 0;
+combineCapsuleDto.value.hasAffectNot = true;
+
 
 const systemYearStart: number = 2019;
 const systemYearEnd: number = 2025;
@@ -27,10 +45,25 @@ for (let index = systemYearStart; index <= systemYearEnd; index++) {
 }
 
 function onSearchCorp() {
-    combineResultDto.value.allCount = 223;
-    combineResultDto.value.limit = 30;
-    pageOptionCorp.value = getPagingOption(combineResultDto.value);
-    combineResultDto.value.listCombineOrg = getMockWkTblCombineOrgList();
+
+    // TODO 企業と政治団体検索切り替え
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-combine/search-" + props.orgType;
+        const method = "POST";
+        const body = JSON.stringify(combineCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+
+                combineResultDto.value = await response.json();
+                pageOptionCombine.value = getPagingOption(combineResultDto.value);
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
 // ページング変更
@@ -46,6 +79,9 @@ const isSetPeriod: Ref<string> = ref(period);
 // 編集用
 const isEditData: Ref<boolean> = ref(false);
 const entityEdit: Ref<WkTblPartnerCombineOrgInterface> = ref(new WkTblPartnerCombineOrgEntity());
+const editCapsuleDto: Ref<UpdateWkTblCombineOrgCapsuleInterface> = ref(new UpdateWkTblCombineOrgCapsuleDto());
+editCapsuleDto.value.userPersonLeastDto = userDto.value;
+
 let findIndex: number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
@@ -62,15 +98,15 @@ function onEditData(editId: number) {
 
     isEditData.value = true;
 }
-function onEditUpdate() {
-    // 指定された値に置き換え
-    combineResultDto.value.listCombineOrg.splice(findIndex, 1, structuredClone(toRaw(entityEdit.value)));
 
+function onEditUpdate() {
+
+    // 編集中のEntityを編集のためにBack側に受け渡し
     let text = "";
     if (isSetPeriod.value === period) {
         // 範囲による指定
         for (let index = entityEdit.value.startYear; index <= entityEdit.value.endYear; index++) {
-                text = text + index + ":";
+            text = text + index + ":";
         }
     }
     else {
@@ -80,11 +116,36 @@ function onEditUpdate() {
                 text = text + dto.year + ":";
             }
         }
-        entityEdit.value.startYear =0;
+        entityEdit.value.startYear = 0;
         entityEdit.value.endYear = 0;
     }
     const data = text === "" ? "" : text.substring(0, text.length - 1);
-    combineResultDto.value.listCombineOrg[findIndex].yearArrayText = data;
+    entityEdit.value.yearArrayText = data;
+    editCapsuleDto.value.wkTblPartnerCombineOrgEntity = entityEdit.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-combine/update";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                if (response.status < 400) {
+                    // TODO 処理内容
+                    const resultDto: UpdateWkTblCombineOrgResultInterface = await response.json();
+                    alert(resultDto.message);
+                    if (response.status === 200) {
+                        // 正常に更新できた時だけ既存のリストと入れ替え
+                        combineResultDto.value.listCombineOrg.splice(findIndex, 1, resultDto.wkTblPartnerCombineOrgEntity);
+                    }
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
 
     // 編集コンポーネントを閉じる
     isEditData.value = false;
@@ -117,8 +178,8 @@ function onEditClose() {
     <div class="one-line">
         <!-- ページング -->
         <select v-model="combineCapsuleDto.pageNumber" @change="onChangePaging">
-            <option v-for="option in pageOptionCorp" :key="option.value" :value="option.value"> {{ option.text
-            }}
+            <option v-for="option in pageOptionCombine" :key="option.value" :value="option.value"> {{ option.text
+                }}
             </option>
         </select><br>
         <table>

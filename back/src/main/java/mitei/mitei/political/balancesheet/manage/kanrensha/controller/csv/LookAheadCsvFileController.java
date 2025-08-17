@@ -2,6 +2,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.controller.csv;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +53,17 @@ public class LookAheadCsvFileController {
             resultDto.setIsFailure(true);
             resultDto.setMessage("ファイルが正常に保存できませんでした");
             return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+        } catch (NoSuchElementException exception) {
+
+            LookAheadCsvResultDto resultDto = new LookAheadCsvResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("csv解析が正常にできませんでした");
+            return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
         }
 
         LookAheadCsvResultDto resultDto = new LookAheadCsvResultDto();
         resultDto.setIsFailure(true);
-        resultDto.setMessage("csv解析が正常にできませんでした");
+        resultDto.setMessage("なにがしかの例外が発生しました");
         return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
 
     }

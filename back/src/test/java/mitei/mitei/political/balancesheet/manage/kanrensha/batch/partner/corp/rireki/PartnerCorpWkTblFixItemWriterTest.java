@@ -58,8 +58,8 @@ class PartnerCorpWkTblFixItemWriterTest {
     void test() {
         // CHECKSTYLE:OFF
 
-        List<WkTblPartnerCorpHistoryEntity> listLoad = wkTbPartnerCorpHistoryRepository
-                .findByInsertUserCodeAndIsLatest(userCode,SetTableDataHistoryUtil.INSERT_STATE ,Pageable.unpaged()).toList();
+        List<WkTblPartnerCorpHistoryEntity> listLoad = wkTbPartnerCorpHistoryRepository.findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(
+                userCode, SetTableDataHistoryUtil.INSERT_STATE, true, false, Pageable.unpaged()).toList();
 
         WkTblPartnerCorpHistoryEntity entity00 = listLoad.get(0);
         entity00.setIsAffected(true);
@@ -85,8 +85,8 @@ class PartnerCorpWkTblFixItemWriterTest {
         partnerCorpWkTblFixItemWriter.beforeStep(this.getStepExecution());
         partnerCorpWkTblFixItemWriter.write(items);
 
-        List<WkTblPartnerCorpHistoryEntity> listAns = wkTbPartnerCorpHistoryRepository
-                .findByInsertUserCodeAndIsLatest(userCode, SetTableDataHistoryUtil.INSERT_STATE ,Pageable.unpaged()).toList();
+        List<WkTblPartnerCorpHistoryEntity> listAns = wkTbPartnerCorpHistoryRepository.findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(
+                userCode, SetTableDataHistoryUtil.INSERT_STATE, true, false, Pageable.unpaged()).toList();
         assertEquals(3, listAns.size());
 
         // 履歴テーブル本体に正常登録

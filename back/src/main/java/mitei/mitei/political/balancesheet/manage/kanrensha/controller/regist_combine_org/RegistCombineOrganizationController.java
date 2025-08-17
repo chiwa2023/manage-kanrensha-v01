@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_combine.UpdateWkTblCombineOrgCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_combine.UpdateWkTblCombineOrgResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerCombineOrgEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_combine_org.RegistCombineOrganizationService;
 
 /**
@@ -30,18 +31,20 @@ public class RegistCombineOrganizationController {
      * @return 編集結果
      */
     @PostMapping("/update")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+    public ResponseEntity<UpdateWkTblCombineOrgResultDto> practice(
             final @RequestBody UpdateWkTblCombineOrgCapsuleDto capsuleDto) {
 
-        Integer newId = registCombineOrganizationService.practice(capsuleDto);
+        WkTblPartnerCombineOrgEntity entity = registCombineOrganizationService.practice(capsuleDto);
+        Integer newId = entity.getWkTblPartnerCombineOrgId();
 
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        UpdateWkTblCombineOrgResultDto resultDto = new UpdateWkTblCombineOrgResultDto();
         if (0 == newId) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("更新できませんでした");
             return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
         } else {
             resultDto.setMessage("正常に登録できました");
+            resultDto.setWkTblPartnerCombineOrgEntity(entity);
             return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
         }
     }

@@ -27,6 +27,9 @@ public class PartnerCorpAddMiniCsvProcessor
     /** 空文字 */
     private static final String BLANK = "";
 
+    /** 正常登録 */
+    private static final String RIGHT = "正)";
+
     /** 法人番号正規表現 */
     private final Pattern patternHoujinNo = Pattern.compile("[0-9]{13}");
 
@@ -103,10 +106,11 @@ public class PartnerCorpAddMiniCsvProcessor
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
             entity.setIsFinish(false);
+            entity.setJudgeReason(RIGHT);
         } else {
             entity.setIsAffected(false);
             entity.setJudgeReason(stringBuilder.toString());
-            entity.setIsFinish(true);
+            entity.setIsFinish(false);
         }
 
         return entity;

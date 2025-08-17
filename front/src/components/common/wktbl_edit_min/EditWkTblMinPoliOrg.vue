@@ -6,10 +6,15 @@ import type SearchWkTblMinPoliOrgPagingResultInterface from '../../../dto/wktbl_
 import SearchWkTblPagingCapsuleDto from '../../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import SearchWkTblMinPoliOrgPagingResultDto from '../../../dto/wktbl_min/searchWkTblMinPoliOrgPagingResultDto';
 import getPagingOption from '../../pages/paging/getPagingOption';
-import getMockWkTblPoliOrgList from './mock/getMockWkTblPoliOrgList';
 import PoliOrgDantaiKbnConstants from '../../../dto/partner_poli_org/poliOrgDantaiKbnConstants';
 import type WkTblPartnerPoliOrgAddMinInterface from '../../../entity/wkTblPartnerPoliOrgAddMin';
 import WkTblPartnerPoliOrgEntity from '../../../entity/wkTblPartnerPoliOrgAddMin';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type UpdateWkTblMinPoliOrgCapsuleInterface from '../../../dto/wktbl_min/updateWkTblMinPoliOrgCapsuleDto';
+import UpdateWkTblMinPoliOrgCapsuleDto from '../../../dto/wktbl_min/updateWkTblMinPoliOrgCapsuleDto';
+import type UpdateWkTblMinPoliOrgResultInterface from '../../../dto/wktbl_min/updateWkTblMinPoliOrgResultDto';
 
 // 政治団体区分定数
 const poliOrgKbnNoSelect: string = PoliOrgDantaiKbnConstants.NO_SELECT;
@@ -22,14 +27,38 @@ const poliOrgKbnSonotaShibu: string = PoliOrgDantaiKbnConstants.SONOTA_SHIBU;
 
 const pageOptionPoliOrg: Ref<SelectOptionNumberInterface[]> = ref([]);
 const poliOrgCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+poliOrgCapsuleDto.value.userLeast = userDto.value;
+poliOrgCapsuleDto.value.limit = 30;
+poliOrgCapsuleDto.value.pageNumber = 0;
+poliOrgCapsuleDto.value.hasAffectNot = true;
+
+
 const poliOrgResultDto: Ref<SearchWkTblMinPoliOrgPagingResultInterface> = ref(new SearchWkTblMinPoliOrgPagingResultDto());
 
 
 function onSearchPoliOrg() {
-    poliOrgResultDto.value.allCount = 313;
-    poliOrgResultDto.value.limit = 30;
-    pageOptionPoliOrg.value = getPagingOption(poliOrgResultDto.value);
-    poliOrgResultDto.value.listWktblPoliOrg = getMockWkTblPoliOrgList();
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-master-min/search-poli-org";
+        const method = "POST";
+        const body = JSON.stringify(poliOrgCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                poliOrgResultDto.value = await response.json();
+                pageOptionPoliOrg.value = getPagingOption(poliOrgResultDto.value);
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
 // ページング変更
@@ -40,6 +69,9 @@ function onChangePaging() {
 // 編集用
 const isEditData: Ref<boolean> = ref(false);
 const entityEdit: Ref<WkTblPartnerPoliOrgAddMinInterface> = ref(new WkTblPartnerPoliOrgEntity());
+const editCapsuleDto: Ref<UpdateWkTblMinPoliOrgCapsuleInterface> = ref(new UpdateWkTblMinPoliOrgCapsuleDto());
+editCapsuleDto.value.userPersonLeastDto = userDto.value;
+
 let findIndex:number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
@@ -49,8 +81,36 @@ function onEditData(editId: number) {
     isEditData.value = true;
 }
 function onEditUpdate() {
+
+    // 編集中のEntityを編集のためにBack側に受け渡し
+    editCapsuleDto.value.wkTblPartnerPoliOrgAddMinEntity = entityEdit.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-master-min/update-poli-org";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                if (response.status < 400) {
+                    // TODO 処理内容
+                    const resultDto: UpdateWkTblMinPoliOrgResultInterface = await response.json();
+                    alert(resultDto.message);
+                    if (response.status === 200) {
+                        // 正常に更新できた時だけ既存のリストと入れ替え
+                        poliOrgResultDto.value.listWktblPoliOrg.splice(findIndex, 1, resultDto.wkTblPartnerPoliOrgAddMinEntity);
+                    }
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
+
     // 指定された値に置き換え
-    poliOrgResultDto.value.listWktblPoliOrg.splice(findIndex,1,structuredClone(toRaw(entityEdit.value)));
+    // poliOrgResultDto.value.listWktblPoliOrg.splice(findIndex,1,structuredClone(toRaw(entityEdit.value)));
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }

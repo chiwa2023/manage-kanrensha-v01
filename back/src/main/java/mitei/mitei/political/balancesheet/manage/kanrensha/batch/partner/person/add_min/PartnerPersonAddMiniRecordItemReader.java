@@ -32,7 +32,7 @@ public class PartnerPersonAddMiniRecordItemReader extends RepositoryItemReader<W
         super();
         super.setRepository(wkTblPartnerPersonAddMinRepository);
         super.setSort(new HashMap<String, Direction>()); // NOPMD
-        super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffected");
+        super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish");
 
         List<Object> list = new ArrayList<>();
         super.setArguments(list); // NOPMD
@@ -47,11 +47,12 @@ public class PartnerPersonAddMiniRecordItemReader extends RepositoryItemReader<W
     public void beforeStep(final StepExecution stepExecution) {
 
         Integer userCode = Math.toIntExact(stepExecution.getJobParameters().getLong("userCode"));
-
+        
         List<Object> list = new ArrayList<>();
         list.add(userCode);
         list.add(SetTableDataHistoryUtil.INSERT_STATE);
         list.add(true);
+        list.add(false);
 
         super.setArguments(list); // NOPMD
     }

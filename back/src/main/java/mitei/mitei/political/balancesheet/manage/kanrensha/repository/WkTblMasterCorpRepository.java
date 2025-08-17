@@ -72,8 +72,8 @@ public interface WkTblMasterCorpRepository extends JpaRepository<WkTblMasterCorp
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblMasterCorpEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode, boolean isLatest,
-            boolean isAffected, Pageable pageable);
+    Page<WkTblMasterCorpEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
+            boolean isAffected,boolean isFinish, Pageable pageable);
 
     /**
      * 編集用に検索を行う

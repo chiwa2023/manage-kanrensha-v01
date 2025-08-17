@@ -54,7 +54,7 @@ class RegistBulkMasterStdCorpServiceTest {
         capsuleDto00.setWkTblMasterCorpEntity(entityInput00);
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         capsuleDto00.setUserPersonLeastDto(userDto);
-        assertEquals(0, registBulkMasterStdCorpService.practice(capsuleDto00));
+        assertEquals(0, registBulkMasterStdCorpService.practice(capsuleDto00).getWkTblMasterCorpId());
 
         final Integer callId = 412;
 
@@ -68,7 +68,7 @@ class RegistBulkMasterStdCorpServiceTest {
         entityBase.setPartnerName("");
         capsuleDto01.setWkTblMasterCorpEntity(entityBase);
 
-        Integer newId = registBulkMasterStdCorpService.practice(capsuleDto01);
+        Integer newId = registBulkMasterStdCorpService.practice(capsuleDto01).getWkTblMasterCorpId();
         assertNotEquals(0, newId);
         WkTblMasterCorpEntity entityInput02 = wkTblMasterCorpRepository.findById(callId).get();
         assertEquals(SetTableDataHistoryUtil.DELETE_STATE, entityInput02.getIsLatest());

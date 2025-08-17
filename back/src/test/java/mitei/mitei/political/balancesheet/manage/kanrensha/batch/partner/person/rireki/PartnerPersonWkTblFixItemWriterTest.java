@@ -59,7 +59,8 @@ class PartnerPersonWkTblFixItemWriterTest {
     void test() throws Exception {
 
         List<WkTblPartnerPersonHistoryEntity> listLoad = wkTblPartnerPersonHistoryRepository
-                .findByInsertUserCodeAndIsLatest(userCode, SetTableDataHistoryUtil.INSERT_STATE, Pageable.unpaged())
+                .findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(userCode, SetTableDataHistoryUtil.INSERT_STATE,
+                        true, false, Pageable.unpaged())
                 .toList();
 
         WkTblPartnerPersonHistoryEntity entity00 = listLoad.get(0);
@@ -87,7 +88,8 @@ class PartnerPersonWkTblFixItemWriterTest {
         partnerPersonWkTblFixItemWriter.write(items);
 
         List<WkTblPartnerPersonHistoryEntity> listAns = wkTblPartnerPersonHistoryRepository
-                .findByInsertUserCodeAndIsLatest(userCode, SetTableDataHistoryUtil.INSERT_STATE, Pageable.unpaged())
+                .findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(userCode, SetTableDataHistoryUtil.INSERT_STATE,
+                        true, false, Pageable.unpaged())
                 .toList();
         assertEquals(3, listAns.size());
 

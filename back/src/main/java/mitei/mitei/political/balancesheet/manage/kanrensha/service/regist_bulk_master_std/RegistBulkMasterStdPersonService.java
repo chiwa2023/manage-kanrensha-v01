@@ -38,7 +38,7 @@ public class RegistBulkMasterStdPersonService {
      * @return 追加されたId
      */
     @Transactional
-    public Integer practice(final UpdateWkTblStdPersonCapsuleDto capsuleDto) {
+    public WkTblMasterPersonEntity practice(final UpdateWkTblStdPersonCapsuleDto capsuleDto) {
 
         WkTblMasterPersonEntity entityInput = capsuleDto.getWkTblMasterPersonEntity();
 
@@ -47,7 +47,7 @@ public class RegistBulkMasterStdPersonService {
 
         // 万が一元データが探せない場合は処理中断
         if (optional.isEmpty()) {
-            return 0;
+            return new WkTblMasterPersonEntity();
         }
 
         entityInput = partnerPersonAddStdCsvProcessor.check(entityInput);
@@ -61,7 +61,7 @@ public class RegistBulkMasterStdPersonService {
         entityInput.setWkTblMasterPersonId(0); // 履歴を積むのでauto_increment
         setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
 
-        return wkTblMasterPersonRepository.save(entityInput).getWkTblMasterPersonId();
+        return wkTblMasterPersonRepository.save(entityInput);
     }
 
 }

@@ -24,6 +24,9 @@ public class PartnerPoliOrgJudgeProcessor
     /** 空白 */
     private static final String BLANK = "";
 
+    /** 正常登録 */
+    private static final String RIGHT = "正)";
+
     /** 関連者政治団体マスタRepository */
     @Autowired
     private MasterPoliticalOrganizationRepository masterPoliticalOrganizationRepository;
@@ -45,6 +48,7 @@ public class PartnerPoliOrgJudgeProcessor
 
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
+            entity.setJudgeReason(RIGHT);
         } else {
             // 何らかの未登録メッセージが入っている場合は判定対象外を登録
             entity.setIsAffected(false);
@@ -66,6 +70,7 @@ public class PartnerPoliOrgJudgeProcessor
 
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
+            entity.setJudgeReason(RIGHT);
         } else {
             // 何らかの未登録メッセージが入っている場合は判定対象外を登録
             entity.setIsAffected(false);
@@ -91,7 +96,7 @@ public class PartnerPoliOrgJudgeProcessor
         if (BLANK.equals(entity.getPoliOrgKanrenshaCode())) {
             stringBuilder.append("関連者コードが入力されていません;");
         }
-
+        
         if (stringBuilder.isEmpty()) {
             // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
             List<MasterPoliticalOrganizationEntity> listMaster = masterPoliticalOrganizationRepository

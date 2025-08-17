@@ -38,7 +38,7 @@ public class RegistBulkMasterMinCorpService {
      * @return 追加されたId
      */
     @Transactional
-    public Integer practice(final UpdateWkTblMinCorpCapsuleDto capsuleDto) {
+    public WkTblPartnerCorpAddMinEntity practice(final UpdateWkTblMinCorpCapsuleDto capsuleDto) {
 
         WkTblPartnerCorpAddMinEntity entityInput = capsuleDto.getWkTblPartnerCorpAddMinEntity();
 
@@ -47,7 +47,7 @@ public class RegistBulkMasterMinCorpService {
 
         // 万が一元データが探せない場合は処理中断
         if (optional.isEmpty()) {
-            return 0;
+            return new WkTblPartnerCorpAddMinEntity();
         }
 
         entityInput = partnerCorpAddMiniCsvProcessor.check(entityInput);
@@ -61,7 +61,7 @@ public class RegistBulkMasterMinCorpService {
         entityInput.setWkTblPartnerCorpAddMinId(0); // 履歴を積むのでauto_increment
         setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
 
-        return wkTblPartnerCorpAddMinRepository.save(entityInput).getWkTblPartnerCorpAddMinId();
+        return wkTblPartnerCorpAddMinRepository.save(entityInput);
     }
 
 }

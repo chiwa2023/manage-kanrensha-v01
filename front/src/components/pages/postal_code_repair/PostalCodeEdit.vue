@@ -1,6 +1,5 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 import AddressPostalInterface from '../../../entity/addressPostalEntity';
 import AddressPostalDto from '../../../entity/addressPostalEntity';
 import mockGetPostalCodeList from './mock/mockGetPostalCodeList';
@@ -10,6 +9,7 @@ import type SearchPostalCodeCapsuleInterface from '../../../dto/postal/searchPos
 import SearchPostalCodeCapsuleDto from '../../../dto/postal/searchPostalCodeCapsuleDto';
 import type SearchPostalCodeResultInterface from '../../../dto/postal/searchPostalCodeResultDto';
 import SearchPostalCodeResultDto from '../../../dto/postal/searchPostalCodeResultDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // ページング
 const pageNumber: Ref<number> = ref(0);
@@ -107,7 +107,7 @@ function onSave() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
     <hr>
 
     <h1>郵便番号情報編集</h1>

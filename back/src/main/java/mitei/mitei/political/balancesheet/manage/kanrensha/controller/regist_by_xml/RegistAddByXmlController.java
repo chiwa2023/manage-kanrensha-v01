@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.UpdateWkTblAddByXmlCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.UpdateWkTblAddByXmlResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblMasterAllByXmlEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_by_xml.RegistAddByXmlService;
 
 /**
@@ -30,18 +31,20 @@ public class RegistAddByXmlController {
      * @return 編集結果
      */
     @PostMapping("/update")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+    public ResponseEntity<UpdateWkTblAddByXmlResultDto> practice(
             final @RequestBody UpdateWkTblAddByXmlCapsuleDto capsuleDto) {
 
-        Integer newId = registAddByXmlService.practice(capsuleDto);
+        WkTblMasterAllByXmlEntity entity = registAddByXmlService.practice(capsuleDto);
+        Integer newId = entity.getWkTblMasterAllByXmlId();
 
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        UpdateWkTblAddByXmlResultDto resultDto = new UpdateWkTblAddByXmlResultDto();
         if (0 == newId) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("更新できませんでした");
             return ResponseEntity.status(HttpResponseStatus.NOT_FOUND.code()).body(resultDto);
         } else {
             resultDto.setMessage("正常に登録できました");
+            resultDto.setWkTblMasterAllByXmlEntity(entity);
             return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
         }
     }

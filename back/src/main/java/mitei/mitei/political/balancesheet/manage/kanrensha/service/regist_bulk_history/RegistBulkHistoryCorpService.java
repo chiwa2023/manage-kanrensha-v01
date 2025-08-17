@@ -38,7 +38,7 @@ public class RegistBulkHistoryCorpService {
      * @return 追加されたId
      */
     @Transactional
-    public Integer practice(final UpdateWkTblHistoryCorpCapsuleDto capsuleDto) {
+    public WkTblPartnerCorpHistoryEntity practice(final UpdateWkTblHistoryCorpCapsuleDto capsuleDto) {
 
         WkTblPartnerCorpHistoryEntity entityInput = capsuleDto.getWkTblPartnerCorpHistoryEntity();
 
@@ -47,7 +47,7 @@ public class RegistBulkHistoryCorpService {
 
         // 万が一元データが探せない場合は処理中断
         if (optional.isEmpty()) {
-            return 0;
+            return new WkTblPartnerCorpHistoryEntity();
         }
 
         entityInput = partnerCorpJudgeProcessor.check(entityInput);
@@ -61,7 +61,7 @@ public class RegistBulkHistoryCorpService {
         entityInput.setWkPartnerCorpHistoryId(0); // 履歴を積むのでauto_increment
         setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
 
-        return wkTblPartnerCorpHistoryRepository.save(entityInput).getWkPartnerCorpHistoryId();
+        return wkTblPartnerCorpHistoryRepository.save(entityInput);
     }
 
 }

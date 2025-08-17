@@ -6,19 +6,47 @@ import SearchWkTblPagingCapsuleDto from '../../../dto/add_xml/searchWkTbPagingCa
 import type SearchWkTblHistoryCorpPagingResultInterface from '../../../dto/wktbl_history/searchWkTblHistoryCorpPagingResultDto';
 import SearchWkTblHistoryCorpPagingResultDto from '../../../dto/wktbl_history/searchWkTblHistoryCorpPagingResultDto';
 import getPagingOption from '../../pages/paging/getPagingOption';
-import getMockWkTblCorpList from './mock/getMockWkTblCorpList';
 import type WkTblPartnerCorpHistoryInterface from '../../../entity/wkTblPartnerCorpHistoryEntity';
 import WkTblPartnerCorpHistoryEntity from '../../../entity/wkTblPartnerCorpHistoryEntity';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type UpdateWkTblHistoryCorpCapsuleInterface from '../../../dto/wktbl_history/updateWkTblHistoryCorpCapsuleDto';
+import UpdateWkTblHistoryCorpCapsuleDto from '../../../dto/wktbl_history/updateWkTblHistoryCorpCapsuleDto';
+import type UpdateWkTblHistoryCorpResultInterface from '../../../dto/wktbl_history/updateWkTblHistoryCorpResultDto';
 
 const pageOptionCorp: Ref<SelectOptionNumberInterface[]> = ref([]);
 const corpCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
 const corpResultDto: Ref<SearchWkTblHistoryCorpPagingResultInterface> = ref(new SearchWkTblHistoryCorpPagingResultDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+corpCapsuleDto.value.userLeast = userDto.value;
+corpCapsuleDto.value.limit = 30;
+corpCapsuleDto.value.pageNumber = 0;
+corpCapsuleDto.value.hasAffectNot = true;
 
 function onSearchCorp() {
-    corpResultDto.value.allCount = 223;
-    corpResultDto.value.limit = 30;
-    pageOptionCorp.value = getPagingOption(corpResultDto.value);
-    corpResultDto.value.listWktblCorp = getMockWkTblCorpList();
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-history/search-corp";
+        const method = "POST";
+        const body = JSON.stringify(corpCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                corpResultDto.value = await response.json();
+                pageOptionCorp.value = getPagingOption(corpResultDto.value);
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
 // ページング変更
@@ -28,6 +56,9 @@ function onChangePaging() {
 // 編集用
 const isEditData: Ref<boolean> = ref(false);
 const entityEdit: Ref<WkTblPartnerCorpHistoryInterface> = ref(new WkTblPartnerCorpHistoryEntity());
+const editCapsuleDto: Ref<UpdateWkTblHistoryCorpCapsuleInterface> = ref(new UpdateWkTblHistoryCorpCapsuleDto());
+editCapsuleDto.value.userPersonLeastDto = userDto.value;
+
 let findIndex:number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
@@ -37,8 +68,36 @@ function onEditData(editId: number) {
     isEditData.value = true;
 }
 function onEditUpdate() {
+
+    // 編集中のEntityを編集のためにBack側に受け渡し
+    editCapsuleDto.value.wkTblPartnerCorpHistoryEntity = entityEdit.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-history/update-corp";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                if (response.status < 400) {
+                    // TODO 処理内容
+                    const resultDto: UpdateWkTblHistoryCorpResultInterface = await response.json();
+                    alert(resultDto.message);
+                    if (response.status === 200) {
+                        // 正常に更新できた時だけ既存のリストと入れ替え
+                        corpResultDto.value.listWktblCorp.splice(findIndex, 1, resultDto.wkTblPartnerCorpHistoryEntity);
+                    }
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
+
     // 指定された値に置き換え
-    corpResultDto.value.listWktblCorp.splice(findIndex,1,structuredClone(toRaw(entityEdit.value)));
+    // corpResultDto.value.listWktblCorp.splice(findIndex,1,structuredClone(toRaw(entityEdit.value)));
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }

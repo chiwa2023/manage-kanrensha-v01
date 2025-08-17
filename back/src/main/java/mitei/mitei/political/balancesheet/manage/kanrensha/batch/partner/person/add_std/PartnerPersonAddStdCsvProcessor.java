@@ -24,6 +24,9 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
     /** 空文字 */
     private static final String BLANK = "";
 
+    /** 正常登録 */
+    private static final String RIGHT = "正)";
+
     /** 関連者個人同属性取得Service */
     @Autowired
     private GetPartnerPersonSameHistoryService getPartnerPersonSameHistoryService;
@@ -93,9 +96,9 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
         if (BLANK.equals(entity.getAddressBlock())) {
             stringBuilder.append("住所番地までが入力されていません;");
         }
-        if (BLANK.equals(entity.getAddressBuilding())) {
-            stringBuilder.append("住所建物までが入力されていません;");
-        }
+        // if (BLANK.equals(entity.getAddressBuilding())) {
+        //     stringBuilder.append("住所建物までが入力されていません;");
+        // }
         if (BLANK.equals(entity.getPhon1())) {
             stringBuilder.append("電話番号市外局番が入力されていません;");
         }
@@ -164,10 +167,11 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
             entity.setIsFinish(false);
+            entity.setJudgeReason(RIGHT);
         } else {
             entity.setIsAffected(false);
             entity.setJudgeReason(stringBuilder.toString());
-            entity.setIsFinish(true);
+            entity.setIsFinish(false);
         }
 
         return entity;

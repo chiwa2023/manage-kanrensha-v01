@@ -6,21 +6,49 @@ import SearchWkTblPagingCapsuleDto from '../../../dto/add_xml/searchWkTbPagingCa
 import getPagingOption from '../../pages/paging/getPagingOption';
 import type SearchWkTblMinPersonPagingResultInterface from '../../../dto/wktbl_min/searchWkTblMinPersonPagingResultDto';
 import SearchWkTblMinPersonPagingResultDto from '../../../dto/wktbl_min/searchWkTblMinPersonPagingResultDto';
-import getMockWkTblPersonList from './mock/getMockWkTblPersonList';
 import type WkTblPartnerPersonAddMinInterface from '../../../entity/wkTblPartnerPersonAddMin';
 import WkTblPartnerPersonAddMinEntity from '../../../entity/wkTblPartnerPersonAddMin';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type UpdateWkTblMinPersonCapsuleInterface from '../../../dto/wktbl_min/updateWkTblMinPersonCapsuleDto';
+import UpdateWkTblMinPersonCapsuleDto from '../../../dto/wktbl_min/updateWkTblMinPersonCapsuleDto';
+import type UpdateWkTblMinPersonResultInterface from '../../../dto/wktbl_min/updateWkTblMinPersonResultDto';
 
 // 表示必要なDto
 const pageOptionPerson: Ref<SelectOptionNumberInterface[]> = ref([]);
 const personCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+personCapsuleDto.value.userLeast = userDto.value;
+personCapsuleDto.value.limit = 30;
+personCapsuleDto.value.pageNumber = 0;
+personCapsuleDto.value.hasAffectNot = true;
+
 const personResultDto: Ref<SearchWkTblMinPersonPagingResultInterface> = ref(new SearchWkTblMinPersonPagingResultDto());
 
 // 検索処理
 function onSearchPerson() {
-    personResultDto.value.allCount = 195;
-    personResultDto.value.limit = 30;
-    pageOptionPerson.value = getPagingOption(personResultDto.value);
-    personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-master-min/search-person";
+        const method = "POST";
+        const body = JSON.stringify(personCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                personResultDto.value = await response.json();
+                pageOptionPerson.value = getPagingOption(personResultDto.value);
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
 // ページング変更
@@ -31,6 +59,9 @@ function onChangePaging() {
 // 編集用
 const isEditData: Ref<boolean> = ref(false);
 const entityEdit: Ref<WkTblPartnerPersonAddMinInterface> = ref(new WkTblPartnerPersonAddMinEntity());
+const editCapsuleDto: Ref<UpdateWkTblMinPersonCapsuleInterface> = ref(new UpdateWkTblMinPersonCapsuleDto());
+editCapsuleDto.value.userPersonLeastDto = userDto.value;
+
 let findIndex:number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
@@ -40,8 +71,38 @@ function onEditData(editId: number) {
     isEditData.value = true;
 }
 function onEditUpdate() {
+
+
+    // 編集中のEntityを編集のためにBack側に受け渡し
+    editCapsuleDto.value.wkTblPartnerPersonAddMinEntity = entityEdit.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-master-min/update-person";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                if (response.status < 400) {
+                    // TODO 処理内容
+                    const resultDto: UpdateWkTblMinPersonResultInterface = await response.json();
+                    alert(resultDto.message);
+                    if (response.status === 200) {
+                        // 正常に更新できた時だけ既存のリストと入れ替え
+                        personResultDto.value.listWktblPerson.splice(findIndex, 1, resultDto.wkTblPartnerPersonAddMinEntity);
+                    }
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
+
+
     // 指定された値に置き換え
-    personResultDto.value.listWktblPerson.splice(findIndex,1,structuredClone(toRaw(entityEdit.value)));
+    // personResultDto.value.listWktblPerson.splice(findIndex,1,structuredClone(toRaw(entityEdit.value)));
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }

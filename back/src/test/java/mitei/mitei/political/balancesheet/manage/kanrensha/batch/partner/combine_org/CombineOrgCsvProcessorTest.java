@@ -65,7 +65,7 @@ class CombineOrgCsvProcessorTest {
 
         WkTblPartnerCombineOrgEntity entity01 = combineOrgCsvProcessor.process(dto01);
         assertEquals(true, entity01.getIsAffected());
-        assertEquals("", entity01.getJudgeReason());
+        assertEquals(" ", entity01.getJudgeReason());
         assertEquals("2023:2024", entity01.getYearArrayText());
 
         // 登録年に数字以外が設定されました
@@ -120,7 +120,7 @@ class CombineOrgCsvProcessorTest {
 
         WkTblPartnerCombineOrgEntity entity01 = combineOrgCsvProcessor.process(dto01);
         assertEquals(true, entity01.getIsAffected());
-        assertEquals("", entity01.getJudgeReason());
+        assertEquals(" ", entity01.getJudgeReason());
         assertEquals("2023:2024", entity01.getYearArrayText());
 
         // 2022年にすでに登録があります

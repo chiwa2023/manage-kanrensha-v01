@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 
 const tableData: Ref<string[][]> = ref([[]]);
@@ -46,7 +46,7 @@ function onSave() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
     <hr>
 
     <h1>アドレスベースレジストリ差分修正</h1>

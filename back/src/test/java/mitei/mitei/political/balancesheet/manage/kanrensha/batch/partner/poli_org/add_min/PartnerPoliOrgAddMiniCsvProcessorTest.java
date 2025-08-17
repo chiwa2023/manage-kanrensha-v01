@@ -83,7 +83,7 @@ class PartnerPoliOrgAddMiniCsvProcessorTest {
 
         WkTblPartnerPoliOrgAddMinEntity minEntity04 = partnerPoliOrgAddMiniCsvProcessor.process(dto04);
         assertEquals(true, minEntity04.getIsAffected());
-        assertEquals("", minEntity04.getJudgeReason());
+        assertEquals(" ", minEntity04.getJudgeReason());
 
     }
 

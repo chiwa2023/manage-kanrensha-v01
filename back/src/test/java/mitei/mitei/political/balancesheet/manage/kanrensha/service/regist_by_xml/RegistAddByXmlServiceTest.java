@@ -55,7 +55,7 @@ class RegistAddByXmlServiceTest {
         capsuleDto00.setWkTblMasterAllByXmlEntity(entityInput00);
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         capsuleDto00.setUserPersonLeastDto(userDto);
-        assertEquals(0, registAddByXmlService.practice(capsuleDto00));
+        assertEquals(0, registAddByXmlService.practice(capsuleDto00).getWkTblMasterAllByXmlId());
 
         final Integer callId = 342;
 
@@ -69,7 +69,7 @@ class RegistAddByXmlServiceTest {
         entityBase.setPartnerName("");
         capsuleDto01.setWkTblMasterAllByXmlEntity(entityBase);
 
-        Integer newId = registAddByXmlService.practice(capsuleDto01);
+        Integer newId = registAddByXmlService.practice(capsuleDto01).getWkTblMasterAllByXmlId();
         assertNotEquals(0, newId);
         WkTblMasterAllByXmlEntity entityInput02 = wkTblMasterAllByXmlRepository.findById(callId).get();
         assertEquals(SetTableDataHistoryUtil.DELETE_STATE, entityInput02.getIsLatest());
