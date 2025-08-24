@@ -34,14 +34,15 @@ public class RegistAddByXmlController {
     public ResponseEntity<UpdateWkTblAddByXmlResultDto> practice(
             final @RequestBody UpdateWkTblAddByXmlCapsuleDto capsuleDto) {
 
-        WkTblMasterAllByXmlEntity entity = registAddByXmlService.practice(capsuleDto);
+        WkTblMasterAllByXmlEntity entity = registAddByXmlService.practice(capsuleDto.getWkTblMasterAllByXmlEntity(),
+                capsuleDto.getUserPersonLeastDto());
         Integer newId = entity.getWkTblMasterAllByXmlId();
 
         UpdateWkTblAddByXmlResultDto resultDto = new UpdateWkTblAddByXmlResultDto();
         if (0 == newId) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("更新できませんでした");
-            return ResponseEntity.status(HttpResponseStatus.NOT_FOUND.code()).body(resultDto);
+            return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
         } else {
             resultDto.setMessage("正常に登録できました");
             resultDto.setWkTblMasterAllByXmlEntity(entity);

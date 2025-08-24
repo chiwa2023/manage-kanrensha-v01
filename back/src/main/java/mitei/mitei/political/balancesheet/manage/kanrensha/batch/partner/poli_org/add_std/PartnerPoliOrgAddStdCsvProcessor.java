@@ -101,9 +101,9 @@ public class PartnerPoliOrgAddStdCsvProcessor
         if (BLANK.equals(entity.getAddressBlock())) {
             stringBuilder.append("住所番地までが入力されていません;");
         }
-        //if (BLANK.equals(entity.getAddressBuilding())) {
-        //    stringBuilder.append("住所建物までが入力されていません;");
-        //}
+        // if (BLANK.equals(entity.getAddressBuilding())) {
+        // stringBuilder.append("住所建物までが入力されていません;");
+        // }
         if (BLANK.equals(entity.getPhon1())) {
             stringBuilder.append("電話番号市外局番が入力されていません;");
         }
@@ -185,8 +185,11 @@ public class PartnerPoliOrgAddStdCsvProcessor
      * 同属性リストを取得する
      *
      * @param name 団体名称
+     * 
      * @param address 全住所
+     * 
      * @param delegate 代表者名
+     * 
      * @return 検索結果
      */
     private List<PartnerPoliOrgHistoryBaseEntity> selectSameRirekiList(final String name, final String address,

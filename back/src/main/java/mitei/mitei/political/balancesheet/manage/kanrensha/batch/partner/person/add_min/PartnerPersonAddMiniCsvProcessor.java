@@ -67,9 +67,9 @@ public class PartnerPersonAddMiniCsvProcessor
         if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(entity.getPersonShokugyou())) {
-            stringBuilder.append("職業が入力されていません;");
-        }
+        // if (BLANK.equals(entity.getPersonShokugyou())) {
+        // stringBuilder.append("職業が入力されていません;");
+        // }
 
         // 全く同じ履歴があるかどうか確認する
         List<PartnerPersonHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getPartnerName(),
@@ -108,8 +108,11 @@ public class PartnerPersonAddMiniCsvProcessor
      * 同属性リストを取得する
      *
      * @param name 団体名称
+     * 
      * @param address 全住所
+     * 
      * @param delegate 代表者名
+     * 
      * @return 検索結果
      */
     private List<PartnerPersonHistoryBaseEntity> selectSameRirekiList(final String name, final String address,

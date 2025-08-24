@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.controller.csv;
+package mitei.mitei.political.balancesheet.manage.kanrensha.controller.file;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

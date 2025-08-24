@@ -3,11 +3,15 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.service.file;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.task.TaskInfoConstants;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.storage_file.StorageFileDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.file.GetStoragePathLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.year.SwitchYearInsertSaveStorageService;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.year.SwitchYearInsertTaskPlanService;
 
@@ -15,6 +19,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.service.year.SwitchYe
  * アップロード仮保存ファイルから正式保存記録を残すService
  */
 @Service
+@ConfigurationProperties(prefix = "mitei.mitei.political.balancesheet.manage.kanrensha")
 public class CopyTempToUseSavedFileService {
 
     /** ファイル保存(年管理)Service */
@@ -25,24 +30,56 @@ public class CopyTempToUseSavedFileService {
     @Autowired
     private SwitchYearInsertTaskPlanService switchYearInsertTaskPlanService;
 
-    public void practice()throws IOException {
+    /** 保存フォルダ作成Logic */
+    @Autowired
+    private GetStoragePathLogic getStoragePathLogic;
+
+    /** propertiesからインジェクションされた最上位保存フォルダ絶対パス */
+    private String storageFolder;
+
+    /**
+     * 最上位保存フォルダ絶対パスを取得する
+     *
+     * @return 最上位保存フォルダ絶対パス
+     */
+    public String getStorageFolder() {
+        return storageFolder;
+    }
+
+    /**
+     * 最上位保存フォルダ絶対パスを設定する
+     *
+     * @param storageFolder 最上位保存フォルダ絶対パス
+     */
+    public void setStorageFolder(final String storageFolder) {
+        this.storageFolder = storageFolder;
+    }
+
+    /**
+     * 処理を行う
+     *
+     * @param year          登録年
+     * @param fileDto       tempファイル
+     * @param userDto       ユーザ最小限Dto
+     * @param fileType      ファイルタイプ
+     * @param taskConstants タスク種類定数
+     * @return 正規登録ファイルパス
+     * @throws IOException ファイル保存例外
+     */
+    public Path practice(final int year, final StorageFileDto fileDto, final UserPersonLeastDto userDto,
+            final Short fileType, final int taskConstants) throws IOException {
 
         // 仮ファイルから本ファイルに複写
-        Path pathTempFull;
+        Path pathTempFull = Paths.get(storageFolder, fileDto.getSavedDir(), fileDto.getFileName());
+        Path pathSavedFull = Paths.get(storageFolder, getStoragePathLogic.practice(userDto).toString(),
+                fileDto.getFileName());
+        Path path = Files.copy(pathTempFull, pathSavedFull);
 
-        Path pathSavedFull;
-        
-        //Files.copy(pathTempFull, pathSavedFull);
+        // ファイルが保存出来たら保存場所を記録しスケジュールに登録
+        switchYearInsertSaveStorageService.practice(year, userDto, pathSavedFull, fileType);
+        switchYearInsertTaskPlanService.practice(year, userDto, taskConstants);
 
-        //ファイルが保存出来たら保存場所を記録しスケジュールに登録
-        
-        // TODO 書証区分を決定次第指定する
-        // switchYearInsertSaveStorageService.practice(year, userDto, fullPath,
-        // Short.valueOf("205"));
-        // すべきタスクとして保存する
-        // switchYearInsertTaskPlanService.practice(year, userDto,
-        // TaskInfoConstants.SAVE_POSTAL_REPAIR_CSV);
-
+        return path;
     }
 
 }

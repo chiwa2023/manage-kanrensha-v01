@@ -96,7 +96,7 @@ public class PartnerPoliOrgJudgeProcessor
         if (BLANK.equals(entity.getPoliOrgKanrenshaCode())) {
             stringBuilder.append("関連者コードが入力されていません;");
         }
-        
+
         if (stringBuilder.isEmpty()) {
             // 少なくとも団体名と関連者コードが同一でない場合は未登録とみなす
             List<MasterPoliticalOrganizationEntity> listMaster = masterPoliticalOrganizationRepository

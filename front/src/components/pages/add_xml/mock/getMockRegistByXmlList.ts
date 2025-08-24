@@ -1,8 +1,8 @@
-import type RegistMasterByXmlInterface from "../../../../dto/add_xml/registMasterByXmlDto";
-import RegistMasterByXmlDto from "../../../../dto/add_xml/registMasterByXmlDto";
+import type WkTblMasterAllByXmlInterface from "../../../../entity/wkTblMasterAllByXmlEntity";
+import WkTblMasterAllByXmlEntity from "../../../../entity/wkTblMasterAllByXmlEntity";
 
-export default function getMockRegistMasterXmlList(): RegistMasterByXmlInterface[] {
-    const list: RegistMasterByXmlInterface[] = [];
+export default function getMockRegistByXmlList(): WkTblMasterAllByXmlInterface[] {
+    const list: WkTblMasterAllByXmlInterface[] = [];
 
     list.push(createDtoByBikou(1));
     list.push(createDtoByFull(2));
@@ -13,9 +13,9 @@ export default function getMockRegistMasterXmlList(): RegistMasterByXmlInterface
 }
 
 
-function createDtoByBikou(index: number): RegistMasterByXmlInterface {
+function createDtoByBikou(index: number): WkTblMasterAllByXmlInterface {
 
-    const dto: RegistMasterByXmlInterface = new RegistMasterByXmlDto();
+    const dto: WkTblMasterAllByXmlInterface = new WkTblMasterAllByXmlEntity();
 
     dto.isAffected = false;
     dto.isDisabled = false;
@@ -41,9 +41,9 @@ function createDtoByBikou(index: number): RegistMasterByXmlInterface {
     return dto;
 }
 
-function createDtoByFull(index: number): RegistMasterByXmlInterface {
+function createDtoByFull(index: number): WkTblMasterAllByXmlInterface {
 
-    const dto: RegistMasterByXmlInterface = new RegistMasterByXmlDto();
+    const dto: WkTblMasterAllByXmlInterface = new WkTblMasterAllByXmlEntity();
 
     dto.isAffected = false;
     dto.isDisabled = false;
@@ -70,9 +70,9 @@ function createDtoByFull(index: number): RegistMasterByXmlInterface {
     return dto;
 }
 
-function createDtoByNameAddress(index: number): RegistMasterByXmlInterface {
+function createDtoByNameAddress(index: number): WkTblMasterAllByXmlInterface {
 
-    const dto: RegistMasterByXmlInterface = new RegistMasterByXmlDto();
+    const dto: WkTblMasterAllByXmlInterface = new WkTblMasterAllByXmlEntity();
 
     dto.isAffected = false;
     dto.isDisabled = false;
@@ -98,9 +98,9 @@ function createDtoByNameAddress(index: number): RegistMasterByXmlInterface {
     return dto;
 }
 
-function createDtoByPartner(index: number): RegistMasterByXmlInterface {
+function createDtoByPartner(index: number): WkTblMasterAllByXmlInterface {
 
-    const dto: RegistMasterByXmlInterface = new RegistMasterByXmlDto();
+    const dto: WkTblMasterAllByXmlInterface = new WkTblMasterAllByXmlEntity();
 
     dto.isAffected = false;
     dto.isDisabled = false;

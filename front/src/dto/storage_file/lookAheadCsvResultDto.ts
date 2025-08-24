@@ -7,7 +7,7 @@ export default interface LookAheadCsvResultInterface {
 }
 
 
-export default class LookAheadCsvResultDto  extends FrameworkResultDto implements LookAheadCsvResultInterface {
+export default class LookAheadCsvResultDto extends FrameworkResultDto implements LookAheadCsvResultInterface {
 
     /** ファイル格納Dto */
     storageFileDto: StorageFileInterface;

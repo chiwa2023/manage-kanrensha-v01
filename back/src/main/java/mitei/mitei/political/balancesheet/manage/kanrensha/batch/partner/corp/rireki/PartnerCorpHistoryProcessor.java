@@ -34,7 +34,6 @@ public class PartnerCorpHistoryProcessor
     @Autowired
     private FormatNaturalSearchTextUtil formatNaturalSearchTextUtil;
 
-
     /**
      * 変換処理を実行する
      */
@@ -99,6 +98,5 @@ public class PartnerCorpHistoryProcessor
 
         return stringBuilder;
     }
-    
-    
+
 }

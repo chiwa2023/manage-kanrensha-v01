@@ -97,7 +97,7 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
             stringBuilder.append("住所番地までが入力されていません;");
         }
         // if (BLANK.equals(entity.getAddressBuilding())) {
-        //     stringBuilder.append("住所建物までが入力されていません;");
+        // stringBuilder.append("住所建物までが入力されていません;");
         // }
         if (BLANK.equals(entity.getPhon1())) {
             stringBuilder.append("電話番号市外局番が入力されていません;");
@@ -150,12 +150,12 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
         if (listHistory.isEmpty()) {
             // 初回はすべてチェック対象だが、自動・人為的に作業対象にした場合は同名チェックを行わない(同名でも登録できる)
             // マスタに同名の団体があるかどうか確認する
-            if(!entity.getIsAffected()) {
+            if (!entity.getIsAffected()) {
                 List<MasterPersonEntity> listMaster = masterPersonRepository.findByCompareNameTextAndIsLatest(
                         formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
                         SetTableDataHistoryUtil.INSERT_STATE);
                 // 初回はすでにチェック対象だが
-                if (!listMaster.isEmpty()) { //SUPPRESS CHECKSTYLE NestedIf
+                if (!listMaster.isEmpty()) { // SUPPRESS CHECKSTYLE NestedIf
                     stringBuilder.append("同名の団体があります。確認調査の上、必要に応じて追加してください;");
                 }
             }
@@ -182,8 +182,11 @@ public class PartnerPersonAddStdCsvProcessor implements ItemProcessor<PartnerPer
      * 同属性リストを取得する
      *
      * @param name 団体名称
+     * 
      * @param address 全住所
+     * 
      * @param delegate 代表者名
+     * 
      * @return 検索結果
      */
     private List<PartnerPersonHistoryBaseEntity> selectSameRirekiList(final String name, final String address,

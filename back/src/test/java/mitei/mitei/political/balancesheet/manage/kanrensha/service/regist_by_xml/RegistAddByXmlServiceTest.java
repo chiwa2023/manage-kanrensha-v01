@@ -2,7 +2,6 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_by_xm
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -43,8 +42,8 @@ class RegistAddByXmlServiceTest {
     private WkTblMasterAllByXmlRepository wkTblMasterAllByXmlRepository;
 
     @Test
-    @Transactional
     @Tag("TableTruncate")
+    @Transactional
     @Sql("sample_wk_tbl_master_all_by_xml.sql")
     void test() {
 
@@ -55,7 +54,10 @@ class RegistAddByXmlServiceTest {
         capsuleDto00.setWkTblMasterAllByXmlEntity(entityInput00);
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         capsuleDto00.setUserPersonLeastDto(userDto);
-        assertEquals(0, registAddByXmlService.practice(capsuleDto00).getWkTblMasterAllByXmlId());
+        assertEquals(0,
+                registAddByXmlService
+                        .practice(capsuleDto00.getWkTblMasterAllByXmlEntity(), capsuleDto00.getUserPersonLeastDto())
+                        .getWkTblMasterAllByXmlId());
 
         final Integer callId = 342;
 
@@ -67,9 +69,12 @@ class RegistAddByXmlServiceTest {
         BeanUtils.copyProperties(entityInput01, entityBase);
         entityBase.setAllAddress("山ビル2F");
         entityBase.setPartnerName("");
+        entityBase.setKanrenshaKbn((short)0); // そのままだと個人に分類されるがやめる想定
         capsuleDto01.setWkTblMasterAllByXmlEntity(entityBase);
 
-        Integer newId = registAddByXmlService.practice(capsuleDto01).getWkTblMasterAllByXmlId();
+        Integer newId = registAddByXmlService
+                .practice(capsuleDto01.getWkTblMasterAllByXmlEntity(), capsuleDto01.getUserPersonLeastDto())
+                .getWkTblMasterAllByXmlId();
         assertNotEquals(0, newId);
         WkTblMasterAllByXmlEntity entityInput02 = wkTblMasterAllByXmlRepository.findById(callId).get();
         assertEquals(SetTableDataHistoryUtil.DELETE_STATE, entityInput02.getIsLatest());
@@ -78,10 +83,6 @@ class RegistAddByXmlServiceTest {
         assertEquals(entityBase.getAllAddress(), entityCopy.getAllAddress());
         assertEquals(SetTableDataHistoryUtil.INSERT_STATE, entityCopy.getIsLatest());
 
-        // TODO 判定処理実装後にテストを追加
-        // assertEquals("名称が入力されていません;", entityCopy.getJudgeReason());
-
-        fail("Not yet implemented");
     }
 
 }

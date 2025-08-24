@@ -4,10 +4,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.UpdateWkTblAddByXmlCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblMasterAllByXmlEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.add_xml.ConvertWkTblXmlToMasterCorpLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.add_xml.ConvertWkTblXmlToMasterPersonLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.add_xml.ConvertWkTblXmlToMasterPoliOrgLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.WkTblMasterAllByXmlRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
 
@@ -25,15 +28,28 @@ public class RegistAddByXmlService {
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
 
+    /** XMLワークテーブル個人最小変換Logic */
+    @Autowired
+    private ConvertWkTblXmlToMasterPersonLogic convertWkTblXmlToMasterPersonLogic;
+
+    /** XMLワークテーブル企業最小変換Logic */
+    @Autowired
+    private ConvertWkTblXmlToMasterCorpLogic convertWkTblXmlToMasterCorpLogic;
+
+    /** XMLワークテーブル政治団体最小変換Logic */
+    @Autowired
+    private ConvertWkTblXmlToMasterPoliOrgLogic convertWkTblXmlToMasterPoliOrgLogic;
+
     /**
      * 処理を行う
      *
-     * @param capsuleDto 編集Dto
+     * @param entityInput 編集対象Entity
+     * @param userDto     ユーザ最小限Dto
      * @return 新たなId
      */
-    public WkTblMasterAllByXmlEntity practice(final UpdateWkTblAddByXmlCapsuleDto capsuleDto) {
-
-        WkTblMasterAllByXmlEntity entityInput = capsuleDto.getWkTblMasterAllByXmlEntity();
+    @Transactional
+    public WkTblMasterAllByXmlEntity practice(final WkTblMasterAllByXmlEntity entityInput,
+            final UserPersonLeastDto userDto) {
 
         Optional<WkTblMasterAllByXmlEntity> optional = wkTblMasterAllByXmlRepository
                 .findById(entityInput.getWkTblMasterAllByXmlId());
@@ -43,19 +59,54 @@ public class RegistAddByXmlService {
             return new WkTblMasterAllByXmlEntity();
         }
 
-        // TODO プロセッサによるチェック
-        // entityInput = partnerPoliOrgAddStdCsvProcessor.check(entityInput);
+        // 関連者区分を決めたら個人・企業・政治団体各最小マスタワークテーブルに転換
+        Integer newId = 0;
+        switch (entityInput.getKanrenshaKbn()) {
+            case 1: // 個人
+                newId = convertWkTblXmlToMasterPersonLogic.practice(entityInput, userDto);
+                // 影響発生させて項目として終了
+                entityInput.setIsFinish(true);
+                entityInput.setIsAffected(true);
+                break;
+            case 2: // 企業団体
+                newId = convertWkTblXmlToMasterCorpLogic.practice(entityInput, userDto);
+                // 影響発生させて項目として終了
+                entityInput.setIsFinish(true);
+                entityInput.setIsAffected(true);
+                break;
+            case 3: // 政治団体 SUPPRESS CHECKSTYLE MagicNumber
+                newId = convertWkTblXmlToMasterPoliOrgLogic.practice(entityInput, userDto);
+                // 影響発生させて項目として終了
+                entityInput.setIsFinish(true);
+                entityInput.setIsAffected(true);
+                break;
 
-        UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
+            default:
+                // 外部で更新した体を取って削除フラグを立てる
+                newId = -1;
+                break;
+        }
 
-        WkTblMasterAllByXmlEntity entitySrc = optional.get();
-        setTableDataHistoryUtil.practiceDelete(userDto, entitySrc);
-        wkTblMasterAllByXmlRepository.save(entitySrc);
+        // 更新できたら必ず旧データを削除
+        Integer wkTblId = 0;
+        if (newId != 0) {
+            WkTblMasterAllByXmlEntity entitySrc = optional.get();
+            setTableDataHistoryUtil.practiceDelete(userDto, entitySrc);
+            wkTblId = wkTblMasterAllByXmlRepository.save(entitySrc).getWkTblMasterAllByXmlId();
+        }
 
-        entityInput.setWkTblMasterAllByXmlId(0); // 履歴を積むのでauto_increment
-        setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
+        if (0 != wkTblId) {
+            entityInput.setWkTblMasterAllByXmlId(0); // 履歴を積むのでauto_increment
+            final Short zero = Short.valueOf("0");
+            if (zero.equals(entityInput.getKanrenshaKbn())) {
+                // 団体区分が0の時は引き続きXMLワークテーブルにい続ける
+                setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
+            } else {
+                setTableDataHistoryUtil.practiceDelete(userDto, entityInput);
+            }
+            return wkTblMasterAllByXmlRepository.save(entityInput);
+        }
 
-        return wkTblMasterAllByXmlRepository.save(entityInput);
+        return new WkTblMasterAllByXmlEntity();
     }
-
 }

@@ -63,7 +63,7 @@ function onSearchPoliOrg() {
 
 // ページング変更
 function onChangePaging() {
-    // personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    onSearchPoliOrg();
 }
 
 // 編集用
@@ -118,6 +118,10 @@ function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }
+
+defineExpose({
+  onSearchPoliOrg,
+});
 </script>
 <template>
     <h3>関連者政治団体検索条件</h3>

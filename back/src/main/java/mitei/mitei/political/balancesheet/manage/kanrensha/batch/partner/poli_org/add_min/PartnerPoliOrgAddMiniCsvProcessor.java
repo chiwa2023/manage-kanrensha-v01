@@ -68,9 +68,9 @@ public class PartnerPoliOrgAddMiniCsvProcessor
         if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(entity.getPoliOrgDelegate())) {
-            stringBuilder.append("代表者が入力されていません;");
-        }
+        // if (BLANK.equals(entity.getPoliOrgDelegate())) {
+        // stringBuilder.append("代表者が入力されていません;");
+        // }
         String dantaiKbn = entity.getDantaiKbn();
         List<String> listDantaiKbn = PoliOrgDantaiKbnConstants.getList();
         if (BLANK.equals(dantaiKbn)) {

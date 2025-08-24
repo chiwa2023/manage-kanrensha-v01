@@ -52,7 +52,7 @@ function onSearchCorp() {
 }
 // ページング変更
 function onChangePaging() {
-    // personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    onSearchCorp();
 }
 
 // 編集用

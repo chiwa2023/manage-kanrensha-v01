@@ -52,7 +52,7 @@ function onSearchPoliOrg() {
 }
 // ページング変更
 function onChangePaging() {
-    // personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    onSearchPoliOrg();
 }
 
 // 編集用

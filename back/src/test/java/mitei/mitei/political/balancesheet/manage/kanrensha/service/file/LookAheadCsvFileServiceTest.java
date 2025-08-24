@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.constants.GetCurrentResourcePath;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.storage_file.LookAheadCsvResultDto;
@@ -38,6 +40,8 @@ class LookAheadCsvFileServiceTest {
     private LookAheadCsvFileService lookAheadCsvFileService;
 
     @Test
+    @Tag("TableTruncate")
+    @Transactional
     void test() throws Exception {
 
         final String fileName = "mt_city_all.csv";

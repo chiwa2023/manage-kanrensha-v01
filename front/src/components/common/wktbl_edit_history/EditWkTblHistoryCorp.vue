@@ -51,8 +51,9 @@ function onSearchCorp() {
 
 // ページング変更
 function onChangePaging() {
-    // personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    onSearchCorp();
 }
+
 // 編集用
 const isEditData: Ref<boolean> = ref(false);
 const entityEdit: Ref<WkTblPartnerCorpHistoryInterface> = ref(new WkTblPartnerCorpHistoryEntity());

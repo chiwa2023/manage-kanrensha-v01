@@ -29,7 +29,6 @@ public class PartnerCorpAddMiniCsvProcessor
 
     /** 正常登録 */
     private static final String RIGHT = "正)";
-
     /** 法人番号正規表現 */
     private final Pattern patternHoujinNo = Pattern.compile("[0-9]{13}");
 
@@ -89,7 +88,7 @@ public class PartnerCorpAddMiniCsvProcessor
         List<PartnerCorpHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getPartnerName(),
                 entity.getAllAddress(), entity.getCorpDelegate());
         if (listHistory.isEmpty()) {
-            if(!entity.getIsAffected()) {
+            if (!entity.getIsAffected()) {
                 // マスタに同名の団体があるかどうか確認する
                 List<MasterCorporationEntity> listMaster = masterCorporationRepository.findByCompareNameTextAndIsLatest(
                         formatNaturalSearchTextUtil.practice(entity.getPartnerName()),
@@ -120,8 +119,11 @@ public class PartnerCorpAddMiniCsvProcessor
      * 同属性リストを取得する
      *
      * @param name 団体名称
+     * 
      * @param address 全住所
+     * 
      * @param delegate 代表者名
+     * 
      * @return 検索結果
      */
     private List<PartnerCorpHistoryBaseEntity> selectSameRirekiList(final String name, final String address,

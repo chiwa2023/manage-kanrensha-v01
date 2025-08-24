@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.storage_file.LookAheadCsvResultDto;
@@ -25,14 +24,13 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.logic.file.SaveFileLo
  * アップロードされたCSVファイルを10行先読みService
  */
 @Service
-@ConfigurationProperties(prefix = "mitei.mitei.political.balancesheet.manage.kanrensha")
 public class LookAheadCsvFileService {
 
     /** 一時ファイルパス取得Logic */
     @Autowired
     private GetTempFilePathLogic getTempFilePathLogic;
 
-    /** ファイル保存Logic */
+    /** ファイル絶対パス取得Logic */
     @Autowired
     private GetAbsolutePathLogic getAbsolutePathLogic;
 

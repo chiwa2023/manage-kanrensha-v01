@@ -101,7 +101,7 @@ public class PartnerCorpAddStdCsvProcessor implements ItemProcessor<PartnerCorpA
             stringBuilder.append("住所番地までが入力されていません;");
         }
         // if (BLANK.equals(entity.getAddressBuilding())) {
-        //     stringBuilder.append("住所建物までが入力されていません;");
+        // stringBuilder.append("住所建物までが入力されていません;");
         // }
         if (BLANK.equals(entity.getPhon1())) {
             stringBuilder.append("電話番号市外局番が入力されていません;");
@@ -186,8 +186,11 @@ public class PartnerCorpAddStdCsvProcessor implements ItemProcessor<PartnerCorpA
      * 同属性リストを取得する
      *
      * @param name 団体名称
+     * 
      * @param address 全住所
+     * 
      * @param delegate 代表者名
+     * 
      * @return 検索結果
      */
     private List<PartnerCorpHistoryBaseEntity> selectSameRirekiList(final String name, final String address,

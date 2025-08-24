@@ -6,7 +6,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleD
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblMasterAllByXmlEntity;
 
 /**
- * 企業／団体一括登録履歴ワークテーブル更新CapsuleDto
+ * XML一括登録履歴ワークテーブル更新CapsuleDto
  */
 public class UpdateWkTblAddByXmlCapsuleDto extends FrameworkCapsuleDto // NOPMD DataClass
         implements Serializable {

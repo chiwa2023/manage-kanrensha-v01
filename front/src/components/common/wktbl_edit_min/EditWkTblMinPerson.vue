@@ -53,7 +53,7 @@ function onSearchPerson() {
 
 // ページング変更
 function onChangePaging() {
-    // personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    onSearchPerson();
 }
 
 // 編集用
@@ -110,6 +110,10 @@ function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }
+
+defineExpose({
+  onSearchPerson,
+});
 </script>
 <template>
     <h3>関連者個人検索条件</h3>

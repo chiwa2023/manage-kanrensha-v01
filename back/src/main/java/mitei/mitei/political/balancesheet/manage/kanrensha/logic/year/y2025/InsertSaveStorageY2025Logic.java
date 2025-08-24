@@ -79,7 +79,7 @@ public class InsertSaveStorageY2025Logic {
 
         Integer code = 1;
         Optional<SaveFileStorage2025Entity> optional = saveFileStorage2025Repository.findById(code);
-        if (optional.isEmpty()) {
+        if (!optional.isEmpty()) {
             code += optional.get().getSaveFileStorageCode();
         }
         entityStorage.setSaveFileStorageCode(code);

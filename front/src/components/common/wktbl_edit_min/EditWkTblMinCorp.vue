@@ -45,9 +45,6 @@ function onSearchCorp() {
             .then(async (response) => {
                 corpResultDto.value = await response.json();
                 pageOptionCorp.value = getPagingOption(corpResultDto.value);
-
-                alert(corpResultDto.value.allCount);
-                alert(corpResultDto.value.listWktblCorp.length);
             })
             .catch((error) => { alert(error); });
     });
@@ -55,7 +52,7 @@ function onSearchCorp() {
 
 // ページング変更
 function onChangePaging() {
-    // personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    onSearchCorp();
 }
 
 // 編集用
@@ -105,6 +102,10 @@ function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }
+
+defineExpose({
+  onSearchCorp,
+});
 </script>
 <template>
     <h3>関連者企業／団体検索条件</h3>
