@@ -16,6 +16,7 @@ import InputShokugyou from '../input_shokugyou/InputShokugyou.vue';
 import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserRoleConstants from '../../../dto/user/userRoleConstants';
 
 // props,emmits
 const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
@@ -115,10 +116,19 @@ function nationarityConfirm() {
     }
 }
 
-
 function onCancel() {
+    const role: string = props.userDto.listRoles[0];
+    if (UserRoleConstants.ROLE_ADMIN === role) {
+        router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+        return;
+    }
+    if (UserRoleConstants.ROLE_MANAGER === role) {
+        router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+        return;
+    }
     router.push(RoutePathConstants.PAGE_MENU_PARTNER);
 }
+
 function onSave() {
     getAuthorizedPromiseArea().then(token => {
         const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());

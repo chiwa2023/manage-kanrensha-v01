@@ -65,7 +65,7 @@ public class MoveWktblXmlToMasterMinLogic {
             if (0 != newId) {
                 baseEntity.setIsAffected(true);
                 baseEntity.setIsFinish(true);
-                baseEntity.setIsAffected(true);
+                baseEntity.setIsDisabled(true);
                 baseEntity.setJudgeReason("最小マスタへ移動済;");
                 setTableDataHistoryUtil.practiceDelete(userDto, baseEntity);
                 wkTblMasterAllByXmlRepository.saveAndFlush(baseEntity);

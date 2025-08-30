@@ -61,7 +61,7 @@ const entityEdit: Ref<WkTblPartnerPersonHistoryInterface> = ref(new WkTblPartner
 const editCapsuleDto: Ref<UpdateWkTblHistoryPersonCapsuleInterface> = ref(new UpdateWkTblHistoryPersonCapsuleDto());
 editCapsuleDto.value.userPersonLeastDto = userDto.value;
 
-let findIndex:number = 0;
+let findIndex: number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
     findIndex = personResultDto.value.listWktblPerson.findIndex((e) => e.wkPartnerPersonHistoryId === editId);
@@ -108,6 +108,14 @@ function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }
+
+// 編集画面データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
 </script>
 <template>
     <h3>関連者個人検索条件</h3>
@@ -133,7 +141,7 @@ function onEditClose() {
         <!-- ページング -->
         <select v-model="personCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPerson" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
         <table>
@@ -152,8 +160,8 @@ function onEditClose() {
                     <td colspan="4">{{ entity.judgeReason }}</td>
                 </tr>
                 <tr>
-                    <td><button @click="onEditData(entity.wkPartnerPersonHistoryId)"
-                            :disabled="!entity.isLatest">{{ entity.partnerName }}</button></td>
+                    <td><button @click="onEditData(entity.wkPartnerPersonHistoryId)" :disabled="!entity.isLatest">{{
+                            entity.partnerName }}</button></td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.personShokugyou }}</td>
                     <td>{{ entity.personKanrenshaCode }}</td>
@@ -216,7 +224,8 @@ function onEditClose() {
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

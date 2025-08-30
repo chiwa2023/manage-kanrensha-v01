@@ -1,9 +1,7 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.controller.regist_bulk_history;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageA
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner.RegistDataByCsvFileCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.storage_file.StorageFileDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.file.CopyTempToUseSavedFileService;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_bulk_history.ExecuteBatchHistoryCorpService;
 
 /**
@@ -31,9 +28,9 @@ public class ExecuteBatchHistoryCorpController {
     @Autowired
     private ExecuteBatchHistoryCorpService executeBatchHistoryCorpService;
 
-    /** 仮ファイル本登録Service */
-    @Autowired
-    private CopyTempToUseSavedFileService copyTempToUseSavedFileService;
+    //    /** 仮ファイル本登録Service */
+    //    @Autowired
+    //    private CopyTempToUseSavedFileService copyTempToUseSavedFileService;
 
     /**
      * 処理を行う
@@ -45,19 +42,20 @@ public class ExecuteBatchHistoryCorpController {
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody RegistDataByCsvFileCapsuleDto capsuleDto) {
 
-        int year = LocalDate.now().getYear();
         // TODO ファイルタイプとタスク種類は決定次第修正する
-        Short fileType = Short.valueOf("205");
-        int taskConstants = 1;
+        // int year = LocalDate.now().getYear();
+        // Short fileType = Short.valueOf("205");
+        // int taskConstants = 1;
         try {
             StorageFileDto fileDto = capsuleDto.getStorageFileDto();
             UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
 
-            copyTempToUseSavedFileService.practice(year, fileDto, userDto, fileType, taskConstants);
+            // copyTempToUseSavedFileService.practice(year, fileDto, userDto, fileType,
+            // taskConstants);
 
             Path path = Paths.get(fileDto.getSavedDir(), fileDto.getFileName());
             executeBatchHistoryCorpService.practice(path.toString(), userDto);
-        } catch (IOException exception) {
+        } catch (Exception exception) {
 
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);

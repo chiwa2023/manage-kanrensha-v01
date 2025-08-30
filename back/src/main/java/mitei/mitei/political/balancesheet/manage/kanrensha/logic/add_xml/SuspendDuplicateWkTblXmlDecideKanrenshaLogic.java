@@ -11,7 +11,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.batch.partner.xml.Xml
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblMasterAllByXmlEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.WkTblMasterAllByXmlRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.util.WriteLogService;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
 
 /**
@@ -31,11 +30,6 @@ public class SuspendDuplicateWkTblXmlDecideKanrenshaLogic {
     /** 抽出様式区分リスト */
     private final List<Integer> listYoushikiKbn = new ArrayList<>();
 
-
-    /** ログ書き出しService */
-    @Autowired
-    private WriteLogService writeLogService;
-
     /**
      * コンストラクタ
      */
@@ -53,17 +47,12 @@ public class SuspendDuplicateWkTblXmlDecideKanrenshaLogic {
      */
     public void practice(final UserPersonLeastDto userDto) {
 
-        writeLogService.practice("----重複抽出開始");
-        
         Integer userCode = userDto.getUserPersonCode();
 
         List<XmlKanrenshaUniquekeyDto> listKeyGroup = wkTblMasterAllByXmlRepository
                 .findDuplicateUniqueKeyDecideKanrensha(userCode);
 
-        writeLogService.practice("重複該当" + listKeyGroup.size());
-
         for (XmlKanrenshaUniquekeyDto uniqueDto : listKeyGroup) {
-            writeLogService.practice("**キー" + uniqueDto.getInputSrcName());
             List<WkTblMasterAllByXmlEntity> list = wkTblMasterAllByXmlRepository
                     .findByInputSrcNameAndInputSrcAddressAndInputSrcKeyAndYoushikiKbnInAndInsertUserCodeOrderByWkTblMasterAllByXmlIdAsc(
                             uniqueDto.getInputSrcName(), uniqueDto.getInputSrcAddress(), uniqueDto.getInputSrcKey(),

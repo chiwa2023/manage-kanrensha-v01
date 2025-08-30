@@ -116,6 +116,13 @@ function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }
+
+// 編集画面データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
 </script>
 <template>
     <h3>関連者政治検索条件</h3>
@@ -141,7 +148,7 @@ function onEditClose() {
         <!-- ページング -->
         <select v-model="poliOrgCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPoliOrg" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table class="std">
@@ -260,7 +267,7 @@ function onEditClose() {
                 <select v-model="entityEdit.dantaiKbn">
                     <option :value=poliOrgKbnNoSelect> </option>
                     <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSeitouShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitouShibu) }}</option>
                     <option :value=poliOrgKbnSeijishikin>{{
@@ -268,7 +275,7 @@ function onEditClose() {
                     <option :value=poliOrgKbn18Jou2KouDantai>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbn18Jou2KouDantai) }}</option>
                     <option :value=poliOrgKbnSonota>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonota)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSonotaShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonotaShibu) }}</option>
                 </select>
@@ -426,7 +433,8 @@ function onEditClose() {
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

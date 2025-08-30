@@ -3,28 +3,39 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.batch.partner.combin
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Value;
 
 /**
  * 個人団体紐づけ一意キー取得Dto
  */
-@Entity
+@Value
 public class PartnerCombineOrgUniquekeyDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Short) */
-    private static final Short INIT_Short = 0;
+    /**
+     * コンストラクタ
+     *
+     * @param kanrenshaKbn        関連者区分
+     * @param personKanrenshaCode 関連者コード個人
+     * @param orgKanrenshaCode    関連者コード団体
+     * @param yearArrayText       登録年配列
+     */
+    public PartnerCombineOrgUniquekeyDto(final Long kanrenshaKbn, final String personKanrenshaCode,
+            final String orgKanrenshaCode, final String yearArrayText) {
+        super();
+        this.kanrenshaKbn = (short)Math.toIntExact(kanrenshaKbn); // 業務的に0,1,2,3のみ
+        this.personKanrenshaCode = personKanrenshaCode;
+        this.orgKanrenshaCode = orgKanrenshaCode;
+        this.yearArrayText = yearArrayText;
+    }
 
     /** 紐づけ関連者区分 */
     @Id
     @Column(name = "kanrensha_kbn")
-    private Short kanrenshaKbn = INIT_Short;
+    private Short kanrenshaKbn;
 
     /**
      * 紐づけ関連者区分を取得する
@@ -47,7 +58,7 @@ public class PartnerCombineOrgUniquekeyDto implements Serializable { // NOPMD Da
     /** 個人関連者コード */
     @Id
     @Column(name = "person_kanrensha_code")
-    private String personKanrenshaCode = INIT_String;
+    private String personKanrenshaCode;
 
     /**
      * 個人関連者コードを取得する
@@ -70,7 +81,7 @@ public class PartnerCombineOrgUniquekeyDto implements Serializable { // NOPMD Da
     /** 団体関連者コード */
     @Id
     @Column(name = "org_kanrensha_code")
-    private String orgKanrenshaCode = INIT_String;
+    private String orgKanrenshaCode;
 
     /**
      * 団体関連者コードを取得する
@@ -93,7 +104,7 @@ public class PartnerCombineOrgUniquekeyDto implements Serializable { // NOPMD Da
     /** 登録年配列 */
     @Id
     @Column(name = "year_array_text")
-    private String yearArrayText = INIT_String;
+    private String yearArrayText;
 
     /**
      * 登録年配列を取得する

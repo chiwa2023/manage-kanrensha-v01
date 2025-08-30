@@ -3,35 +3,48 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner;
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Value;
 
 /**
  * 関連者個人・企業・政治団体共通Dto
  */
-@Entity
+@Value
 public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
-
-    /** 初期データ(Integer) */
-    private static final Integer INIT_Integer = 0;
+    /**
+     * コンストラクタ
+     *
+     * @param kanrenshaKbn  関連者区分
+     * @param partnerName   企業団体名称
+     * @param allAddress    全住所
+     * @param recognizedKey 団体代表者
+     * @param kanrenshaCode 関連者コード
+     */
+    public PartnerCommonInfoDto(final Long kanrenshaKbn, final String partnerName, final String allAddress,
+            final String recognizedKey, final String kanrenshaCode) {
+        super();
+        this.kanrenshaKbn = (short) Math.toIntExact(kanrenshaKbn); // 業務的に0,1,2,3のみ
+        this.partnerName = partnerName;
+        this.allAddress = allAddress;
+        this.recognizedKey = recognizedKey;
+        this.kanrenshaCode = kanrenshaCode;
+    }
 
     /** 関連者区分 */
     @Id
     @Column(name = "kanrensha_Kbn")
-    private Integer kanrenshaKbn = INIT_Integer;
+    private Short kanrenshaKbn;
 
     /**
      * 関連者区分を取得する
      *
      * @return 関連者区分
      */
-    public Integer getKanrenshaKbn() {
+    public Short getKanrenshaKbn() {
         return kanrenshaKbn;
     }
 
@@ -40,13 +53,13 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
      *
      * @param kanrenshaKbn 関連者区分
      */
-    public void setKanrenshaKbn(final Integer kanrenshaKbn) {
+    public void setKanrenshaKbn(final Short kanrenshaKbn) {
         this.kanrenshaKbn = kanrenshaKbn;
     }
 
     /** 関連者名称 */
     @Column(name = "partner_name")
-    private String partnerName = INIT_String;
+    private String partnerName;
 
     /**
      * 関連者名称を取得する
@@ -69,7 +82,7 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     /** 関連者全住所 */
     @Id
     @Column(name = "all_address")
-    private String allAddress = INIT_String;
+    private String allAddress;
 
     /**
      * 関連者全住所を取得する
@@ -92,7 +105,7 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     /** 認識キー */
     @Id
     @Column(name = "recognized_Key")
-    private String recognizedKey = INIT_String;
+    private String recognizedKey;
 
     /**
      * 認識キーを取得する
@@ -115,7 +128,7 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     /** 関連者コード */
     @Id
     @Column(name = "kanrensha_code")
-    private String kanrenshaCode = INIT_String;
+    private String kanrenshaCode;
 
     /**
      * 関連者コードを取得する

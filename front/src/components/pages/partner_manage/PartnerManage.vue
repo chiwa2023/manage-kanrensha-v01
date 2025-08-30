@@ -12,9 +12,9 @@ import SearchCorpNo from '../../common/search_corp_no/SearchCorpNo.vue';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
 import SearchPoliOrg from '../../common/search_poli_org/SearchPoliOrg.vue';
-import AdminInfo from '../../common/user_info/AdminInfo.vue';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
@@ -50,7 +50,7 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
 <template>
 
     <!-- ユーザメニュー兼チェック -->
-    <AdminInfo @send-user="recieveUser"></AdminInfo>
+    <ManagerInfo @send-user="recieveUser"></ManagerInfo>
     <hr>
 
     <h1>関連者管理</h1>

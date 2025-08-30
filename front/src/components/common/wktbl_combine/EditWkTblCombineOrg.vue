@@ -17,7 +17,7 @@ import type UpdateWkTblCombineOrgCapsuleInterface from '../../../dto/wktbl_combi
 import UpdateWkTblCombineOrgCapsuleDto from '../../../dto/wktbl_combine/updateWkTblCombineOrgCapsuleDto';
 import type UpdateWkTblCombineOrgResultInterface from '../../../dto/wktbl_combine/updateWkTblCombineOrgResultDto';
 
-const props = defineProps<{  orgType: string }>();
+const props = defineProps<{ orgType: string }>();
 
 const pageOptionCombine: Ref<SelectOptionNumberInterface[]> = ref([]);
 const combineCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -154,6 +154,13 @@ function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
 }
+
+// データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
 </script>
 <template>
     <h3>関連者企業／団体検索条件</h3>
@@ -179,7 +186,7 @@ function onEditClose() {
         <!-- ページング -->
         <select v-model="combineCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionCombine" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
         <table>
@@ -318,7 +325,8 @@ function onEditClose() {
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

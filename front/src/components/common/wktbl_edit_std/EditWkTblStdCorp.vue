@@ -32,7 +32,7 @@ const corpResultDto: Ref<SearchWkTblStdCorpPagingResultInterface> = ref(new Sear
 
 function onSearchCorp() {
 
-        getAuthorizedPromiseArea().then(token => {
+    getAuthorizedPromiseArea().then(token => {
         const url = "http://localhost:6080/regist-bulk-master-std/search-corp";
         const method = "POST";
         const body = JSON.stringify(corpCapsuleDto.value);
@@ -108,6 +108,13 @@ function onEditClose() {
     isEditData.value = false;
 }
 
+// 編集画面データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
 </script>
 <template>
     <h3>関連者企業／団体検索条件</h3>
@@ -133,7 +140,7 @@ function onEditClose() {
         <!-- ページング -->
         <select v-model="corpCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionCorp" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
 
@@ -175,7 +182,8 @@ function onEditClose() {
                     <td colspan="26">{{ entity.judgeReason }}</td>
                 </tr>
                 <tr>
-                    <td><button @click="onEditData(entity.wkTblMasterCorpId)" :disabled="!entity.isLatest">{{ entity.partnerName }}</button></td>
+                    <td><button @click="onEditData(entity.wkTblMasterCorpId)" :disabled="!entity.isLatest">{{
+                            entity.partnerName }}</button></td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.corpDelegate }}</td>
                     <td>{{ entity.houjinNo }}</td>
@@ -413,7 +421,8 @@ function onEditClose() {
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

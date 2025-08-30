@@ -102,6 +102,10 @@ public class RegistAddByXmlService {
                 // 団体区分が0の時は引き続きXMLワークテーブルにい続ける
                 setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
             } else {
+                entityInput.setIsAffected(true);
+                entityInput.setIsFinish(true);
+                entityInput.setIsDisabled(true);
+                entityInput.setJudgeReason("最小マスタへ移動済;");
                 setTableDataHistoryUtil.practiceDelete(userDto, entityInput);
             }
             return wkTblMasterAllByXmlRepository.save(entityInput);

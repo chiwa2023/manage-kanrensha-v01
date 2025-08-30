@@ -66,7 +66,7 @@ public interface MasterPoliticalOrganizationRepository
      * @param kanrenshaCode 関連者コード
      * @return 検索結果
      */
-    @Query(value = "SELECT  1 AS kanrensha_kbn ,partner_name ,all_address " + " ,person_shokugyou AS recognized_key "
+    @Query(value = "SELECT 1 AS kanrensha_kbn ,partner_name ,all_address " + " ,person_shokugyou AS recognized_key "
             + " ,person_kanrensha_code AS kanrensha_code "
             + "   FROM  master_person  WHERE person_kanrensha_code = ?1 AND is_latest = 1 " + "UNION "
             + "SELECT 2 AS kanrensha_kbn  ,partner_name ,all_address " + " ,corp_delegate AS recognized_key "

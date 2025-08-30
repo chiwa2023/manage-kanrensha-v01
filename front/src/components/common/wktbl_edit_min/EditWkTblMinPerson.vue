@@ -62,7 +62,7 @@ const entityEdit: Ref<WkTblPartnerPersonAddMinInterface> = ref(new WkTblPartnerP
 const editCapsuleDto: Ref<UpdateWkTblMinPersonCapsuleInterface> = ref(new UpdateWkTblMinPersonCapsuleDto());
 editCapsuleDto.value.userPersonLeastDto = userDto.value;
 
-let findIndex:number = 0;
+let findIndex: number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
     findIndex = personResultDto.value.listWktblPerson.findIndex((e) => e.wkTblPartnerPersonAddMinId === editId);
@@ -111,8 +111,15 @@ function onEditClose() {
     isEditData.value = false;
 }
 
+// 編集画面データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
 defineExpose({
-  onSearchPerson,
+    onSearchPerson,
 });
 </script>
 <template>
@@ -139,7 +146,7 @@ defineExpose({
         <!-- ページング -->
         <select v-model="personCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPerson" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>
@@ -215,12 +222,13 @@ defineExpose({
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>
     </div>
-    
+
 </template>
 <style scoped>
 table {

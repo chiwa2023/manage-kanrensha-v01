@@ -72,7 +72,7 @@ const entityEdit: Ref<WkTblPartnerPoliOrgAddMinInterface> = ref(new WkTblPartner
 const editCapsuleDto: Ref<UpdateWkTblMinPoliOrgCapsuleInterface> = ref(new UpdateWkTblMinPoliOrgCapsuleDto());
 editCapsuleDto.value.userPersonLeastDto = userDto.value;
 
-let findIndex:number = 0;
+let findIndex: number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
     findIndex = poliOrgResultDto.value.listWktblPoliOrg.findIndex((e) => e.wkTblPartnerPoliOrgAddMinId === editId);
@@ -119,8 +119,15 @@ function onEditClose() {
     isEditData.value = false;
 }
 
+// 編集画面データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
 defineExpose({
-  onSearchPoliOrg,
+    onSearchPoliOrg,
 });
 </script>
 <template>
@@ -146,7 +153,7 @@ defineExpose({
     <div class="one-line">
         <select v-model="poliOrgCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPoliOrg" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>
@@ -226,7 +233,7 @@ defineExpose({
                 <select v-model="entityEdit.dantaiKbn">
                     <option :value=poliOrgKbnNoSelect> </option>
                     <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSeitouShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitouShibu) }}</option>
                     <option :value=poliOrgKbnSeijishikin>{{
@@ -234,7 +241,7 @@ defineExpose({
                     <option :value=poliOrgKbn18Jou2KouDantai>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbn18Jou2KouDantai) }}</option>
                     <option :value=poliOrgKbnSonota>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonota)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSonotaShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonotaShibu) }}</option>
                 </select>
@@ -245,7 +252,8 @@ defineExpose({
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

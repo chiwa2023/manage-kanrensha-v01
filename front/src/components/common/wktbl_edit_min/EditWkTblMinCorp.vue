@@ -103,8 +103,16 @@ function onEditClose() {
     isEditData.value = false;
 }
 
+// 編集画面データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
+// 他コンポーネントからアクセスさせる
 defineExpose({
-  onSearchCorp,
+    onSearchCorp,
 });
 </script>
 <template>
@@ -130,7 +138,7 @@ defineExpose({
     <div class="one-line">
         <select v-model="corpCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionCorp" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>
@@ -213,7 +221,8 @@ defineExpose({
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

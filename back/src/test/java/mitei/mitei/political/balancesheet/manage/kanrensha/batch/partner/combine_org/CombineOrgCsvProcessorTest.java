@@ -37,6 +37,9 @@ class CombineOrgCsvProcessorTest {
     @Autowired
     private CombineOrgCsvProcessor combineOrgCsvProcessor;
 
+    /** 正常登録対象テキスト */
+    private static final String RIGHT_TEXT = "正)";
+    
     @Test
     @Tag("TableTruncate")
     @Transactional
@@ -60,19 +63,19 @@ class CombineOrgCsvProcessorTest {
         dto01.setPersonName("迂回献金　太郎");
         dto01.setOrgKanrenshaCode("ABC-456");
         dto01.setOrgName("ぼったくり企業");
-        dto01.setStartyear(Short.valueOf("2023"));
-        dto01.setEndyear(Short.valueOf("2024")); // NOPMD
+        dto01.setStartYear(Short.valueOf("2023"));
+        dto01.setEndYear(Short.valueOf("2024")); // NOPMD
 
         WkTblPartnerCombineOrgEntity entity01 = combineOrgCsvProcessor.process(dto01);
         assertEquals(true, entity01.getIsAffected());
-        assertEquals(" ", entity01.getJudgeReason());
+        assertEquals(RIGHT_TEXT, entity01.getJudgeReason());
         assertEquals("2023:2024", entity01.getYearArrayText());
 
         // 登録年に数字以外が設定されました
         PartnerCombineOrgDto dto02 = new PartnerCombineOrgDto();
         BeanUtils.copyProperties(dto01, dto02);
-        dto02.setStartyear(Short.valueOf("-1"));
-        dto02.setEndyear(Short.valueOf("-1"));
+        dto02.setStartYear(Short.valueOf("-1"));
+        dto02.setEndYear(Short.valueOf("-1"));
 
         WkTblPartnerCombineOrgEntity entity02 = combineOrgCsvProcessor.process(dto02);
         assertEquals(false, entity02.getIsAffected());
@@ -82,8 +85,8 @@ class CombineOrgCsvProcessorTest {
         // 登録年がシステム可能年度に収まっていません
         PartnerCombineOrgDto dto03 = new PartnerCombineOrgDto();
         BeanUtils.copyProperties(dto01, dto03);
-        dto03.setStartyear(Short.valueOf("1"));
-        dto03.setEndyear(Short.valueOf("9999"));
+        dto03.setStartYear(Short.valueOf("1"));
+        dto03.setEndYear(Short.valueOf("9999"));
 
         WkTblPartnerCombineOrgEntity entity03 = combineOrgCsvProcessor.process(dto03);
         assertEquals(false, entity03.getIsAffected());
@@ -93,8 +96,8 @@ class CombineOrgCsvProcessorTest {
         // 登録開始年と終了年の大小が逆です。
         PartnerCombineOrgDto dto04 = new PartnerCombineOrgDto();
         BeanUtils.copyProperties(dto01, dto04);
-        dto04.setEndyear(Short.valueOf("2023"));
-        dto04.setStartyear(Short.valueOf("2024"));
+        dto04.setEndYear(Short.valueOf("2023"));
+        dto04.setStartYear(Short.valueOf("2024"));
 
         WkTblPartnerCombineOrgEntity entity04 = combineOrgCsvProcessor.process(dto04);
         assertEquals(false, entity04.getIsAffected());
@@ -115,12 +118,12 @@ class CombineOrgCsvProcessorTest {
         dto01.setPersonName("迂回献金　太郎");
         dto01.setOrgKanrenshaCode("UVW-987");
         dto01.setOrgName("ちゃらんぽらん政治団体");
-        dto01.setStartyear(Short.valueOf("2023"));
-        dto01.setEndyear(Short.valueOf("2024"));
+        dto01.setStartYear(Short.valueOf("2023"));
+        dto01.setEndYear(Short.valueOf("2024"));
 
         WkTblPartnerCombineOrgEntity entity01 = combineOrgCsvProcessor.process(dto01);
         assertEquals(true, entity01.getIsAffected());
-        assertEquals(" ", entity01.getJudgeReason());
+        assertEquals(RIGHT_TEXT, entity01.getJudgeReason());
         assertEquals("2023:2024", entity01.getYearArrayText());
 
         // 2022年にすでに登録があります
@@ -129,8 +132,8 @@ class CombineOrgCsvProcessorTest {
         dto02.setPersonName("迂回献金　太郎");
         dto02.setOrgKanrenshaCode("UVW-987");
         dto02.setOrgName("ちゃらんぽらん政治団体");
-        dto02.setStartyear(Short.valueOf("2021"));
-        dto02.setEndyear(Short.valueOf("2024"));
+        dto02.setStartYear(Short.valueOf("2021"));
+        dto02.setEndYear(Short.valueOf("2024"));
 
         WkTblPartnerCombineOrgEntity entity02 = combineOrgCsvProcessor.process(dto02);
         assertEquals(false, entity02.getIsAffected());

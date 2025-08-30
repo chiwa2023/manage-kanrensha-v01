@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +12,6 @@ import jakarta.persistence.GenerationType;
 /**
  * master_person接続用Entity
  */
-@Entity
 public class MasterPersonDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
@@ -33,6 +31,55 @@ public class MasterPersonDto implements Serializable { // NOPMD DataClass
 
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
+
+    /**
+     * コンストラクタ
+     */
+    public MasterPersonDto() {
+
+    }
+
+    /**
+     * コンストラクタ
+     *
+     * @param masterPersonId      個人マスタId
+     * @param personKanrenshaCode 個人マスタコード
+     * @param isLatest            最新該否
+     * @param partnerName         個人姓名
+     * @param allAddress          全住所
+     * @param personShokugyou     個人職業
+     * @param compareNameText     全件作比較テキスト
+     * @param insertUserId        挿入ユーザId
+     * @param insertUserCode      挿入ユーザコード
+     * @param insertUserName      挿入ユーザ氏名
+     * @param insertTimestamp     挿入日時
+     * @param deleteUserId        削除ユーザId
+     * @param deleteUserCode      削除ユーザコード
+     * @param deleteUserName      削除ユーザ氏名
+     * @param deleteTimestamp     削除日時
+     */
+    public MasterPersonDto(final Integer masterPersonId, final String personKanrenshaCode, final Boolean isLatest,
+            final String partnerName, final String allAddress, final String personShokugyou,
+            final String compareNameText, final Integer insertUserId, final Integer insertUserCode,
+            final String insertUserName, final LocalDateTime insertTimestamp, final Integer deleteUserId,
+            final Integer deleteUserCode, final String deleteUserName, final LocalDateTime deleteTimestamp) {
+        super();
+        this.masterPersonId = masterPersonId;
+        this.personKanrenshaCode = personKanrenshaCode;
+        this.isLatest = isLatest;
+        this.partnerName = partnerName;
+        this.allAddress = allAddress;
+        this.personShokugyou = personShokugyou;
+        this.compareNameText = compareNameText;
+        this.insertUserId = insertUserId;
+        this.insertUserCode = insertUserCode;
+        this.insertUserName = insertUserName;
+        this.insertTimestamp = insertTimestamp;
+        this.deleteUserId = deleteUserId;
+        this.deleteUserCode = deleteUserCode;
+        this.deleteUserName = deleteUserName;
+        this.deleteTimestamp = deleteTimestamp;
+    }
 
     /** テーブルId */
     @Id

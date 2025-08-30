@@ -19,9 +19,9 @@ function recieveUser(user:UserPersonLeastInterface){
 
     <h2>関連者用メニュー</h2>
 
-    <RouterLink :to=routePathConstants.PAGE_REGI_PARTNER_EDIT:>関連者編集</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_EDIT>関連者編集</RouterLink><br>
 
-    <RouterLink :to="RoutePathConstants.PAGE_LOGIN">ログインページ</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
 
 </template>
 <style scoped></style>

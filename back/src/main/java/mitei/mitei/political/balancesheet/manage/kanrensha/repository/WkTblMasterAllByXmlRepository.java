@@ -144,7 +144,15 @@ public interface WkTblMasterAllByXmlRepository //
     List<WkTblMasterAllByXmlEntity> findByInputSrcNameAndInputSrcAddressAndInputSrcKeyAndYoushikiKbnInAndInsertUserCodeOrderByWkTblMasterAllByXmlIdAsc(
             String name, String address, String key, List<Integer> listYoushikiKbn, Integer userCode);
 
-    
-    List<WkTblMasterAllByXmlEntity> findByInsertUserCodeAndKanrenshaKbnNotAndIsLatest(Integer userCode,Integer kanrenshaKbn,boolean isLatest);
+    /**
+     * ワークテーブル登録データから該当関連者かつ最新データを取得する
+     *
+     * @param userCode     ユーザコード
+     * @param kanrenshaKbn 関連者区分
+     * @param isLatest     最新該否
+     * @return 検索結果
+     */
+    List<WkTblMasterAllByXmlEntity> findByInsertUserCodeAndKanrenshaKbnNotAndIsLatest(Integer userCode,
+            Integer kanrenshaKbn, boolean isLatest);
 
 }

@@ -109,10 +109,6 @@ public class AnalysisUploadXmlWktblCommonByXmlService {
             AllBookDto allBookDto = xmlMapper.readValue(Files.readAllBytes(path), new TypeReference<>() {
             });
 
-            // 政治資金収支報告書取得確認(後程削除)
-            writeLogService.practice(allBookDto.getAllSheet0701CoverAndOrganizationDetailsDto()
-                    .getSheet070100CoverAndOrganizationDetailsDto().getDantaiName01());
-
             UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
 
             // ワークテーブル初期化

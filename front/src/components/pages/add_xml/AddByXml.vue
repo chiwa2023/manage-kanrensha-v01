@@ -25,8 +25,9 @@ import RegistDataByXmlCapsuleDto from '../../../dto/add_xml/registDataByXmlCapsu
 import type FrameworkMessageAndResultInterface from '../../../dto/frameworkMessageAndResultDto';
 import type RetryWktblBatchCapsuleInterface from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
 import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
-import UpdateWkTblAddByXmlTableListCapsuleInterface  from '../../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
+import UpdateWkTblAddByXmlTableListCapsuleInterface from '../../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import UpdateWkTblAddByXmlTableListCapsuleDto from '../../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // 関連者区分定数
 const kanrenshaKbnNoSelect: number = KanrenshaKbnConstants.NO_SELECT;
@@ -104,12 +105,6 @@ function onSaveWkTbl() {
     });
 }
 
-
-
-
-
-
-
 // 作業内容検索
 function onSearchAll() {
     //byXmlResultDto.value.listXmlEntity = getMockRegistByXmlList();
@@ -180,12 +175,16 @@ function onSaveBunrui(editId: number) {
                     const resultDto: UpdateWkTblAddByXmlResultInterface = await response.json();
                     if (response.status === 200) {
                         // 正常に更新できた時だけ既存のリストと入れ替え
-                        byXmlResultDto.value.listXmlEntity.splice(findIndex, 1, resultDto.wkTblMasterAllByXmlEntity);
+                        // byXmlResultDto.value.listXmlEntity.splice(findIndex, 1, resultDto.wkTblMasterAllByXmlEntity);
+                        alert(resultDto.message);
+                        // 再表示
+                        onSearchAll();
                     }
                 }
             })
             .catch((error) => { alert(error); });
     });
+
 }
 
 // 表示中データ全更新
@@ -194,7 +193,7 @@ function onSaveTableList() {
     editCapsuleDto.value.wkTblMasterAllByXmlEntity = byXmlResultDto.value.listXmlEntity[findIndex];
 
     // 編集条件を作成
-    const editListCapsuleDto:UpdateWkTblAddByXmlTableListCapsuleInterface = new UpdateWkTblAddByXmlTableListCapsuleDto(); 
+    const editListCapsuleDto: UpdateWkTblAddByXmlTableListCapsuleInterface = new UpdateWkTblAddByXmlTableListCapsuleDto();
     editListCapsuleDto.userPersonLeastDto = userDto.value;
     editListCapsuleDto.listWkTblByXml = byXmlResultDto.value.listXmlEntity;
 
@@ -212,13 +211,12 @@ function onSaveTableList() {
                 if (response.status < 400) {
                     const resultDto: FrameworkMessageAndResultInterface = await response.json();
                     alert(resultDto.message);
+                    // 再表示
+                    onSearchAll();
                 }
             })
             .catch((error) => { alert(error); });
     });
-
-    // 再表示
-    onSearchAll();
 }
 
 function onCancel() {
@@ -248,13 +246,21 @@ function onSave() {
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultInterface = await response.json();
                 alert(resultDto.message);
+                // 再表示
+                onSearchAll();
             })
             .catch((error) => { alert(error); });
     });
+    // 再表示
+    onSearchAll();
 }
 
 </script>
 <template>
+
+    <!-- 管理者メニュー兼チェック -->
+    <ManagerInfo></ManagerInfo>
+
     <h1>政治資金収支報告書XMLより関連者登録</h1>
 
     <!-- XMLファイルアップロード -->
@@ -317,7 +323,8 @@ function onSave() {
             <tbody v-for="entity of byXmlResultDto.listXmlEntity" style="margin-bottom: 1%;">
 
                 <tr>
-                    <td rowspan="3"> <button @click="onSaveBunrui(entity.wkTblMasterAllByXmlId)">編集</button></td>
+                    <td rowspan="3"> <button @click="onSaveBunrui(entity.wkTblMasterAllByXmlId)"
+                            :disabled="entity.isDisabled">編集</button></td>
                     <td rowspan="2"><input type="checkbox" v-model="entity.isAffected"
                             :disabled="entity.isDisabled">編集有効</td>
                     <td colspan="4">処理判定：{{ entity.judgeReason }}</td>
@@ -352,7 +359,7 @@ function onSave() {
                     <td>
                         様式 {{ entity.youshikiKbn }} 様式枝区分 {{ entity.youshikiEdaKbn }}<br>
                         <select v-model="entity.kanrenshaKbn"
-                            :disabled="!entity.isAffected || fullList.includes(entity.youshikiKbn)">
+                            :disabled="!entity.isAffected || fullList.includes(entity.youshikiKbn) || entity.isDisabled">
                             <option :value=kanrenshaKbnNoSelect> </option>
                             <option :value=kanrenshaKbnPerson>個人</option>
                             <option :value=kanrenshaKbnCorp>企業／団体</option>
@@ -361,11 +368,13 @@ function onSave() {
                     </td>
                     <td>
                         名称<br>
-                        <input type="text" v-model="entity.partnerName" :disabled="!entity.isAffected" />
+                        <input type="text" v-model="entity.partnerName"
+                            :disabled="!entity.isAffected || entity.isDisabled" />
                     </td>
                     <td>
                         全住所<br>
-                        <input type="text" v-model="entity.allAddress" :disabled="!entity.isAffected" />
+                        <input type="text" v-model="entity.allAddress"
+                            :disabled="!entity.isAffected || entity.isDisabled" />
                     </td>
                     <td>
                         <div v-if="entity.kanrenshaKbn === kanrenshaKbnNoSelect">
@@ -373,15 +382,18 @@ function onSave() {
                         </div>
                         <div v-if="entity.kanrenshaKbn === kanrenshaKbnPerson">
                             職業<br>
-                            <input type="text" v-model="entity.personShokugyou" :disabled="!entity.isAffected" />
+                            <input type="text" v-model="entity.personShokugyou"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
                         <div v-if="entity.kanrenshaKbn === kanrenshaKbnCorp">
                             団体代表者<br>
-                            <input type="text" v-model="entity.orgDelegate" :disabled="!entity.isAffected" />
+                            <input type="text" v-model="entity.orgDelegate"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
                         <div v-if="entity.kanrenshaKbn === kanrenshaKbnPoliOrg">
                             団体代表者<br>
-                            <input type="text" v-model="entity.orgDelegate" :disabled="!entity.isAffected" />
+                            <input type="text" v-model="entity.orgDelegate"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
                     </td>
 
@@ -394,11 +406,12 @@ function onSave() {
                         </div>
                         <div v-if="entity.kanrenshaKbn === kanrenshaKbnCorp">
                             法人番号<br>
-                            <input type="text" v-model="entity.houjinNo" :disabled="!entity.isAffected" />
+                            <input type="text" v-model="entity.houjinNo"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
                         <div v-if="entity.kanrenshaKbn === kanrenshaKbnPoliOrg">
                             政治団体区分<br>
-                            <select v-model="entity.dantaiKbn" :disabled="!entity.isAffected">
+                            <select v-model="entity.dantaiKbn" :disabled="!entity.isAffected || entity.isDisabled">
                                 <option :value=poliOrgKbnNoSelect> </option>
                                 <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
                                     }}</option>
