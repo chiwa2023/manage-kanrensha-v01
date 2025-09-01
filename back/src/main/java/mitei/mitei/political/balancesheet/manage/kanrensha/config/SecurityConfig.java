@@ -64,7 +64,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests -> {
                     // 401,403エラー処理
-                    requests.requestMatchers("/", "/login", "/reflesh-token", "/replace-token", "/add-user/**")
+                    requests.requestMatchers("/", "/login", "/reflesh-token", "/replace-token", "/add-user/**","/trial-access")
                             .permitAll() //
                             .anyRequest().authenticated();
                     // TODO roleによる分岐が必要なら設定

@@ -64,15 +64,15 @@ switch (role) {
     <h1>新規関連者登録</h1>
     <!-- 編集対象が法人／個人 -->
     <div v-if="viewStatus == 1">
-        <PartnerPersonEdit :edit-dto="inputPersonDto" :user-dto="userLeastDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerPersonEdit>
     </div>
     <!-- 編集対象が法人／団体 -->
     <div v-if="viewStatus == 2">
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :user-dto="userLeastDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerCorpEdit>
     </div>
     <!-- 編集対象が政治団体 -->
     <div v-if="viewStatus == 3">
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :user-dto="userLeastDto"></PartnerPoliOrgEdit>
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerPoliOrgEdit>
     </div>
 </template>
 <style scoped></style>

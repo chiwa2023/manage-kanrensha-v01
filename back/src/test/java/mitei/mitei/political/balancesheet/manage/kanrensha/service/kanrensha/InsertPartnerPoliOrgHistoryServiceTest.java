@@ -131,7 +131,6 @@ class InsertPartnerPoliOrgHistoryServiceTest { // NOPMD
     /** テスト対象 */
     @Autowired
     private InsertPartnerPoliOrgHistoryService insertPartnerPoliOrgHistoryService;
-    
 
     /** テーブル履歴設定Utility */
     @Autowired
@@ -1338,6 +1337,5 @@ class InsertPartnerPoliOrgHistoryServiceTest { // NOPMD
         PartnerPoliOrgHistory99Entity ansEntity = listAns.get(0);
         assertEquals(baseEntity.getAllAddress(), ansEntity.getAllAddress());
     }
-
 
 }

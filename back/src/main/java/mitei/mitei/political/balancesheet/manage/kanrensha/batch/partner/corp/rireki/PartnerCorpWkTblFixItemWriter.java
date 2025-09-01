@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManagerFactory;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.PartnerCorpHistoryBaseEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerCorpHistoryEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.lgcode.PartnerCorpHistory01Entity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.WkTblPartnerCorpHistoryRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.lgccode.PartnerCorpHistory01Repository;
+import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.InsertPartnerCorpHistoryService;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateUserLeastDtoByBatchParamUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
 
@@ -30,9 +30,9 @@ public class PartnerCorpWkTblFixItemWriter extends JpaItemWriter<WkTblPartnerCor
     @Autowired
     private WkTblPartnerCorpHistoryRepository wkTbPartnerCorpHistoryRepository;
 
-    /** 関連者企業・団体履歴(01)Repository */
+    /** 関連者企業・団体履歴新規挿入Service */
     @Autowired
-    private PartnerCorpHistory01Repository partnerCorpHistory01Repository;
+    private InsertPartnerCorpHistoryService insertPartnerCorpHistoryService;
 
     /** テーブル履歴設定Utility */
     @Autowired
@@ -73,12 +73,12 @@ public class PartnerCorpWkTblFixItemWriter extends JpaItemWriter<WkTblPartnerCor
     public void write(final Chunk<? extends WkTblPartnerCorpHistoryEntity> items) {
 
         final Integer zero = 0;
-        
+
         final List<WkTblPartnerCorpHistoryEntity> list = new ArrayList<>();
-        
+
         // 編集処理
         for (WkTblPartnerCorpHistoryEntity entity : items) {
-            if(!zero.equals(entity.getWkPartnerCorpHistoryId())) {
+            if (!zero.equals(entity.getWkPartnerCorpHistoryId())) {
                 if (entity.getIsAffected()) {
                     // 判定が影響させるの場合は本体に書き込み
                     this.insertHistoryTable(entity);
@@ -100,13 +100,9 @@ public class PartnerCorpWkTblFixItemWriter extends JpaItemWriter<WkTblPartnerCor
     /* 履歴テーブル本体に保存する */
     private void insertHistoryTable(final WkTblPartnerCorpHistoryEntity entityWkTbl) {
 
-        // TODO 47都道府県とそれ以外に分割して登録する
-        PartnerCorpHistory01Entity entity = new PartnerCorpHistory01Entity();
+        PartnerCorpHistoryBaseEntity entity = new PartnerCorpHistoryBaseEntity();
         BeanUtils.copyProperties(entityWkTbl, entity);
-        setTableDataHistoryUtil.practiceInsert(userDto, entity);
-        entity.setPartnerCorpHistoryId(0); // auto_increment明示
-
-        partnerCorpHistory01Repository.saveAndFlush(entity);
+        insertPartnerCorpHistoryService.practice(userDto, entity);
     }
 
 }

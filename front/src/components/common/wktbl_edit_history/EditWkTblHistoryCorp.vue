@@ -60,7 +60,7 @@ const entityEdit: Ref<WkTblPartnerCorpHistoryInterface> = ref(new WkTblPartnerCo
 const editCapsuleDto: Ref<UpdateWkTblHistoryCorpCapsuleInterface> = ref(new UpdateWkTblHistoryCorpCapsuleDto());
 editCapsuleDto.value.userPersonLeastDto = userDto.value;
 
-let findIndex:number = 0;
+let findIndex: number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
     findIndex = corpResultDto.value.listWktblCorp.findIndex((e) => e.wkPartnerCorpHistoryId === editId);
@@ -89,8 +89,8 @@ function onEditUpdate() {
                     const resultDto: UpdateWkTblHistoryCorpResultInterface = await response.json();
                     alert(resultDto.message);
                     if (response.status === 200) {
-                        // 正常に更新できた時だけ既存のリストと入れ替え
-                        corpResultDto.value.listWktblCorp.splice(findIndex, 1, resultDto.wkTblPartnerCorpHistoryEntity);
+                        // 再表示
+                        onSearchCorp();
                     }
                 }
             })
@@ -113,6 +113,15 @@ listEditProhibit.push("正常終了");
 function isEdit(): boolean {
     return listEditProhibit.includes(entityEdit.value.judgeReason);
 }
+
+const notUseText: string = "使用しないに変更;";
+function onHideData() {
+    entityEdit.value.judgeReason = notUseText;
+    entityEdit.value.isAffected = false;
+    entityEdit.value.isFinish = true;
+    onEditUpdate();
+}
+
 </script>
 <template>
     <h3>関連者企業／団体検索条件</h3>
@@ -138,7 +147,7 @@ function isEdit(): boolean {
         <!-- ページング -->
         <select v-model="corpCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionCorp" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>
@@ -157,8 +166,8 @@ function isEdit(): boolean {
                     <td colspan="4">{{ entity.judgeReason }}</td>
                 </tr>
                 <tr>
-                    <td><button @click="onEditData(entity.wkPartnerCorpHistoryId)"
-                            :disabled="!entity.isLatest">{{ entity.partnerName }}</button></td>
+                    <td><button @click="onEditData(entity.wkPartnerCorpHistoryId)" :disabled="!entity.isLatest">{{
+                            entity.partnerName }}</button></td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.corpDelegate }}</td>
                     <td>{{ entity.corpKanrenshaCode }}</td>
@@ -175,7 +184,8 @@ function isEdit(): boolean {
                 反映該否
             </div>
             <div class="right-area">
-                <input type="checkbox" v-model="entityEdit.isAffected">反映あり
+                <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
+                    class="left-space">このデータを使用しない</button>
                 <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>
@@ -220,7 +230,8 @@ function isEdit(): boolean {
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()" :disabled="isEdit()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

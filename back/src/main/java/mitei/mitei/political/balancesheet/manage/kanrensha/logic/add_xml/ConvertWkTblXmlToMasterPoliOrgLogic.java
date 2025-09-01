@@ -46,7 +46,12 @@ public class ConvertWkTblXmlToMasterPoliOrgLogic {
         minEntity.setPoliOrgDelegate(allByXmlEntity.getOrgDelegate());
         minEntity.setDantaiKbn(allByXmlEntity.getDantaiKbn());
 
-        minEntity = partnerPoliOrgAddMiniCsvProcessor.check(minEntity);
+        // ユーザさんが変更しないと決断したらデータ整合チェックはしないで意図をそのまま通す
+        final String notUseText = "使用しないに変更;";
+        if (!notUseText.equals(minEntity.getJudgeReason())) {
+            minEntity = partnerPoliOrgAddMiniCsvProcessor.check(minEntity);
+        }
+
         setTableDataHistoryUtil.practiceInsert(userdto, minEntity);
 
         // コードを取得

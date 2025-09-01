@@ -89,10 +89,8 @@ function onEditUpdate() {
                     // TODO 処理内容
                     const resultDto: UpdateWkTblStdCorpResultInterface = await response.json();
                     alert(resultDto.message);
-                    if (response.status === 200) {
-                        // 正常に更新できた時だけ既存のリストと入れ替え
-                        corpResultDto.value.listWktblCorp.splice(findIndex, 1, resultDto.wkTblMasterCorpEntity);
-                    }
+                    // 表示更新
+                    onSearchCorp();
                 }
             })
             .catch((error) => { alert(error); });
@@ -102,10 +100,20 @@ function onEditUpdate() {
     // corpResultDto.value.listWktblCorp.splice(findIndex, 1, structuredClone(toRaw(entityEdit.value)));
     // 編集コンポーネントを閉じる
     isEditData.value = false;
+
 }
+
 function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
+}
+
+const notUseText:string = "使用しないに変更;";
+function onHideData() {
+    entityEdit.value.judgeReason = notUseText;
+    entityEdit.value.isAffected = false;
+    entityEdit.value.isFinish = true;
+    onEditUpdate();
 }
 
 // 編集画面データ更新禁止
@@ -183,7 +191,7 @@ function isEdit(): boolean {
                 </tr>
                 <tr>
                     <td><button @click="onEditData(entity.wkTblMasterCorpId)" :disabled="!entity.isLatest">{{
-                            entity.partnerName }}</button></td>
+                        entity.partnerName }}</button></td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.corpDelegate }}</td>
                     <td>{{ entity.houjinNo }}</td>
@@ -223,8 +231,9 @@ function isEdit(): boolean {
                 反映該否
             </div>
             <div class="right-area">
-                <input type="checkbox" v-model="entityEdit.isAffected">反映あり
-                <br>※データが重複していると反映該否が動かせないことがあります
+                <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
+                        class="left-space">このデータを使用しない</button>
+                    <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>
             <div class="left-area">

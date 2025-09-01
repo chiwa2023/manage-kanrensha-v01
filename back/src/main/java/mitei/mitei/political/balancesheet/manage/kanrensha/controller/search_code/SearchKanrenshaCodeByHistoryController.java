@@ -49,6 +49,7 @@ public class SearchKanrenshaCodeByHistoryController {
         List<PartnerCommonInfoDto> listAll = new ArrayList<>();
 
         boolean hasConditionKey = this.isInput(capsuleDto.getRecognizedKey());
+
         // 検索条件が名称・住所・認識キーの場合
         if (hasConditionKey) {
             listAll.addAll(searchPartnerAllByHistoryService.practice(capsuleDto.getPartnerName(),
@@ -57,12 +58,11 @@ public class SearchKanrenshaCodeByHistoryController {
 
         // 検索条件が名称・住所の場合または3要素で取得できなかった場合
         if (listAll.isEmpty() || !hasConditionKey) {
-            // TODO 名前と住所だけで検索
             listAll.addAll(searchPartnerAllByHistoryNameAddressService.practice(capsuleDto.getPartnerName(),
                     capsuleDto.getAllAddress()));
         }
 
-        List<PartnerCommonInfoDto> list = new ArrayList<>();
+        List<PartnerCommonInfoDto> list;
         // 関連者区分に入力がある場合はフィルタ
         if (this.isInput(capsuleDto.getKanrenshaKbn())) {
             list = listAll.stream().filter(e -> capsuleDto.getKanrenshaKbn().equals(e.getKanrenshaKbn())).toList();
@@ -79,24 +79,13 @@ public class SearchKanrenshaCodeByHistoryController {
 
     private boolean isInput(final String data) {
 
-        if (Objects.isNull(data)) {
-            return false;
-        }
-        if (BLANK.equals(data)) {
-            return false;
-        }
-        return true;
+        return !Objects.isNull(data) && !BLANK.equals(data);
     }
 
     private boolean isInput(final Short data) {
-
-        if (Objects.isNull(data)) {
-            return false;
-        }
-        if (0 == (short) data) {
-            return false;
-        }
-        return true;
+        final Short zero = (short) 0;
+        
+        return !Objects.isNull(data) && !zero.equals(data);
     }
 
 }

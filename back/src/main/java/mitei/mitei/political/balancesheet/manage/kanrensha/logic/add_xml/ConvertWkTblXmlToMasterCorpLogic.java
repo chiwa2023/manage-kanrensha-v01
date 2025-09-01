@@ -46,7 +46,12 @@ public class ConvertWkTblXmlToMasterCorpLogic {
         minEntity.setCorpDelegate(allByXmlEntity.getOrgDelegate());
         minEntity.setHoujinNo(allByXmlEntity.getHoujinNo());
 
-        minEntity = partnerCorpAddMiniCsvProcessor.check(minEntity);
+        // ユーザさんが変更しないと決断したらデータ整合チェックはしないで意図をそのまま通す
+        final String notUseText = "使用しないに変更;";
+        if (!notUseText.equals(minEntity.getJudgeReason())) {
+            minEntity = partnerCorpAddMiniCsvProcessor.check(minEntity);
+        }
+
         setTableDataHistoryUtil.practiceInsert(userdto, minEntity);
 
         // コードを取得
@@ -57,7 +62,7 @@ public class ConvertWkTblXmlToMasterCorpLogic {
             code += optional.get().getWkTblPartnerCorpAddMinCode();
         }
         minEntity.setWkTblPartnerCorpAddMinCode(code);
-        
+
         return wkTblPartnerCorpAddMinRepository.save(minEntity).getWkTblPartnerCorpAddMinId();
     }
 }

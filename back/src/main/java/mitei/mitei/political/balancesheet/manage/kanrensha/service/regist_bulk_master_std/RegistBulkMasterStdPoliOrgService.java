@@ -50,7 +50,11 @@ public class RegistBulkMasterStdPoliOrgService {
             return new WkTblMasterPoliOrgEntity();
         }
 
-        entityInput = partnerPoliOrgAddStdCsvProcessor.check(entityInput);
+        // ユーザさんが変更しないと決断したらデータ整合チェックはしないで意図をそのまま通す
+        final String notUseText = "使用しないに変更;";
+        if (!notUseText.equals(entityInput.getJudgeReason())) {
+            entityInput = partnerPoliOrgAddStdCsvProcessor.check(entityInput);
+        }
 
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
 

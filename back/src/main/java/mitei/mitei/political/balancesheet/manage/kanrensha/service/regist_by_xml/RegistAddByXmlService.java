@@ -59,6 +59,14 @@ public class RegistAddByXmlService {
             return new WkTblMasterAllByXmlEntity();
         }
 
+        // 編集データに過去との違いがない場合はこのデータだけをスキップ
+        WkTblMasterAllByXmlEntity entitySrc = optional.get();
+        if (this.isNotChangeValue(entitySrc, entityInput)) {
+            WkTblMasterAllByXmlEntity entityAns = new WkTblMasterAllByXmlEntity();
+            entityAns.setWkTblMasterAllByXmlId(-1);
+            return entityAns;
+        }
+
         // 関連者区分を決めたら個人・企業・政治団体各最小マスタワークテーブルに転換
         Integer newId = 0;
         switch (entityInput.getKanrenshaKbn()) {
@@ -90,7 +98,6 @@ public class RegistAddByXmlService {
         // 更新できたら必ず旧データを削除
         Integer wkTblId = 0;
         if (newId != 0) {
-            WkTblMasterAllByXmlEntity entitySrc = optional.get();
             setTableDataHistoryUtil.practiceDelete(userDto, entitySrc);
             wkTblId = wkTblMasterAllByXmlRepository.save(entitySrc).getWkTblMasterAllByXmlId();
         }
@@ -113,4 +120,43 @@ public class RegistAddByXmlService {
 
         return new WkTblMasterAllByXmlEntity();
     }
+
+    /**
+     * エンティティ同士の比較処理をする
+     *
+     * @param src  比較対象1(データベース登録)
+     * @param copy 比較対象2(データベース登録)
+     * @return 比較して違いがなければtrue
+     */
+    private boolean isNotChangeValue( // SUPPRESS CHECKSTYLE NPath
+            final WkTblMasterAllByXmlEntity src, final WkTblMasterAllByXmlEntity copy) {
+
+        if (!src.getIsAffected().equals(copy.getIsAffected())) {
+            return false;
+        }
+        if (!src.getIsFinish().equals(copy.getIsFinish())) {
+            return false;
+        }
+        if (!src.getPartnerName().equals(copy.getPartnerName())) {
+            return false;
+        }
+        if (!src.getAllAddress().equals(copy.getAllAddress())) {
+            return false;
+        }
+        if (!src.getPersonShokugyou().equals(copy.getPersonShokugyou())) {
+            return false;
+        }
+        if (!src.getOrgDelegate().equals(copy.getOrgDelegate())) {
+            return false;
+        }
+        if (!src.getDantaiKbn().equals(copy.getDantaiKbn())) {
+            return false;
+        }
+        if (!src.getHoujinNo().equals(copy.getHoujinNo())) { // NOPMD SimplyReturn
+            return false;
+        }
+
+        return true;
+    }
+
 }

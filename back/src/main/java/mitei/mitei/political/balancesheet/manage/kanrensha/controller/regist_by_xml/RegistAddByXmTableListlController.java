@@ -39,13 +39,11 @@ public class RegistAddByXmTableListlController {
 
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         for (WkTblMasterAllByXmlEntity entityEdit : capsuleDto.getListWkTblByXml()) {
-            if (entityEdit.getIsAffected()) {
-                WkTblMasterAllByXmlEntity entityAns = registAddByXmlService.practice(entityEdit, userDto);
-                if (0 == entityAns.getWkTblMasterAllByXmlId()) {
-                    resultDto.setIsFailure(true);
-                    resultDto.setMessage("途中で処理が中断されました");
-                    return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
-                }
+            WkTblMasterAllByXmlEntity entityAns = registAddByXmlService.practice(entityEdit, userDto);
+            if (0 == entityAns.getWkTblMasterAllByXmlId()) {
+                resultDto.setIsFailure(true);
+                resultDto.setMessage("途中で処理が中断されました");
+                return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
             }
         }
 

@@ -157,9 +157,18 @@ const partnerList: number[] = [];
 nameAddressList.push(4);
 
 // 分類編集内容保存
+const notUseText: string = "使用しないに変更;";
 function onSaveBunrui(editId: number) {
+
     findIndex = byXmlResultDto.value.listXmlEntity.findIndex((e) => e.wkTblMasterAllByXmlId === editId);
     editCapsuleDto.value.wkTblMasterAllByXmlEntity = byXmlResultDto.value.listXmlEntity[findIndex];
+    // 使用しないにチェックが入っていたら必要な編集をする
+    if (editCapsuleDto.value.wkTblMasterAllByXmlEntity.isNotUse) {
+        editCapsuleDto.value.wkTblMasterAllByXmlEntity.judgeReason = notUseText;
+        editCapsuleDto.value.wkTblMasterAllByXmlEntity.isAffected = false;
+        editCapsuleDto.value.wkTblMasterAllByXmlEntity.isFinish = true;
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const url = "http://localhost:6080/regist-by-xml/update";
         const method = "POST";
@@ -189,12 +198,18 @@ function onSaveBunrui(editId: number) {
 
 // 表示中データ全更新
 function onSaveTableList() {
-    findIndex = byXmlResultDto.value.listXmlEntity.findIndex((e) => e.wkTblMasterAllByXmlId === 1);
-    editCapsuleDto.value.wkTblMasterAllByXmlEntity = byXmlResultDto.value.listXmlEntity[findIndex];
 
     // 編集条件を作成
     const editListCapsuleDto: UpdateWkTblAddByXmlTableListCapsuleInterface = new UpdateWkTblAddByXmlTableListCapsuleDto();
     editListCapsuleDto.userPersonLeastDto = userDto.value;
+    // リスト全件について、データを使用しないにチェックが入っていたら必要な編集をする
+    for (const entity of byXmlResultDto.value.listXmlEntity) {
+        if (entity.isNotUse) {
+            entity.judgeReason = notUseText;
+            entity.isAffected = false;
+            entity.isFinish = true;
+        }
+    }
     editListCapsuleDto.listWkTblByXml = byXmlResultDto.value.listXmlEntity;
 
     getAuthorizedPromiseArea().then(token => {
@@ -306,7 +321,7 @@ function onSave() {
         <!-- ページング -->
         <select v-model="byXmlCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionAll" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
         <table>
@@ -327,7 +342,8 @@ function onSave() {
                             :disabled="entity.isDisabled">編集</button></td>
                     <td rowspan="2"><input type="checkbox" v-model="entity.isAffected"
                             :disabled="entity.isDisabled">編集有効</td>
-                    <td colspan="4">処理判定：{{ entity.judgeReason }}</td>
+                    <td colspan="4">処理判定：{{ entity.judgeReason }} <input type="checkbox" v-model="entity.isNotUse"
+                            class="left-space">このデータを使用しない</td>
                 </tr>
 
                 <!-- 手掛かりが備考欄のみ(様式3,6) -->
@@ -414,7 +430,7 @@ function onSave() {
                             <select v-model="entity.dantaiKbn" :disabled="!entity.isAffected || entity.isDisabled">
                                 <option :value=poliOrgKbnNoSelect> </option>
                                 <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
-                                    }}</option>
+                                }}</option>
                                 <option :value=poliOrgKbnSeitouShibu>{{
                                     PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitouShibu) }}</option>
                                 <option :value=poliOrgKbnSeijishikin>{{
@@ -422,7 +438,7 @@ function onSave() {
                                 <option :value=poliOrgKbn18Jou2KouDantai>{{
                                     PoliOrgDantaiKbnConstants.getLabel(poliOrgKbn18Jou2KouDantai) }}</option>
                                 <option :value=poliOrgKbnSonota>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonota)
-                                    }}</option>
+                                }}</option>
                                 <option :value=poliOrgKbnSonotaShibu>{{
                                     PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonotaShibu) }}</option>
                             </select>

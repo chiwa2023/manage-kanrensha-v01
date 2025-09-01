@@ -27,7 +27,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner.PartnerCo
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @Transactional
 @Sql({ "sample_partner_person_history.sql", "sample_partner_corp_history.sql", "sample_partner_poli_org_history.sql" })
-class SearchPartnerAllByHistoryNameAddressServiceTest {
+class SearchPartnerAllByHistoryNameAddressServiceTest { // NOPMD TooManyMethod
 
     /** テスト対象 */
     @Autowired
@@ -57,8 +57,8 @@ class SearchPartnerAllByHistoryNameAddressServiceTest {
         assertEquals(CORP, list2.get(0).getKanrenshaKbn());
 
         // 政治団体
-        List<PartnerCommonInfoDto> list3 = searchPartnerAllByHistoryNameAddressService.practice("ちゃらんぽらん政治団体",
-                "北海道架空市山麓町"); // NOPMD
+        List<PartnerCommonInfoDto> list3 = searchPartnerAllByHistoryNameAddressService.practice( //
+                "ちゃらんぽらん政治団体", "北海道架空市山麓町"); // NOPMD
         assertEquals(1, list3.size());
         assertEquals(POLI_ORG, list3.get(0).getKanrenshaKbn());
     }

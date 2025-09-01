@@ -90,8 +90,8 @@ function onEditUpdate() {
                     const resultDto: UpdateWkTblHistoryPersonResultInterface = await response.json();
                     alert(resultDto.message);
                     if (response.status === 200) {
-                        // 正常に更新できた時だけ既存のリストと入れ替え
-                        personResultDto.value.listWktblPerson.splice(findIndex, 1, resultDto.wkTblPartnerPersonHistoryEntity);
+                        // 再表示
+                        onSearchPerson();
                     }
                 }
             })
@@ -116,6 +116,13 @@ function isEdit(): boolean {
     return listEditProhibit.includes(entityEdit.value.judgeReason);
 }
 
+const notUseText: string = "使用しないに変更;";
+function onHideData() {
+    entityEdit.value.judgeReason = notUseText;
+    entityEdit.value.isAffected = false;
+    entityEdit.value.isFinish = true;
+    onEditUpdate();
+}
 </script>
 <template>
     <h3>関連者個人検索条件</h3>
@@ -141,7 +148,7 @@ function isEdit(): boolean {
         <!-- ページング -->
         <select v-model="personCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPerson" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>
@@ -161,7 +168,7 @@ function isEdit(): boolean {
                 </tr>
                 <tr>
                     <td><button @click="onEditData(entity.wkPartnerPersonHistoryId)" :disabled="!entity.isLatest">{{
-                            entity.partnerName }}</button></td>
+                        entity.partnerName }}</button></td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.personShokugyou }}</td>
                     <td>{{ entity.personKanrenshaCode }}</td>
@@ -179,7 +186,8 @@ function isEdit(): boolean {
                 反映該否
             </div>
             <div class="right-area">
-                <input type="checkbox" v-model="entityEdit.isAffected">反映あり
+                <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
+                    class="left-space">このデータを使用しない</button>
                 <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>

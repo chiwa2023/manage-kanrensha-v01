@@ -67,6 +67,11 @@ export default class WkTblMasterAllByXmlEntity implements WkTblMasterAllByXmlInt
     /** 判定理由 */
     judgeReason: string;
 
+
+    /** 使用可否(frontのみ) */
+    isNotUse: boolean;
+
+
     constructor() {
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
@@ -91,6 +96,7 @@ export default class WkTblMasterAllByXmlEntity implements WkTblMasterAllByXmlInt
         this.inputSrcKey = INIT_STRING;
         this.isAffected = INIT_BOOLEAN;
         this.isDisabled = INIT_BOOLEAN;
+        this.isNotUse = INIT_BOOLEAN;
         this.judgeReason = INIT_STRING;
     }
 

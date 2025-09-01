@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 履歴検索条件Dto
  */
-public class SearchPartnerHistoryCapsuleDto implements Serializable {
+public class SearchPartnerHistoryCapsuleDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

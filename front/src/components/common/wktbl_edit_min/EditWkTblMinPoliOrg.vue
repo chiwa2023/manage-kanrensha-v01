@@ -101,8 +101,8 @@ function onEditUpdate() {
                     const resultDto: UpdateWkTblMinPoliOrgResultInterface = await response.json();
                     alert(resultDto.message);
                     if (response.status === 200) {
-                        // 正常に更新できた時だけ既存のリストと入れ替え
-                        poliOrgResultDto.value.listWktblPoliOrg.splice(findIndex, 1, resultDto.wkTblPartnerPoliOrgAddMinEntity);
+                        // 再表示
+                        onSearchPoliOrg();
                     }
                 }
             })
@@ -124,6 +124,14 @@ const listEditProhibit: string[] = [];
 listEditProhibit.push("正常終了");
 function isEdit(): boolean {
     return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
+const notUseText: string = "使用しないに変更;";
+function onHideData() {
+    entityEdit.value.judgeReason = notUseText;
+    entityEdit.value.isAffected = false;
+    entityEdit.value.isFinish = true;
+    onEditUpdate();
 }
 
 defineExpose({
@@ -153,7 +161,7 @@ defineExpose({
     <div class="one-line">
         <select v-model="poliOrgCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPoliOrg" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
         <table>
@@ -193,7 +201,8 @@ defineExpose({
                 反映該否
             </div>
             <div class="right-area">
-                <input type="checkbox" v-model="entityEdit.isAffected">反映あり
+                <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
+                    class="left-space">このデータを使用しない</button>
                 <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>
@@ -233,7 +242,7 @@ defineExpose({
                 <select v-model="entityEdit.dantaiKbn">
                     <option :value=poliOrgKbnNoSelect> </option>
                     <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
-                    }}</option>
+                        }}</option>
                     <option :value=poliOrgKbnSeitouShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitouShibu) }}</option>
                     <option :value=poliOrgKbnSeijishikin>{{
@@ -241,7 +250,7 @@ defineExpose({
                     <option :value=poliOrgKbn18Jou2KouDantai>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbn18Jou2KouDantai) }}</option>
                     <option :value=poliOrgKbnSonota>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonota)
-                    }}</option>
+                        }}</option>
                     <option :value=poliOrgKbnSonotaShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonotaShibu) }}</option>
                 </select>

@@ -50,7 +50,11 @@ public class RegistBulkHistoryPoliOrgService {
             return new WkTblPartnerPoliOrgHistoryEntity();
         }
 
-        entityInput = partnerPoliOrgJudgeProcessor.check(entityInput);
+        // ユーザさんが変更しないと決断したらデータ整合チェックはしないで意図をそのまま通す
+        final String notUseText = "使用しないに変更;";
+        if (!notUseText.equals(entityInput.getJudgeReason())) {
+            entityInput = partnerPoliOrgJudgeProcessor.check(entityInput);
+        }
 
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
 

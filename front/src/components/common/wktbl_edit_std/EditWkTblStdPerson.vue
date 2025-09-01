@@ -90,8 +90,8 @@ function onEditUpdate() {
                     const resultDto: UpdateWkTblStdPersonResultInterface = await response.json();
                     alert(resultDto.message);
                     if (response.status === 200) {
-                        // 正常に更新できた時だけ既存のリストと入れ替え
-                        personResultDto.value.listWktblPerson.splice(findIndex, 1, resultDto.wkTblMasterPersonEntity);
+                        // 再表示
+                        onSearchPerson();
                     }
                 }
             })
@@ -113,6 +113,14 @@ const listEditProhibit: string[] = [];
 listEditProhibit.push("正常終了");
 function isEdit(): boolean {
     return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
+const notUseText: string = "使用しないに変更;";
+function onHideData() {
+    entityEdit.value.judgeReason = notUseText;
+    entityEdit.value.isAffected = false;
+    entityEdit.value.isFinish = true;
+    onEditUpdate();
 }
 
 </script>
@@ -228,9 +236,6 @@ function isEdit(): boolean {
     </div>
     <div class="clear-both"><br></div>
 
-
-
-
     <!-- 編集処理 -->
     <div v-if="isEditData" class="overBackground"></div>
     <div v-if="isEditData">
@@ -239,7 +244,8 @@ function isEdit(): boolean {
                 反映該否
             </div>
             <div class="right-area">
-                <input type="checkbox" v-model="entityEdit.isAffected">反映あり
+                <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
+                    class="left-space">このデータを使用しない</button>
                 <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>

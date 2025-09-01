@@ -63,7 +63,6 @@ editCapsuleDto.value.userPersonLeastDto = userDto.value;
 
 let findIndex: number = 0;
 function onEditData(editId: number) {
-    alert("更新中");
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
     findIndex = poliOrgResultDto.value.listWktblPoliOrg.findIndex((e) => e.wkPartnerPoliOrgHistoryId === editId);
     entityEdit.value = structuredClone(toRaw(poliOrgResultDto.value.listWktblPoliOrg[findIndex]));
@@ -71,7 +70,6 @@ function onEditData(editId: number) {
     isEditData.value = true;
 }
 function onEditUpdate() {
-    alert("更新作業");
     // 編集中のEntityを編集のためにBack側に受け渡し
     editCapsuleDto.value.wkTblPartnerPoliOrgHistoryEntity = entityEdit.value;
 
@@ -91,8 +89,8 @@ function onEditUpdate() {
                     const resultDto: UpdateWkTblHistoryPoliOrgResultInterface = await response.json();
                     alert(resultDto.message);
                     if (response.status === 200) {
-                        // 正常に更新できた時だけ既存のリストと入れ替え
-                        poliOrgResultDto.value.listWktblPoliOrg.splice(findIndex, 1, resultDto.wkTblPartnerPoliOrgHistoryEntity);
+                        // 再表示
+                        onSearchPoliOrg();
                     }
                 }
             })
@@ -112,6 +110,14 @@ const listEditProhibit: string[] = [];
 listEditProhibit.push("正常終了");
 function isEdit(): boolean {
     return listEditProhibit.includes(entityEdit.value.judgeReason);
+}
+
+const notUseText: string = "使用しないに変更;";
+function onHideData() {
+    entityEdit.value.judgeReason = notUseText;
+    entityEdit.value.isAffected = false;
+    entityEdit.value.isFinish = true;
+    onEditUpdate();
 }
 </script>
 <template>
@@ -138,7 +144,7 @@ function isEdit(): boolean {
         <!-- ページング -->
         <select v-model="poliOrgCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPoliOrg" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>
@@ -176,7 +182,8 @@ function isEdit(): boolean {
                 反映該否
             </div>
             <div class="right-area">
-                <input type="checkbox" v-model="entityEdit.isAffected">反映あり
+                <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
+                    class="left-space">このデータを使用しない</button>
                 <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>
