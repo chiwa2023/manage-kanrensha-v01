@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.EditKanrenshaPoliOrgService;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.InsertKanrenshaPoliOrgService;
 
 /**
  * 関連者政治団体追加Controller
@@ -21,7 +21,7 @@ public class InsertUserKanrenshaPoliOrgController {
 
     /** 関連者政治団体編集Service */
     @Autowired
-    private EditKanrenshaPoliOrgService editKanrenshaPoliOrgService;
+    private InsertKanrenshaPoliOrgService insertKanrenshaPoliOrgService;
 
     /**
      * 処理を行う
@@ -30,9 +30,10 @@ public class InsertUserKanrenshaPoliOrgController {
      * @return 処理結果Dto
      */
     @PostMapping("/partner-poli-org")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
-        
-        return ResponseEntity.status(HttpStatus.OK).body(editKanrenshaPoliOrgService.practice(capsuleDto));
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+            @RequestBody final SaveKanrenshaPoliOrgDto capsuleDto) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(insertKanrenshaPoliOrgService.practice(capsuleDto));
 
     }
 

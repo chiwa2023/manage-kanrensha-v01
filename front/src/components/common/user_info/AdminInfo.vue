@@ -56,7 +56,7 @@ const isMoveMenu: ComputedRef<boolean> = computed(() => listRouter.value.length 
             <div style="padding-right: 2.5%;">
                 <!-- 必要アイコンはここに追加 -->
                 <div style="float: right;" class="left-space">
-                    <img src="../../../../admin.png" style="width: 80px;" @click="onInfo">
+                    <img src="../../../assets/manager.png" style="width: 80px;" @click="onInfo">
                 </div>
                 <div class="left-space">
                     <br>

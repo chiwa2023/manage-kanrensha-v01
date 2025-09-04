@@ -62,7 +62,7 @@ switch (role) {
     <hr>
 
     <h1>新規関連者登録</h1>
-    <!-- 編集対象が法人／個人 -->
+    <!-- 編集対象が個人 -->
     <div v-if="viewStatus == 1">
         <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerPersonEdit>
     </div>

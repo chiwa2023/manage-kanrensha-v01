@@ -11,6 +11,7 @@ export default class PoliOrgNoDto implements PoliOrgNoInterface {
     /** 政治団体番号 */
     poliOrgNo: string;
 
+    /** 政治団体名称 */
     inputName:InputOrgNameInterface;
 
     /** 政治団体住所 */

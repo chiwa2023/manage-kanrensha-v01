@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.EditKanrenshaCorpService;
+import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.InsertKanrenshaCorpService;
 
 
 /**
@@ -23,7 +23,7 @@ public class InsertUserKanrenshaCorpController {
 
     /** 関連者企業団体編集Service */
     @Autowired
-    private EditKanrenshaCorpService editKanrenshaCorpService;
+    private InsertKanrenshaCorpService insertKanrenshaCorpService;
 
 
     /**
@@ -37,7 +37,7 @@ public class InsertUserKanrenshaCorpController {
 
         // TODO 権限に合わせて分岐
         
-        return ResponseEntity.status(HttpStatus.OK).body(editKanrenshaCorpService.practice(capsuleDto));
+        return ResponseEntity.status(HttpStatus.OK).body(insertKanrenshaCorpService.practice(null));
 
     }
 

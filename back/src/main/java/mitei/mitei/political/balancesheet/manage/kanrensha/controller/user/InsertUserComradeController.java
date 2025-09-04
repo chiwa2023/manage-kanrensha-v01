@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.user.EditUserComradeService;
+import mitei.mitei.political.balancesheet.manage.kanrensha.service.user.InsertUserComradeService;
 
 /**
  * APIユーザ追加Controller
@@ -21,7 +21,7 @@ public class InsertUserComradeController {
 
     /** APIユーザ編集Service */
     @Autowired
-    private EditUserComradeService editUserComradeService;
+    private InsertUserComradeService insertUserComradeService;
 
     /**
      * 処理を行う
@@ -32,7 +32,7 @@ public class InsertUserComradeController {
     @PostMapping("/comrade")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(editUserComradeService.practice(capsuleDto));
+        return ResponseEntity.status(HttpStatus.OK).body(insertUserComradeService.practice(capsuleDto));
 
     }
 

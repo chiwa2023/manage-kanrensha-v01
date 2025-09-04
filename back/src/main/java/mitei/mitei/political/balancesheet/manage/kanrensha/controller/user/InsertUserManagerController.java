@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.user.EditUserManagerService;
+import mitei.mitei.political.balancesheet.manage.kanrensha.service.user.InsertUserManagerService;
 
 /**
  * 新規ユーザ作成Controller
@@ -21,7 +21,7 @@ public class InsertUserManagerController {
 
     /** ユーザ管理者編集Service */
     @Autowired
-    private EditUserManagerService editUserManagerService;
+    private InsertUserManagerService insertUserManagerService;
 
     /**
      * 処理を行う
@@ -31,7 +31,7 @@ public class InsertUserManagerController {
     @PostMapping("/manager")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(editUserManagerService.practice(capsuleDto));
+        return ResponseEntity.status(HttpStatus.OK).body(insertUserManagerService.practice(capsuleDto));
 
     }
 
