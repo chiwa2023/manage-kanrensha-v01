@@ -23,6 +23,8 @@ public class ConvertKanrenshaPersonDtoToMasterPersonAccessEntityLogic {
         MasterPersonAccessEntity accsessEntity = new MasterPersonAccessEntity();
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputAccessDto(), accsessEntity);
 
+        accsessEntity.setPartnerName(kanrenshaPersonDto.getInputPersonNameDto().getAllName());
+
         return accsessEntity;
     }
 

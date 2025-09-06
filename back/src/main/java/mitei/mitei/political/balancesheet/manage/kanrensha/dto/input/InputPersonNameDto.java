@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 個人氏名DTO
  */
-public class InputPersonNameDto implements Serializable {
+public class InputPersonNameDto implements Serializable { // NOPMD DataClass
     
     /** Serialize id */
     private static final long serialVersionUID = 1L;

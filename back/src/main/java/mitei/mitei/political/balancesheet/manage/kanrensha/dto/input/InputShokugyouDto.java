@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 職業入力Dto
  */
-public class InputShokugyouDto implements Serializable {
+public class InputShokugyouDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

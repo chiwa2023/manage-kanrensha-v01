@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 団体名称Dto
  */
-public class InputOrgNameDto implements Serializable {
+public class InputOrgNameDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

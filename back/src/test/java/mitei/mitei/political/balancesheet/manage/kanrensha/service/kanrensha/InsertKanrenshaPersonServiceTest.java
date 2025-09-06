@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
+package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha; // NOPMD
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -78,7 +78,7 @@ class InsertKanrenshaPersonServiceTest {
     @Sql({ "delete_master_person.sql", "delete_master_person_address.sql", "delete_master_person_access.sql",
             "delete_master_person_address.sql", "delete_master_person_base.sql", "delete_master_person_property.sql",
             "delete_hsitory_person.sql" })
-    void test() throws Exception {
+    void test() throws Exception { // NOPMD 
 
         SaveKanrenshaPersonCapsuleDto capsuleDto = new SaveKanrenshaPersonCapsuleDto();
         capsuleDto.setUserPersonLeastDto(CreateLeastUserForTestUtil.practice());

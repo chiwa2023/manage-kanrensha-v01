@@ -55,7 +55,7 @@ public class ExecuteBatchHistoryCorpController {
 
             Path path = Paths.get(fileDto.getSavedDir(), fileDto.getFileName());
             executeBatchHistoryCorpService.practice(path.toString(), userDto);
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD
 
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
             resultDto.setIsFailure(true);

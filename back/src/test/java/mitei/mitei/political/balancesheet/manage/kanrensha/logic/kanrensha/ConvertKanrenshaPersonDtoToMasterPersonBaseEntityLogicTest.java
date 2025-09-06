@@ -1,8 +1,8 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha;
 
-import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputPersonNameDto;
@@ -13,12 +13,15 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonBa
 /**
  * ConvertKanrenshaPersonDtoToMasterPersonEntityLogic単体テスト
  */
-class ConvertKanrenshaPersonDtoToMasterPersonBaseEntityLogicTest {
+class ConvertKanrenshaPersonDtoTobaseEntityLogicTest {
 
     @Test
+    @Tag("TableTruncate")
     void test() throws Exception {
 
         InputPersonNameDto inputPersonNameDto = new InputPersonNameDto();
+        inputPersonNameDto.setAllName("迂回献金 太郎");
+        inputPersonNameDto.setAllNameKana("うかいけんきん　たろう");
         inputPersonNameDto.setFirstName("太郎");
         inputPersonNameDto.setLastName("迂回献金");
         inputPersonNameDto.setMiddleName("ミカエル");
@@ -40,29 +43,28 @@ class ConvertKanrenshaPersonDtoToMasterPersonBaseEntityLogicTest {
         kanrenshaPersonDto.setInputShokugyouDto(inputShokugyouDto);
 
         ConvertKanrenshaPersonDtoToMasterPersonBaseEntityLogic logic = new ConvertKanrenshaPersonDtoToMasterPersonBaseEntityLogic();
-        MasterPersonBaseEntity masterPersonBaseEntity = logic.practice(kanrenshaPersonDto);
+        MasterPersonBaseEntity baseEntity = logic.practice(kanrenshaPersonDto);
 
         // 個人姓名
-        assertEquals(inputPersonNameDto.getLastName(), masterPersonBaseEntity.getLastName());
-        assertEquals(inputPersonNameDto.getFirstName(), masterPersonBaseEntity.getFirstName());
-        assertEquals(inputPersonNameDto.getMiddleName(), masterPersonBaseEntity.getMiddleName());
-        assertEquals(inputPersonNameDto.getLastNameKana(), masterPersonBaseEntity.getLastNameKana());
-        assertEquals(inputPersonNameDto.getFirstNameKana(), masterPersonBaseEntity.getFirstNameKana());
-        assertEquals(inputPersonNameDto.getMiddleNameKana(), masterPersonBaseEntity.getMiddleNameKana());
+        assertEquals(inputPersonNameDto.getLastName(), baseEntity.getLastName());
+        assertEquals(inputPersonNameDto.getFirstName(), baseEntity.getFirstName());
+        assertEquals(inputPersonNameDto.getMiddleName(), baseEntity.getMiddleName());
+        assertEquals(inputPersonNameDto.getLastNameKana(), baseEntity.getLastNameKana());
+        assertEquals(inputPersonNameDto.getFirstNameKana(), baseEntity.getFirstNameKana());
+        assertEquals(inputPersonNameDto.getMiddleNameKana(), baseEntity.getMiddleNameKana());
 
         // 個人職業
-        assertEquals(inputShokugyouDto.getGyoushu(), masterPersonBaseEntity.getGyoushu());
-        assertEquals(inputShokugyouDto.getYakushoku(), masterPersonBaseEntity.getYakushoku());
-        assertEquals(inputShokugyouDto.getShokugyouUserWrite(), masterPersonBaseEntity.getShokugyouUserWrite());
-        assertEquals(inputShokugyouDto.getCorpNo(), masterPersonBaseEntity.getCorpNo());
-        assertEquals(inputShokugyouDto.getCorpName(), masterPersonBaseEntity.getCorpName());
-        assertEquals(inputShokugyouDto.getCorpAddress(), masterPersonBaseEntity.getCorpAddress());
+        assertEquals(inputShokugyouDto.getGyoushu(), baseEntity.getGyoushu());
+        assertEquals(inputShokugyouDto.getYakushoku(), baseEntity.getYakushoku());
+        assertEquals(inputShokugyouDto.getShokugyouUserWrite(), baseEntity.getShokugyouUserWrite());
+        assertEquals(inputShokugyouDto.getCorpNo(), baseEntity.getCorpNo());
+        assertEquals(inputShokugyouDto.getCorpName(), baseEntity.getCorpName());
+        assertEquals(inputShokugyouDto.getCorpAddress(), baseEntity.getCorpAddress());
+        assertEquals(inputPersonNameDto.getAllName(), baseEntity.getPartnerName());
 
-        // TODO 関連者個人氏名
         // TODO 関連者個人コード
         // TODO 職業編集該否
         
-        fail("Not yet implemented");
     }
 
 }

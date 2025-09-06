@@ -23,6 +23,8 @@ public class ConvertKanrenshaPersonDtoToMasterPersonPropertyEntityLogic {
         MasterPersonPropertyEntity propertyEntity = new MasterPersonPropertyEntity();
         BeanUtils.copyProperties(kanrenshaPersonDto, propertyEntity);
 
+        propertyEntity.setPartnerName(kanrenshaPersonDto.getInputPersonNameDto().getAllName());
+
         return propertyEntity;
     }
 }

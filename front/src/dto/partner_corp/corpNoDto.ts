@@ -33,8 +33,8 @@ export default class CorpNoDto implements CorpNoInterface {
     /** 代表者名 */
     orgDelegate: string;
 
-        /** 承認該否  */
-        isApproval: boolean;
+    /** 承認該否  */
+    isApproval: boolean;
 
     constructor() {
 

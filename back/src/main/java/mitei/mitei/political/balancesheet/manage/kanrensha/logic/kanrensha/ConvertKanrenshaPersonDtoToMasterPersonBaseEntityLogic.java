@@ -25,7 +25,7 @@ public class ConvertKanrenshaPersonDtoToMasterPersonBaseEntityLogic {
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputPersonNameDto(), baseEntity);
         // 個人職業を複写
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputShokugyouDto(), baseEntity);
-
+        baseEntity.setPartnerName(kanrenshaPersonDto.getInputPersonNameDto().getAllName());
         return baseEntity;
     }
 

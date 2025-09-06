@@ -12,7 +12,7 @@ export default class PoliOrgNoDto implements PoliOrgNoInterface {
     poliOrgNo: string;
 
     /** 政治団体名称 */
-    inputName:InputOrgNameInterface;
+    inputName: InputOrgNameInterface;
 
     /** 政治団体住所 */
     inputAddress: InputAddressDto;
@@ -29,8 +29,8 @@ export default class PoliOrgNoDto implements PoliOrgNoInterface {
     /** 会計責任者氏名 */
     accountMgrName: string;
 
-        /** 承認該否  */
-        isApproval: boolean;
+    /** 承認該否  */
+    isApproval: boolean;
 
     constructor() {
 

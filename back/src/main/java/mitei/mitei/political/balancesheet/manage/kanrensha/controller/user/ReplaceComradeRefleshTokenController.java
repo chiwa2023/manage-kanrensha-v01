@@ -48,12 +48,6 @@ public class ReplaceComradeRefleshTokenController {
         // 新しいトークンの生成
         JwtTokenDto jwtToken = jwtService.generateToken(userDetails);
 
-        System.out.println("--------");
-        System.out.println(jwtToken.getAccessToken());
-
-        System.out.println("--------");
-        System.out.println(jwtToken.getRefreshToken());
-
         return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
     }
 

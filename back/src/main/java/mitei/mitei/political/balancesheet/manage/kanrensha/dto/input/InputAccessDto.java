@@ -2,12 +2,10 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto.input;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
-
 /**
  * 連絡先入力Dto
  */
-public class InputAccessDto implements Serializable {
+public class InputAccessDto implements Serializable { // NOPMD DataCalss
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -19,7 +17,6 @@ public class InputAccessDto implements Serializable {
     private static final Integer INIT_Integer = 0;
 
     /** 電話番号1 */
-    @Column(name = "phon1")
     private String phon1 = INIT_String;
 
     /**
@@ -41,7 +38,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** 電話番号2 */
-    @Column(name = "phon2")
     private String phon2 = INIT_String;
 
     /**
@@ -63,7 +59,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** 電話番号3 */
-    @Column(name = "phon3")
     private String phon3 = INIT_String;
 
     /**
@@ -85,7 +80,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** 電子メール */
-    @Column(name = "email")
     private String email = INIT_String;
 
     /**
@@ -107,7 +101,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** 代表(公式)サイトurl */
-    @Column(name = "my_portal_url")
     private String myPortalUrl = INIT_String;
 
     /**
@@ -129,7 +122,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** SNSサービスコード */
-    @Column(name = "sns_service_id")
     private Integer snsServiceId = INIT_Integer;
 
     /**
@@ -151,7 +143,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** SNSサービスコード */
-    @Column(name = "sns_service_code")
     private Integer snsServiceCode = INIT_Integer;
 
     /**
@@ -173,7 +164,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** SNSサービス名称 */
-    @Column(name = "sns_service_name")
     private String snsServiceName = INIT_String;
 
     /**
@@ -195,7 +185,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** SNS玄関url */
-    @Column(name = "sns_portal_url")
     private String snsPortalUrl = INIT_String;
 
     /**
@@ -217,7 +206,6 @@ public class InputAccessDto implements Serializable {
     }
 
     /** SNSサービスアカウント */
-    @Column(name = "sns_account")
     private String snsAccount = INIT_String;
 
     /**

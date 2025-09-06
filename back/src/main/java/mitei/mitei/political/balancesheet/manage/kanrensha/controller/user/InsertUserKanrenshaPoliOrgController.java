@@ -32,8 +32,23 @@ public class InsertUserKanrenshaPoliOrgController {
     @PostMapping("/partner-poli-org")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             @RequestBody final SaveKanrenshaPoliOrgDto capsuleDto) {
+        // 更新処理に対して処理結果を返す
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        try {
+            Integer newId = insertKanrenshaPoliOrgService.practice(capsuleDto);
+            if (0 == newId) {
+                resultDto.setMessage("登録できませんでした");
+                resultDto.setIsFailure(true);
+            } else {
+                resultDto.setMessage("登録できました");
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+            }
+        } catch (Exception exception) { // NOPMD
+            resultDto.setMessage("登録できませんでした");
+            resultDto.setIsFailure(true);
+        }
 
-        return ResponseEntity.status(HttpStatus.OK).body(insertKanrenshaPoliOrgService.practice(capsuleDto));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
 
     }
 

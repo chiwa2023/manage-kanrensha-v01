@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
+package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha; // NOPMD
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,6 +110,7 @@ public class InsertKanrenshaPersonService {
         MasterPersonEntity savedEntity = masterPersonRepository.save(personEntity);
         String newCode = savedEntity.getPersonKanrenshaCode();
 
+        // 住所
         MasterPersonAddressEntity addressEntity = convertKanrenshaPersonDtoToMasterPersonAddressEntityLogic
                 .practice(kanrenshaPersonDto);
         addressEntity.setPersonKanrenshaCode(newCode);
@@ -118,6 +119,7 @@ public class InsertKanrenshaPersonService {
         setTableDataHistoryUtil.practiceInsert(userDto, addressEntity);
         masterPersonAddressRepository.save(addressEntity);
 
+        // 連絡先
         MasterPersonAccessEntity accessEntity = convertKanrenshaPersonDtoToMasterPersonAccessEntityLogic
                 .practice(kanrenshaPersonDto);
         accessEntity.setPersonKanrenshaCode(newCode);
@@ -126,6 +128,7 @@ public class InsertKanrenshaPersonService {
         setTableDataHistoryUtil.practiceInsert(userDto, accessEntity);
         masterPersonAccessRepository.save(accessEntity);
 
+        // 基本
         MasterPersonBaseEntity baseEntity = convertKanrenshaPersonDtoToMasterPersonBaseEntityLogic
                 .practice(kanrenshaPersonDto);
         baseEntity.setPersonKanrenshaCode(newCode);
@@ -134,6 +137,7 @@ public class InsertKanrenshaPersonService {
         setTableDataHistoryUtil.practiceInsert(userDto, baseEntity);
         masterPersonBaseRepository.save(baseEntity);
 
+        // 属性
         MasterPersonPropertyEntity propertyEntity = convertKanrenshaPersonDtoToMasterPersonPropertyEntityLogic
                 .practice(kanrenshaPersonDto);
         propertyEntity.setPersonKanrenshaCode(newCode);

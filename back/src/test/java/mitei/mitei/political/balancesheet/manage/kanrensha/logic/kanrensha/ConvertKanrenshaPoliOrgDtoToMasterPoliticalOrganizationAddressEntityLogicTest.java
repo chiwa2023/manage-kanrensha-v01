@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.address.InputAddressDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputPersonNameDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPersonDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonAddressEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputOrgNameDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAddressEntity;
 
 /**
- * ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogic単体テスト
+ * ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogic単体テスト
  */
-class ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogicTest {
+class ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogicTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() throws Exception {
+    void test() {
 
         InputAddressDto inputAddressDto = new InputAddressDto();
         inputAddressDto.setPostal1("100");
@@ -30,29 +30,22 @@ class ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogicTest {
 
         inputAddressDto.setLgCode("131016");
         inputAddressDto.setMachiazaId("231016");
-        inputAddressDto.setBlkId("31016");
-        inputAddressDto.setRsdtId("41016");
+        inputAddressDto.setBlkId("331016");
+        inputAddressDto.setRsdtId("431016");
         inputAddressDto.setIsPostalEdit(true);
         inputAddressDto.setIsBlockEdit(true);
         inputAddressDto.setIsBuildingEdit(true);
 
-        KanrenshaPersonDto kanrenshaPersonDto = new KanrenshaPersonDto();
-        kanrenshaPersonDto.setInputAddressDto(inputAddressDto);
-        
-        InputPersonNameDto inputPersonNameDto = new InputPersonNameDto();
-        inputPersonNameDto.setAllName("迂回献金 太郎");
-        inputPersonNameDto.setAllNameKana("うかいけんきん　たろう");
-        inputPersonNameDto.setFirstName("太郎");
-        inputPersonNameDto.setLastName("迂回献金");
-        inputPersonNameDto.setMiddleName("ミカエル");
-        inputPersonNameDto.setFirstNameKana("たろう");
-        inputPersonNameDto.setLastNameKana("うかいけんきん");
-        inputPersonNameDto.setMiddleNameKana("みかえる");
-        kanrenshaPersonDto.setInputPersonNameDto(inputPersonNameDto);
+        KanrenshaPoliOrgDto kanrenshaPoliOrgDto = new KanrenshaPoliOrgDto();
+        kanrenshaPoliOrgDto.setInputAddressDto(inputAddressDto);
 
+        InputOrgNameDto inputOrgNameDto = new InputOrgNameDto();
+        inputOrgNameDto.setOrgName("ちゃらんぽらん政治団体");
+        inputOrgNameDto.setOrgNameKana("ちゃらんぽらんせいじだんたい");
+        kanrenshaPoliOrgDto.setInputOrgNameDto(inputOrgNameDto);
 
-        ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogic logic = new ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogic();
-        MasterPersonAddressEntity addressEntity = logic.practice(kanrenshaPersonDto);
+        ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogic logic = new ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogic();
+        MasterPoliticalOrganizationAddressEntity addressEntity = logic.practice(kanrenshaPoliOrgDto);
 
         assertEquals(inputAddressDto.getPostal1(), addressEntity.getPostal1());
         assertEquals(inputAddressDto.getPostal2(), addressEntity.getPostal2());
@@ -66,7 +59,8 @@ class ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogicTest {
         assertEquals(inputAddressDto.getIsPostalEdit(), addressEntity.getIsPostalEdit());
         assertEquals(inputAddressDto.getIsBlockEdit(), addressEntity.getIsBlockEdit());
         assertEquals(inputAddressDto.getIsBuildingEdit(), addressEntity.getIsBlockEdit());
-        assertEquals(inputPersonNameDto.getAllName(), addressEntity.getPartnerName());
+
+        assertEquals(inputOrgNameDto.getOrgName(), addressEntity.getPartnerName());
 
         // TODO 値の設定法が決まり次第修正する
         // assertEquals("rsdt2", addressEntity.getRsdt2Id());

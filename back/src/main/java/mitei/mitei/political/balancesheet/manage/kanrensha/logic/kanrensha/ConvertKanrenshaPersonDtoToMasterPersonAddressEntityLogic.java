@@ -25,6 +25,8 @@ public class ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogic {
 
         MasterPersonAddressEntity addressEntity = new MasterPersonAddressEntity();
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputAddressDto(), addressEntity);
+        
+        addressEntity.setPartnerName(kanrenshaPersonDto.getInputPersonNameDto().getAllName());
 
         return addressEntity;
     }

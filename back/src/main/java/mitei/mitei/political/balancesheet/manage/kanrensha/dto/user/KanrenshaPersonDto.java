@@ -2,7 +2,6 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto.user;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.address.InputAddressDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputAccessDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputPersonNameDto;
@@ -11,7 +10,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputShokug
 /**
  * 関連者個人Dto
  */
-public class KanrenshaPersonDto implements Serializable {
+public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -105,7 +104,6 @@ public class KanrenshaPersonDto implements Serializable {
 
 
     /** 外国籍該否 */
-    @Column(name = "is_foreign")
     private Boolean isForeign = INIT_Boolean;
 
     /**

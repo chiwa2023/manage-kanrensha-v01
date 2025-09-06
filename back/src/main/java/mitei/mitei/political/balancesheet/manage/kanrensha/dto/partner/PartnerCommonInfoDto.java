@@ -2,8 +2,6 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.Value;
 
 /**
@@ -35,8 +33,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者区分 */
-    @Id
-    @Column(name = "kanrensha_Kbn")
     private Short kanrenshaKbn;
 
     /**
@@ -58,7 +54,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者名称 */
-    @Column(name = "partner_name")
     private String partnerName;
 
     /**
@@ -80,8 +75,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者全住所 */
-    @Id
-    @Column(name = "all_address")
     private String allAddress;
 
     /**
@@ -103,8 +96,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     }
 
     /** 認識キー */
-    @Id
-    @Column(name = "recognized_Key")
     private String recognizedKey;
 
     /**
@@ -126,8 +117,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     }
 
     /** 関連者コード */
-    @Id
-    @Column(name = "kanrensha_code")
     private String kanrenshaCode;
 
     /**

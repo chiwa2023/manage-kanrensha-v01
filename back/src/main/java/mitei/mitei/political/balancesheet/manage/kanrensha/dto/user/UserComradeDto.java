@@ -2,6 +2,9 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto.user;
 
 import java.io.Serializable;
 
+/**
+ * API利用ユーザDto
+ */
 public class UserComradeDto implements Serializable{
 
     /** Serialize id */

@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputAccessDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputPersonNameDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPersonDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonAccessEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputOrgNameDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAccessEntity;
 
 /**
- * ConvertKanrenshaPersonDtoToMasterPersonAccessEntityLogic単体テスト
+ * ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAccessEntityLogic単体テスト
  */
-class ConvertKanrenshaPersonDtoToMasterPersonAccessEntityLogicTest {
+class ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAccessEntityLogicTest {
 
     @Test
     @Tag("TableTruncate")
-    void test() throws Exception {
+    void test() {
 
         InputAccessDto inputAccessDto = new InputAccessDto();
         inputAccessDto.setPhon1("03");
@@ -28,22 +28,17 @@ class ConvertKanrenshaPersonDtoToMasterPersonAccessEntityLogicTest {
         inputAccessDto.setSnsPortalUrl("https://jyakusho-sns/");
         inputAccessDto.setSnsAccount("@taro123456");
 
-        KanrenshaPersonDto kanrenshaPersonDto = new KanrenshaPersonDto();
-        kanrenshaPersonDto.setInputAccessDto(inputAccessDto);
+        KanrenshaPoliOrgDto kanrenshaPoliOrgDto = new KanrenshaPoliOrgDto();
+        kanrenshaPoliOrgDto.setInputAccessDto(inputAccessDto);
+        
+        InputOrgNameDto inputOrgNameDto = new InputOrgNameDto();
+        inputOrgNameDto.setOrgName("ちゃらんぽらん政治団体");
+        inputOrgNameDto.setOrgNameKana("ちゃらんぽらんせいじだんたい");
+        kanrenshaPoliOrgDto.setInputOrgNameDto(inputOrgNameDto);
 
-        InputPersonNameDto inputPersonNameDto = new InputPersonNameDto();
-        inputPersonNameDto.setAllName("迂回献金 太郎");
-        inputPersonNameDto.setAllNameKana("うかいけんきん　たろう");
-        inputPersonNameDto.setFirstName("太郎");
-        inputPersonNameDto.setLastName("迂回献金");
-        inputPersonNameDto.setMiddleName("ミカエル");
-        inputPersonNameDto.setFirstNameKana("たろう");
-        inputPersonNameDto.setLastNameKana("うかいけんきん");
-        inputPersonNameDto.setMiddleNameKana("みかえる");
-        kanrenshaPersonDto.setInputPersonNameDto(inputPersonNameDto);
-
-        ConvertKanrenshaPersonDtoToMasterPersonAccessEntityLogic logic = new ConvertKanrenshaPersonDtoToMasterPersonAccessEntityLogic();
-        MasterPersonAccessEntity accessEntity = logic.practice(kanrenshaPersonDto);
+        
+        ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAccessEntityLogic logic = new ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAccessEntityLogic();
+        MasterPoliticalOrganizationAccessEntity accessEntity = logic.practice(kanrenshaPoliOrgDto);
 
         assertEquals(inputAccessDto.getPhon1(), accessEntity.getPhon1());
         assertEquals(inputAccessDto.getPhon2(), accessEntity.getPhon2());
@@ -53,8 +48,9 @@ class ConvertKanrenshaPersonDtoToMasterPersonAccessEntityLogicTest {
         assertEquals(inputAccessDto.getSnsServiceName(), accessEntity.getSnsServiceName());
         assertEquals(inputAccessDto.getSnsPortalUrl(), accessEntity.getSnsPortalUrl());
         assertEquals(inputAccessDto.getSnsAccount(), accessEntity.getSnsAccount());
-        assertEquals(inputPersonNameDto.getAllName(), accessEntity.getPartnerName());
-        
+
+        assertEquals(inputOrgNameDto.getOrgName(), accessEntity.getPartnerName());
+
         // TODO 値の設定法が決まり次第修正する
         // assertEquals(265, accessEntity.getSnsServiceId());
         // assertEquals(323, accessEntity.getSnsServiceCode());

@@ -35,16 +35,17 @@ public class InsertUserKanrenshaPersonController {
 
         // 更新処理に対して処理結果を返す
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        resultDto.setMessage("個人仮設定");
         try {
             Integer newId = insertKanrenshaPersonService.practice(capsuleDto);
-            if (0 != newId) {
-                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
-            } else {
+            if (0 == newId) {
+                resultDto.setMessage("登録できませんでした");
                 resultDto.setIsFailure(true);
+            } else {
+                resultDto.setMessage("登録できました");
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
             }
-
-        } catch (Exception exception) {
+        } catch (Exception exception) { // NOPMD
+            resultDto.setMessage("登録できませんでした");
             resultDto.setIsFailure(true);
         }
 
