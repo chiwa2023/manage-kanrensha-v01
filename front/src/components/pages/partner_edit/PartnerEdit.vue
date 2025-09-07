@@ -7,11 +7,8 @@ import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
 import PersonNoDto from '../../../dto/partner_person/personNoDto';
 import type PoliOrgNoInterface from '../../../dto/partner_poli_org/poliOrgNoDto';
 import PoliOrgNoDto from '../../../dto/partner_poli_org/poliOrgNoDto';
-import mockGetPersonList from '../../common/search_person_no/mock/mockGetPersonList';
-import mockGetPoliOrgNoList from '../../common/search_poli_org/mock/mockGetPoliOrgNoList';
 import CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
-import mockGetCorpList from '../../common/search_corp_no/mock/mockGetCorpList';
 import PartnerInfo from '../../common/user_info/PartnerInfo.vue';
 import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
 import type UserPersonLeastInterface from './../../../dto/user/userPersonLeastDto';
@@ -22,7 +19,6 @@ const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto()
 function recieveUser(user:UserPersonLeastInterface){
     userLeastDto.value = user;
 }
-
 
 const inputPersonDto: Ref<PersonNoInterface> = ref(new PersonNoDto());
 const inputPoliOrgDto: Ref<PoliOrgNoInterface> = ref(new PoliOrgNoDto());
@@ -39,28 +35,30 @@ if (userDtoText !== null) {
 }
 
 let viewStatus: number = 1;
+// TODO ユーザに紐づく関連者を取得する
 switch (role) {
     case UserRoleConstants.ROLE_PARTNER_PERSON:
-        inputPersonDto.value = mockGetPersonList()[0];
+        //inputPersonDto.value = mockGetPersonList()[0];
         viewStatus = 1;
         break;
     case UserRoleConstants.ROLE_PARTNER_CORP:
-        inputCorpNoDto.value = mockGetCorpList()[0];
+        // inputCorpNoDto.value = mockGetCorpList()[0];
         viewStatus = 2;
         break;
     case UserRoleConstants.ROLE_PARTNER_POLI_ORG:
-        inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
+        // inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
         viewStatus = 3;
 }
+// TODO 検索ページで検索する⇒選択されたでデータに表示を入れ替える処理のため、初期表示は不要の認識。確認出来たら削除
 switch (viewStatus) {
     case 1:
-        inputPersonDto.value = mockGetPersonList()[0];
+        //inputPersonDto.value = mockGetPersonList()[0];
         break;
     case 2:
-        inputCorpNoDto.value = mockGetCorpList()[0];
+        //inputCorpNoDto.value = mockGetCorpList()[0];
         break;
     case 3:
-        inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
+        //inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
         break;
     default:
         break;

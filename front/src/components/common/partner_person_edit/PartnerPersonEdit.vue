@@ -32,7 +32,7 @@ const BLANK: string = "";
  *住所編集受信
  */
 function recieveInputAddressInterface(sendDto: InputAddressDto) {
-    inputPersonNoDto.value.inputAddress = sendDto;
+    inputPersonNoDto.value.inputAddressDto = sendDto;
 }
 
 
@@ -40,18 +40,18 @@ function resetData() {
     // コードのリセット
     inputPersonNoDto.value.personNo = BLANK;
     // 名前情報のリセット
-    inputPersonNoDto.value.inputName = new InputPersonNameDto();
+    inputPersonNoDto.value.inputPersonNameDto = new InputPersonNameDto();
     // 住所情報のリセット   
-    inputPersonNoDto.value.inputAddress = new InputAddressDto();
+    inputPersonNoDto.value.inputAddressDto = new InputAddressDto();
     // 職業情報のリセット   
     inputPersonNoDto.value.allShokugyou = BLANK;
-    inputPersonNoDto.value.inputShokugyou = new InputShokugyouDto();
+    inputPersonNoDto.value.inputShokugyouDto = new InputShokugyouDto();
 
 }
 
 function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
 
-    inputPersonNoDto.value.inputName = sendDto;
+    inputPersonNoDto.value.inputPersonNameDto = sendDto;
 }
 
 /**
@@ -102,7 +102,7 @@ function nationarityConfirm() {
     //     .catch((error) => { alert(error); });
 
     // 国籍確認mock実装
-    switch (parseInt(inputPersonNoDto.value.inputAddress.tel3) % 3) {
+    switch (parseInt(inputPersonNoDto.value.inputAddressDto.tel3) % 3) {
         case 0:
             alert("日本国籍保持");
             break;
@@ -169,7 +169,7 @@ function onSave() {
 }
 
 function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
-    inputPersonNoDto.value.inputShokugyou = sendDto;
+    inputPersonNoDto.value.inputShokugyouDto = sendDto;
     inputPersonNoDto.value.allShokugyou = sendDto.allShokugyou;
 }
 
@@ -182,7 +182,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         姓名
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.inputName.allName" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputPersonNameDto.allName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -190,7 +190,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         住所
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.inputAddress.addressPostal" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputAddressDto.addressAll" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -198,7 +198,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         職業
     </div>
     <div class="right-area">
-        <input type="text" disabled="true" v-model="inputPersonNoDto.inputShokugyou.allShokugyou" class="max-input">
+        <input type="text" disabled="true" v-model="inputPersonNoDto.inputShokugyouDto.allShokugyou" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -224,15 +224,15 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
     <div class="clear-both"></div>
 
     <!-- 姓名入力 -->
-    <ViewInputPersonName :edit-dto="inputPersonNoDto.inputName" :is-raise-edit-view="true"
+    <ViewInputPersonName :edit-dto="inputPersonNoDto.inputPersonNameDto" :is-raise-edit-view="true"
         @send-input-person-name-interface="recieveInputPersonNameInterface"></ViewInputPersonName>
 
     <!-- 住所入力 -->
-    <ViewInputAddress :edit-dto="inputPersonNoDto.inputAddress" :is-raise-edit-view="true"
+    <ViewInputAddress :edit-dto="inputPersonNoDto.inputAddressDto" :is-raise-edit-view="true"
         @send-input-address-interface="recieveInputAddressInterface"></ViewInputAddress>
 
     <!-- 職業入力 -->
-    <InputShokugyou :isfooter="false" :edit-dto="inputPersonNoDto.inputShokugyou"
+    <InputShokugyou :isfooter="false" :edit-dto="inputPersonNoDto.inputShokugyouDto"
         @send-input-shokugyou-interface="recieveInputShokugyouInterface"></InputShokugyou>
     <hr>
 

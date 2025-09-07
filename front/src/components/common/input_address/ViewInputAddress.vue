@@ -24,9 +24,8 @@ function onInputAddress() {
  * 関連者検索キャンセル
  */
 function recieveCancelInputAddress() {
-
-    inputAddressDto.value.addressAll = backupAddressDto.value.tel1;
-    inputAddressDto.value.orginAddressAll = backupAddressDto.value.tel1;
+    inputAddressDto.value.addressAll = backupAddressDto.value.addressAll;
+    inputAddressDto.value.orginAddressAll = backupAddressDto.value.orginAddressAll;
 
     inputAddressDto.value.postalcode1 = backupAddressDto.value.postalcode1;
     inputAddressDto.value.postalcode2 = backupAddressDto.value.postalcode2;

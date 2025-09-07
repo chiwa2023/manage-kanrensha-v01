@@ -172,7 +172,6 @@ function searchBuilding() {
     });
 }
 
-
 /** 住所建物候補選択時 */
 function selectSuggestBuilding() {
     inputAddressDto.value.addressBuilding = selectedAddressBuilding.value;

@@ -1,32 +1,59 @@
 ﻿<script setup lang="ts">
-import { ref, watch, type Ref } from 'vue';
-import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
+import { ref,  type Ref } from 'vue';
 import mockGetCorpList from './mock/mockGetCorpList';
+import type MasterCorporationInterface from '../../../entity/masterCorporationEntity';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTextSearchPagingCapsuleDto';
+import NaturalTextSearchPagingCapsuleDto from '../../../dto/naturalTextSearchPagingCapsuleDto';
+import type SearchKanrenshaCorpResultInterface from '../../../dto/kanrensha/searchKanrenshaCorpResultDto';
 
 //props,emit
-const props = defineProps<{ list: CorpNoInterface[], isFooter: boolean }>();
+const props = defineProps<{  isFooter: boolean }>();
 const emits = defineEmits(["sendCorpNoInterface", "sendCanceelCorpNo"]);
 
-
 //const listProps: ComputedRef<CorpInterface[]> = computed(() => { return props.list });
-const listCorp: Ref<CorpNoInterface[]> = ref([]);
-watch(props.list, () => {
-    //alert("変更");
-    listCorp.value.splice(0);
-    for (const dto of props.list) {
-        listCorp.value.push(dto);
-    }
-});
+const listCorp: Ref<MasterCorporationInterface[]> = ref([]);
+// watch(props.list, () => {
+//     //alert("変更");
+//     listCorp.value.splice(0);
+//     for (const dto of props.list) {
+//         listCorp.value.push(dto);
+//     }
+// });
 
 // 検索リスト
 function onCorpSearch() {
     listCorp.value = mockGetCorpList();
+
+    getAuthorizedPromiseArea().then(token => {
+        // 検索条件の設定
+        const capsuleDto: NaturalTextSearchPagingCapsuleInterface = new NaturalTextSearchPagingCapsuleDto();
+        capsuleDto.allCount = 0;
+        capsuleDto.limit = 30;
+        capsuleDto.pageNumber = 0;
+
+        const url = "http://localhost:6080/user-kanrensha/search-corp";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: SearchKanrenshaCorpResultInterface = await response.json();
+                listCorp.value = resultDto.listMasterCorp;
+            })
+            .catch((error) => { alert(error); });
+    });
+
 }
 
 /** 行選択 */
-function onSelectRow(selectedNo: string) {
+function onSelectRow(selectedNo: number) {
     // 検索データからコピーすべき元データを抽出
-    const selectedDto: CorpNoInterface = listCorp.value.filter((e) => e.corpNo === selectedNo)[0];
+    const selectedDto: MasterCorporationInterface = listCorp.value.filter((e) => e.masterCorporationId === selectedNo)[0];
     emits("sendCorpNoInterface", selectedDto);
 }
 
@@ -98,13 +125,13 @@ function sendCancelCorpNo() {
                     <th>代表者</th>
                     <th>&nbsp;</th>
                 </tr>
-                <tr v-for="dto of listCorp" :key="dto.corpNo">
-                    <td>{{ dto.corpNo }}</td>
+                <tr v-for="dto of listCorp" :key="dto.masterCorporationId">
+                    <td>{{ dto.corpKanrenshaCode }}</td>
                     <td>{{ dto.houjinNo }}</td>
-                    <td>{{ dto.corpName }}</td>
-                    <td>{{ dto.inputAddress.addressPostal }}</td>
-                    <td>{{ dto.orgDelegate }}</td>
-                    <td><button @click="onSelectRow(dto.corpNo)">選択</button></td>
+                    <td>{{ dto.partnerName }}</td>
+                    <td>{{ dto.allAddress }}</td>
+                    <td>{{ dto.corpDelegate }}</td>
+                    <td><button @click="onSelectRow(dto.masterCorporationId)">選択</button></td>
                 </tr>
             </tbody>
         </table>

@@ -67,4 +67,21 @@ public interface MasterCorporationRepository extends JpaRepository<MasterCorpora
      */
     Optional<MasterCorporationEntity> findFirstByCorpKanrenshaCodeAndIsLatest(String code, Boolean isLatest);
 
+    /**
+     * 現在利用できるリストをページングで取得する(TODO 自然検索に変更の予定)
+     *
+     * @param isLatest 最新該否
+     * @param pageable ページング条件
+     * @return 検索結果
+     */
+    List<MasterCorporationEntity> findByIsLatest(Boolean isLatest, Pageable pageable);
+
+    /**
+     * 現在利用できる件数取得する(TODO 自然検索に変更の予定)
+     *
+     * @param isLatest 最新該否
+     * @return 検索件数
+     */
+    Integer countByIsLatest(Boolean isLatest);
+
 }

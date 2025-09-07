@@ -12,7 +12,7 @@ const inputDto: ComputedRef<InputAccessInterface> = computed(() => { return prop
     <div class="right-area">
         <input type="text" v-model="inputDto.phon1" class="code-input">
         <input type="text" v-model="inputDto.phon2" class="code-input left-space">
-        <input type="text" v-model="inputDto.phon3" class="code-input">
+        <input type="text" v-model="inputDto.phon3" class="code-input left-space">
     </div>
     <div class="clear-both"></div>
 

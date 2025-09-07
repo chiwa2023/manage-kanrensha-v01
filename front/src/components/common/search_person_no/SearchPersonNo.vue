@@ -1,21 +1,48 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import mockGetPersonList from './mock/mockGetPersonList';
-import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
+import type MasterPersonInterface from '../../../entity/masterPersonEntity';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTextSearchPagingCapsuleDto';
+import NaturalTextSearchPagingCapsuleDto from '../../../dto/naturalTextSearchPagingCapsuleDto';
+import type SearchKanrenshaPersonResultInterface from '../../../dto/kanrensha/searchKanrenshaPersonResultDto';
 
 //props,emit
 const props = defineProps<{ isFooter: boolean }>();
 const emits = defineEmits(["sendPersonNoInterface", "sendCanceelPersonNo"]);
 
-const listPerson: Ref<PersonNoInterface[]> = ref([]);
+const listPerson: Ref<MasterPersonInterface[]> = ref([]);
 
 function onPersonSearch() {
     listPerson.value = mockGetPersonList();
+
+    getAuthorizedPromiseArea().then(token => {
+        // 検索条件の設定
+        const capsuleDto: NaturalTextSearchPagingCapsuleInterface = new NaturalTextSearchPagingCapsuleDto();
+        capsuleDto.allCount = 0;
+        capsuleDto.limit = 30;
+        capsuleDto.pageNumber = 0;
+
+        const url = "http://localhost:6080/user-kanrensha/search-person";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: SearchKanrenshaPersonResultInterface = await response.json();
+                listPerson.value = resultDto.listMasterPerson;
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
-function onSelectRow(personNo: string) {
+function onSelectRow(personNo: number) {
     // コードから選択された個人を抽出する
-    const selectedDto: PersonNoInterface = listPerson.value.filter((e) => e.personNo === personNo)[0];
+    const selectedDto: MasterPersonInterface = listPerson.value.filter((e) => e.masterPersonId === personNo)[0];
     emits("sendPersonNoInterface", selectedDto);
 }
 
@@ -77,12 +104,12 @@ function sendCancelPersonNo() {
                 <th>職業</th>
                 <th>&nbsp;</th>
             </tr>
-            <tr v-for="dto of listPerson" :key="dto.personNo">
-                <td>{{ dto.personNo }}</td>
-                <td>{{ dto.nameAll }}</td>
-                <td>{{ dto.juushoAll }}</td>
-                <td>{{ dto.shokugyou }}</td>
-                <td><button @click="onSelectRow(dto.personNo)">選択</button></td>
+            <tr v-for="dto of listPerson" :key="dto.masterPersonId">
+                <td>{{ dto.personKanrenshaCode }}</td>
+                <td>{{ dto.partnerName }}</td>
+                <td>{{ dto.allAddress }}</td>
+                <td>{{ dto.personShokugyou }}</td>
+                <td><button @click="onSelectRow(dto.masterPersonId)">選択</button></td>
             </tr>
         </tbody>
     </table>

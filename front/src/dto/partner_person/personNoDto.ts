@@ -40,16 +40,16 @@ export default class PersonNoDto implements PersonNoInterface {
     shokugyou: string
 
     /** 入力職業 */
-    inputAddress: InputAddressDto;
+    inputAddressDto: InputAddressDto;
 
     /** 連絡先Dto */
     inputAccessDto:InputAccessInterface;
 
     /** 入力姓名 */
-    inputName: InputPersonNameInterface;
+    inputPersonNameDto: InputPersonNameInterface;
 
     /** 入力職業 */
-    inputShokugyou: InputShokugyouInterface;
+    inputShokugyouDto: InputShokugyouInterface;
 
     /** 職業の業種 */
     allShokugyou: string;
@@ -69,11 +69,11 @@ export default class PersonNoDto implements PersonNoInterface {
         this.nameAll = INIT_STRING;
         this.shokugyou = INIT_STRING;
 
-        this.inputAddress = new InputAddressDto();
-        this.inputName = new InputPersonNameDto();
+        this.inputAddressDto = new InputAddressDto();
+        this.inputPersonNameDto = new InputPersonNameDto();
         this.inputAccessDto = new InputAccessDto();
         this.isGaikoujin = false;
-        this.inputShokugyou = new InputShokugyouDto();
+        this.inputShokugyouDto = new InputShokugyouDto();
         this.allShokugyou = INIT_STRING;
 
         this.masterId = INIT_NUMBER;
