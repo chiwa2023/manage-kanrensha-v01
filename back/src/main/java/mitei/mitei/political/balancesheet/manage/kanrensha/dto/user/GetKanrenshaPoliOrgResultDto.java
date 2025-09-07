@@ -2,12 +2,12 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto.user;
 
 import java.io.Serializable;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 
 /**
  * 関連者政治団体格納Dto
  */
-public class SaveKanrenshaPoliOrgDto extends FrameworkCapsuleDto implements Serializable {
+public class GetKanrenshaPoliOrgResultDto extends FrameworkMessageAndResultDto implements Serializable {
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

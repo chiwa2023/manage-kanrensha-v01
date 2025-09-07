@@ -1,11 +1,9 @@
 ﻿<script setup lang="ts">
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import InputAddressDto from '../../../dto/Input_address/inputAddressDto';
 import ViewInputAddress from '../input_address/ViewInputAddress.vue';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
 import SearchPersonNo from '../search_person_no/SearchPersonNo.vue';
 import type PoliOrgNoInterface from '../../../dto/partner_poli_org/poliOrgNoDto';
-import InputOrgNameInterface from '../../../dto/input_org_name/inputOrgNameDto';
 import InputOrgName from '../input_org_name/InputOrgName.vue';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
@@ -14,15 +12,19 @@ import FrameworkCapsuleDto from '../../../dto/frameworkCapsuleDto';
 import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 import router from '../../../router';
 import RoutePathConstants from '../../../routePathConstants';
+import InputAccess from '../input_access/InputAccess.vue';
 
-const props = defineProps<{ editDto: PoliOrgNoInterface, isEditNew: boolean ,userDto: UserPersonLeastInterface}>();
+const props = defineProps<{ editDto: PoliOrgNoInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
 const editPoliOrgDto: ComputedRef<PoliOrgNoInterface> = computed(() => props.editDto)
 
+// よく使う定数
 const BLANK: string = "";
+// const SERVWER_STATUS_OK: number = 200;
+// const SERVWER_STATUS_ERROR: number = 400;
 
 // 関連者個人検索
 const isPersonSearch: Ref<boolean> = ref(false);
-let searchPersonType: string = "";
+let searchPersonType: string = BLANK;
 const delegateId: string = "delegate";
 const accountMgrId: string = "accountMgr";
 /**
@@ -49,14 +51,14 @@ function recievePersonNoInterface(sendDto: PersonNoInterface) {
 
     // 会計責任者から呼び出した場合は選択結果は会計責任者に設定
     if (accountMgrId === searchPersonType) {
-        editPoliOrgDto.value.accountMgrName = sendDto.nameAll;
-        editPoliOrgDto.value.accountMgrNo = sendDto.personNo;
+        editPoliOrgDto.value.accounrMgrLeastDto.personKanrenshaCode = sendDto.personNo;
+        editPoliOrgDto.value.accounrMgrLeastDto.personName = sendDto.personNo;
     }
 
     // 代表者から呼び出した場合は選択結果は代表者に設定
     if (delegateId === searchPersonType) {
-        editPoliOrgDto.value.delegateName = sendDto.nameAll;
-        editPoliOrgDto.value.delegateNo = sendDto.personNo;
+        editPoliOrgDto.value.orgDelegateLeastDto.personKanrenshaCode = sendDto.personNo;
+        editPoliOrgDto.value.orgDelegateLeastDto.personName = sendDto.nameAll;
     }
 
     isPersonSearch.value = false;
@@ -64,27 +66,13 @@ function recievePersonNoInterface(sendDto: PersonNoInterface) {
 
 // 住所・法人名とも支店フラグがOnなら編集許可Offなら検索時データを強制設定
 const allAddress: ComputedRef<string> = computed(() => {
-    return editPoliOrgDto.value.inputAddress.addressPostal;
+    return editPoliOrgDto.value.inputAddressDto.addressPostal;
 });
 
 
 function resetData() {
     // 関連者コード初期化
-    editPoliOrgDto.value.poliOrgNo = BLANK;
-
-    // 住所初期化    
-    editPoliOrgDto.value.inputAddress = new InputAddressDto();
-
-    // 団体名初期化
-    editPoliOrgDto.value.inputName = new InputOrgNameInterface();
-
-    // 代表者初期化    
-    editPoliOrgDto.value.delegateNo = BLANK;
-    editPoliOrgDto.value.delegateName = BLANK;
-
-    // 会計責任者初期化    
-    editPoliOrgDto.value.accountMgrNo = BLANK;
-    editPoliOrgDto.value.accountMgrName = BLANK;
+    //editPoliOrgDto.value = new PoliOrgNoDto();
 }
 
 
@@ -114,12 +102,19 @@ function onCancel() {
 
 function onSave() {
 
+    // 編集か新規作成かでアクセス先を変えるだけ
+    let url = BLANK;
+    if (props.isEditNew) {
+        url = "http://localhost:6080/add-user/partner-poli-org";
+    } else {
+        url = "http://localhost:6080/add-user/partner-poli-org";
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
         capsuleDto.value.userPersonLeastDto = props.userDto;
-        if (token !== "") {
-            // パスワード更新
-            const url = "http://localhost:6080/add-user/partner-poli-org";
+        if (token !== BLANK) {
+            // 保存処理
             const method = "POST";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
@@ -149,7 +144,7 @@ function onSave() {
         政治団体名称
     </div>
     <div class="right-area">
-        <input type="text" v-model="editPoliOrgDto.inputName.orgName" disabled="true" class="max-input">
+        <input type="text" v-model="editPoliOrgDto.inputOrgNameDto.orgName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -165,7 +160,7 @@ function onSave() {
         代表者
     </div>
     <div class="right-area">
-        <input type="text" v-model="editPoliOrgDto.delegateName" disabled="true" class="max-input">
+        <input type="text" v-model="editPoliOrgDto.orgDelegateLeastDto.personName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -190,17 +185,37 @@ function onSave() {
     </div>
     <div class="clear-both"></div>
 
-    <InputOrgName :edit-dto="editPoliOrgDto.inputName"></InputOrgName>
+    <!-- 団体名称入力  -->
+    <InputOrgName :edit-dto="editPoliOrgDto.inputOrgNameDto"></InputOrgName>
 
-    <ViewInputAddress :edit-dto="editPoliOrgDto.inputAddress" :is-raise-edit-view="true"></ViewInputAddress>
+    <!-- 住所入力 -->
+    <ViewInputAddress :edit-dto="editPoliOrgDto.inputAddressDto" :is-raise-edit-view="true"></ViewInputAddress>
+
+    <div class="left-area">
+        団体区分
+    </div>
+    <div class="right-area">
+        <span><input type="radio" v-model="editPoliOrgDto.dantaiKbn" :value="1"> 政党要件を満たす政党</span>
+        <span class="left-space"><input type="radio" v-model="editPoliOrgDto.dantaiKbn" :value="2"> 政党の支部</span>
+        <span class="left-space"><input type="radio" v-model="editPoliOrgDto.dantaiKbn" :value="3"> 政治資金団体</span>
+        <br>
+        <span><input type="radio" v-model="editPoliOrgDto.dantaiKbn" :value="4"> 政治資金規正法第18条の2第1項の規定による政治団体</span>
+        <span class="left-space"><input type="radio" v-model="editPoliOrgDto.dantaiKbn" :value="5"> その他の政治団体</span>
+        <span class="left-space"><input type="radio" v-model="editPoliOrgDto.dantaiKbn" :value="6"> その他の政治団体の支部</span>
+    </div>
+    <div class="clear-both"></div>
+
+    <!-- 連絡先入力 -->
+    <InputAccess :edit-dto="editPoliOrgDto.inputAccessDto"></InputAccess>
 
     <div class="left-area">
         団体代表者
     </div>
     <div class="right-area">
-        <input type="text" v-model="editPoliOrgDto.delegateNo" class="code-input" disabled="true">
-        <input type="text" v-model="editPoliOrgDto.delegateName" class="text-input left-space" disabled="true"><button
-            class="left-space" @click="onPersonSearch(delegateId)">検索</button>
+        <input type="text" v-model="editPoliOrgDto.orgDelegateLeastDto.personKanrenshaCode" class="code-input"
+            disabled="true">
+        <input type="text" v-model="editPoliOrgDto.orgDelegateLeastDto.personName" class="text-input left-space"
+            disabled="true"><button class="left-space" @click="onPersonSearch(delegateId)">検索</button>
     </div>
     <div class="clear-both"></div>
 
@@ -208,12 +223,16 @@ function onSave() {
         会計責任者
     </div>
     <div class="right-area">
-        <input type="text" v-model="editPoliOrgDto.accountMgrNo" class="code-input" disabled="true">
-        <input type="text" v-model="editPoliOrgDto.accountMgrName" class="text-input left-space" disabled="true"><button
-            class="left-space" @click="onPersonSearch(accountMgrId)">検索</button>
+        <input type="text" v-model="editPoliOrgDto.accounrMgrLeastDto.personKanrenshaCode" class="code-input"
+            disabled="true">
+        <input type="text" v-model="editPoliOrgDto.accounrMgrLeastDto.personKanrenshaCode" class="text-input left-space"
+            disabled="true"><button class="left-space" @click="onPersonSearch(accountMgrId)">検索</button>
     </div>
     <div class="clear-both"></div>
     <hr>
+
+
+
     <h3>連絡先(情報確認のため使用、非公開)</h3>
     <div class="left-area">
         メールアドレス
@@ -231,20 +250,6 @@ function onSave() {
     </div>
     <div class="clear-both"></div>
     <hr>
-    <h3>政治団体情報</h3>
-    <div class="left-area">
-        団体区分
-    </div>
-    <div class="right-area">
-        <span><input type="radio" :value="1"> 政党要件を満たす政党</span>
-        <span class="left-space"><input type="radio" :value="2"> 政党の支部</span>
-        <span class="left-space"><input type="radio" :value="3"> 政治資金団体</span>
-        <br>
-        <span><input type="radio" :value="4"> 政治資金規正法第18条の2第1項の規定による政治団体</span>
-        <span class="left-space"><input type="radio" :value="5"> その他の政治団体</span>
-        <span class="left-space"><input type="radio" :value="6"> その他の政治団体の支部</span>
-    </div>
-    <div class="clear-both"></div>
 
     <hr>
     <h3>変更履歴</h3>

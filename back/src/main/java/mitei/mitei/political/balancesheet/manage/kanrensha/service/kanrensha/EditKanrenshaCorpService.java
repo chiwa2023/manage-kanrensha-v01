@@ -2,8 +2,8 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaCorpCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporationAccessEntity;
@@ -54,7 +54,8 @@ public class EditKanrenshaCorpService {
      * @param capsuleDto 処理条件
      * @return 処理結果
      */
-    public FrameworkMessageAndResultDto practice(final SaveKanrenshaCorpCapsuleDto capsuleDto) {
+    @Transactional
+    public Integer practice(final SaveKanrenshaCorpCapsuleDto capsuleDto) {
 
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
 
@@ -87,11 +88,7 @@ public class EditKanrenshaCorpService {
         setTableDataHistoryUtil.practiceInsert(userDto, corporationPropertyEntity);
         masterCorporationPropertyRepository.save(corporationPropertyEntity);
 
-        // 更新処理に対して処理結果を返す
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        resultDto.setMessage("企業団体仮設定");
-
-        return resultDto;
+        return null;
     }
 
 }

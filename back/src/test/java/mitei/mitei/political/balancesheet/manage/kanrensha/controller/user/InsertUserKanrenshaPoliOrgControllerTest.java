@@ -28,7 +28,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputAccess
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputKanrenshaPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputOrgNameDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPoliOrgDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapperWithTimeModuleUtil;
 
@@ -57,7 +57,7 @@ class InsertUserKanrenshaPoliOrgControllerTest {
             "../../service/kanrensha/delete_history_poli_org.sql" })
     void test() throws Exception {
 
-        SaveKanrenshaPoliOrgDto capsuleDto = new SaveKanrenshaPoliOrgDto();
+        SaveKanrenshaPoliOrgCapsuleDto capsuleDto = new SaveKanrenshaPoliOrgCapsuleDto();
         capsuleDto.setUserPersonLeastDto(CreateLeastUserForTestUtil.practice());
 
         // DTOの準備

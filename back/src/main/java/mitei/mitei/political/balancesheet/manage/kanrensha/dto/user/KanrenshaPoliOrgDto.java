@@ -18,6 +18,9 @@ public class KanrenshaPoliOrgDto implements Serializable { // NOPMD DataClass
     /** 初期データ(String) */
     private static final String INIT_String = "";
 
+    /** 初期データ(Integer) */
+    private static final Integer INIT_Integer = 0;
+
     /** 名称入力Dto */
     private InputOrgNameDto inputOrgNameDto = new InputOrgNameDto();
 
@@ -123,7 +126,6 @@ public class KanrenshaPoliOrgDto implements Serializable { // NOPMD DataClass
         this.accounrMgrLeastDto = accounrMgrLeastDto;
     }
 
-
     /** 政治団体区分 */
     private String dantaiKbn = INIT_String;
 
@@ -145,5 +147,109 @@ public class KanrenshaPoliOrgDto implements Serializable { // NOPMD DataClass
         this.dantaiKbn = dantaiKbn;
     }
 
+    /** 関連者政治団体マスタテーブルId */
+    private Integer masterId = INIT_Integer;
+
+    /** 関連者政治団体連絡先テーブルId */
+    private Integer accessId = INIT_Integer;
+
+    /** 関連者政治団体住所テーブルId */
+    private Integer addressId = INIT_Integer;
+
+    /** 関連者政治団体基本テーブルId */
+    private Integer baseId = INIT_Integer;
+
+    /** 関連者政治団体属性テーブルId */
+    private Integer propertyId = INIT_Integer;
+
+    /**
+     * 関連者政治団体マスタテーブルIdを取得する
+     *
+     * @return 関連者政治団体マスタテーブルId
+     */
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    /**
+     * 関連者政治団体マスタテーブルIdを設定する
+     *
+     * @param masterId 関連者政治団体マスタテーブルId
+     */
+    public void setMasterId(final Integer masterId) {
+        this.masterId = masterId;
+    }
+
+    /**
+     * 関連者政治団体連絡先テーブルIdを取得する
+     *
+     * @return 関連者政治団体連絡先テーブルId
+     */
+    public Integer getAccessId() {
+        return accessId;
+    }
+
+    /**
+     * 関連者政治団体連絡先テーブルIdを設定する
+     *
+     * @param accessId 関連者政治団体連絡先テーブルId
+     */
+    public void setAccessId(final Integer accessId) {
+        this.accessId = accessId;
+    }
+
+    /**
+     * 関連者政治団体住所テーブルIdを取得する
+     *
+     * @return 関連者政治団体住所テーブルId
+     */
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    /**
+     * 関連者政治団体住所テーブルIdを設定する
+     *
+     * @param addressId 関連者政治団体住所テーブルId
+     */
+    public void setAddressId(final Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    /**
+     * 関連者政治団体基本テーブルIdを取得する
+     *
+     * @return 関連者政治団体基本テーブルId
+     */
+    public Integer getBaseId() {
+        return baseId;
+    }
+
+    /**
+     * 関連者政治団体基本テーブルIdを設定する
+     *
+     * @param baseId 関連者政治団体基本テーブルId
+     */
+    public void setBaseId(final Integer baseId) {
+        this.baseId = baseId;
+    }
+
+    /**
+     * 関連者企業団体属性テーブルIdを取得する
+     *
+     * @return 関連者企業団体属性テーブルId
+     */
+    public Integer getPropertyId() {
+        return propertyId;
+    }
+
+    /**
+     * 関連者企業団体属性テーブルIdを設定する
+     *
+     * @param propertyId 関連者企業団体属性テーブルId
+     */
+    public void setPrpertyId(final Integer propertyId) {
+        this.propertyId = propertyId;
+    }
 
 }

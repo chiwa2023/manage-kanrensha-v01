@@ -15,12 +15,9 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporat
  */
 class ConvertKanrenshaCorpDtoToMasterCorporationAccessEntityLogicTest {
 
-    
-    
     @Test
     @Tag("TableTruncate")
-    void test()throws Exception {
-        
+    void test() throws Exception {
 
         InputAccessDto inputAccessDto = new InputAccessDto();
         inputAccessDto.setPhon1("03");
@@ -33,12 +30,11 @@ class ConvertKanrenshaCorpDtoToMasterCorporationAccessEntityLogicTest {
 
         KanrenshaCorpDto kanrenshaCorpDto = new KanrenshaCorpDto();
         kanrenshaCorpDto.setInputAccessDto(inputAccessDto);
-        
+
         InputOrgNameDto inputOrgNameDto = new InputOrgNameDto();
         inputOrgNameDto.setOrgName("超元素製造組合");
         inputOrgNameDto.setOrgNameKana("ちょうげんそせいぞうくみあい");
         kanrenshaCorpDto.setInputOrgNameDto(inputOrgNameDto);
-
 
         ConvertKanrenshaCorpDtoToMasterCorporationAccessEntityLogic logic = new ConvertKanrenshaCorpDtoToMasterCorporationAccessEntityLogic();
         MasterCorporationAccessEntity accessEntity = logic.practice(kanrenshaCorpDto);

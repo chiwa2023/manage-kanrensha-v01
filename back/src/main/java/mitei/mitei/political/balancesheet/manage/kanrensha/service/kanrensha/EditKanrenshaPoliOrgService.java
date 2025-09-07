@@ -2,10 +2,11 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAccessEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAddressEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationBaseEntity;
@@ -23,7 +24,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHis
  */
 @Service
 public class EditKanrenshaPoliOrgService {
-
 
     /** 政治団体マスタRepository */
     @Autowired
@@ -55,11 +55,8 @@ public class EditKanrenshaPoliOrgService {
      * @param capsuleDto 処理条件
      * @return 処理結果
      */
-    public FrameworkMessageAndResultDto practice(final SaveKanrenshaPoliOrgDto capsuleDto) {
-
-        
-        
-        
+    @Transactional
+    public FrameworkMessageAndResultDto practice(final SaveKanrenshaPoliOrgCapsuleDto capsuleDto) {
 
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
 

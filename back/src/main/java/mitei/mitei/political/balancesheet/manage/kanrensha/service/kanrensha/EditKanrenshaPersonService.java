@@ -1,53 +1,46 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPersonCapsuleDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonAccessEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonAddressEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonBaseEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPersonPropertyEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonAccessRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonAddressRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonBaseRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonPropertyRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPersonAccessLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPersonAddressLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPersonBaseLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPersonLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPersonPropertyLogic;
 
 /**
  * 関連者個人を編集する
+ *
+ * @author chiwaki2023
+ * @author supported by Gemini CLI
  */
 @Service
 public class EditKanrenshaPersonService {
 
-    /** 企業団体マスタRepository */
+    /** 関連者個人マスタ編集Logic */
     @Autowired
-    private MasterPersonRepository masterPersonRepository;
+    private EditMasterPersonLogic editMasterPersonLogic;
 
-    /** 企業団体マスタ連絡先Repository */
+    /** 関連者個人連絡先編集Logic */
     @Autowired
-    private MasterPersonAccessRepository masterPersonAccessRepository;
+    private EditMasterPersonAccessLogic editMasterPersonAccessLogic;
 
-    /** 企業団体マスタ連絡先Repository */
+    /** 関連者個人住所マスタ編集Logic */
     @Autowired
-    private MasterPersonAddressRepository masterPersonAddressRepository;
+    private EditMasterPersonAddressLogic editMasterPersonAddressLogic;
 
-    /** 企業団体マスタ連絡先Repository */
+    /** 関連者個人基本マスタ編集Logic */
     @Autowired
-    private MasterPersonBaseRepository masterPersonBaseRepository;
+    private EditMasterPersonBaseLogic editMasterPersonBaseLogic;
 
-    /** 企業団体マスタ属性Repository */
+    /** 関連者個人属性マスタ編集Logic */
     @Autowired
-    private MasterPersonPropertyRepository masterPersonPropertyRepository;
-
-    /** テーブル履歴設定Utility */
-    @Autowired
-    private SetTableDataHistoryUtil setTableDataHistoryUtil;
-
+    private EditMasterPersonPropertyLogic editMasterPersonPropertyLogic;
 
     /**
      * 処理を行う
@@ -55,48 +48,24 @@ public class EditKanrenshaPersonService {
      * @param capsuleDto 処理条件
      * @return 処理結果
      */
-    public FrameworkMessageAndResultDto practice(final SaveKanrenshaPersonCapsuleDto capsuleDto) {
+    @Transactional
+    public Integer practice(final SaveKanrenshaPersonCapsuleDto capsuleDto)
+            throws EmptyResultDataAccessException, ConcurrencyFailureException { // NOPMD UncheckedException
 
-        
+        Integer updateId = 0;
 
-        UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
+        // マスタを更新
+        updateId += editMasterPersonLogic.practice(capsuleDto);
+        // 連絡先を更新
+        updateId += editMasterPersonAccessLogic.practice(capsuleDto);
+        // 住所を更新
+        updateId += editMasterPersonAddressLogic.practice(capsuleDto);
+        // 基本を更新
+        updateId += editMasterPersonBaseLogic.practice(capsuleDto);
+        // 属性を更新
+        updateId += editMasterPersonPropertyLogic.practice(capsuleDto);
 
-        MasterPersonEntity corporationEntity = new MasterPersonEntity();
-        // TODO 情報設定
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationEntity);
-        String newCode = masterPersonRepository.save(corporationEntity).getPersonKanrenshaCode();
-
-        MasterPersonAccessEntity corporationAccessEntity = new MasterPersonAccessEntity();
-        // TODO 情報設定
-        corporationAccessEntity.setPersonKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationAccessEntity);
-        masterPersonAccessRepository.save(corporationAccessEntity);
-
-        MasterPersonAddressEntity corporationAddressEntity = new MasterPersonAddressEntity();
-        // TODO 情報設定
-        corporationAddressEntity.setPersonKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationAddressEntity);
-        masterPersonAddressRepository.save(corporationAddressEntity);
-
-        MasterPersonBaseEntity corporationBaseEntity = new MasterPersonBaseEntity();
-        // TODO 情報設定
-        corporationBaseEntity.setPersonKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationBaseEntity);
-        masterPersonBaseRepository.save(corporationBaseEntity);
-
-        MasterPersonPropertyEntity corporationPropertyEntity = new MasterPersonPropertyEntity();
-        // TODO 情報設定
-        corporationPropertyEntity.setPersonKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationPropertyEntity);
-        masterPersonPropertyRepository.save(corporationPropertyEntity);
-        
-        
-        // 更新処理に対して処理結果を返す
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        resultDto.setMessage("個人仮設定");
-
-        
-        return resultDto;
+        return updateId;
     }
 
 }

@@ -15,6 +15,9 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
+    /** 初期データ(Integer) */
+    private static final Integer INIT_Integer = 0;
+
     /** 初期データ(Boolean) */
     private static final Boolean INIT_Boolean = false;
 
@@ -102,7 +105,6 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
         this.inputShokugyouDto = inputShokugyouDto;
     }
 
-
     /** 外国籍該否 */
     private Boolean isForeign = INIT_Boolean;
 
@@ -124,5 +126,109 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
         this.isForeign = isForeign;
     }
 
-    
+    /** 関連者個人マスタテーブルId */
+    private Integer masterId = INIT_Integer;
+
+    /** 関連者個人連絡先テーブルId */
+    private Integer accessId = INIT_Integer;
+
+    /** 関連者個人住所テーブルId */
+    private Integer addressId = INIT_Integer;
+
+    /** 関連者個人基本テーブルId */
+    private Integer baseId = INIT_Integer;
+
+    /** 関連者個人属性テーブルId */
+    private Integer propertyId = INIT_Integer;
+
+    /**
+     * 関連者個人マスタテーブルIdを取得する
+     *
+     * @return 関連者個人マスタテーブルId
+     */
+    public Integer getMasterId() {
+        return masterId;
+    }
+
+    /**
+     * 関連者個人マスタテーブルIdを設定する
+     *
+     * @param masterId 関連者個人マスタテーブルId
+     */
+    public void setMasterId(final Integer masterId) {
+        this.masterId = masterId;
+    }
+
+    /**
+     * 関連者個人連絡先テーブルIdを取得する
+     *
+     * @return 関連者個人連絡先テーブルId
+     */
+    public Integer getAccessId() {
+        return accessId;
+    }
+
+    /**
+     * 関連者個人連絡先テーブルIdを設定する
+     *
+     * @param accessId 関連者個人連絡先テーブルId
+     */
+    public void setAccessId(final Integer accessId) {
+        this.accessId = accessId;
+    }
+
+    /**
+     * 関連者個人住所テーブルIdを取得する
+     *
+     * @return 関連者個人住所テーブルId
+     */
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    /**
+     * 関連者個人住所テーブルIdを設定する
+     *
+     * @param addressId 関連者個人住所テーブルId
+     */
+    public void setAddressId(final Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    /**
+     * 関連者個人基本テーブルIdを取得する
+     *
+     * @return 関連者個人基本テーブルId
+     */
+    public Integer getBaseId() {
+        return baseId;
+    }
+
+    /**
+     * 関連者個人基本テーブルIdを設定する
+     *
+     * @param baseId 関連者個人基本テーブルId
+     */
+    public void setBaseId(final Integer baseId) {
+        this.baseId = baseId;
+    }
+
+    /**
+     * 関連者企業団体属性テーブルIdを取得する
+     *
+     * @return 関連者企業団体属性テーブルId
+     */
+    public Integer getPropertyId() {
+        return propertyId;
+    }
+
+    /**
+     * 関連者企業団体属性テーブルIdを設定する
+     *
+     * @param propertyId 関連者企業団体属性テーブルId
+     */
+    public void setPropertyId(final Integer propertyId) {
+        this.propertyId = propertyId;
+    }
+
 }

@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
+package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha; // NOPMD
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

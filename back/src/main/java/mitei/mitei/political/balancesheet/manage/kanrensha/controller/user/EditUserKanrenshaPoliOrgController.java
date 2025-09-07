@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.EditKanrenshaPoliOrgService;
 
 /**
@@ -30,7 +30,7 @@ public class EditUserKanrenshaPoliOrgController {
      * @return 処理結果Dto
      */
     @PostMapping("/edit-poli-org")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final SaveKanrenshaPoliOrgDto capsuleDto) {
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final SaveKanrenshaPoliOrgCapsuleDto capsuleDto) {
         
         return ResponseEntity.status(HttpStatus.OK).body(editKanrenshaPoliOrgService.practice(capsuleDto));
 

@@ -12,7 +12,7 @@ class InsertUserComradeServiceTest {
 
     /** テスト対象 */
     @Autowired
-    private InsertUserComradeServiceTest insertUserComradeServiceTest;
+    private InsertUserComradeService insertUserComradeService;
     
     @Test
     void test() {

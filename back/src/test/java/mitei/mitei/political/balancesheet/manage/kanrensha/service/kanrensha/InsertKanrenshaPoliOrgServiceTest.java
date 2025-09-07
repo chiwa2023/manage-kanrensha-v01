@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
+package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha; // NOPMD
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -22,7 +22,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputAccess
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputKanrenshaPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputOrgNameDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPoliOrgDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAccessEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAddressEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationBaseEntity;
@@ -84,7 +84,7 @@ class InsertKanrenshaPoliOrgServiceTest {
             "delete_master_political_organization_property.sql", "delete_history_poli_org.sql" })
     void test() throws Exception { // NOPMD
 
-        SaveKanrenshaPoliOrgDto capsuleDto = new SaveKanrenshaPoliOrgDto();
+        SaveKanrenshaPoliOrgCapsuleDto capsuleDto = new SaveKanrenshaPoliOrgCapsuleDto();
         capsuleDto.setUserPersonLeastDto(CreateLeastUserForTestUtil.practice());
 
         // DTOの準備
@@ -151,7 +151,7 @@ class InsertKanrenshaPoliOrgServiceTest {
         assertEquals(inputAddressDto.getAddressAll(), masterEntity.getAllAddress());
         assertEquals(orgDelegateLeastDto.getPersonName(), masterEntity.getPoliOrgDelegate());
         assertEquals(kanrenshaPoliOrgDto.getDantaiKbn(), masterEntity.getDantaiKbn());
-        
+
         String newCode = masterEntity.getPoliOrgKanrenshaCode();
 
         // MasterPoliticalOrganizationAddressEntity
@@ -173,7 +173,7 @@ class InsertKanrenshaPoliOrgServiceTest {
         assertEquals(inputAddressDto.getIsPostalEdit(), addressEntity.getIsPostalEdit());
         assertEquals(inputAddressDto.getIsBlockEdit(), addressEntity.getIsBlockEdit());
         assertEquals(inputAddressDto.getIsBuildingEdit(), addressEntity.getIsBlockEdit());
-        
+
         // MasterPoliticalOrganizationAccessEntity
         List<MasterPoliticalOrganizationAccessEntity> listAccess = masterPoliticalOrganizationAccessRepository
                 .findAll();

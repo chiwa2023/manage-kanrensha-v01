@@ -17,12 +17,16 @@ import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShok
 import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import UserRoleConstants from '../../../dto/user/userRoleConstants';
+import InputAccess from '../input_access/InputAccess.vue';
 
 // props,emmits
 const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
 const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => props.editDto);
 
+// よく使う定数
 const BLANK: string = "";
+// const SERVWER_STATUS_OK: number = 200;
+// const SERVWER_STATUS_ERROR: number = 400;
 
 /**
  *住所編集受信
@@ -130,12 +134,20 @@ function onCancel() {
 }
 
 function onSave() {
+
+    // 編集か新規作成かでアクセス先を変えるだけ
+    let url = BLANK;
+    if (props.isEditNew) {
+        url = "http://localhost:6080/add-user/partner-person";
+    } else {
+        url = "http://localhost:6080/add-user/partner-person";
+    }
+
     getAuthorizedPromiseArea().then(token => {
         const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
         capsuleDto.value.userPersonLeastDto = props.userDto;
-        if (token !== "") {
-            // パスワード更新
-            const url = "http://localhost:6080/add-user/partner-person";
+        if (token !== BLANK) {
+            // 保存処理
             const method = "POST";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
@@ -192,7 +204,6 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
 
     <hr>
 
-
     <h3>収支報告書公開入力</h3>
 
     <div class="left-area">
@@ -223,25 +234,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
     <!-- 職業入力 -->
     <InputShokugyou :isfooter="false" :edit-dto="inputPersonNoDto.inputShokugyou"
         @send-input-shokugyou-interface="recieveInputShokugyouInterface"></InputShokugyou>
-
     <hr>
-
-    <h3>連絡先(情報確認のため使用、非公開)</h3>
-    <div class="left-area">
-        メールアドレス
-    </div>
-    <div class="right-area">
-        <input type="email">
-    </div>
-    <div class="clear-both"></div>
-
-    <div class="left-area">
-        SNSアカウント
-    </div>
-    <div class="right-area">
-        <input type="email">
-    </div>
-    <div class="clear-both"></div>
 
     <h3>編集内容(違反判定情報)</h3>
 
@@ -253,6 +246,9 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
             class="left-space"><button @click="nationarityConfirm">確認する</button></span>
     </div>
     <div class="clear-both"></div>
+
+    <!-- 連絡先入力 -->
+    <InputAccess :edit-dto="editDto.inputAccessDto"></InputAccess>
 
     <hr>
 

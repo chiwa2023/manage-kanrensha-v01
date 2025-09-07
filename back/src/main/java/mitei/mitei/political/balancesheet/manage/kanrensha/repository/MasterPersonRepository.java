@@ -67,4 +67,6 @@ public interface MasterPersonRepository extends JpaRepository<MasterPersonEntity
      */
     Optional<MasterPersonEntity> findFirstByPersonKanrenshaCodeAndIsLatest(String code, Boolean isLatest);
 
+    
+    List<MasterPersonEntity> findByPersonKanrenshaCodeOrderByMasterPersonIdDesc(String code);
 }

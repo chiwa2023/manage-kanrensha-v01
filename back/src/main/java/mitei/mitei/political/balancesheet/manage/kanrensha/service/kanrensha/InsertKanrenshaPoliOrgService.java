@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
+package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha; // NOPMD
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPoliOrgDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAccessEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAddressEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationBaseEntity;
@@ -94,7 +94,7 @@ public class InsertKanrenshaPoliOrgService {
      * @return 登録したマスタのID
      */
     @Transactional
-    public Integer practice(final SaveKanrenshaPoliOrgDto capsuleDto) {
+    public Integer practice(final SaveKanrenshaPoliOrgCapsuleDto capsuleDto) {
 
         KanrenshaPoliOrgDto kanrenshaPoliOrgDto = capsuleDto.getKanrenshaPoliOrgDto();
 

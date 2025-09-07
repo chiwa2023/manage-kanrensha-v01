@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.InsertKanrenshaPoliOrgService;
 
 /**
@@ -31,7 +31,7 @@ public class InsertUserKanrenshaPoliOrgController {
      */
     @PostMapping("/partner-poli-org")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
-            @RequestBody final SaveKanrenshaPoliOrgDto capsuleDto) {
+            @RequestBody final SaveKanrenshaPoliOrgCapsuleDto capsuleDto) {
         // 更新処理に対して処理結果を返す
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {

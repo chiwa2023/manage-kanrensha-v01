@@ -2,8 +2,7 @@
 import { computed, type ComputedRef } from 'vue';
 import type InputOrgNameInterface from '../../../dto/input_org_name/inputOrgNameDto';
 const props = defineProps<{ editDto: InputOrgNameInterface }>();
-
-const inputDto: ComputedRef<InputOrgNameInterface> = computed(() => { return props.editDto });;
+const inputDto: ComputedRef<InputOrgNameInterface> = computed(() => { return props.editDto });
 
 </script>
 <template>
