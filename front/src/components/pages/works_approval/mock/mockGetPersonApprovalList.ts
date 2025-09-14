@@ -14,22 +14,22 @@ export default function mockGetPersonApprovalList(): PersonNoApprovalInterface[]
     list.push(createDto(4));
     list.push(createDto(5));
 
-    list[0].inputAddress.isEditAddressPostal = true;
-    list[0].inputAddress.addressPostal = "和歌山県実在市架空町1丁目";
+    list[0].inputAddressDto.isPostalEdit = true;
+    list[0].inputAddressDto.addressPostal = "和歌山県実在市架空町1丁目";
     list[0].rsdtAddressPostl = "和歌山県実在市架空町一丁目";
 
-    list[1].inputAddress.isEditAddressBlock = true;
-    list[1].inputAddress.addressBlock = "４４４番地－1";
+    list[1].inputAddressDto.isBlockEdit = true;
+    list[1].inputAddressDto.addressBlock = "４４４番地－1";
     list[1].rsdtAddressBlock = "444番地1号";
 
-    list[2].inputAddress.isEditAddressBuilding = true;
-    list[2].inputAddress.addressBuilding = "四角ビル109";
+    list[2].inputAddressDto.isBuildingEdit = true;
+    list[2].inputAddressDto.addressBuilding = "四角ビル109";
     list[2].rsdtAddressBuilding = "";
 
-    list[3].inputShokugyou.gyoushu = "林業";
-    list[3].inputShokugyou.yakushoku = "一般職員";
-    list[3].allShokugyou = "林業社員・職員";
-    list[3].inputShokugyou.shokugyouUserWrite = "";
+    list[3].inputShokugyouDto.gyoushu = "林業";
+    list[3].inputShokugyouDto.yakushoku = "一般職員";
+    //list[3].allShokugyou = "林業社員・職員";
+    list[3].inputShokugyouDto.shokugyouUserWrite = "";
 
     return list;
 }
@@ -37,10 +37,10 @@ export default function mockGetPersonApprovalList(): PersonNoApprovalInterface[]
 
 function createDto(index: number): PersonNoApprovalInterface {
     const dto: PersonNoApprovalInterface = new PersonNoApprovalDto();
-    dto.personNo = "11-333" + index;
-    dto.nameAll = "迂回　献金太郎" + index;
-    dto.juushoAll = "山梨県架空市湖畔町" + index;
-    dto.shokugyou = "建設業従事者・職員" + index;
+    dto.personKanrenshaCode = "11-333" + index;
+    //dto.nameAll = "迂回　献金太郎" + index;
+    //dto.juushoAll = "山梨県架空市湖畔町" + index;
+    //dto.shokugyou = "建設業従事者・職員" + index;
 
     const addressDto: InputAddressDto = new InputAddressDto();
     addressDto.addressPostal = "和歌山県実在市" + index;
@@ -59,7 +59,7 @@ function createDto(index: number): PersonNoApprovalInterface {
     addressDto.rsdtId = "4" + index;
     addressDto.machiazaId = "2" + index;
 
-    dto.inputAddress = addressDto;
+    dto.inputAddressDto = addressDto;
 
     const nameDto: InputPersonNameInterface = new InputPersonNameDto();
 
@@ -74,20 +74,20 @@ function createDto(index: number): PersonNoApprovalInterface {
     nameDto.allNameKana = nameDto.lastNameKana + "　" + nameDto.middleNameKana + nameDto.firstNameKana;
     nameDto.allName = nameDto.lastName + "　" + nameDto.middleName + nameDto.firstName;
 
-    dto.inputName = nameDto;
+    dto.inputPersonNameDto = nameDto;
 
-    dto.inputShokugyou.gyoushu = "建設";
-    dto.inputShokugyou.yakushoku = "一般職員";
-    dto.inputShokugyou.shokugyouUserWrite = "申告職業" + index;
-    dto.shokugyou = dto.inputShokugyou.shokugyouUserWrite;
+    dto.inputShokugyouDto.gyoushu = "建設";
+    dto.inputShokugyouDto.yakushoku = "一般職員";
+    dto.inputShokugyouDto.shokugyouUserWrite = "申告職業" + index;
+    //dto.shokugyou = dto.inputShokugyouDto.shokugyouUserWrite;
 
     // 初期値がfalseだが明示
-    dto.isApproval = false;
+    //dto.isApproval = false;
 
     // 住所比較部分は後で直すのでいったん同じに
-    dto.inputAddress.rsdtAddressPostl = dto.inputAddress.addressPostal;
-    dto.inputAddress.rsdtAddressBlock = dto.inputAddress.addressBlock;
-    dto.inputAddress.rsdtAddressBuilding = dto.inputAddress.addressBuilding;
+    dto.inputAddressDto.rsdtAddressPostl = dto.inputAddressDto.addressPostal;
+    dto.inputAddressDto.rsdtAddressBlock = dto.inputAddressDto.addressBlock;
+    dto.inputAddressDto.rsdtAddressBuilding = dto.inputAddressDto.addressBuilding;
 
     return dto;
 }

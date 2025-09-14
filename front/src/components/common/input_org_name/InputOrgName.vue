@@ -10,7 +10,7 @@ const inputDto: ComputedRef<InputOrgNameInterface> = computed(() => { return pro
         団体名かな
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputDto.orgNameKana" class="text-input">
+        <input type="text" v-model="inputDto.orgNameKana" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -18,7 +18,7 @@ const inputDto: ComputedRef<InputOrgNameInterface> = computed(() => { return pro
         団体名
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputDto.orgName" class="text-input">
+        <input type="text" v-model="inputDto.orgName" class="name-input">
     </div>
     <div class="clear-both"></div>
 

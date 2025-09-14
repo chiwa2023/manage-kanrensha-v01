@@ -105,4 +105,23 @@ public interface MasterPoliticalOrganizationRepository
      */
     Integer countByIsLatest(Boolean isLatest);
 
+    /**
+     * 関連者コードからテーブルid降順で取得する
+     *
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    List<MasterPoliticalOrganizationEntity> findByPoliOrgKanrenshaCodeOrderByMasterPoliticalOrganizationIdDesc(
+            String kanrenshaCode);
+
+    /**
+     * 関連者コードリストかつ最新を取得する
+     *
+     * @param listCode 関連者コードリスト
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPoliticalOrganizationEntity> findByPoliOrgKanrenshaCodeInAndIsLatest(List<String> listCode,
+            Boolean isLatest);
+
 }

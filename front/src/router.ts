@@ -89,6 +89,8 @@ const routes = [
     { path: "/user/reflesh-password", name: "RefleshPassword", component: () => import("./components/pages/user_regist/RefleshPassword.vue") },
     { path: "/user/withdraw", name: "WithdrawUser", component: () => import("./components/pages/user_regist/WithdrawUser.vue") },
 
+    // 利用者検索編集
+    { path: RoutePathConstants.PAGE_SEARCH_RIYOUSHA, name: "SearchEditRiyousha", component: () => import("./components/pages/search_edit_riyousha/SearchEditRiyousha.vue") },
 
     // TODO 開発終了時に削除する コンポーネント台紙
     { path: "/component", name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },

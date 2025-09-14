@@ -48,22 +48,24 @@ public class EditMasterPersonBaseLogic {
             throws EmptyResultDataAccessException, ConcurrencyFailureException { // NOPMD UncheckedException
 
         KanrenshaPersonDto personDto = capsuleDto.getKanrenshaPersonDto();
-        MasterPersonBaseEntity oldEntity = callForEditMasterPersonBaseEntityLogic.practice(personDto);
-
-        if (Objects.isNull(oldEntity)) {
-            return 0;
-        }
-
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
-        setTableDataHistoryUtil.practiceDelete(userDto, oldEntity);
+
+        // 最小登録状態であれば更新できるデータがない
+        if (0 != personDto.getBaseId()) {
+            MasterPersonBaseEntity oldEntity = callForEditMasterPersonBaseEntityLogic.practice(personDto);
+            if (Objects.isNull(oldEntity)) {
+                return 0;
+            }
+            setTableDataHistoryUtil.practiceDelete(userDto, oldEntity);
+            repository.save(oldEntity);
+        }
 
         MasterPersonBaseEntity newSaveEntity = convertKanrenshaPersonDtoToMasterPersonBaseEntityLogic
                 .practice(personDto);
-        newSaveEntity.setPersonKanrenshaCode(oldEntity.getPersonKanrenshaCode());
+        newSaveEntity.setPersonKanrenshaCode(personDto.getPersonKanrenshaCode());
         newSaveEntity.setMasterPersonBaseId(0);
         setTableDataHistoryUtil.practiceInsert(userDto, newSaveEntity);
 
-        repository.save(oldEntity);
         return repository.save(newSaveEntity).getMasterPersonBaseId();
     }
 

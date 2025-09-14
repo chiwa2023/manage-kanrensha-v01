@@ -20,8 +20,8 @@ class ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogicT
     void test() {
 
         InputAddressDto inputAddressDto = new InputAddressDto();
-        inputAddressDto.setPostal1("100");
-        inputAddressDto.setPostal2("0001");
+        inputAddressDto.setPostalcode1("100");
+        inputAddressDto.setPostalcode2("0001");
         inputAddressDto.setAddressAll("宮崎県実在市山麓町");
         inputAddressDto.setOrginAddressAll("宮崎県実在市");
         inputAddressDto.setAddressPostal("宮崎県実在市山麓町");
@@ -47,8 +47,8 @@ class ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogicT
         ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogic logic = new ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogic();
         MasterPoliticalOrganizationAddressEntity addressEntity = logic.practice(kanrenshaPoliOrgDto);
 
-        assertEquals(inputAddressDto.getPostal1(), addressEntity.getPostal1());
-        assertEquals(inputAddressDto.getPostal2(), addressEntity.getPostal2());
+        assertEquals(inputAddressDto.getPostalcode1(), addressEntity.getPostal1());
+        assertEquals(inputAddressDto.getPostalcode2(), addressEntity.getPostal2());
         assertEquals(inputAddressDto.getAddressPostal(), addressEntity.getAddressPostal());
         assertEquals(inputAddressDto.getAddressBlock(), addressEntity.getAddressBlock());
         assertEquals(inputAddressDto.getAddressBuilding(), addressEntity.getAddressBuilding());

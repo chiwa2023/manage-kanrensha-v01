@@ -69,6 +69,8 @@ public class GetKanrenshaPersonDtoService {
         BeanUtils.copyProperties(baseEntity, dto.getInputPersonNameDto());
         dto.setInputShokugyouDto(new InputShokugyouDto());
         BeanUtils.copyProperties(baseEntity, dto.getInputShokugyouDto());
+        dto.getInputAddressDto().setPostalcode1(addressEntity.getPostal1());
+        dto.getInputAddressDto().setPostalcode2(addressEntity.getPostal2());
         
         MasterPersonPropertyEntity propertyEntity = callMasterPersonPropertyEntityLogic.practice(kanrenshaCode);
         BeanUtils.copyProperties(propertyEntity, dto);

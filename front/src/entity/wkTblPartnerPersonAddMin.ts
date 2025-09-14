@@ -35,16 +35,16 @@ export default class WkTblPartnerPersonAddMinEntity implements WkTblPartnerPerso
 
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
-        const INIT_BOOLERAN: boolean = false;
+        const INIT_BOOLEAN: boolean = false;
 
         this.wkTblPartnerPersonAddMinId = INIT_NUMBER;
         this.wkTblPartnerPersonAddMinCode = INIT_NUMBER;
-        this.isLatest = INIT_BOOLERAN;
-        this.isFinish = INIT_BOOLERAN;
+        this.isLatest = INIT_BOOLEAN;
+        this.isFinish = INIT_BOOLEAN;
         this.partnerName = INIT_STRING;
         this.allAddress = INIT_STRING;
         this.personShokugyou = INIT_STRING;
-        this.isAffected = INIT_BOOLERAN;
+        this.isAffected = INIT_BOOLEAN;
         this.judgeReason = INIT_STRING;
     }
 }

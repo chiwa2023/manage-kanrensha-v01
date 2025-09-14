@@ -20,6 +20,14 @@ import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseAre
 import type GetKanrenshaPersonCapsuleInterface from '../../../dto/kanrensha/getKanrenshaPersonCapsuleDto';
 import GetKanrenshaPersonCapsuleDto from '../../../dto/kanrensha/getKanrenshaPersonCapsuleDto';
 import type GetKanrenshaPersonResultInterface from '../../../dto/kanrensha/getKanrenshaPersonResultDto';
+import type MasterPoliticalOrganizationInterface from '../../../entity/masterPoliticalOrganizationEntity';
+import type GetKanrenshaPoliOrgCapsuleInterface from '../../../dto/kanrensha/getKanrenshaPoliOrgCapsuleDto';
+import GetKanrenshaPoliOrgCapsuleDto from '../../../dto/kanrensha/getKanrenshaPoliOrgCapsuleDto';
+import type GetKanrenshaPoliOrgResultInterface from '../../../dto/kanrensha/getKanrenshaPoliOrgResultDto';
+import type MasterCorporationInterface from '../../../entity/masterCorporationEntity';
+import type GetKanrenshaCorpCapsuleInterface from '../../../dto/kanrensha/getKanrenshaCorpCapsuleDto';
+import GetKanrenshaCorpCapsuleDto from '../../../dto/kanrensha/getKanrenshaCorpCapsuleDto';
+import type GetKanrenshaCorpResultInterface from '../../../dto/kanrensha/getKanrenshaCorpResultDto';
 
 // よく使う定数
 const BLANK: string = "";
@@ -33,13 +41,13 @@ function recieveUser(user: UserPersonLeastInterface) {
 }
 
 // 表示
-const viewStatus: Ref<number> = ref(2);
+const viewStatus: Ref<number> = ref(1);
+
+const isEditNew: Ref<boolean> = ref(true);
 
 /** 選択された関連者個人を受信する */
 const inputPersonDto: Ref<PersonNoInterface> = ref(new PersonNoDto());
 function recievePersonNoInterface(sendDto: MasterPersonInterface) {
-
-    // TODO Backに接続しEntityからDtoを取得する
 
     getAuthorizedPromiseArea().then(token => {
         const capsuleDto: Ref<GetKanrenshaPersonCapsuleInterface> = ref(new GetKanrenshaPersonCapsuleDto());
@@ -60,6 +68,7 @@ function recievePersonNoInterface(sendDto: MasterPersonInterface) {
                     const resultDto: GetKanrenshaPersonResultInterface = await response.json();
                     if (SERVWER_STATUS_OK === response.status) {
                         inputPersonDto.value = structuredClone(toRaw(resultDto.kanrenshaPersonDto));
+                        isEditNew.value = false;
                     } else {
                         alert(resultDto.message);
                     }
@@ -73,20 +82,81 @@ function recievePersonNoInterface(sendDto: MasterPersonInterface) {
 
 /** 選択された関連者政治団体を受信する */
 const inputPoliOrgDto: Ref<PoliOrgNoInterface> = ref(new PoliOrgNoDto());
-function recievePoliOrgNoInterface(sendDto: PoliOrgNoInterface) {
-    // TODO Backに接続しEntityからDtoを取得する
+function recievePoliOrgNoInterface(sendDto: MasterPoliticalOrganizationInterface) {
     //inputPoliOrgDto.value = structuredClone(toRaw(sendDto));
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<GetKanrenshaPoliOrgCapsuleInterface> = ref(new GetKanrenshaPoliOrgCapsuleDto());
+        capsuleDto.value.masterPoliticalOrganizationEntity = sendDto;
+        if (token !== BLANK) {
+            // 保存処理
+            const method = "POST";
+            const url: string = "http://localhost:6080/user-kanrensha/get-poli-org";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: GetKanrenshaPoliOrgResultInterface = await response.json();
+                    if (SERVWER_STATUS_OK === response.status) {
+                        inputPoliOrgDto.value = structuredClone(toRaw(resultDto.kanrenshaPoliOrgDto));
+                        isEditNew.value = false;
+                    } else {
+                        alert(resultDto.message);
+                    }
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
 }
-
-// 検索リスト
-// const listCorp: Ref<CorpNoInterface[]> = ref([]);
 
 const inputCorpNoDto: Ref<CorpNoInterface> = ref(new CorpNoDto());
 /** 選択された関連者企業／団体を受信する */
-function recieveCorpCoInterface(sendDto: CorpNoInterface) {
+function recieveCorpCoInterface(sendDto: MasterCorporationInterface) {
     // TODO Backに接続しEntityからDtoを取得する
     //inputCorpNoDto.value = structuredClone(toRaw(sendDto));
+
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<GetKanrenshaCorpCapsuleInterface> = ref(new GetKanrenshaCorpCapsuleDto());
+        capsuleDto.value.masterCorporationEntity = sendDto;
+        if (token !== BLANK) {
+            // 保存処理
+            const method = "POST";
+            const url: string = "http://localhost:6080/user-kanrensha/get-corp";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: GetKanrenshaCorpResultInterface = await response.json();
+                    if (SERVWER_STATUS_OK === response.status) {
+                        inputCorpNoDto.value = structuredClone(toRaw(resultDto.kanrenshaCorpDto));
+                        isEditNew.value = false;
+                    } else {
+                        alert(resultDto.message);
+                    }
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
+
 }
+
+// 新規追加は許可する
+const isNew: boolean = true;
+// ユーザと関連者の紐づけは変更しない
+const isCombineUser: boolean = false;
 
 </script>
 <template>
@@ -96,7 +166,6 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
     <hr>
 
     <h1>関連者管理</h1>
-    ※複数の関連者の編集権限があるので検索画面必要
 
     <div class="clear-both"></div>
     <div class="left-area">
@@ -115,7 +184,9 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
         <!-- 検索 -->
         <SearchPersonNo :is-footer="false" @send-person-no-interface="recievePersonNoInterface"></SearchPersonNo>
         <hr>
-        <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="isNew" :is-combine-user="isCombineUser"
+            :user-dto="userLeastDto">
+        </PartnerPersonEdit>
     </div>
 
     <div v-if="viewStatus == 2" class="one-line">
@@ -123,14 +194,16 @@ function recieveCorpCoInterface(sendDto: CorpNoInterface) {
         <SearchCorpNo :is-footer="false" @send-corp-no-interface="recieveCorpCoInterface">
         </SearchCorpNo>
         <hr>
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="isNew" :is-combine-user="isCombineUser"
+            :user-dto="userLeastDto"></PartnerCorpEdit>
     </div>
 
     <div v-if="viewStatus == 3" class="one-line">
         <!-- 検索 -->
         <SearchPoliOrg :is-footer="false" @send-poli-org-no-interface="recievePoliOrgNoInterface"></SearchPoliOrg>
         <hr>
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="true" :user-dto="userLeastDto">
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="isNew" :is-combine-user="isCombineUser"
+            :user-dto="userLeastDto">
         </PartnerPoliOrgEdit>
     </div>
 

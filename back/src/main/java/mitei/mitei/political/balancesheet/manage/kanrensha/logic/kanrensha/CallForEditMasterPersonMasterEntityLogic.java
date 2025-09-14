@@ -40,7 +40,7 @@ public class CallForEditMasterPersonMasterEntityLogic {
         if (!entity.getIsLatest()) {
             throw new ConcurrencyFailureException("Target data is not the latest version. id = " + kanrenshaPersonDto.getMasterId());
         }
-
+        
         // DTOとEntityの値を比較
         boolean isNotChanged = Objects.equals(entity.getPartnerName(), kanrenshaPersonDto.getInputPersonNameDto().getAllName())
                 && Objects.equals(entity.getAllAddress(), kanrenshaPersonDto.getInputAddressDto().getAddressAll())

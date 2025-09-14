@@ -61,8 +61,8 @@ class InsertUserKanrenshaPersonControllerTest {
         capsuleDto.setUserPersonLeastDto(CreateLeastUserForTestUtil.practice());
 
         InputAddressDto inputAddressDto = new InputAddressDto();
-        inputAddressDto.setPostal1("100");
-        inputAddressDto.setPostal2("0001");
+        inputAddressDto.setPostalcode1("100");
+        inputAddressDto.setPostalcode2("0001");
         inputAddressDto.setAddressAll("宮崎県実在市山麓町");
         inputAddressDto.setOrginAddressAll("宮崎県実在市");
         inputAddressDto.setAddressPostal("宮崎県実在市山麓町");

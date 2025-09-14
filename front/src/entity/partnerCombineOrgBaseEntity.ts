@@ -33,11 +33,11 @@ export default class PartnerCombineOrgBaseEntity implements PartnerCombineOrgBas
 
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
-        const INIT_BOOLERAN: boolean = false;
+        const INIT_BOOLEAN: boolean = false;
 
         this.partnerCombineOrgId = INIT_NUMBER;
         this.partnerCombineOrgCode = INIT_NUMBER;
-        this.isLatest = INIT_BOOLERAN;
+        this.isLatest = INIT_BOOLEAN;
         this.kanrenshaKbn = INIT_NUMBER;
         this.personKanrenshaCode = INIT_STRING;
         this.personName = INIT_STRING;

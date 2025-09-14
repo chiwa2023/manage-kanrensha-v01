@@ -233,8 +233,8 @@ function onSave() {
                     optionDto.text }}</option>
             </select><span class="left-space">フィルタ<input v-model="filterPostal" type="text"
                     @input="filterSuggestPostal"></span><span class="left-space"><input
-                    v-model="inputAddressDto.isEditAddressPostal" type="checkbox">編集</span><br>
-            <textarea v-model="addressPostal" :disabled="!inputAddressDto.isEditAddressPostal"></textarea>
+                    v-model="inputAddressDto.isPostalEdit" type="checkbox">編集</span><br>
+            <textarea v-model="addressPostal" :disabled="!inputAddressDto.isPostalEdit"></textarea>
         </div>
         <div class="clear-both"><br></div>
 
@@ -247,8 +247,8 @@ function onSave() {
                     optionDto.text }}</option>
             </select><span class="left-space">フィルタ<input v-model="filterBlock" type="text"
                     @input="filterSuggestBlock"></span><span class="left-space"><input
-                    v-model="inputAddressDto.isEditAddressBlock" type="checkbox">編集</span><br>
-            <textarea v-model="addressBlock" :disabled="!inputAddressDto.isEditAddressBlock"></textarea>
+                    v-model="inputAddressDto.isBlockEdit" type="checkbox">編集</span><br>
+            <textarea v-model="addressBlock" :disabled="!inputAddressDto.isBlockEdit"></textarea>
         </div>
         <div class="clear-both"></div>
 
@@ -259,10 +259,10 @@ function onSave() {
             <select v-model="selectedAddressBuilding" @change="selectSuggestBuilding">
                 <option v-for="optionDto in listBuildingSuggest" :key="optionDto.value" :value="optionDto.value">{{
                     optionDto.text }}</option>
-            </select><span class="left-space"><input v-model="inputAddressDto.isEditAddressBuilding"
+            </select><span class="left-space"><input v-model="inputAddressDto.isBuildingEdit"
                     type="checkbox">編集</span><br>
             <textarea v-model="inputAddressDto.addressBuilding"
-                :disabled="!inputAddressDto.isEditAddressBuilding"></textarea>
+                :disabled="!inputAddressDto.isBuildingEdit"></textarea>
         </div>
         <div class="clear-both"></div>
         <div class="left-area">

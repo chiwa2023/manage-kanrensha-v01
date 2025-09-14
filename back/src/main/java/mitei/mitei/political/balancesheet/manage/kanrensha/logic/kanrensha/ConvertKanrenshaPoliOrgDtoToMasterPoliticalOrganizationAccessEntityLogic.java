@@ -28,6 +28,7 @@ public class ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAccessEntity
 
         // 意味内容が同じで、フィールド名が異なっているものを追加で複写
         accessEntity.setPartnerName(kanrenshaPoliOrgDto.getInputOrgNameDto().getOrgName());
+        accessEntity.setPoliOrgKanrenshaCode(kanrenshaPoliOrgDto.getPoliOrgKanrenshaCode());
 
         return accessEntity;
     }

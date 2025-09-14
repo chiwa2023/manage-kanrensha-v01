@@ -28,7 +28,7 @@ export default class CorpNoDto implements CorpNoInterface {
     propertyId: number;
 
     /** 関連者企業・団体コード */
-    corpNo: string;
+    corpKanrenshaCode: string;
 
     /** 法人番号 */
     houjinNo: string;
@@ -43,7 +43,7 @@ export default class CorpNoDto implements CorpNoInterface {
     inputOrgNameDto: InputOrgNameInterface;
 
     /** 住所詳細Dto */
-    inputAddress: InputAddressDto;
+    inputAddressDto: InputAddressDto;
 
     /** 連絡先Dto */
     inputAccessDto:InputAccessInterface;
@@ -51,20 +51,21 @@ export default class CorpNoDto implements CorpNoInterface {
     /** 団体代表者関連者最低限Dto */
     orgDelegateLeastDto: InputKanrenshaPersonLeastInterface;
 
-    /** 承認該否  */
-    isApproval: boolean;
+        /** 関連者ユーザ紐づけ該否 */
+        isCombineUser:boolean;
 
     constructor() {
 
         const INIT_STRING: string = "";
         const INIT_NUMBER: number = 0;
+        const INIT_BOOLEAN: boolean = false;
 
-        this.corpNo = INIT_STRING;
+        this.corpKanrenshaCode = INIT_STRING;
         this.houjinNo = INIT_STRING;
         this.isShiten = false;
         this.houjinSbts = INIT_STRING;
         this.inputOrgNameDto = new InputOrgNameDto();
-        this.inputAddress = new InputAddressDto();
+        this.inputAddressDto = new InputAddressDto();
         this.inputAccessDto = new InputAccessDto();
         this.orgDelegateLeastDto = new InputKanrenshaPersonLeastDto();
 
@@ -74,7 +75,6 @@ export default class CorpNoDto implements CorpNoInterface {
         this.baseId = INIT_NUMBER;
         this.propertyId = INIT_NUMBER;
 
-        this.isApproval = false;
-
+        this.isCombineUser = INIT_BOOLEAN;
     }
 }

@@ -27,6 +27,7 @@ public class ConvertKanrenshaCorpDtoToMasterCorporationPropertyEntityLogic {
         // 法人種別が外国会社401であれば外国籍フラグを立てる
         propertyEntity.setPartnerName(kanrenshaCorpDto.getInputOrgNameDto().getOrgName());
         propertyEntity.setIsForeign(HoujinShubetsuConstants.GAIKOKU_KAISHA.equals(propertyEntity.getHoujinSbts()));
+        propertyEntity.setCorpKanrenshaCode(kanrenshaCorpDto.getCorpKanrenshaCode());
 
         return propertyEntity;
     }

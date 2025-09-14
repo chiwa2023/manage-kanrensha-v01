@@ -84,4 +84,21 @@ public interface MasterCorporationRepository extends JpaRepository<MasterCorpora
      */
     Integer countByIsLatest(Boolean isLatest);
 
+    /**
+     * 関連者コードをキーにテーブルId降順で取得する
+     *
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    List<MasterCorporationEntity> findByCorpKanrenshaCodeOrderByMasterCorporationIdDesc(String kanrenshaCode);
+
+    /**
+     * 関連者コード複数から最新データを取得する
+     *
+     * @param listCode 関連者コードリスト
+     * @param isLatet  最新該否
+     * @return 検索結果
+     */
+    List<MasterCorporationEntity> findByCorpKanrenshaCodeInAndIsLatest(List<String> listCode, Boolean isLatet);
+
 }

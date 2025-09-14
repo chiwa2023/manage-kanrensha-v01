@@ -56,12 +56,16 @@ public class EditKanrenshaPersonService {
 
         // マスタを更新
         updateId += editMasterPersonLogic.practice(capsuleDto);
+
         // 連絡先を更新
         updateId += editMasterPersonAccessLogic.practice(capsuleDto);
+
         // 住所を更新
         updateId += editMasterPersonAddressLogic.practice(capsuleDto);
+
         // 基本を更新
         updateId += editMasterPersonBaseLogic.practice(capsuleDto);
+
         // 属性を更新
         updateId += editMasterPersonPropertyLogic.practice(capsuleDto);
 

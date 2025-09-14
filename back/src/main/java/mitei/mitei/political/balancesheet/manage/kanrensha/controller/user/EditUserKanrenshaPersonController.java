@@ -34,7 +34,7 @@ public class EditUserKanrenshaPersonController {
     @PostMapping("/edit-person")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             @RequestBody final SaveKanrenshaPersonCapsuleDto capsuleDto) {
-
+        
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         try {
             Integer newId = editKanrenshaPersonService.practice(capsuleDto);

@@ -49,26 +49,28 @@ public class EditMasterPersonAccessLogic {
 
         // テーブル更新が必要か判定
         KanrenshaPersonDto personDto = capsuleDto.getKanrenshaPersonDto();
-        MasterPersonAccessEntity accessEntity = callForEditMasterPersonAccessEntityLogic.practice(personDto);
-
-        // 変更箇所がなく更新の必要がなければ中断
-        if (Objects.isNull(accessEntity)) {
-            return 0;
-        }
-
-        // 元データを履歴に変更
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
-        setTableDataHistoryUtil.practiceDelete(userDto, accessEntity);
+        
+        // マスタ最小登録状態の場合は過去履歴が存在しないので履歴に変更処理をしない
+        if(0 != personDto.getAccessId()) {
+            MasterPersonAccessEntity accessEntity = callForEditMasterPersonAccessEntityLogic.practice(personDto);
+            // 変更箇所がなく更新の必要がなければ中断
+            if (Objects.isNull(accessEntity)) {
+                return 0;
+            }
+            // 元データを履歴に変更
+            setTableDataHistoryUtil.practiceDelete(userDto, accessEntity);
+            repository.save(accessEntity);
+        }
 
         // 新しい履歴を積み上げ
         MasterPersonAccessEntity newSaveEntity = convertKanrenshaPersonDtoToMasterPersonAccessEntityLogic
                 .practice(personDto);
-        newSaveEntity.setPersonKanrenshaCode(accessEntity.getPersonKanrenshaCode());
+        newSaveEntity.setPersonKanrenshaCode(personDto.getPersonKanrenshaCode());
         newSaveEntity.setMasterPersonAccessId(0); // auto_increment明示
         setTableDataHistoryUtil.practiceInsert(userDto, newSaveEntity);
 
         // 保存
-        repository.save(accessEntity);
         return repository.save(newSaveEntity).getMasterPersonAccessId();
     }
 

@@ -68,7 +68,7 @@ function sendCancelCorpNo() {
         法人番号(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"><br></div>
 
@@ -76,7 +76,7 @@ function sendCancelCorpNo() {
         名前(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -100,7 +100,7 @@ function sendCancelCorpNo() {
         関連者コード(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 

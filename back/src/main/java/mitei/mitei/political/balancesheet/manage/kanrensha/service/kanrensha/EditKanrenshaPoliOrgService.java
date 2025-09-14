@@ -1,53 +1,46 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAccessEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationAddressEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationBaseEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterPoliticalOrganizationPropertyEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationAccessRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationAddressRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationBaseRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationPropertyRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPoliticalOrganizationAccessLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPoliticalOrganizationAddressLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPoliticalOrganizationBaseLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPoliticalOrganizationLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterPoliticalOrganizationPropertyLogic;
 
 /**
  * 関連者政治団体を編集する
+ *
+ * @author chiwaki2023
+ * @author supported by Gemini CLI
  */
 @Service
 public class EditKanrenshaPoliOrgService {
 
-    /** 政治団体マスタRepository */
+    /** 関連者政治団体マスタ編集Logic */
     @Autowired
-    private MasterPoliticalOrganizationRepository masterPoliticalOrganizationRepository;
+    private EditMasterPoliticalOrganizationLogic editMasterPoliticalOrganizationLogic;
 
-    /** 政治団体マスタ連絡先Repository */
+    /** 関連者政治団体連絡先編集Logic */
     @Autowired
-    private MasterPoliticalOrganizationAccessRepository masterPoliticalOrganizationAccessRepository;
+    private EditMasterPoliticalOrganizationAccessLogic editMasterPoliticalOrganizationAccessLogic;
 
-    /** 政治団体マスタ連絡先Repository */
+    /** 関連者政治団体住所マスタ編集Logic */
     @Autowired
-    private MasterPoliticalOrganizationAddressRepository masterPoliticalOrganizationAddressRepository;
+    private EditMasterPoliticalOrganizationAddressLogic editMasterPoliticalOrganizationAddressLogic;
 
-    /** 政治団体マスタ連絡先Repository */
+    /** 関連者政治団体基本マスタ編集Logic */
     @Autowired
-    private MasterPoliticalOrganizationBaseRepository masterPoliticalOrganizationBaseRepository;
+    private EditMasterPoliticalOrganizationBaseLogic editMasterPoliticalOrganizationBaseLogic;
 
-    /** 政治団体マスタ属性Repository */
+    /** 関連者政治団体属性マスタ編集Logic */
     @Autowired
-    private MasterPoliticalOrganizationPropertyRepository masterPoliticalOrganizationPropertyRepository;
-
-    /** テーブル履歴設定Utility */
-    @Autowired
-    private SetTableDataHistoryUtil setTableDataHistoryUtil;
+    private EditMasterPoliticalOrganizationPropertyLogic editMasterPoliticalOrganizationPropertyLogic;
 
     /**
      * 処理を行う
@@ -56,44 +49,27 @@ public class EditKanrenshaPoliOrgService {
      * @return 処理結果
      */
     @Transactional
-    public FrameworkMessageAndResultDto practice(final SaveKanrenshaPoliOrgCapsuleDto capsuleDto) {
+    public Integer practice(final SaveKanrenshaPoliOrgCapsuleDto capsuleDto)
+            throws EmptyResultDataAccessException, ConcurrencyFailureException { // NOPMD UncheckedException
 
-        UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
+        Integer updateId = 0;
 
-        MasterPoliticalOrganizationEntity poliOrgEntity = new MasterPoliticalOrganizationEntity();
-        // TODO 情報設定
-        setTableDataHistoryUtil.practiceInsert(userDto, poliOrgEntity);
-        String newCode = masterPoliticalOrganizationRepository.save(poliOrgEntity).getPoliOrgKanrenshaCode();
+        // マスタを更新
+        updateId += editMasterPoliticalOrganizationLogic.practice(capsuleDto);
 
-        MasterPoliticalOrganizationAccessEntity poliOrgAccessEntity = new MasterPoliticalOrganizationAccessEntity();
-        // TODO 情報設定
-        poliOrgAccessEntity.setPoliOrgKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, poliOrgAccessEntity);
-        masterPoliticalOrganizationAccessRepository.save(poliOrgAccessEntity);
+        // 連絡先を更新
+        updateId += editMasterPoliticalOrganizationAccessLogic.practice(capsuleDto);
 
-        MasterPoliticalOrganizationAddressEntity poliOrgAddressEntity = new MasterPoliticalOrganizationAddressEntity();
-        // TODO 情報設定
-        poliOrgAddressEntity.setPoliOrgKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, poliOrgAddressEntity);
-        masterPoliticalOrganizationAddressRepository.save(poliOrgAddressEntity);
+        // 住所を更新
+        updateId += editMasterPoliticalOrganizationAddressLogic.practice(capsuleDto);
 
-        MasterPoliticalOrganizationBaseEntity poliOrgBaseEntity = new MasterPoliticalOrganizationBaseEntity();
-        // TODO 情報設定
-        poliOrgBaseEntity.setPoliOrgKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, poliOrgBaseEntity);
-        masterPoliticalOrganizationBaseRepository.save(poliOrgBaseEntity);
+        // 基本を更新
+        updateId += editMasterPoliticalOrganizationBaseLogic.practice(capsuleDto);
 
-        MasterPoliticalOrganizationPropertyEntity poliOrgPropertyEntity = new MasterPoliticalOrganizationPropertyEntity();
-        // TODO 情報設定
-        poliOrgPropertyEntity.setPoliOrgKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, poliOrgPropertyEntity);
-        masterPoliticalOrganizationPropertyRepository.save(poliOrgPropertyEntity);
+        // 属性を更新
+        updateId += editMasterPoliticalOrganizationPropertyLogic.practice(capsuleDto);
 
-        // 更新処理に対して処理結果を返す
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        resultDto.setMessage("政治団体仮設定");
-
-        return resultDto;
+        return updateId;
     }
 
 }

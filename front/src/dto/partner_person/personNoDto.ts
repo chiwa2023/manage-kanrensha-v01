@@ -28,18 +28,18 @@ export default class PersonNoDto implements PersonNoInterface {
     propertyId: number;
 
     /** 関連者個人番号 */
-    personNo: string
+    personKanrenshaCode: string
 
-    /** 表示住所 */
-    juushoAll: string
+    // /** 表示住所 */
+    // juushoAll: string
 
-    /** 氏名 */
-    nameAll: string
+    // /** 氏名 */
+    // nameAll: string
 
-    /** 職業 */
-    shokugyou: string
+    // /** 職業 */
+    // shokugyou: string
 
-    /** 入力職業 */
+    /** 入力住所 */
     inputAddressDto: InputAddressDto;
 
     /** 連絡先Dto */
@@ -51,30 +51,24 @@ export default class PersonNoDto implements PersonNoInterface {
     /** 入力職業 */
     inputShokugyouDto: InputShokugyouInterface;
 
-    /** 職業の業種 */
-    allShokugyou: string;
-
-    /** 承認該否  */
-    isApproval: boolean;
-
     /** 外国人該否 */
-    isGaikoujin: boolean;
+    isForeign: boolean;
+
+        /** 関連者ユーザ紐づけ該否 */
+        isCombineUser:boolean;
 
     constructor() {
         const INIT_STRING: string = "";
         const INIT_NUMBER: number = 0;
+        const INIT_BOOLEAN: boolean = false;
 
-        this.personNo = INIT_STRING;
-        this.juushoAll = INIT_STRING;
-        this.nameAll = INIT_STRING;
-        this.shokugyou = INIT_STRING;
+        this.personKanrenshaCode = INIT_STRING;
 
         this.inputAddressDto = new InputAddressDto();
         this.inputPersonNameDto = new InputPersonNameDto();
         this.inputAccessDto = new InputAccessDto();
-        this.isGaikoujin = false;
+        this.isForeign = false;
         this.inputShokugyouDto = new InputShokugyouDto();
-        this.allShokugyou = INIT_STRING;
 
         this.masterId = INIT_NUMBER;
         this.accessId = INIT_NUMBER;
@@ -82,6 +76,6 @@ export default class PersonNoDto implements PersonNoInterface {
         this.baseId = INIT_NUMBER;
         this.propertyId = INIT_NUMBER;
 
-        this.isApproval = false;
+        this.isCombineUser = INIT_BOOLEAN;
     }
 }

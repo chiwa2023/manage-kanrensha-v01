@@ -7,8 +7,6 @@ import InputPersonNameInterface from '../../../dto/input_person_name/inputPerson
 import InputPersonNameDto from '../../../dto/input_person_name/inputPersonNameDto';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
-import type FrameworkCapsuleInterface from '../../../dto/frameworkCapsuleDto';
-import FrameworkCapsuleDto from '../../../dto/frameworkCapsuleDto';
 import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 import router from '../../../router';
 import RoutePathConstants from '../../../routePathConstants';
@@ -18,9 +16,11 @@ import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import UserRoleConstants from '../../../dto/user/userRoleConstants';
 import InputAccess from '../input_access/InputAccess.vue';
+import type SaveKanrenshaPersonCapsuleInterface from '../../../dto/partner_person/saveKanrenshaPersonCapsuleDto';
+import SaveKanrenshaPersonCapsuleDto from '../../../dto/partner_person/saveKanrenshaPersonCapsuleDto';
 
 // props,emmits
-const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
+const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean, isCombineUser: boolean, userDto: UserPersonLeastInterface }>();
 const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => props.editDto);
 
 // よく使う定数
@@ -33,18 +33,17 @@ const BLANK: string = "";
  */
 function recieveInputAddressInterface(sendDto: InputAddressDto) {
     inputPersonNoDto.value.inputAddressDto = sendDto;
+    inputPersonNoDto.value.inputAddressDto.addressAll = sendDto.addressPostal;
 }
-
 
 function resetData() {
     // コードのリセット
-    inputPersonNoDto.value.personNo = BLANK;
+    inputPersonNoDto.value.personKanrenshaCode = BLANK;
     // 名前情報のリセット
     inputPersonNoDto.value.inputPersonNameDto = new InputPersonNameDto();
     // 住所情報のリセット   
     inputPersonNoDto.value.inputAddressDto = new InputAddressDto();
     // 職業情報のリセット   
-    inputPersonNoDto.value.allShokugyou = BLANK;
     inputPersonNoDto.value.inputShokugyouDto = new InputShokugyouDto();
 
 }
@@ -58,7 +57,7 @@ function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
  * すでに同じ法人番号で登録されているかチェック
  */
 function onCheckAlreadyRegist() {
-    if (inputPersonNoDto.value.personNo !== BLANK) {
+    if (inputPersonNoDto.value.personKanrenshaCode !== BLANK) {
         alert("現在既存または新規と確定したデータを編集中です");
     } else {
         // 仮で時効の秒数基準で既存だったり新規だったり動作を変更する
@@ -66,10 +65,10 @@ function onCheckAlreadyRegist() {
         const date: Date = new Date();
         if (date.getSeconds() % 2 == 0) {
             alert("新規データでした");
-            inputPersonNoDto.value.personNo = "新規";
+            inputPersonNoDto.value.personKanrenshaCode = "新規";
         } else {
             alert("既存データが存在します。変更が必要な場合はデータ検索からやり直してください");
-            inputPersonNoDto.value.personNo = "12-tye12er";
+            inputPersonNoDto.value.personKanrenshaCode = "12-tye12er";
         }
     }
 }
@@ -140,12 +139,14 @@ function onSave() {
     if (props.isEditNew) {
         url = "http://localhost:6080/add-user/partner-person";
     } else {
-        url = "http://localhost:6080/add-user/partner-person";
+        url = "http://localhost:6080/user-kanrensha/edit-person";
     }
 
     getAuthorizedPromiseArea().then(token => {
-        const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
+        const capsuleDto: Ref<SaveKanrenshaPersonCapsuleInterface> = ref(new SaveKanrenshaPersonCapsuleDto());
+        inputPersonNoDto.value.isCombineUser = props.isCombineUser;
         capsuleDto.value.userPersonLeastDto = props.userDto;
+        capsuleDto.value.kanrenshaPersonDto = inputPersonNoDto.value;
         if (token !== BLANK) {
             // 保存処理
             const method = "POST";
@@ -170,7 +171,6 @@ function onSave() {
 
 function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
     inputPersonNoDto.value.inputShokugyouDto = sendDto;
-    inputPersonNoDto.value.allShokugyou = sendDto.allShokugyou;
 }
 
 </script>
@@ -218,7 +218,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         政治資金関連者コード(個人)
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.personNo" disabled="true"><button class="left-space"
+        <input type="text" v-model="inputPersonNoDto.personKanrenshaCode" disabled="true"><button class="left-space"
             @click="onCheckAlreadyRegist">重複確認</button>
     </div>
     <div class="clear-both"></div>
@@ -242,8 +242,8 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         国籍
     </div>
     <div class="right-area">
-        <input type="checkbox" v-model="inputPersonNoDto.isGaikoujin" disabled="true">外国人である<span
-            class="left-space"><button @click="nationarityConfirm">確認する</button></span>
+        <input type="checkbox" v-model="inputPersonNoDto.isForeign">外国人である<span class="left-space"><button
+                @click="nationarityConfirm">確認する</button></span>
     </div>
     <div class="clear-both"></div>
 

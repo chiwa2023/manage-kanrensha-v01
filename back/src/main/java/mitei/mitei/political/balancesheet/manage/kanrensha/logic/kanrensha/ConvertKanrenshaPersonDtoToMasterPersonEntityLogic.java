@@ -29,6 +29,7 @@ public class ConvertKanrenshaPersonDtoToMasterPersonEntityLogic {
         personEntity.setAllAddress(kanrenshaPersonDto.getInputAddressDto().getAddressAll());
         personEntity.setPartnerName(kanrenshaPersonDto.getInputPersonNameDto().getAllName());
         personEntity.setPersonShokugyou(kanrenshaPersonDto.getInputShokugyouDto().getAllShokugyou());
+        personEntity.setPersonKanrenshaCode(kanrenshaPersonDto.getPersonKanrenshaCode());
         personEntity.setCompareNameText(formatNaturalSearchTextUtil.practice(personEntity.getPartnerName()));
 
         return personEntity;

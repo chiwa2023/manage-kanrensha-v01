@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mitei.mitei.political.balancesheet.manage.kanrensha.constants.KanrenshaKbnConstants;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaCorpDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaCorpCapsuleDto;
@@ -17,6 +18,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.Conve
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaCorpDtoToMasterCorporationAddressEntityLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaCorpDtoToMasterCorporationBaseEntityLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaCorpDtoToMasterCorporationPropertyEntityLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationAccessRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationAddressRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationBaseRepository;
@@ -74,6 +76,10 @@ public class InsertKanrenshaCorpService {
     /** 関連者企業団体履歴追加Service */
     @Autowired
     private InsertPartnerCorpHistoryService insertPartnerCorpHistoryService;
+
+    /** ユーザ関連者紐づけLogic */
+    @Autowired
+    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
 
     /** 全文自然検索整形Utility */
     @Autowired
@@ -163,6 +169,11 @@ public class InsertKanrenshaCorpService {
 
         insertPartnerCorpHistoryService.practice(userDto, historyEntity);
 
+        // 運営者以上が他人のデータを追加している以外の場合は操作者ユーザと登録した関連者を紐づける
+        if (kanrenshaCorpDto.getIsCombineUser()) {
+            insertCombineUserKanrenshaLogic.practcie(userDto.getUserPersonCode(), KanrenshaKbnConstants.CORP, newCode,
+                    userDto);
+        }
         return savedEntity.getMasterCorporationId();
     }
 

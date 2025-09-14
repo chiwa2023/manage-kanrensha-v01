@@ -100,6 +100,8 @@ export default class RoutePathConstants {
     /** 作業内容承認 */
     static readonly PAGE_WORKS_APPROVAL: string = "/works-approval";
 
+    /** 作業内容承認 */
+    static readonly PAGE_SEARCH_RIYOUSHA: string = "/search-riyousha";
 
 
 }

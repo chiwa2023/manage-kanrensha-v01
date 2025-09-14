@@ -97,8 +97,8 @@ class InsertKanrenshaPoliOrgServiceTest {
         kanrenshaPoliOrgDto.setInputOrgNameDto(inputOrgNameDto);
 
         InputAddressDto inputAddressDto = new InputAddressDto();
-        inputAddressDto.setPostal1("880");
-        inputAddressDto.setPostal2("8501");
+        inputAddressDto.setPostalcode1("880");
+        inputAddressDto.setPostalcode2("8501");
         inputAddressDto.setAddressAll("宮崎県架空市橘通東２丁目１０−１");
         inputAddressDto.setAddressPostal("宮崎県架空市橘通東");
         inputAddressDto.setAddressBlock("２丁目１０−１");
@@ -161,8 +161,8 @@ class InsertKanrenshaPoliOrgServiceTest {
         MasterPoliticalOrganizationAddressEntity addressEntity = listAddress.get(0);
         assertEquals(newCode, addressEntity.getPoliOrgKanrenshaCode());
         assertEquals(inputOrgNameDto.getOrgName(), addressEntity.getPartnerName());
-        assertEquals(inputAddressDto.getPostal1(), addressEntity.getPostal1());
-        assertEquals(inputAddressDto.getPostal2(), addressEntity.getPostal2());
+        assertEquals(inputAddressDto.getPostalcode1(), addressEntity.getPostal1());
+        assertEquals(inputAddressDto.getPostalcode2(), addressEntity.getPostal2());
         assertEquals(inputAddressDto.getAddressPostal(), addressEntity.getAddressPostal());
         assertEquals(inputAddressDto.getAddressBlock(), addressEntity.getAddressBlock());
         assertEquals(inputAddressDto.getAddressBuilding(), addressEntity.getAddressBuilding());

@@ -30,6 +30,7 @@ public class ConvertKanrenshaCorpDtoToMasterCorporationBaseEntityLogic {
         baseEntity.setPartnerName(kanrenshaCorpDto.getInputOrgNameDto().getOrgName());
         baseEntity.setIsShiten(kanrenshaCorpDto.getIsShiten());
         baseEntity.setOrgDelegateCode(kanrenshaCorpDto.getOrgDelegateLeastDto().getPersonKanrenshaCode());
+        baseEntity.setCorpKanrenshaCode(kanrenshaCorpDto.getCorpKanrenshaCode());
 
         return baseEntity;
     }

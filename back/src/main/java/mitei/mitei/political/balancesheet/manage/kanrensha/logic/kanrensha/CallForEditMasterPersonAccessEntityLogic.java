@@ -89,12 +89,10 @@ public class CallForEditMasterPersonAccessEntityLogic {
         }
         // TODO 値の設定方法が決まり次第修正する
         // if (!Objects.equals(entity.getSnsServiceId(), accessDto.getSnsServiceId())) {
-        // System.out.println("-----(7)");
         // return true;
         // }
         // if (!Objects.equals(entity.getSnsServiceCode(),
         // accessDto.getSnsServiceCode())) {
-        // System.out.println("-----(8)");
         // return true;
         // }
         if (!Objects.equals(entity.getSnsServiceName(), accessDto.getSnsServiceName())) {

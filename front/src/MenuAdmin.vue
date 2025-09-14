@@ -7,7 +7,7 @@ import RoutePathConstants from './routePathConstants';
 
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
-function recieveUser(user:UserPersonLeastInterface){
+function recieveUser(user: UserPersonLeastInterface) {
     userLeastDto.value = user;
 }
 
@@ -28,14 +28,17 @@ function recieveUser(user:UserPersonLeastInterface){
     <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
 
     <hr>
-    
+
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_MASTER>関連者マスタcsvダンプ(指定期間まで)</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_HISTORY>関連者履歴csvダンプ(指定期間まで)</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_MASTER_STD>関連者マスタ標準csvダンプ(指定期間まで)</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_SABUN_MASTER>関連者マスタcsv差分ダンプ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_SABUN_HISTORY>関連者履歴csv差分ダンプ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_DUMP_SABUN_MASTER_STD>関連者マスタ標準csv差分ダンプ</RouterLink><br>
-    
+
+    <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_SEARCH_RIYOUSHA>利用者検索／編集</RouterLink><br>
+
     <hr>
     <RouterLink :to="RoutePathConstants.PAGE_LOGIN">ログインページ</RouterLink><br>
 

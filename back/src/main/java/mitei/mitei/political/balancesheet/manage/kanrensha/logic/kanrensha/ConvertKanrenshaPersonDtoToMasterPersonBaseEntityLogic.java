@@ -20,12 +20,17 @@ public class ConvertKanrenshaPersonDtoToMasterPersonBaseEntityLogic {
      */
     public MasterPersonBaseEntity practice(final KanrenshaPersonDto kanrenshaPersonDto) {
 
+        final String BLANK = "";
+
         MasterPersonBaseEntity baseEntity = new MasterPersonBaseEntity();
         // 個人姓名を複写
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputPersonNameDto(), baseEntity);
         // 個人職業を複写
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputShokugyouDto(), baseEntity);
         baseEntity.setPartnerName(kanrenshaPersonDto.getInputPersonNameDto().getAllName());
+        baseEntity.setIsShokyouEdit(!BLANK.equals(kanrenshaPersonDto.getInputShokugyouDto().getShokugyouUserWrite()));
+        baseEntity.setPersonKanrenshaCode(kanrenshaPersonDto.getPersonKanrenshaCode());
+
         return baseEntity;
     }
 

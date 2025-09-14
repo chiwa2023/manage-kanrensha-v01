@@ -27,7 +27,10 @@ public class ConvertKanrenshaCorpDtoToMasterCorporationAddressEntityLogic {
         BeanUtils.copyProperties(kanrenshaCorpDto.getInputAddressDto(), addressEntity);
 
         // 意味内容が同じで、フィールド名が異なっているものを追加で複写
+        addressEntity.setPostal1(kanrenshaCorpDto.getInputAddressDto().getPostalcode1());
+        addressEntity.setPostal2(kanrenshaCorpDto.getInputAddressDto().getPostalcode2());
         addressEntity.setPartnerName(kanrenshaCorpDto.getInputOrgNameDto().getOrgName());
+        addressEntity.setCorpKanrenshaCode(kanrenshaCorpDto.getCorpKanrenshaCode());
 
         // TODO: rsdt2_id のセット処理を追加してください
 

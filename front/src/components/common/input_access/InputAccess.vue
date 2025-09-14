@@ -20,7 +20,7 @@ const inputDto: ComputedRef<InputAccessInterface> = computed(() => { return prop
         メールアドレス
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputDto.email" class="text-input">
+        <input type="text" v-model="inputDto.email" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -28,7 +28,7 @@ const inputDto: ComputedRef<InputAccessInterface> = computed(() => { return prop
         自身のポータルサイト
     </div>
     <div class="right-area">
-        <input type="url" v-model="inputDto.myPortalUrl" class="text-input">
+        <input type="url" v-model="inputDto.myPortalUrl" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -36,9 +36,9 @@ const inputDto: ComputedRef<InputAccessInterface> = computed(() => { return prop
         SNS
     </div>
     <div class="right-area">
-        サービス名：<input type="text" v-model="inputDto.snsServiceName" class="left-space text-input"><br>
-        サービストップURL:<input type="url" v-model="inputDto.snsPortalUrl" class="left-space text-input"><br>
-        アカウント名：<input type="text" v-model="inputDto.snsAccount" class="left-space text-input">
+        サービス名：<input type="text" v-model="inputDto.snsServiceName" class="left-space name-input"><br>
+        サービストップURL:<input type="url" v-model="inputDto.snsPortalUrl" class="left-space name-input"><br>
+        アカウント名：<input type="text" v-model="inputDto.snsAccount" class="left-space name-input">
     </div>
     <div class="clear-both"></div>
 

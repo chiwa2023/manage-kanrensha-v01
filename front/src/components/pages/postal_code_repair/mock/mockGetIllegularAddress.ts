@@ -39,8 +39,8 @@ function createEntity(index: number, address: string): AddressPostalIrregularInt
     entity.addressName = address;
     entity.addressPostal = INIT_STRING;
     entity.addressBlock = INIT_STRING;
-    // entity.isAddPostal = INIT_BOOLERAN;
-    // entity.isRepairRsdt = INIT_BOOLERAN;
+    // entity.isAddPostal = INIT_BOOLEAN;
+    // entity.isRepairRsdt = INIT_BOOLEAN;
 
     return entity;
 

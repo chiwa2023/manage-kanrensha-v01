@@ -1,5 +1,4 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +26,9 @@ public class ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogic {
         BeanUtils.copyProperties(kanrenshaPersonDto.getInputAddressDto(), addressEntity);
         
         addressEntity.setPartnerName(kanrenshaPersonDto.getInputPersonNameDto().getAllName());
+        addressEntity.setPostal1(kanrenshaPersonDto.getInputAddressDto().getPostalcode1());
+        addressEntity.setPostal2(kanrenshaPersonDto.getInputAddressDto().getPostalcode2());
+        addressEntity.setPersonKanrenshaCode(kanrenshaPersonDto.getPersonKanrenshaCode());
 
         return addressEntity;
     }

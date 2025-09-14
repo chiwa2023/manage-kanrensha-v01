@@ -2,12 +2,12 @@ import FrameworkCapsuleInterface from "../frameworkCapsuleDto";
 import type PoliOrgNoInterface from "./poliOrgNoDto";
 import PoliOrgNoDto from "./poliOrgNoDto";
 
-export default interface SaveKanrenshaPoliOrgInterface {
+export default interface SaveKanrenshaPoliOrgCapsuleInterface {
 
 
 }
 
-export default class SaveKanrenshaPoliOrgDto extends FrameworkCapsuleInterface implements SaveKanrenshaPoliOrgInterface {
+export default class SaveKanrenshaPoliOrgCapsuleDto extends FrameworkCapsuleInterface implements SaveKanrenshaPoliOrgCapsuleInterface {
 
     /** 関連者政治団体Dto */
     kanrenshaPoliOrgDto: PoliOrgNoInterface;

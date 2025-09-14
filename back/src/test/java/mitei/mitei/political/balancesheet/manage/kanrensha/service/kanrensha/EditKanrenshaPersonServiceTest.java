@@ -28,8 +28,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPers
  * EditKanrenshaPersonServiceのテスト
  */
 @SpringBootTest
-@Transactional
-@Sql("EditKanrenshaPersonServiceTest.sql")
 class EditKanrenshaPersonServiceTest {
     // CHECKSTYLE:OFF
 
@@ -95,10 +93,14 @@ class EditKanrenshaPersonServiceTest {
     }
 
     @Test
+    @Transactional
+    @Sql("EditKanrenshaPersonServiceTest.sql")
     void testSuccessUpdate() {
+
+        final String kanrensahCode =  "P0900";
         // Arrange
         SaveKanrenshaPersonCapsuleDto capsuleDto = createTestDtoWithChanges();
-
+        capsuleDto.getKanrenshaPersonDto().setPersonKanrenshaCode(kanrensahCode);
         // Act
         service.practice(capsuleDto);
 
@@ -108,8 +110,6 @@ class EditKanrenshaPersonServiceTest {
         assertFalse(addressRepository.findById(903).get().getIsLatest());
         assertFalse(baseRepository.findById(904).get().getIsLatest());
         assertFalse(propertyRepository.findById(905).get().getIsLatest());
-
-        final String kanrensahCode =  "P0900";
         
         // Assert: Check that new records have been created
         assertEquals(2, personRepository.findByPersonKanrenshaCodeOrderByMasterPersonIdDesc(kanrensahCode).size());
@@ -120,6 +120,8 @@ class EditKanrenshaPersonServiceTest {
     }
 
     @Test
+    // @Transactional
+    @Sql("EditKanrenshaPersonServiceTest.sql")
     void testTransactionRollback() {
 
         SaveKanrenshaPersonCapsuleDto capsuleDto = createTestDtoWithChanges();
@@ -142,7 +144,7 @@ class EditKanrenshaPersonServiceTest {
         assertTrue(accessRepository.findById(902).get().getIsLatest(), "access should be unchanged.");
         assertTrue(addressRepository.findById(903).get().getIsLatest(), "address should be unchanged.");
         assertTrue(baseRepository.findById(904).get().getIsLatest(), "base should be unchanged.");
-        assertTrue(propertyRepository.findById(906).get().getIsLatest(), "property should be unchanged.");
+        assertTrue(propertyRepository.findById(905).get().getIsLatest(), "property should be unchanged.");
 
     }
 }

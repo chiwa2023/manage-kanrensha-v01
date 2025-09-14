@@ -28,6 +28,7 @@ public class ConvertKanrenshaCorpDtoToMasterCorporationAccessEntityLogic {
 
         // 意味内容が同じで、フィールド名が異なっているものを追加で複写
         accessEntity.setPartnerName(kanrenshaCorpDto.getInputOrgNameDto().getOrgName());
+        accessEntity.setCorpKanrenshaCode(kanrenshaCorpDto.getCorpKanrenshaCode());
 
         return accessEntity;
     }

@@ -1,6 +1,5 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import mockGetPersonList from './mock/mockGetPersonList';
 import type MasterPersonInterface from '../../../entity/masterPersonEntity';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
 import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTextSearchPagingCapsuleDto';
@@ -14,7 +13,7 @@ const emits = defineEmits(["sendPersonNoInterface", "sendCanceelPersonNo"]);
 const listPerson: Ref<MasterPersonInterface[]> = ref([]);
 
 function onPersonSearch() {
-    listPerson.value = mockGetPersonList();
+    //listPerson.value = mockGetPersonList();
 
     getAuthorizedPromiseArea().then(token => {
         // 検索条件の設定
@@ -58,7 +57,7 @@ function sendCancelPersonNo() {
         名前(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -82,7 +81,7 @@ function sendCancelPersonNo() {
         関連者コード(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 

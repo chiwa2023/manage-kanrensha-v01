@@ -101,12 +101,12 @@ export default class WkTblMasterPoliOrgEntity implements WkTblMasterPoliOrgInter
 
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
-        const INIT_BOOLERAN: boolean = false;
+        const INIT_BOOLEAN: boolean = false;
 
         this.wkTblMasterPoliOrgId = INIT_NUMBER;
         this.wkTblMasterPoliOrgCode = INIT_NUMBER;
-        this.isLatest = INIT_BOOLERAN;
-        this.isFinish = INIT_BOOLERAN;
+        this.isLatest = INIT_BOOLEAN;
+        this.isFinish = INIT_BOOLEAN;
         this.partnerName = INIT_STRING;
         this.allAddress = INIT_STRING;
         this.poliOrgDelegate = INIT_STRING;
@@ -132,7 +132,7 @@ export default class WkTblMasterPoliOrgEntity implements WkTblMasterPoliOrgInter
         this.orgDelegateCode = INIT_STRING;
         this.accountMgrCode = INIT_STRING;
         this.accountMgrName = INIT_STRING;
-        this.isAffected = INIT_BOOLERAN;
+        this.isAffected = INIT_BOOLEAN;
         this.judgeReason = INIT_STRING;
     }
 

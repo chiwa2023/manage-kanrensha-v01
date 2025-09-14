@@ -1,6 +1,8 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +34,31 @@ public class EditUserKanrenshaPoliOrgController {
     @PostMapping("/edit-poli-org")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final SaveKanrenshaPoliOrgCapsuleDto capsuleDto) {
         
-        return ResponseEntity.status(HttpStatus.OK).body(editKanrenshaPoliOrgService.practice(capsuleDto));
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        try {
+            Integer newId = editKanrenshaPoliOrgService.practice(capsuleDto);
+            if (0 == newId) {
+                resultDto.setMessage("前データと元データに変更がなかったようでした。");
+                resultDto.setIsFailure(true);
+            } else {
+                resultDto.setMessage("登録できました");
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+            }
+        } catch (EmptyResultDataAccessException exception) {
+            resultDto.setMessage("必要なデータが呼び出せませんでした。システム運営者に連絡してください。");
+            resultDto.setIsFailure(true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
+
+        } catch (ConcurrencyFailureException exception) {
+            resultDto.setMessage("他のユーザが修正したようです。大変お手数をおかけしますが変更された後のデータを確認して修正作業をしなおしてください");
+            resultDto.setIsFailure(true);
+        } catch (Exception exception) { // NOPMD
+            resultDto.setMessage("例外が発生しました。システム運営者に連絡してください。");
+            resultDto.setIsFailure(true);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
 
     }
 

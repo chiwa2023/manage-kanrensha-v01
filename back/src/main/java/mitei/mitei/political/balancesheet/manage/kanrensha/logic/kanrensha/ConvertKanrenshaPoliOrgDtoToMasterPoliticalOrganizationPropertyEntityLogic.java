@@ -27,7 +27,8 @@ public class ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationPropertyEnti
         propertyEntity.setAccountMgrName(accountMgr.getPersonName());
 
         propertyEntity.setPartnerName(kanrenshaPoliOrgDto.getInputOrgNameDto().getOrgName());
-        
+        propertyEntity.setPoliOrgKanrenshaCode(kanrenshaPoliOrgDto.getPoliOrgKanrenshaCode());
+
         return propertyEntity;
     }
 }

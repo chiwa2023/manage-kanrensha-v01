@@ -28,6 +28,10 @@ public class ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntit
 
         // 意味内容が同じで、フィールド名が異なっているものを追加で複写
         addressEntity.setPartnerName(kanrenshaPoliOrgDto.getInputOrgNameDto().getOrgName());
+        addressEntity.setPostal1(kanrenshaPoliOrgDto.getInputAddressDto().getPostalcode1());
+        addressEntity.setPostal2(kanrenshaPoliOrgDto.getInputAddressDto().getPostalcode2());
+        addressEntity.setPartnerName(kanrenshaPoliOrgDto.getInputOrgNameDto().getOrgName());
+        addressEntity.setPoliOrgKanrenshaCode(kanrenshaPoliOrgDto.getPoliOrgKanrenshaCode());
 
         // TODO: rsdt2_id のセット処理を追加してください
 

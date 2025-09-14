@@ -58,8 +58,8 @@ class CallForEditMasterPersonAddressEntityLogicTest {
         addressDto.setAddressPostal("100-0001");
         addressDto.setAddressBlock("千代田区千代田１−１");
         addressDto.setAddressBuilding("宮殿");
-        addressDto.setPostal1("100");
-        addressDto.setPostal2("0001");
+        addressDto.setPostalcode1("100");
+        addressDto.setPostalcode2("0001");
         addressDto.setLgCode("131016");
         addressDto.setMachiazaId("0001000");
         addressDto.setBlkId("001");
@@ -96,8 +96,8 @@ class CallForEditMasterPersonAddressEntityLogicTest {
         addressDto.setAddressPostal("163-8001");
         addressDto.setAddressBlock("新宿区西新宿２−８−１");
         addressDto.setAddressBuilding("東京都庁");
-        addressDto.setPostal1("163");
-        addressDto.setPostal2("8001");
+        addressDto.setPostalcode1("163");
+        addressDto.setPostalcode2("8001");
         addressDto.setLgCode("131041");
         addressDto.setMachiazaId("0002000");
         addressDto.setBlkId("008000");

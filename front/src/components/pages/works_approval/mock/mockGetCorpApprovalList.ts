@@ -10,32 +10,32 @@ export default function mockGetCorpApprovalList(): CorpNoApprovalInterface[] {
     list.push(createDto(5));
     list.push(createDto(7));
 
-    list[0].inputAddress.isEditAddressPostal = true;
-    list[0].inputAddress.addressPostal = "和歌山県実在市架空町1丁目";
+    list[0].inputAddressDto.isPostalEdit = true;
+    list[0].inputAddressDto.addressPostal = "和歌山県実在市架空町1丁目";
     list[0].rsdtAddressPostl = "和歌山県実在市架空町一丁目";
 
-    list[1].inputAddress.isEditAddressBlock = true;
-    list[1].inputAddress.addressBlock = "４４４番地－1";
+    list[1].inputAddressDto.isBlockEdit = true;
+    list[1].inputAddressDto.addressBlock = "４４４番地－1";
     list[1].rsdtAddressBlock = "444番地1号";
 
-    list[2].inputAddress.isEditAddressBuilding = true;
-    list[2].inputAddress.addressBuilding = "四角ビル109";
+    list[2].inputAddressDto.isBuildingEdit = true;
+    list[2].inputAddressDto.addressBuilding = "四角ビル109";
     list[2].rsdtAddressBuilding = "";
 
     list[3].isShiten = true;
-    list[3].inputAddress.isEditAddressPostal = false;
-    list[3].inputAddress.isEditAddressBlock = false;
-    list[3].inputAddress.isEditAddressBuilding = false;
-    list[3].corpName = "ABCD企業　三重支店";
-    list[3].corpNameKana = "えーびーしーでぃーきぎょう　みえしてん";
-    list[3].inputAddress.addressPostal = "三重県山麓市湖畔町";
-    list[3].inputAddress.addressBlock = "100番地1000号";
-    list[3].inputAddress.addressBuilding = "適当マンション3F";
+    list[3].inputAddressDto.isPostalEdit = false;
+    list[3].inputAddressDto.isBlockEdit = false;
+    list[3].inputAddressDto.isBuildingEdit = false;
+    list[3].inputOrgNameDto.orgName = "ABCD企業　三重支店";
+    list[3].inputOrgNameDto.orgNameKana = "えーびーしーでぃーきぎょう　みえしてん";
+    list[3].inputAddressDto.addressPostal = "三重県山麓市湖畔町";
+    list[3].inputAddressDto.addressBlock = "100番地1000号";
+    list[3].inputAddressDto.addressBuilding = "適当マンション3F";
 
     list[3].rsdtAddressPostl = "三重県山麓市湖畔町";
     list[3].rsdtAddressBlock = "100番地1000号";
     list[3].rsdtAddressBuilding = "適当マンション3F";
-    list[3].corpNo = list[3].corpNo + "-qwerty";
+    list[3].corpKanrenshaCode = list[3].corpKanrenshaCode + "-qwerty";
 
     return list;
 }
@@ -44,10 +44,10 @@ function createDto(index: number): CorpNoApprovalInterface {
     const dto: CorpNoApprovalInterface = new CorpNoApprovalDto();
 
     dto.houjinNo = "1234" + index;
-    dto.corpNo = "1234" + index + "-abcde";
+    dto.corpKanrenshaCode = "1234" + index + "-abcde";
 
-    dto.corpName = "ABCD企業" + index;
-    dto.corpNameKana = "えーびーしーでぃーきぎょう" + index;
+    dto.inputOrgNameDto.orgName = "ABCD企業" + index;
+    dto.inputOrgNameDto.orgNameKana = "えーびーしーでぃーきぎょう" + index;
 
     dto.isShiten = false;
     const addressDto: InputAddressDto = new InputAddressDto();
@@ -57,7 +57,7 @@ function createDto(index: number): CorpNoApprovalInterface {
     addressDto.postalcode1 = "12" + index;
     addressDto.postalcode2 = "345" + index;
     addressDto.addressAll = addressDto.addressPostal + addressDto.addressBlock + addressDto.addressBuilding;
-    dto.inputAddress = addressDto;
+    dto.inputAddressDto = addressDto;
 
     addressDto.tel1 = "11" + index;
     addressDto.tel2 = "22" + index;
@@ -68,17 +68,17 @@ function createDto(index: number): CorpNoApprovalInterface {
     addressDto.rsdtId = "4" + index;
     addressDto.machiazaId = "2" + index;
 
-    dto.orgDelegateCode = "39-1244" + index;
-    dto.orgDelegate = "代表者　太郎" + index;
+    dto.orgDelegateLeastDto.personKanrenshaCode = "39-1244" + index;
+    dto.orgDelegateLeastDto.personName = "代表者　太郎" + index;
 
 
     // 初期値がfalseだが明示
-    dto.isApproval = false;
+    //dto.isApproval = false;
 
     // 住所比較部分は後で直すのでいったん同じに
-    dto.inputAddress.rsdtAddressPostl = dto.inputAddress.addressPostal;
-    dto.inputAddress.rsdtAddressBlock = dto.inputAddress.addressBlock;
-    dto.inputAddress.rsdtAddressBuilding = dto.inputAddress.addressBuilding;
+    dto.inputAddressDto.rsdtAddressPostl = dto.inputAddressDto.addressPostal;
+    dto.inputAddressDto.rsdtAddressBlock = dto.inputAddressDto.addressBlock;
+    dto.inputAddressDto.rsdtAddressBuilding = dto.inputAddressDto.addressBuilding;
 
     return dto;
 }

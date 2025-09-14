@@ -47,23 +47,25 @@ public class EditMasterPersonPropertyLogic {
     public Integer practice(final SaveKanrenshaPersonCapsuleDto capsuleDto)
             throws EmptyResultDataAccessException, ConcurrencyFailureException { // NOPMD UncheckedException
 
-        KanrenshaPersonDto personDto = capsuleDto.getKanrenshaPersonDto();
-        MasterPersonPropertyEntity oldEntity = callForEditMasterPersonPropertyEntityLogic.practice(personDto);
-
-        if (Objects.isNull(oldEntity)) {
-            return 0;
-        }
-
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
-        setTableDataHistoryUtil.practiceDelete(userDto, oldEntity);
+        KanrenshaPersonDto personDto = capsuleDto.getKanrenshaPersonDto();
+
+        if (0 != personDto.getPropertyId()) {
+            MasterPersonPropertyEntity oldEntity = callForEditMasterPersonPropertyEntityLogic.practice(personDto);
+
+            if (Objects.isNull(oldEntity)) {
+                return 0;
+            }
+            setTableDataHistoryUtil.practiceDelete(userDto, oldEntity);
+            repository.save(oldEntity);
+        }
 
         MasterPersonPropertyEntity newSaveEntity = convertKanrenshaPersonDtoToMasterPersonPropertyEntityLogic
                 .practice(personDto);
-        newSaveEntity.setPersonKanrenshaCode(oldEntity.getPersonKanrenshaCode());
+        newSaveEntity.setPersonKanrenshaCode(personDto.getPersonKanrenshaCode());
         newSaveEntity.setMasterPersonPropertyId(0);
         setTableDataHistoryUtil.practiceInsert(userDto, newSaveEntity);
 
-        repository.save(oldEntity);
         return repository.save(newSaveEntity).getMasterPersonPropertyId();
     }
 

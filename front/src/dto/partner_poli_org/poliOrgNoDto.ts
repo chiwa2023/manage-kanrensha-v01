@@ -28,7 +28,7 @@ export default class PoliOrgNoDto implements PoliOrgNoInterface {
     propertyId:number;
 
     /** 政治団体番号 */
-    poliOrgNo: string;
+    poliOrgKanrenshaCode: string;
 
     /** 政治団体名称 */
     inputOrgNameDto: InputOrgNameInterface;
@@ -48,15 +48,16 @@ export default class PoliOrgNoDto implements PoliOrgNoInterface {
     /** 団体会計責任者関連者最低限Dto */
     accounrMgrLeastDto: InputKanrenshaPersonLeastInterface;
 
-    /** 承認該否  */
-    isApproval: boolean;
+        /** 関連者ユーザ紐づけ該否 */
+        isCombineUser:boolean;
 
     constructor() {
 
         const INIT_STRING: string = "";
         const INIT_NUMBER: number = 0;
+        const INIT_BOOLEAN: boolean = false;
 
-        this.poliOrgNo = INIT_STRING;
+        this.poliOrgKanrenshaCode = INIT_STRING;
         this.inputOrgNameDto = new InputOrgNameDto();
         this.inputAddressDto = new InputAddressDto();
         this.orgDelegateLeastDto = new InputKanrenshaPersonLeastDto();
@@ -70,7 +71,6 @@ export default class PoliOrgNoDto implements PoliOrgNoInterface {
         this.baseId = INIT_NUMBER;
         this.propertyId = INIT_NUMBER;
 
-        this.isApproval = false;
-
+        this.isCombineUser = INIT_BOOLEAN;
     }
 }

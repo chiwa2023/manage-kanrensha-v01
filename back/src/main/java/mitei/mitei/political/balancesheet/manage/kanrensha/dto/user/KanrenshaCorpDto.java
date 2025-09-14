@@ -272,8 +272,50 @@ public class KanrenshaCorpDto implements Serializable { // NOPMD DataClass
      *
      * @param propertyId 関連者企業団体属性テーブルId
      */
-    public void setPrpertyId(final Integer propertyId) {
+    public void setPropertyId(final Integer propertyId) {
         this.propertyId = propertyId;
+    }
+
+    /** 関連者企業団体コード */
+    private String corpKanrenshaCode = INIT_String;
+
+    /**
+     * 関連者企業団体コードを取得する
+     *
+     * @return 関連者企業団体コード
+     */
+    public String getCorpKanrenshaCode() {
+        return corpKanrenshaCode;
+    }
+
+    /**
+     * 関連者企業団体コードを設定する
+     *
+     * @param corpKanrenshaCode 関連者企業団体コード
+     */
+    public void setCorpKanrenshaCode(final String corpKanrenshaCode) {
+        this.corpKanrenshaCode = corpKanrenshaCode;
+    }
+
+    /** 関連者ユーザ紐づけ該否 */
+    private Boolean isCombineUser = INIT_Boolean;
+
+    /**
+     * 関連者ユーザ紐づけ該否を取得する
+     *
+     * @return 関連者ユーザ紐づけ該否
+     */
+    public Boolean getIsCombineUser() {
+        return isCombineUser;
+    }
+
+    /**
+     * 関連者ユーザ紐づけ該否を設定する
+     *
+     * @param isCombineUser 関連者ユーザ紐づけ該否
+     */
+    public void setIsCombineUser(final Boolean isCombineUser) {
+        this.isCombineUser = isCombineUser;
     }
 
 }

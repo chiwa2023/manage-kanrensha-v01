@@ -91,4 +91,14 @@ public interface MasterPersonRepository extends JpaRepository<MasterPersonEntity
      * @return 検索件数
      */
     Integer countByIsLatest(Boolean isLatest);
+
+    /**
+     * 関連者コードと最新該否から個人マスタリストを取得する
+     *
+     * @param code     関連者コード
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPersonEntity> findByPersonKanrenshaCodeAndIsLatest(String code, boolean isLatest);
+
 }

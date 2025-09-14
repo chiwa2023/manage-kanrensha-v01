@@ -1,52 +1,46 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaCorpCapsuleDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporationAccessEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporationAddressEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporationBaseEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporationEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.MasterCorporationPropertyEntity;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationAccessRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationAddressRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationBaseRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationPropertyRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterCorporationRepository;
-import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterCorporationAccessLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterCorporationAddressLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterCorporationBaseLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterCorporationLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.EditMasterCorporationPropertyLogic;
 
 /**
  * 関連者企業・団体を編集する
+ *
+ * @author chiwaki2023
+ * @author supported by Gemini CLI
  */
 @Service
 public class EditKanrenshaCorpService {
 
-    /** 企業団体マスタRepository */
+    /** 関連者企業団体マスタ編集Logic */
     @Autowired
-    private MasterCorporationRepository masterCorporationRepository;
+    private EditMasterCorporationLogic editMasterCorporationLogic;
 
-    /** 企業団体マスタ連絡先Repository */
+    /** 関連者企業団体連絡先編集Logic */
     @Autowired
-    private MasterCorporationAccessRepository masterCorporationAccessRepository;
+    private EditMasterCorporationAccessLogic editMasterCorporationAccessLogic;
 
-    /** 企業団体マスタ連絡先Repository */
+    /** 関連者企業団体住所マスタ編集Logic */
     @Autowired
-    private MasterCorporationAddressRepository masterCorporationAddressRepository;
+    private EditMasterCorporationAddressLogic editMasterCorporationAddressLogic;
 
-    /** 企業団体マスタ連絡先Repository */
+    /** 関連者企業団体基本マスタ編集Logic */
     @Autowired
-    private MasterCorporationBaseRepository masterCorporationBaseRepository;
+    private EditMasterCorporationBaseLogic editMasterCorporationBaseLogic;
 
-    /** 企業団体マスタ属性Repository */
+    /** 関連者企業団体属性マスタ編集Logic */
     @Autowired
-    private MasterCorporationPropertyRepository masterCorporationPropertyRepository;
-
-    /** テーブル履歴設定Utility */
-    @Autowired
-    private SetTableDataHistoryUtil setTableDataHistoryUtil;
+    private EditMasterCorporationPropertyLogic editMasterCorporationPropertyLogic;
 
     /**
      * 処理を行う
@@ -55,40 +49,27 @@ public class EditKanrenshaCorpService {
      * @return 処理結果
      */
     @Transactional
-    public Integer practice(final SaveKanrenshaCorpCapsuleDto capsuleDto) {
+    public Integer practice(final SaveKanrenshaCorpCapsuleDto capsuleDto)
+            throws EmptyResultDataAccessException, ConcurrencyFailureException { // NOPMD UncheckedException
 
-        UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
+        Integer updateId = 0;
 
-        MasterCorporationEntity corporationEntity = new MasterCorporationEntity();
-        // TODO 情報設定
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationEntity);
-        String newCode = masterCorporationRepository.save(corporationEntity).getCorpKanrenshaCode();
+        // マスタを更新
+        updateId += editMasterCorporationLogic.practice(capsuleDto);
 
-        MasterCorporationAccessEntity corporationAccessEntity = new MasterCorporationAccessEntity();
-        // TODO 情報設定
-        corporationAccessEntity.setCorpKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationAccessEntity);
-        masterCorporationAccessRepository.save(corporationAccessEntity);
+        // 連絡先を更新
+        updateId += editMasterCorporationAccessLogic.practice(capsuleDto);
 
-        MasterCorporationAddressEntity corporationAddressEntity = new MasterCorporationAddressEntity();
-        // TODO 情報設定
-        corporationAddressEntity.setCorpKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationAddressEntity);
-        masterCorporationAddressRepository.save(corporationAddressEntity);
+        // 住所を更新
+        updateId += editMasterCorporationAddressLogic.practice(capsuleDto);
 
-        MasterCorporationBaseEntity corporationBaseEntity = new MasterCorporationBaseEntity();
-        // TODO 情報設定
-        corporationBaseEntity.setCorpKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationBaseEntity);
-        masterCorporationBaseRepository.save(corporationBaseEntity);
+        // 基本を更新
+        updateId += editMasterCorporationBaseLogic.practice(capsuleDto);
 
-        MasterCorporationPropertyEntity corporationPropertyEntity = new MasterCorporationPropertyEntity();
-        // TODO 情報設定
-        corporationPropertyEntity.setCorpKanrenshaCode(newCode);
-        setTableDataHistoryUtil.practiceInsert(userDto, corporationPropertyEntity);
-        masterCorporationPropertyRepository.save(corporationPropertyEntity);
+        // 属性を更新
+        updateId += editMasterCorporationPropertyLogic.practice(capsuleDto);
 
-        return null;
+        return updateId;
     }
 
 }

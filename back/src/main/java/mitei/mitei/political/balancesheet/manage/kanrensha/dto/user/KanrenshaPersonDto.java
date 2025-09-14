@@ -18,6 +18,9 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
     /** 初期データ(Integer) */
     private static final Integer INIT_Integer = 0;
 
+    /** 初期データ(String) */
+    private static final String INIT_String = "";
+
     /** 初期データ(Boolean) */
     private static final Boolean INIT_Boolean = false;
 
@@ -229,6 +232,48 @@ public class KanrenshaPersonDto implements Serializable { // NOPMD DataClass
      */
     public void setPropertyId(final Integer propertyId) {
         this.propertyId = propertyId;
+    }
+
+    /** 関連者個人コード */
+    private String personKanrenshaCode = INIT_String;
+
+    /**
+     * 関連者個人コードを取得する
+     *
+     * @return 関連者個人コード
+     */
+    public String getPersonKanrenshaCode() {
+        return personKanrenshaCode;
+    }
+
+    /**
+     * 関連者個人コードを設定する
+     *
+     * @param personKanrenshaCode 関連者個人コード
+     */
+    public void setPersonKanrenshaCode(final String personKanrenshaCode) {
+        this.personKanrenshaCode = personKanrenshaCode;
+    }
+
+    /** 関連者ユーザ紐づけ該否 */
+    private Boolean isCombineUser = INIT_Boolean;
+
+    /**
+     * 関連者ユーザ紐づけ該否を取得する
+     *
+     * @return 関連者ユーザ紐づけ該否
+     */
+    public Boolean getIsCombineUser() {
+        return isCombineUser;
+    }
+
+    /**
+     * 関連者ユーザ紐づけ該否を設定する
+     *
+     * @param isCombineUser 関連者ユーザ紐づけ該否
+     */
+    public void setIsCombineUser(final Boolean isCombineUser) {
+        this.isCombineUser = isCombineUser;
     }
 
 }

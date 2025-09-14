@@ -84,8 +84,8 @@ class InsertKanrenshaPersonServiceTest {
         capsuleDto.setUserPersonLeastDto(CreateLeastUserForTestUtil.practice());
 
         InputAddressDto inputAddressDto = new InputAddressDto();
-        inputAddressDto.setPostal1("100");
-        inputAddressDto.setPostal2("0001");
+        inputAddressDto.setPostalcode1("100");
+        inputAddressDto.setPostalcode2("0001");
         inputAddressDto.setAddressAll("宮崎県実在市山麓町");
         inputAddressDto.setOrginAddressAll("宮崎県実在市");
         inputAddressDto.setAddressPostal("宮崎県実在市山麓町");
@@ -156,8 +156,8 @@ class InsertKanrenshaPersonServiceTest {
         MasterPersonAddressEntity masterPersonAddressEntity = listAddress.get(0);
 
         assertEquals(newCode, masterPersonAddressEntity.getPersonKanrenshaCode());
-        assertEquals(inputAddressDto.getPostal1(), masterPersonAddressEntity.getPostal1());
-        assertEquals(inputAddressDto.getPostal2(), masterPersonAddressEntity.getPostal2());
+        assertEquals(inputAddressDto.getPostalcode1(), masterPersonAddressEntity.getPostal1());
+        assertEquals(inputAddressDto.getPostalcode2(), masterPersonAddressEntity.getPostal2());
         assertEquals(inputAddressDto.getAddressPostal(), masterPersonAddressEntity.getAddressPostal());
         assertEquals(inputAddressDto.getAddressBlock(), masterPersonAddressEntity.getAddressBlock());
         assertEquals(inputAddressDto.getAddressBuilding(), masterPersonAddressEntity.getAddressBuilding());

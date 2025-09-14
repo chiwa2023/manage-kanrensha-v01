@@ -48,22 +48,25 @@ public class EditMasterPersonAddressLogic {
             throws EmptyResultDataAccessException, ConcurrencyFailureException { // NOPMD UncheckedException
 
         KanrenshaPersonDto personDto = capsuleDto.getKanrenshaPersonDto();
-        MasterPersonAddressEntity oldEntity = callForEditMasterPersonAddressEntityLogic.practice(personDto);
-
-        if (Objects.isNull(oldEntity)) {
-            return 0;
-        }
-
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
-        setTableDataHistoryUtil.practiceDelete(userDto, oldEntity);
+
+        //　マスタ最小であれば呼び出す住所がない
+        if (0 != personDto.getAddressId()) {
+            MasterPersonAddressEntity oldEntity = callForEditMasterPersonAddressEntityLogic.practice(personDto);
+
+            if (Objects.isNull(oldEntity)) {
+                return 0;
+            }
+            setTableDataHistoryUtil.practiceDelete(userDto, oldEntity);
+            repository.save(oldEntity);
+        }
 
         MasterPersonAddressEntity newSaveEntity = convertKanrenshaPersonDtoToMasterPersonAddressEntityLogic
                 .practice(personDto);
-        newSaveEntity.setPersonKanrenshaCode(oldEntity.getPersonKanrenshaCode());
+        newSaveEntity.setPersonKanrenshaCode(personDto.getPersonKanrenshaCode());
         newSaveEntity.setMasterPersonAddressId(0);
         setTableDataHistoryUtil.practiceInsert(userDto, newSaveEntity);
 
-        repository.save(oldEntity);
         return repository.save(newSaveEntity).getMasterPersonAddressId();
     }
 

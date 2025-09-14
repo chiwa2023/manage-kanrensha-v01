@@ -12,17 +12,17 @@ export default function mockGetPoliOrgNoApprovalList(): PoliOrgNoApprovalInterfa
     list.push(createDto(4));
     list.push(createDto(5));
 
-    list[0].inputAddress.isEditAddressPostal = true;
-    list[0].inputAddress.addressPostal = "和歌山県実在市架空町1丁目";
-    list[0].inputAddress.rsdtAddressPostl = "和歌山県実在市架空町一丁目";
+    list[0].inputAddressDto.isPostalEdit = true;
+    list[0].inputAddressDto.addressPostal = "和歌山県実在市架空町1丁目";
+    list[0].inputAddressDto.rsdtAddressPostl = "和歌山県実在市架空町一丁目";
 
-    list[1].inputAddress.isEditAddressBlock = true;
-    list[1].inputAddress.addressBlock = "４４４番地－1";
-    list[1].inputAddress.rsdtAddressBlock = "444番地1号";
+    list[1].inputAddressDto.isBlockEdit = true;
+    list[1].inputAddressDto.addressBlock = "４４４番地－1";
+    list[1].inputAddressDto.rsdtAddressBlock = "444番地1号";
 
-    list[2].inputAddress.isEditAddressBuilding = true;
-    list[2].inputAddress.addressBuilding = "四角ビル109";
-    list[2].inputAddress.rsdtAddressBuilding = "";
+    list[2].inputAddressDto.isBuildingEdit = true;
+    list[2].inputAddressDto.addressBuilding = "四角ビル109";
+    list[2].inputAddressDto.rsdtAddressBuilding = "";
 
     return list;
 }
@@ -32,11 +32,11 @@ function createDto(index: number): PoliOrgNoApprovalInterface {
     const dto: PoliOrgNoApprovalInterface = new PoliOrgNoApprovalDto();
     dto.poliOrgNo = "124-3455" + index;
 
-    dto.inputName.orgName = "ちゃらんぽらん政治団体" + index;
-    dto.inputName.orgNameKana = "ちゃらんぽらんせいじだんたい" + index;
+    dto.inputOrgNameDto.orgName = "ちゃらんぽらん政治団体" + index;
+    dto.inputOrgNameDto.orgNameKana = "ちゃらんぽらんせいじだんたい" + index;
 
-    dto.delegateNo = "980987" + index;
-    dto.delegateName = "代表者　太郎" + index;
+    dto.orgDelegateLeastDto.personKanrenshaCode = "980987" + index;
+    dto.orgDelegateLeastDto.personName = "代表者　太郎" + index;
 
     const addressDto: InputAddressDto = new InputAddressDto();
     addressDto.addressPostal = "和歌山県実在市" + index;
@@ -55,16 +55,16 @@ function createDto(index: number): PoliOrgNoApprovalInterface {
     addressDto.rsdtId = "4" + index;
     addressDto.machiazaId = "2" + index;
 
-    dto.inputAddress = addressDto;
+    dto.inputAddressDto = addressDto;
 
 
     // 初期値がfalseだが明示
     dto.isApproval = false;
 
     // 住所比較部分は後で直すのでいったん同じに
-    dto.inputAddress.rsdtAddressPostl = dto.inputAddress.addressPostal;
-    dto.inputAddress.rsdtAddressBlock = dto.inputAddress.addressBlock;
-    dto.inputAddress.rsdtAddressBuilding = dto.inputAddress.addressBuilding;
+    dto.inputAddressDto.rsdtAddressPostl = dto.inputAddressDto.addressPostal;
+    dto.inputAddressDto.rsdtAddressBlock = dto.inputAddressDto.addressBlock;
+    dto.inputAddressDto.rsdtAddressBuilding = dto.inputAddressDto.addressBuilding;
 
     return dto;
 }

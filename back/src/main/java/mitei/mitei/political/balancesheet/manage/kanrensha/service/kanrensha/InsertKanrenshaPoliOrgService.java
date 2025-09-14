@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mitei.mitei.political.balancesheet.manage.kanrensha.constants.KanrenshaKbnConstants;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPoliOrgDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPoliOrgCapsuleDto;
@@ -17,6 +18,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.Conve
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationAddressEntityLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationBaseEntityLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaPoliOrgDtoToMasterPoliticalOrganizationPropertyEntityLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationAccessRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationAddressRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPoliticalOrganizationBaseRepository;
@@ -74,6 +76,10 @@ public class InsertKanrenshaPoliOrgService {
     /** 関連者政治団体履歴追加Service */
     @Autowired
     private InsertPartnerPoliOrgHistoryService insertPartnerPoliOrgHistoryService;
+
+    /** ユーザ関連者紐づけLogic */
+    @Autowired
+    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
 
     /** 全文自然検索整形Utility */
     @Autowired
@@ -158,6 +164,11 @@ public class InsertKanrenshaPoliOrgService {
 
         insertPartnerPoliOrgHistoryService.practice(userDto, historyEntity);
 
+        // 運営者以上が他人のデータを追加している以外の場合は操作者ユーザと登録した関連者を紐づける
+        if (kanrenshaPoliOrgDto.getIsCombineUser()) {
+            insertCombineUserKanrenshaLogic.practcie(userDto.getUserPersonCode(), KanrenshaKbnConstants.POLI_ORG, newCode,
+                    userDto);
+        }
         return savedEntity.getMasterPoliticalOrganizationId();
     }
 

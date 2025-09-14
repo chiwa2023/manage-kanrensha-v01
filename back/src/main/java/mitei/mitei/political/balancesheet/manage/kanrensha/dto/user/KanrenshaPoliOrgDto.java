@@ -21,6 +21,9 @@ public class KanrenshaPoliOrgDto implements Serializable { // NOPMD DataClass
     /** 初期データ(Integer) */
     private static final Integer INIT_Integer = 0;
 
+    /** 初期データ(Boolean) */
+    private static final Boolean INIT_Boolean = false;
+
     /** 名称入力Dto */
     private InputOrgNameDto inputOrgNameDto = new InputOrgNameDto();
 
@@ -248,8 +251,51 @@ public class KanrenshaPoliOrgDto implements Serializable { // NOPMD DataClass
      *
      * @param propertyId 関連者企業団体属性テーブルId
      */
-    public void setPrpertyId(final Integer propertyId) {
+    public void setPropertyId(final Integer propertyId) {
         this.propertyId = propertyId;
+    }
+
+    /** 関連者政治団体コード */
+    private String poliOrgKanrenshaCode = INIT_String;
+
+    /**
+     * 関連者政治団体コードを取得する
+     *
+     * @return 関連者政治団体コード
+     */
+    public String getPoliOrgKanrenshaCode() {
+        return poliOrgKanrenshaCode;
+    }
+
+    /**
+     * 関連者政治団体コードを設定する
+     *
+     * @param poliOrgKanrenshaCode 関連者政治団体コード
+     */
+    public void setPoliOrgKanrenshaCode(final String poliOrgKanrenshaCode) {
+        this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
+    }
+
+
+    /** 関連者ユーザ紐づけ該否 */
+    private Boolean isCombineUser = INIT_Boolean;
+
+    /**
+     * 関連者ユーザ紐づけ該否を取得する
+     *
+     * @return 関連者ユーザ紐づけ該否
+     */
+    public Boolean getIsCombineUser() {
+        return isCombineUser;
+    }
+
+    /**
+     * 関連者ユーザ紐づけ該否を設定する
+     *
+     * @param isCombineUser 関連者ユーザ紐づけ該否
+     */
+    public void setIsCombineUser(final Boolean isCombineUser) {
+        this.isCombineUser = isCombineUser;
     }
 
 }

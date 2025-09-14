@@ -1,11 +1,11 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import mockGetPoliOrgNoList from './mock/mockGetPoliOrgNoList';
 import type MasterPoliticalOrganizationInterface from '../../../entity/masterPoliticalOrganizationEntity';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
 import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTextSearchPagingCapsuleDto';
 import NaturalTextSearchPagingCapsuleDto from '../../../dto/naturalTextSearchPagingCapsuleDto';
 import type SearchKanrenshaPoliOrgResultInterface from '../../../dto/kanrensha/searchKanrenshaPoliOrgResultDto';
+import PoliOrgDantaiKbnConstants from '../../../dto/partner_poli_org/poliOrgDantaiKbnConstants';
 
 //props,emit
 const props = defineProps<{ isFooter: boolean }>();
@@ -13,7 +13,6 @@ const emits = defineEmits(["sendCancelPoliOrgNo", "sendPoliOrgNoInterface"]);
 const poliOrgList: Ref<MasterPoliticalOrganizationInterface[]> = ref([])
 
 function onSearch() {
-    poliOrgList.value = mockGetPoliOrgNoList();
 
     getAuthorizedPromiseArea().then(token => {
         // 検索条件の設定
@@ -37,8 +36,6 @@ function onSearch() {
             })
             .catch((error) => { alert(error); });
     });
-
-
 }
 
 /**  
@@ -64,7 +61,7 @@ function onSave(selectedRow: number) {
         関連者政治団体番号(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"><br></div>
 
@@ -72,7 +69,7 @@ function onSave(selectedRow: number) {
         名前(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -120,7 +117,7 @@ function onSave(selectedRow: number) {
                     <td>{{ entity.partnerName }}</td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.poliOrgDelegate }}</td>
-                    <td>{{ entity.dantaiKbn }}</td>
+                    <td>{{ PoliOrgDantaiKbnConstants.getLabel( entity.dantaiKbn) }}</td>
                     <td><button @click="onSave(entity.masterPoliticalOrganizationId)">選択</button>
                     </td>
                 </tr>

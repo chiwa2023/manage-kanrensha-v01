@@ -54,15 +54,16 @@ public class EditMasterPersonLogic {
             return 0;
         }
 
+        
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
         setTableDataHistoryUtil.practiceDelete(userDto, oldEntity);
+        repository.save(oldEntity);
 
         MasterPersonEntity newSaveEntity = convertKanrenshaPersonDtoToMasterPersonEntityLogic.practice(personDto);
-        newSaveEntity.setPersonKanrenshaCode(oldEntity.getPersonKanrenshaCode());
-        newSaveEntity.setMasterPersonId(0);
+        newSaveEntity.setPersonKanrenshaCode(personDto.getPersonKanrenshaCode());
         setTableDataHistoryUtil.practiceInsert(userDto, newSaveEntity);
+        newSaveEntity.setMasterPersonId(0);
 
-        repository.save(oldEntity);
         return repository.save(newSaveEntity).getMasterPersonId();
     }
 

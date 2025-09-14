@@ -7,11 +7,8 @@ import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
 import PersonNoDto from '../../../dto/partner_person/personNoDto';
 import type PoliOrgNoInterface from '../../../dto/partner_poli_org/poliOrgNoDto';
 import PoliOrgNoDto from '../../../dto/partner_poli_org/poliOrgNoDto';
-import mockGetPersonList from '../../common/search_person_no/mock/mockGetPersonList';
-import mockGetPoliOrgNoList from '../../common/search_poli_org/mock/mockGetPoliOrgNoList';
 import CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import CorpNoDto from '../../../dto/partner_corp/corpNoDto';
-import mockGetCorpList from '../../common/search_corp_no/mock/mockGetCorpList';
 import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import PartnerInfo from '../../common/user_info/PartnerInfo.vue';
@@ -40,20 +37,25 @@ if (userDtoText !== null) {
 let viewStatus: number = 1;
 switch (role) {
     case UserRoleConstants.ROLE_PARTNER_PERSON:
-        inputPersonDto.value = mockGetPersonList()[0];
+        inputPersonDto.value.inputPersonNameDto.allName = userDto.value.userPersonName;
         viewStatus = 1;
         break;
     case UserRoleConstants.ROLE_PARTNER_CORP:
-        inputCorpNoDto.value = mockGetCorpList()[0];
+        inputCorpNoDto.value.inputOrgNameDto.orgName = userDto.value.userPersonName;
         viewStatus = 2;
         break;
     case UserRoleConstants.ROLE_PARTNER_POLI_ORG:
-        inputPoliOrgDto.value = mockGetPoliOrgNoList()[0];
+        inputPoliOrgDto.value.inputOrgNameDto.orgName = userDto.value.userPersonName;
         viewStatus = 3;
         break;
     default:
         break;
 }
+
+// 新規追加は作業をする
+const isNew: boolean = true;
+// ユーザと関連者の紐づけはする
+const isCombineUser: boolean = true;
 </script>
 <template>
 
@@ -64,15 +66,15 @@ switch (role) {
     <h1>新規関連者登録</h1>
     <!-- 編集対象が個人 -->
     <div v-if="viewStatus == 1">
-        <PartnerPersonEdit :edit-dto="inputPersonDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerPersonEdit>
+        <PartnerPersonEdit :edit-dto="inputPersonDto"   :is-edit-new="isNew" :is-combine-user="isCombineUser" :user-dto="userLeastDto"></PartnerPersonEdit>
     </div>
     <!-- 編集対象が法人／団体 -->
     <div v-if="viewStatus == 2">
-        <PartnerCorpEdit :edit-dto="inputCorpNoDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerCorpEdit>
+        <PartnerCorpEdit :edit-dto="inputCorpNoDto"   :is-edit-new="isNew" :is-combine-user="isCombineUser" :user-dto="userLeastDto"></PartnerCorpEdit>
     </div>
     <!-- 編集対象が政治団体 -->
     <div v-if="viewStatus == 3">
-        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto" :is-edit-new="true" :user-dto="userLeastDto"></PartnerPoliOrgEdit>
+        <PartnerPoliOrgEdit :edit-dto="inputPoliOrgDto"   :is-edit-new="isNew" :is-combine-user="isCombineUser" :user-dto="userLeastDto"></PartnerPoliOrgEdit>
     </div>
 </template>
 <style scoped></style>

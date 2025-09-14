@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mitei.mitei.political.balancesheet.manage.kanrensha.constants.KanrenshaKbnConstants;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.KanrenshaPersonDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPersonCapsuleDto;
@@ -17,6 +18,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.Conve
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaPersonDtoToMasterPersonAddressEntityLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaPersonDtoToMasterPersonBaseEntityLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.kanrensha.ConvertKanrenshaPersonDtoToMasterPersonPropertyEntityLogic;
+import mitei.mitei.political.balancesheet.manage.kanrensha.logic.user.InsertCombineUserKanrenshaLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonAccessRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonAddressRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.MasterPersonBaseRepository;
@@ -71,6 +73,10 @@ public class InsertKanrenshaPersonService {
     /** 関連者個人履歴追加Service */
     @Autowired
     private InsertPartnerPersonHistoryService insertPartnerPersonHistoryService;
+
+    /** ユーザ関連者紐づけLogic */
+    @Autowired
+    private InsertCombineUserKanrenshaLogic insertCombineUserKanrenshaLogic;
 
     /** 全文自然検索整形Utility */
     @Autowired
@@ -154,6 +160,12 @@ public class InsertKanrenshaPersonService {
         historyEntity.setPersonKanrenshaCode(newCode);
 
         insertPartnerPersonHistoryService.practice(userDto, historyEntity);
+
+        // 運営者以上が他人のデータを追加しない場合は操作者ユーザと登録した関連者を紐づける
+        if (kanrenshaPersonDto.getIsCombineUser()) {
+            insertCombineUserKanrenshaLogic.practcie(userDto.getUserPersonCode(), KanrenshaKbnConstants.PERSON, newCode,
+                    userDto);
+        }
 
         return savedEntity.getMasterPersonId();
     }

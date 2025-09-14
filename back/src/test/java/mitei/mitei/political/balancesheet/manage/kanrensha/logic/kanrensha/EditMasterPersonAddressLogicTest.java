@@ -39,9 +39,10 @@ class EditMasterPersonAddressLogicTest {
     private MasterPersonAddressRepository repository;
 
     private SaveKanrenshaPersonCapsuleDto createCapsuleDto(final Integer addressId, final String partnerName,
-            final String building) {
+            final String building,final String kanrenshaCode) {
         KanrenshaPersonDto personDto = new KanrenshaPersonDto();
         personDto.setAddressId(addressId);
+        personDto.setPersonKanrenshaCode(kanrenshaCode);
 
         InputPersonNameDto nameDto = new InputPersonNameDto();
         nameDto.setAllName(partnerName);
@@ -51,8 +52,8 @@ class EditMasterPersonAddressLogicTest {
         addressDto.setAddressPostal("100-0001");
         addressDto.setAddressBlock("千代田区千代田１−１");
         addressDto.setAddressBuilding(building); // この項目で差分をテスト
-        addressDto.setPostal1("100");
-        addressDto.setPostal2("0001");
+        addressDto.setPostalcode1("100");
+        addressDto.setPostalcode2("0001");
         addressDto.setLgCode("131016");
         addressDto.setMachiazaId("0001000");
         addressDto.setBlkId("001");
@@ -81,7 +82,7 @@ class EditMasterPersonAddressLogicTest {
         // Arrange: DBと異なる値を持つDTOを作成 (buildingが異なる)
         final int originalId = 601;
         final String kanrenshaCode = "P0601";
-        SaveKanrenshaPersonCapsuleDto capsuleDto = createCapsuleDto(originalId, "住所更新前 一郎", "新しい宮殿");
+        SaveKanrenshaPersonCapsuleDto capsuleDto = createCapsuleDto(originalId, "住所更新前 一郎", "新しい宮殿",kanrenshaCode);
 
         // Act
         Integer newId = logic.practice(capsuleDto);
@@ -101,8 +102,10 @@ class EditMasterPersonAddressLogicTest {
 
     @Test
     void testNoUpdateOccurs() {
+        
         // Arrange: DBと完全に同じ値を持つDTOを作成
-        SaveKanrenshaPersonCapsuleDto capsuleDto = createCapsuleDto(601, "住所更新前 一郎", "宮殿");
+        final String kanrenshaCode = "P0601";
+        SaveKanrenshaPersonCapsuleDto capsuleDto = createCapsuleDto(601, "住所更新前 一郎", "宮殿",kanrenshaCode);
 
         // Act
         Integer resultId = logic.practice(capsuleDto);
@@ -111,7 +114,7 @@ class EditMasterPersonAddressLogicTest {
         assertEquals(0, resultId, "変更がない場合は0が返却されること");
 
         List<MasterPersonAddressEntity> entities = repository
-                .findByPersonKanrenshaCodeOrderByMasterPersonAddressIdDesc("P0601");
+                .findByPersonKanrenshaCodeOrderByMasterPersonAddressIdDesc(kanrenshaCode);
         assertEquals(1, entities.size(), "レコード数は1のままであること");
     }
 }

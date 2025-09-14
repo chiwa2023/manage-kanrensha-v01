@@ -21,15 +21,11 @@ public class InputAddressDto implements Serializable { // NOPMD DataClass
     /** 元住所全体 */
     private String orginAddressAll = INIT_String;
 
-
-
     /** 郵便番号1 */
-    private String postal1 = INIT_String;
-
+    private String postalcode1 = INIT_String;
     /** 郵便番号2 */
-    private String postal2 = INIT_String;
+    private String postalcode2 = INIT_String;
 
-    
     /** 住所郵便番号まで1 */
     private String addressPostal = INIT_String;
     /** 住所番地 */
@@ -334,17 +330,17 @@ public class InputAddressDto implements Serializable { // NOPMD DataClass
      *
      * @return 郵便番号1
      */
-    public String getPostal1() {
-        return postal1;
+    public String getPostalcode1() {
+        return postalcode1;
     }
 
     /**
      * 郵便番号1を設定する
      *
-     * @param postal1 郵便番号1
+     * @param postalcode1 郵便番号1
      */
-    public void setPostal1(final String postal1) {
-        this.postal1 = postal1;
+    public void setPostalcode1(final String postalcode1) {
+        this.postalcode1 = postalcode1;
     }
 
     /**
@@ -352,18 +348,17 @@ public class InputAddressDto implements Serializable { // NOPMD DataClass
      *
      * @return 郵便番号2
      */
-    public String getPostal2() {
-        return postal2;
+    public String getPostalcode2() {
+        return postalcode2;
     }
 
     /**
      * 郵便番号2を設定する
      *
-     * @param postal2 郵便番号2
+     * @param postalcode2 郵便番号2
      */
-    public void setPostal2(final String postal2) {
-        this.postal2 = postal2;
+    public void setPostalcode2(final String postalcode2) {
+        this.postalcode2 = postalcode2;
     }
-
 
 }

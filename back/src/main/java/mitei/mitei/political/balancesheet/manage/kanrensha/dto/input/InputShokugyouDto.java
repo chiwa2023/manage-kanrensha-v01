@@ -159,5 +159,4 @@ public class InputShokugyouDto implements Serializable { // NOPMD DataClass
     public void setCorpName(final String corpName) {
         this.corpName = corpName;
     }
-
 }
