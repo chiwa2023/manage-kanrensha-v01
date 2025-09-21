@@ -134,7 +134,7 @@ function changeVisiblePassword() {
             </div>
             <button @click="onLogin">ログイン</button><br>
             <br>
-            <RouterLink to="/add-account">新規登録ですか?</RouterLink><br>
+            <RouterLink :to=RoutePathConstants.PAGE_ADD_ACCOUNT>新規登録ですか?</RouterLink><br>
             <br>
             <RouterLink to="/reset_password/propose">※パスワードを忘れたので再発行</RouterLink><br>
         </div>

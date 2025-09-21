@@ -26,8 +26,8 @@ const editCorpDto: ComputedRef<CorpNoInterface> = computed(() => { return props.
 
 // よく使う定数
 const BLANK: string = "";
-// const SERVWER_STATUS_OK: number = 200;
-// const SERVWER_STATUS_ERROR: number = 400;
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
 
 // 編集用Dto
 const addressDtoStored: Ref<InputAddressDto> = ref(new InputAddressDto());

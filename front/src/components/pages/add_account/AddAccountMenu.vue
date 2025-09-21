@@ -3,6 +3,7 @@ import { ref, type Ref } from 'vue';
 import router from '../../../router';
 import type NewComerInterface from '../../../dto/user/newComerDto';
 import NewComerDto from '../../../dto/user/newComerDto';
+import RoutePathConstants from '../../../routePathConstants';
 
 const sessionStorage = window["sessionStorage"];
 
@@ -32,7 +33,7 @@ function onRegistMail() {
                 sessionStorage.setItem("new-comer", JSON.stringify(resultDto));
                 sessionStorage.setItem("regist-code", resultDto.registCode);
                 alert("登録番号を発行できました");
-                router.push("/send-access-code");
+                router.push(RoutePathConstants.PAGE_SEND_ACCESS_CODE);
             } else {
                 alert("発行できませんでした");
             }

@@ -25,24 +25,24 @@ public class RiyoushaManagerDto implements Serializable { // NOPMD DataClass
     private static final Boolean INIT_Boolean = false;
 
     /** 利用者運営者Id */
-    private Integer riyousharManagerId = INIT_Integer;
+    private Integer riyoushaManagerId = INIT_Integer;
 
     /**
      * 利用者運営者Idを取得する
      *
      * @return 利用者運営者Id
      */
-    public Integer getRiyousharManagerId() {
-        return riyousharManagerId;
+    public Integer getRiyoushaManagerId() {
+        return riyoushaManagerId;
     }
 
     /**
      * 利用者運営者Idを設定する
      *
-     * @param riyousharManagerId 利用者運営者Id
+     * @param riyoushaManagerId 利用者運営者Id
      */
-    public void setRiyousharManagerId(final Integer riyousharManagerId) {
-        this.riyousharManagerId = riyousharManagerId;
+    public void setRiyoushaManagerId(final Integer riyoushaManagerId) {
+        this.riyoushaManagerId = riyoushaManagerId;
     }
 
     /** 利用者運営者コード */
@@ -192,4 +192,66 @@ public class RiyoushaManagerDto implements Serializable { // NOPMD DataClass
         this.inputAccessDto = inputAccessDto;
     }
 
+    /** 連絡先テーブルId */
+    private Integer accessId = INIT_Integer;
+
+    /** 住所テーブルId */
+    private Integer addressId = INIT_Integer;
+
+    /** 名称テーブルId */
+    private Integer nameId = INIT_Integer;
+
+    /**
+     * 連絡先テーブルIdを取得する
+     *
+     * @return 連絡先テーブルId
+     */
+    public Integer getAccessId() {
+        return accessId;
+    }
+
+    /**
+     * 連絡先テーブルIdを設定する
+     *
+     * @param accessId 連絡先テーブルId
+     */
+    public void setAccessId(final Integer accessId) {
+        this.accessId = accessId;
+    }
+
+    /**
+     * 住所テーブルIdを取得する
+     *
+     * @return 住所テーブルId
+     */
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    /**
+     * 住所テーブルIdを設定する
+     *
+     * @param addressId 住所テーブルId
+     */
+    public void setAddressId(final Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    /**
+     * 名称テーブルIdを取得する
+     *
+     * @return 名称テーブルId
+     */
+    public Integer getNameId() {
+        return nameId;
+    }
+
+    /**
+     * 名称テーブルIdを設定する
+     *
+     * @param nameId 名称テーブルId
+     */
+    public void setNameId(final Integer nameId) {
+        this.nameId = nameId;
+    }
 }

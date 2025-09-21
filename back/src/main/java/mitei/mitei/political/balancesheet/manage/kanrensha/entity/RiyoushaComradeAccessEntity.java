@@ -84,14 +84,14 @@ public class RiyoushaComradeAccessEntity implements Serializable, AllTabeDataHis
 
     /** API接続続利用者コード */
     @Column(name = "riyousha_comrade_code")
-    private String riyoushaComradeCode = INIT_String;
+    private Integer riyoushaComradeCode = INIT_Integer;
 
     /**
      * API接続続利用者コードを取得する
      *
      * @return API接続続利用者コード
      */
-    public String getRiyoushaComradeCode() {
+    public Integer getRiyoushaComradeCode() {
         return riyoushaComradeCode;
     }
 
@@ -100,7 +100,7 @@ public class RiyoushaComradeAccessEntity implements Serializable, AllTabeDataHis
      *
      * @param riyoushaComradeCode API接続続利用者コード
      */
-    public void setRiyoushaComradeCode(final String riyoushaComradeCode) {
+    public void setRiyoushaComradeCode(final Integer riyoushaComradeCode) {
         this.riyoushaComradeCode = riyoushaComradeCode;
     }
 

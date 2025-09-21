@@ -19,10 +19,10 @@ function recieveUser(user: UserPersonLeastInterface) {
 
     <h2>全ユーザ共通メニュー</h2>
 
-    <RouterLink to="/user/reflesh-password">パスワード更新</RouterLink><br>
-    <RouterLink to="/user/edit">ユーザ編集</RouterLink><br>
-    <RouterLink to="/user/change-role">権限変更</RouterLink><br>
-    <RouterLink to="/user/withdraw">退会</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REFLESH_PASSWORD>パスワード更新</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_EDIT>ユーザ編集</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_CHANGE_ROLE>権限変更</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_WITHDRAW>退会</RouterLink><br>
 
     <hr>
     <h3>マスタ・履歴ダウンロード(公開文書記載水準)</h3>

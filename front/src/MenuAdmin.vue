@@ -21,9 +21,9 @@ function recieveUser(user: UserPersonLeastInterface) {
 
     <h2>SE権限用メニュー</h2>
 
-    <RouterLink to="/user/delete">ユーザ削除</RouterLink><br>
-    <RouterLink to="/user/change">ユーザ編集</RouterLink><br>
-    <RouterLink to="/user/promote-role">管理者からSE権限へ引き上げ</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_DELETE>ユーザ削除</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_USER_CHANGE>ユーザ編集</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_PROMOTE_ROLE>管理者からSE権限へ引き上げ</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
 

@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { computed, ref, toRaw, type ComputedRef, type Ref } from 'vue';
+import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import SearchCorpNo from '../search_corp_no/SearchCorpNo.vue';
 import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
@@ -47,7 +47,7 @@ function sendAllShokugyou() {
                     inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + "業役職者(社名記載拒否)";
                     emits("sendInputShokugyouInterface", inputShokugyouDto.value);
                 } else {
-                    inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu +"業:"+ inputShokugyouDto.value.corpName + "(" + inputShokugyouDto.value.corpAddress + ")" + "役員";
+                    inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + "業:" + inputShokugyouDto.value.corpName + "(" + inputShokugyouDto.value.corpAddress + ")" + "役員";
                     emits("sendInputShokugyouInterface", inputShokugyouDto.value);
                 }
             }

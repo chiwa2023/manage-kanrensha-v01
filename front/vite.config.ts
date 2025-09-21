@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     host: false,
     port: 5273
-  }
+  },
+  base:'/manage-kanrensha'
 })

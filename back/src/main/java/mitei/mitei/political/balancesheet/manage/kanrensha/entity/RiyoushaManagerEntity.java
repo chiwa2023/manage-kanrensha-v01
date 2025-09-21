@@ -39,25 +39,25 @@ public class RiyoushaManagerEntity implements Serializable, AllTabeDataHistoryIn
     /** 利用者運営者Id */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "riyoushar_manager_id")
-    private Integer riyousharManagerId = INIT_Integer;
+    @Column(name = "riyousha_manager_id")
+    private Integer riyoushaManagerId = INIT_Integer;
 
     /**
      * 利用者運営者Idを取得する
      *
      * @return 利用者運営者Id
      */
-    public Integer getRiyousharManagerId() {
-        return riyousharManagerId;
+    public Integer getRiyoushaManagerId() {
+        return riyoushaManagerId;
     }
 
     /**
      * 利用者運営者Idを設定する
      *
-     * @param riyousharManagerId 利用者運営者Id
+     * @param riyoushaManagerId 利用者運営者Id
      */
-    public void setRiyousharManagerId(final Integer riyousharManagerId) {
-        this.riyousharManagerId = riyousharManagerId;
+    public void setRiyoushaManagerId(final Integer riyoushaManagerId) {
+        this.riyoushaManagerId = riyoushaManagerId;
     }
 
     /** 利用者運営者コード */

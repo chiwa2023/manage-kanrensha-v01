@@ -4,6 +4,7 @@ import InputAddressDto from "../Input_address/inputAddressDto";
 import InputOrgNameDto from '../../dto/input_org_name/inputOrgNameDto';
 import type InputPersonNameInterface from '../../dto/input_person_name/inputPersonNameDto';
 import InputPersonNameDto from '../../dto/input_person_name/inputPersonNameDto';
+import type RiyoushaComradeInterface from "../../entity/riyoushaComradeEntity";
 
 export default interface RiyoushaComradeInerface {
 
@@ -40,6 +41,18 @@ export default class RiyoushaComradeDto implements RiyoushaComradeInerface {
     /** 連絡先入力 */
     inputAccessDto: InputAccessInterface;
 
+    /** 連絡先テーブルId */
+    accessId: number;
+
+    /** 住所テーブルId */
+    addressId: number;
+
+    /** 名称テーブルId */
+    nameId: number;
+
+    /** 組織所属員リスト */
+    listPerson:RiyoushaComradeInterface[];
+
     constructor() {
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
@@ -54,6 +67,12 @@ export default class RiyoushaComradeDto implements RiyoushaComradeInerface {
         this.inputPersonNameDto = new InputPersonNameDto();
         this.inputAddressDto = new InputAddressDto();
         this.inputAccessDto = new InputAccessDto();
+
+        this.accessId = INIT_NUMBER;
+        this.addressId = INIT_NUMBER;
+        this.nameId = INIT_NUMBER;
+
+        this.listPerson = [];
     }
 
 }

@@ -5,6 +5,7 @@ import NewComerDto from '../../../dto/user/newComerDto';
 import { ref, type Ref } from 'vue';
 import type LoginUserResultInterface from '../../../dto/login/loginUserResultDto';
 import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
 
 // 入力用Dto
 const sessionStorage = window["sessionStorage"];
@@ -36,17 +37,17 @@ function onRegistUser() {
                 switch (newComer.value.role) {
                     case "manager":
                         // 管理者
-                        router.push("/input-manager");
+                        router.push(RoutePathConstants.PAGE_INPUT_MANAGER);
                         break;
                     case "comrade":
                         // APIユーザ
-                        router.push("/input-comrade");
+                        router.push(RoutePathConstants.PAGE_INPUT_COMRADE);
                         break;
                     case "partner_person":
                     case "partner_corp":
                     case "partner_poli_org":
                         // 関連者
-                        router.push("/input-kanrensha");
+                        router.push(RoutePathConstants.PAGE_INPUT_KANRENSHA);
                         break;
                     default:
                         alert("権限設定が登録できませんでした");

@@ -38,6 +38,15 @@ export default class RiyoushaManagerDto implements RiyoushaManagerInterface {
     /** 連絡先入力 */
     inputAccessDto: InputAccessInterface;
 
+    /** 連絡先テーブルId */
+    accessId: number;
+
+    /** 住所テーブルId */
+    addressId: number;
+
+    /** 名称テーブルId */
+    nameId: number;
+
     constructor() {
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
@@ -52,6 +61,11 @@ export default class RiyoushaManagerDto implements RiyoushaManagerInterface {
         this.inputPersonNameDto = new InputPersonNameDto();
         this.inputAddressDto = new InputAddressDto();
         this.inputAccessDto = new InputAccessDto();
+
+        this.accessId = INIT_NUMBER;
+        this.addressId = INIT_NUMBER;
+        this.nameId = INIT_NUMBER;
+
     }
 
 }

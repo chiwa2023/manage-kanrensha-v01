@@ -58,6 +58,9 @@ function recieveUser(user: UserPersonLeastInterface) {
     <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>差分関連者マスタ標準データダウンロード</RouterLink><br>
 
     <hr>
+    <RouterLink :to="RoutePathConstants.PAGE_COMBINE_MANAGER">個人と組織の紐づけ</RouterLink><br>
+
+    <hr>
     <RouterLink to="/">ログインページ</RouterLink><br>
 
 </template>

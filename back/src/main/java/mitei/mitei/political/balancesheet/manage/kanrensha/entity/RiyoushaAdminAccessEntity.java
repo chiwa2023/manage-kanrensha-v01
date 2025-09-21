@@ -85,14 +85,14 @@ public class RiyoushaAdminAccessEntity  implements Serializable,AllTabeDataHisto
 
     /** API接続続利用者コード */
     @Column(name = "riyousha_admin_code")
-    private String riyoushaAdminCode = INIT_String;
+    private Integer riyoushaAdminCode = INIT_Integer;
 
     /**
      * API接続続利用者コードを取得する
      *
      * @return API接続続利用者コード
      */
-    public String getRiyoushaAdminCode() {
+    public Integer getRiyoushaAdminCode() {
         return riyoushaAdminCode;
     }
 
@@ -101,7 +101,7 @@ public class RiyoushaAdminAccessEntity  implements Serializable,AllTabeDataHisto
      *
      * @param riyoushaAdminCode API接続続利用者コード
      */
-    public void setRiyoushaAdminCode(final String riyoushaAdminCode) {
+    public void setRiyoushaAdminCode(final Integer riyoushaAdminCode) {
         this.riyoushaAdminCode = riyoushaAdminCode;
     }
 

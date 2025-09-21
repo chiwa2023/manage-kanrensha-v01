@@ -133,7 +133,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
             disabled="true">
     </div>
     <div class="clear-both"></div>
-
+    <!-- 電話番号は連絡先に移行
     <div class="left-area">
         電話番号
     </div>
@@ -143,6 +143,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
         <input v-model="inputAddressDto.tel3" type="text" class="code-input" disabled="true">
     </div>
     <div class="clear-both"></div>
+    -->
 
     <div v-if="isInput" class="overBackground"></div>
     <div v-if="isInput">

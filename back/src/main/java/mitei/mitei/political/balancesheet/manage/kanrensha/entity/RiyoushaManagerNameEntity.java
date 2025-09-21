@@ -84,14 +84,14 @@ public class RiyoushaManagerNameEntity implements Serializable, AllTabeDataHisto
 
     /** 利用者管理者コード */
     @Column(name = "riyousha_manager_code")
-    private String riyoushaManagerCode = INIT_String;
+    private Integer riyoushaManagerCode = INIT_Integer;
 
     /**
      * 利用者管理者コードを取得する
      *
      * @return 利用者管理者コード
      */
-    public String getRiyoushaManagerCode() {
+    public Integer getRiyoushaManagerCode() {
         return riyoushaManagerCode;
     }
 
@@ -100,7 +100,7 @@ public class RiyoushaManagerNameEntity implements Serializable, AllTabeDataHisto
      *
      * @param riyoushaManagerCode 利用者管理者コード
      */
-    public void setRiyoushaManagerCode(final String riyoushaManagerCode) {
+    public void setRiyoushaManagerCode(final Integer riyoushaManagerCode) {
         this.riyoushaManagerCode = riyoushaManagerCode;
     }
 

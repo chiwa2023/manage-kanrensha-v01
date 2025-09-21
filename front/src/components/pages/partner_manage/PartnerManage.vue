@@ -31,8 +31,8 @@ import type GetKanrenshaCorpResultInterface from '../../../dto/kanrensha/getKanr
 
 // よく使う定数
 const BLANK: string = "";
-const SERVWER_STATUS_OK: number = 200;
-// const SERVWER_STATUS_ERROR: number = 400;
+const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
 
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
@@ -66,7 +66,7 @@ function recievePersonNoInterface(sendDto: MasterPersonInterface) {
                 .then(async (response) => {
                     // 結果を受け取ってメッセージ表示
                     const resultDto: GetKanrenshaPersonResultInterface = await response.json();
-                    if (SERVWER_STATUS_OK === response.status) {
+                    if (SERVER_STATUS_OK === response.status) {
                         inputPersonDto.value = structuredClone(toRaw(resultDto.kanrenshaPersonDto));
                         isEditNew.value = false;
                     } else {
@@ -101,7 +101,7 @@ function recievePoliOrgNoInterface(sendDto: MasterPoliticalOrganizationInterface
                 .then(async (response) => {
                     // 結果を受け取ってメッセージ表示
                     const resultDto: GetKanrenshaPoliOrgResultInterface = await response.json();
-                    if (SERVWER_STATUS_OK === response.status) {
+                    if (SERVER_STATUS_OK === response.status) {
                         inputPoliOrgDto.value = structuredClone(toRaw(resultDto.kanrenshaPoliOrgDto));
                         isEditNew.value = false;
                     } else {
@@ -138,7 +138,7 @@ function recieveCorpCoInterface(sendDto: MasterCorporationInterface) {
                 .then(async (response) => {
                     // 結果を受け取ってメッセージ表示
                     const resultDto: GetKanrenshaCorpResultInterface = await response.json();
-                    if (SERVWER_STATUS_OK === response.status) {
+                    if (SERVER_STATUS_OK === response.status) {
                         inputCorpNoDto.value = structuredClone(toRaw(resultDto.kanrenshaCorpDto));
                         isEditNew.value = false;
                     } else {

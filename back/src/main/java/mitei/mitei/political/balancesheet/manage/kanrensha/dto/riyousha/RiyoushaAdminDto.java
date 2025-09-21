@@ -192,4 +192,66 @@ public class RiyoushaAdminDto implements Serializable { // NOPMD DataClass
         this.inputAccessDto = inputAccessDto;
     }
 
+    /** 連絡先テーブルId */
+    private Integer accessId = INIT_Integer;
+
+    /** 住所テーブルId */
+    private Integer addressId = INIT_Integer;
+
+    /** 名称テーブルId */
+    private Integer nameId = INIT_Integer;
+
+    /**
+     * 連絡先テーブルIdを取得する
+     *
+     * @return 連絡先テーブルId
+     */
+    public Integer getAccessId() {
+        return accessId;
+    }
+
+    /**
+     * 連絡先テーブルIdを設定する
+     *
+     * @param accessId 連絡先テーブルId
+     */
+    public void setAccessId(final Integer accessId) {
+        this.accessId = accessId;
+    }
+
+    /**
+     * 住所テーブルIdを取得する
+     *
+     * @return 住所テーブルId
+     */
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    /**
+     * 住所テーブルIdを設定する
+     *
+     * @param addressId 住所テーブルId
+     */
+    public void setAddressId(final Integer addressId) {
+        this.addressId = addressId;
+    }
+
+    /**
+     * 名称テーブルIdを取得する
+     *
+     * @return 名称テーブルId
+     */
+    public Integer getNameId() {
+        return nameId;
+    }
+
+    /**
+     * 名称テーブルIdを設定する
+     *
+     * @param nameId 名称テーブルId
+     */
+    public void setNameId(final Integer nameId) {
+        this.nameId = nameId;
+    }
 }

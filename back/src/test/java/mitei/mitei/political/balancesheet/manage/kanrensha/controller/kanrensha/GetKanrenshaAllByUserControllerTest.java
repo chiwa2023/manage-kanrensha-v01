@@ -37,7 +37,6 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapper
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class GetKanrenshaAllByUserControllerTest {
 
-
     /** MockMvc */
     @Autowired
     private MockMvc mockMvc;
@@ -47,15 +46,14 @@ class GetKanrenshaAllByUserControllerTest {
     @Transactional
     @WithMockUser
     @Sql("../../service/kanrensha/GetKanrenshaAllByUserServiceTest.sql")
-    void test()throws Exception {
-        
+    void test() throws Exception {
+
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         userDto.getListRoles().add(UserRoleConstants.ROLE_PARTNER_PERSON);
 
         FrameworkCapsuleDto capsuleDto = new FrameworkCapsuleDto();
         capsuleDto.setUserPersonLeastDto(userDto);
-        
-        
+
         ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
 
         String path = "/user-kanrensha/get-by-user";

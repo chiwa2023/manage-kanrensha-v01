@@ -25,8 +25,8 @@ const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => props.ed
 
 // よく使う定数
 const BLANK: string = "";
-// const SERVWER_STATUS_OK: number = 200;
-// const SERVWER_STATUS_ERROR: number = 400;
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
 
 /**
  *住所編集受信

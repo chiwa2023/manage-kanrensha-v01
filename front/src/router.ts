@@ -73,24 +73,33 @@ const routes = [
     { path: RoutePathConstants.PAGE_MENU_ALL_USER, name: "MenuAllUser", component: () => import("./MenuAllUser.vue") },
 
     // 新規アカウント作成
-    { path: "/add-account", name: "AddAccountMenu", component: () => import("./components/pages/add_account/AddAccountMenu.vue") },
-    { path: "/send-access-code", name: "SendAccessCode", component: () => import("./components/pages/add_account/SendAccessCode.vue") },
-    { path: "/switch-user-kbn", name: "SwitchNewUserKbn", component: () => import("./components/pages/add_account/SwitchNewUserKbn.vue") },
-    { path: "/input-kanrensha", name: "InputKanrensha", component: () => import("./components/pages/add_account/InputKanrensha.vue") },
-    { path: "/input-comrade", name: "InputComrade", component: () => import("./components/pages/add_account/InputComrade.vue") },
-    { path: "/input-manager", name: "InputManager", component: () => import("./components/pages/add_account/InputManager.vue") },
+    { path: RoutePathConstants.PAGE_ADD_ACCOUNT, name: "AddAccountMenu", component: () => import("./components/pages/add_account/AddAccountMenu.vue") },
+    { path: RoutePathConstants.PAGE_SEND_ACCESS_CODE, name: "SendAccessCode", component: () => import("./components/pages/add_account/SendAccessCode.vue") },
+    { path: RoutePathConstants.PAGE_SWITCH_USER_KBN, name: "SwitchNewUserKbn", component: () => import("./components/pages/add_account/SwitchNewUserKbn.vue") },
+    { path: RoutePathConstants.PAGE_INPUT_KANRENSHA, name: "InputKanrensha", component: () => import("./components/pages/add_account/InputKanrensha.vue") },
+    { path: RoutePathConstants.PAGE_INPUT_COMRADE, name: "InputComrade", component: () => import("./components/pages/add_account/InputComrade.vue") },
+    { path: RoutePathConstants.PAGE_INPUT_MANAGER, name: "InputManager", component: () => import("./components/pages/add_account/InputManager.vue") },
 
     // ユーザ編集
-    { path: "/user/change", name: "ChangeUser", component: () => import("./components/pages/user_regist/ChangeUser.vue") },
-    { path: "/user/delete", name: "DeleteUser", component: () => import("./components/pages/user_regist/DeleteUser.vue") },
-    { path: "/user/edit", name: "EditUser", component: () => import("./components/pages/user_regist/EditUser.vue") },
-    { path: "/user/change-role", name: "ChangeRole", component: () => import("./components/pages/user_regist/ChangeRole.vue") },
-    { path: "/user/promote-role", name: "PromoteAdmin", component: () => import("./components/pages/user_regist/PromoteAdmin.vue") },
-    { path: "/user/reflesh-password", name: "RefleshPassword", component: () => import("./components/pages/user_regist/RefleshPassword.vue") },
-    { path: "/user/withdraw", name: "WithdrawUser", component: () => import("./components/pages/user_regist/WithdrawUser.vue") },
+    { path: RoutePathConstants.PAGE_USER_CHANGE, name: "ChangeUser", component: () => import("./components/pages/user_regist/ChangeUser.vue") },
+    { path: RoutePathConstants.PAGE_USER_DELETE, name: "DeleteUser", component: () => import("./components/pages/user_regist/DeleteUser.vue") },
+    { path: RoutePathConstants.PAGE_USER_EDIT, name: "EditUser", component: () => import("./components/pages/user_regist/EditUser.vue") },
+    { path: RoutePathConstants.PAGE_CHANGE_ROLE, name: "ChangeRole", component: () => import("./components/pages/user_regist/ChangeRole.vue") },
+    { path: RoutePathConstants.PAGE_PROMOTE_ROLE, name: "PromoteAdmin", component: () => import("./components/pages/user_regist/PromoteAdmin.vue") },
+    { path: RoutePathConstants.PAGE_REFLESH_PASSWORD, name: "RefleshPassword", component: () => import("./components/pages/user_regist/RefleshPassword.vue") },
+    { path: RoutePathConstants.PAGE_USER_WITHDRAW, name: "WithdrawUser", component: () => import("./components/pages/user_regist/WithdrawUser.vue") },
 
     // 利用者検索編集
     { path: RoutePathConstants.PAGE_SEARCH_RIYOUSHA, name: "SearchEditRiyousha", component: () => import("./components/pages/search_edit_riyousha/SearchEditRiyousha.vue") },
+
+    // 利用者紐づけ
+    { path: RoutePathConstants.PAGE_COMBINE_COMRADE, name: "CombineComrade", component: () => import("./components/pages/combine_riyousha/CombineComrade.vue") },
+    { path: RoutePathConstants.PAGE_COMBINE_MANAGER, name: "CombineManager", component: () => import("./components/pages/combine_riyousha/CombineManager.vue") },
+
+
+    // 利用者検索編集
+    { path: RoutePathConstants.PAGE_EDIT_COMRADE, name: "EditComrade", component: () => import("./components/pages/comrade_regist/EditComrade.vue") },
+
 
     // TODO 開発終了時に削除する コンポーネント台紙
     { path: "/component", name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },

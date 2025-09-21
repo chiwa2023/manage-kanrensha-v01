@@ -84,25 +84,25 @@ public class RiyoushaManagerAddressEntity  implements Serializable,AllTabeDataHi
     }
 
     /** 利用者運営者コード */
-    @Column(name = "riyoushar_manager_code")
-    private String riyousharManagerCode = INIT_String;
+    @Column(name = "riyousha_manager_code")
+    private Integer riyoushaManagerCode = INIT_Integer;
 
     /**
      * 利用者運営者コードを取得する
      *
      * @return 利用者運営者コード
      */
-    public String getRiyousharManagerCode() {
-        return riyousharManagerCode;
+    public Integer getRiyoushaManagerCode() {
+        return riyoushaManagerCode;
     }
 
     /**
      * 利用者運営者コードを設定する
      *
-     * @param riyousharManagerCode 利用者運営者コード
+     * @param riyoushaManagerCode 利用者運営者コード
      */
-    public void setRiyousharManagerCode(final String riyousharManagerCode) {
-        this.riyousharManagerCode = riyousharManagerCode;
+    public void setRiyoushaManagerCode(final Integer riyoushaManagerCode) {
+        this.riyoushaManagerCode = riyoushaManagerCode;
     }
 
     /** 利用者運営者名称 */

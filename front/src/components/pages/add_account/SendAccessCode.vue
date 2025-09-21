@@ -4,6 +4,7 @@ import type NewComerInterface from '../../../dto/user/newComerDto';
 import NewComerDto from '../../../dto/user/newComerDto';
 import router from '../../../router';
 import NewComerInfo from '../../common/user_info/NewComerInfo.vue';
+import RoutePathConstants from '../../../routePathConstants';
 
 const sessionStorage = window["sessionStorage"];
 const newComer: Ref<NewComerInterface> = ref(new NewComerDto());
@@ -33,7 +34,7 @@ function onCheckSendCode() {
                 if (resultDto.isSuccess) {
                 sessionStorage.setItem("new-comer", JSON.stringify(resultDto));
                     alert("コードチェックができました");
-                    router.push("/switch-user-kbn");
+                    router.push(RoutePathConstants.PAGE_SWITCH_USER_KBN);
                 } else {
                     alert(resultDto.message);
                 }

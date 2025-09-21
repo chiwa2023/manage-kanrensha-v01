@@ -279,7 +279,7 @@ function onSave() {
                 disabled="true">
         </div>
         <div class="clear-both"></div>
-
+        <!--　電話番号は連絡先移行
         <div class="left-area">
             電話番号
         </div>
@@ -289,6 +289,7 @@ function onSave() {
             <input v-model="inputAddressDto.tel3" type="text" class="code-input">
         </div>
         <div class="clear-both"></div>
+        -->
     </div>
 
     <div class="footer">
