@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import {  ref, type  Ref } from 'vue';
+import { ref, watch, type Ref } from 'vue';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import type RiyoushaManagerDtoInterface from '../../../dto/riyousha/riyoushaManagerDto';
 import RiyoushaManagerDto from '../../../dto/riyousha/riyoushaManagerDto';
@@ -18,6 +18,8 @@ import ViewInputPersonName from '../input_person_name/ViewInputPersonName.vue';
 import InputOrgName from '../input_org_name/InputOrgName.vue';
 import ViewInputAddress from '../input_address/ViewInputAddress.vue';
 import InputAccess from '../input_access/InputAccess.vue';
+import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
 
 // よく使う定数
 // const BLANK: string = "";
@@ -28,37 +30,46 @@ const SERVER_STATUS_OK: number = 200;
 const props = defineProps<{ baseEntity: RiyoushaManagerEntityInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
 
 const inputManagerDto: Ref<RiyoushaManagerDtoInterface> = ref(new RiyoushaManagerDto());
-// const isNotOrgRadio: ComputedRef<string> = computed(() => inputManagerDto.value.isNotOrg ? "1" : "0");
+inputManagerDto.value.isNotOrg = props.baseEntity.isNotOrg;
 
+watch(props, () => {
+    // リストからの変更
+    onChangeEntity();
+});
 
-if (props.baseEntity.riyousharManagerId != 0) {
-    const capsuleDto: GetRiyoushaManagerCapsuleInterface = new GetRiyoushaManagerCapsuleDto();
-    capsuleDto.riyoushaManagerEntity = props.baseEntity;
-    capsuleDto.userPersonLeastDto = props.userDto;
+// 起動時
+onChangeEntity();
 
-    getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/get-manager";
-        const method = "POST";
-        const body = JSON.stringify(capsuleDto);
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-AUTH-TOKEN': 'Bearer ' + token
-        };
-        fetch(url, { method, headers, body })
-            .then(async (response) => {
-                const resultDto: GetRiyoushaManagerResultInterface = await response.json();
-                if (SERVER_STATUS_OK === response.status) {
-                    inputManagerDto.value = resultDto.riyoushaManagerDto;
-                } else {
-                    alert(resultDto.message);
-                }
-            })
-            .catch((error) => { alert(error); });
-    });
+function onChangeEntity() {
+    if (props.baseEntity.riyoushaManagerId != 0) {
+        const capsuleDto: GetRiyoushaManagerCapsuleInterface = new GetRiyoushaManagerCapsuleDto();
+        capsuleDto.riyoushaManagerEntity = props.baseEntity;
+        capsuleDto.userPersonLeastDto = props.userDto;
+
+        getAuthorizedPromiseArea().then(token => {
+            const url = "http://localhost:6080/user-riyousha/get-manager";
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    const resultDto: GetRiyoushaManagerResultInterface = await response.json();
+                    if (SERVER_STATUS_OK === response.status) {
+                        inputManagerDto.value = resultDto.riyoushaManagerDto;
+                    } else {
+                        alert(resultDto.message);
+                    }
+                })
+                .catch((error) => { alert(error); });
+        });
+    }
 }
 
-
+const isRecordOrg: Ref<boolean> = ref(false);
 
 function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
     inputManagerDto.value.inputPersonNameDto = sendDto;
@@ -100,6 +111,13 @@ function onSave() {
             .then(async (response) => {
                 const resultDto: FrameworkMessageAndResultInterface = await response.json();
                 alert(resultDto.message);
+                if (isRecordOrg.value) {
+                    // 組織登録 
+                    router.push(RoutePathConstants.PAGE_COMBINE_MANAGER);
+                } else {
+                    // 引き続き組織を登録しない場合はメニューに戻る
+                    router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+                }
             })
             .catch((error) => { alert(error); });
     });
@@ -113,11 +131,12 @@ function onSave() {
         個人／団体
     </div>
     <div class="right-area">
-        <span><input type="radio" v-model="inputManagerDto.isNotOrg" :value="1" :disabled=!isEditNew>個人</span>
-        <span class="left-space"><input type="radio" v-model="inputManagerDto.isNotOrg" :value="0" :disabled=!isEditNew> 団体</span>
+        <span><input type="radio" v-model="inputManagerDto.isNotOrg" :value="true" :disabled="true">個人</span>
+        <span class="left-space"><input type="radio" v-model="inputManagerDto.isNotOrg" :value="false" :disabled="true">
+            団体</span>
         <div v-if="props.isEditNew">
             <br>
-            <input type="checkbox">次のページで自分の所属団体を別に登録したい場合はチェックを入れる
+            <input v-model="isRecordOrg" type="checkbox">次のページで自分の所属団体を別に登録したい場合はチェックを入れる
         </div>
     </div>
     <div class="clear-both"><br></div>
@@ -133,13 +152,16 @@ function onSave() {
         <InputOrgName :edit-dto="inputManagerDto.inputOrgNameDto" :is-raise-edit-view="true"
             @send-input-person-name-interface="recieveInputOrgNameInterface"></InputOrgName>
     </div>
+    <div class="clear-both"><br></div>
 
     <!-- 住所 -->
     <ViewInputAddress :edit-dto="inputManagerDto.inputAddressDto" :is-raise-edit-view="true"
         @send-input-address-interface="recieveInputAddressInterface"></ViewInputAddress>
+    <div class="clear-both"><br></div>
 
     <!-- 連絡先 -->
     <InputAccess :edit-dto="inputManagerDto.inputAccessDto"></InputAccess>
+    <div class="clear-both"><br></div>
 
     <hr>
     <div class="footer">

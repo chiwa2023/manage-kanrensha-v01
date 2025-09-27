@@ -10,11 +10,6 @@ export default interface RiyoushaComradeInerface {
 
 }
 
-
-
-
-
-
 export default class RiyoushaComradeDto implements RiyoushaComradeInerface {
     /** API接続利用者Id */
     riyoushaComradeId: number;
@@ -24,7 +19,6 @@ export default class RiyoushaComradeDto implements RiyoushaComradeInerface {
 
     /** API接続利用者名称 */
     riyoushaComradeName: string;
-
 
     /** 組織非該当 */
     isNotOrg: boolean;
@@ -51,7 +45,7 @@ export default class RiyoushaComradeDto implements RiyoushaComradeInerface {
     nameId: number;
 
     /** 組織所属員リスト */
-    listPerson:RiyoushaComradeInterface[];
+    listPerson: RiyoushaComradeInterface[];
 
     constructor() {
         const INIT_NUMBER: number = 0;

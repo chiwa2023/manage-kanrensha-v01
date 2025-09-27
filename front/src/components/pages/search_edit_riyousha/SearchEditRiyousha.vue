@@ -51,7 +51,7 @@ function onEditComrade(id: number) {
 
 function onEditManager(id: number) {
     viewStatus.value = UserRoleConstants.ROLE_MANAGER;
-    inputManagerEntity.value = resultDto.value.listManager.filter((e) => id === e.riyousharManagerId)[0];
+    inputManagerEntity.value = resultDto.value.listManager.filter((e) => id === e.riyoushaManagerId)[0];
 }
 
 function onEditAdmin(id: number) {
@@ -115,10 +115,10 @@ function getOrgLabel(isNotOrg: boolean) {
                 <th>姓名・名称</th>
                 <th>&nbsp;</th>
             </tr>
-            <tr v-for="entity of resultDto.listManager" :key="entity.riyousharManagerId">
+            <tr v-for="entity of resultDto.listManager" :key="entity.riyoushaManagerId">
                 <td>{{ getOrgLabel(entity.isNotOrg) }}</td>
                 <td>({{ entity.riyoushaManagerCode }}) <br> {{ entity.riyoushaManagerName }}</td>
-                <td><button @click="onEditManager(entity.riyousharManagerId)">編集</button></td>
+                <td><button @click="onEditManager(entity.riyoushaManagerId)">編集</button></td>
             </tr>
         </tbody>
     </table>

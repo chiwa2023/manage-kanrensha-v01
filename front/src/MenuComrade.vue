@@ -22,10 +22,12 @@ function recieveUser(user: UserPersonLeastInterface) {
     <a href="#">Bearer更新</a><br>
 
     <RouterLink :to=RoutePathConstants.PAGE_EDIT_COMRADE>所属組織編集(登録)</RouterLink><br>
-    <RouterLink to="#">個人と組織の紐づけ</RouterLink><br>
+    <!--
+        <RouterLink to="#">個人と組織の紐づけ</RouterLink><br>
 
-    <RouterLink to="#">APIユーザ個人招待</RouterLink><br>
-    <RouterLink to="#">個人と組織紐づけ承認</RouterLink><br>
+        <RouterLink to="#">APIユーザ個人招待</RouterLink><br>
+    -->
+    <RouterLink :to=RoutePathConstants.PAGE_ACCEPT_COMRADE_PERSON>個人と組織紐づけ承認</RouterLink><br>
 
     <hr>
     <RouterLink :to="RoutePathConstants.PAGE_LOGIN">ログインページ</RouterLink><br>

@@ -1,20 +1,25 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.service.riyousha;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.SelectOptionIntegerDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.riyousha.PickupOrgSelectOptionResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUserForTestUtil;
 
 /**
@@ -24,24 +29,50 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUser
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+@Sql("PickupRiyoushaOrgOptionComradeServiceTest.sql")
 class PickupRiyoushaOrgOptionComradeServiceTest {
+    // CHECKSTYLE:OFF MagicNumber
 
     /** テスト対象 */
     @Autowired
     private PickupRiyoushaOrgOptionComradeService pickupRiyoushaOrgOptionComradeService;
 
     @Test
-    void test() throws Exception {
+    @Tag("TableTruncate")
+    void testNew() throws Exception {
 
         PickupOrgSelectOptionResultDto resultDto = pickupRiyoushaOrgOptionComradeService
                 .practice(CreateLeastUserForTestUtil.practice());
 
         List<SelectOptionIntegerDto> list = resultDto.getListOrgOptions();
-        System.out.println(list.size());
+        assertEquals(1, list.size());
+        assertEquals("新規追加", list.get(0).getText());
+    }
 
-        System.out.println(list.get(0).getText());
+    @Test
+    @Tag("TableTruncate")
+    void testMulti() throws Exception {
 
-        fail("Not yet implemented");
+        UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
+        userDto.setUserPersonCode(813);
+
+        PickupOrgSelectOptionResultDto resultDto = pickupRiyoushaOrgOptionComradeService.practice(userDto);
+
+        List<SelectOptionIntegerDto> list = resultDto.getListOrgOptions();
+        assertEquals(2, list.size());
+        assertEquals(323, list.get(0).getValue());
+        assertEquals(431, list.get(1).getValue());
+    }
+
+    @Test
+    @Tag("TableTruncate")
+    void testNotCallUser() throws Exception {
+
+        UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
+        userDto.setUserPersonCode(643);
+
+        assertThrows(EmptyResultDataAccessException.class,
+                () -> pickupRiyoushaOrgOptionComradeService.practice(userDto));
     }
 
 }

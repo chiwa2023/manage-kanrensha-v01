@@ -122,7 +122,6 @@ function onSave() {
                 } else {
                     // 引き続き組織を登録しない場合はメニューに戻る
                     router.push(RoutePathConstants.PAGE_MENU_COMRADE);
-
                 }
             })
             .catch((error) => { alert(error); });

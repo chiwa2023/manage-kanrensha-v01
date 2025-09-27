@@ -3,6 +3,7 @@ import { ref, type Ref } from 'vue';
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import RiyoushaComradeOrgEdit from '../../common/riyousha_comrade_edit/RiyoushaComradeOrgEdit.vue';
+import ComradeInfo from '../../common/user_info/ComradeInfo.vue';
 
 // ユーザメニューで取得したユーザを保持
 const sessionStorage = window["sessionStorage"];

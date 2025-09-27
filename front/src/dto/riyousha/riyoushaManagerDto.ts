@@ -4,6 +4,7 @@ import InputAddressDto from "../Input_address/inputAddressDto";
 import InputOrgNameDto from '../../dto/input_org_name/inputOrgNameDto';
 import type InputPersonNameInterface from '../../dto/input_person_name/inputPersonNameDto';
 import InputPersonNameDto from '../../dto/input_person_name/inputPersonNameDto';
+import type RiyoushaManagerEntityInterface from "../../entity/riyoushaManagerEntity";
 
 export default interface RiyoushaManagerInterface {
 
@@ -14,7 +15,7 @@ export default class RiyoushaManagerDto implements RiyoushaManagerInterface {
 
 
     /** 利用者運営者Id */
-    riyousharManagerId: number;
+    riyoushaManagerId: number;
 
     /** 利用者運営者コード */
     riyoushaManagerCode: number;
@@ -47,12 +48,15 @@ export default class RiyoushaManagerDto implements RiyoushaManagerInterface {
     /** 名称テーブルId */
     nameId: number;
 
+    /** 組織所属員リスト */
+    listPerson: RiyoushaManagerEntityInterface[];
+
     constructor() {
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
         const INIT_BOOLEAN: boolean = false;
 
-        this.riyousharManagerId = INIT_NUMBER;
+        this.riyoushaManagerId = INIT_NUMBER;
         this.riyoushaManagerCode = INIT_NUMBER;
         this.riyoushaManagerName = INIT_STRING;
         this.isNotOrg = INIT_BOOLEAN;
@@ -66,6 +70,7 @@ export default class RiyoushaManagerDto implements RiyoushaManagerInterface {
         this.addressId = INIT_NUMBER;
         this.nameId = INIT_NUMBER;
 
+        this.listPerson = [];
     }
 
 }

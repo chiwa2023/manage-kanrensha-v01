@@ -163,6 +163,16 @@ function onDeletePerson(personId: number) {
 function getOrgLabel(isNotOrg: boolean) {
     return isNotOrg ? "個人" : "組織";
 }
+
+function onInviteDantai(){
+    // 現在選択中の組織をSessioStrageに保持してコード送信画面へ遷移
+    const sessionStorage = window["sessionStorage"];
+    const optionDto:SelectOptionNumberInterface = listOrgOptions.value.filter((e) => selectedOrg.value ===  e.value)[0];
+    sessionStorage.setItem("orgId", String(optionDto.value));
+    sessionStorage.setItem("orgName", String(optionDto.text));
+    router.push(RoutePathConstants.PAGE_INVITE_COMRADE_PERSON);
+}
+
 </script>
 <template>
     <h1>利用者APIユーザ組織編集</h1>
@@ -215,7 +225,7 @@ function getOrgLabel(isNotOrg: boolean) {
             </tbody>
         </table>
         <br>
-        <button :disabled="0 === selectedOrg">個人を組織に招待する</button>
+        <button :disabled="0 === selectedOrg" @click="onInviteDantai">個人を組織に招待する</button>
     </div>
     <div class="clear-both"><br></div>
 

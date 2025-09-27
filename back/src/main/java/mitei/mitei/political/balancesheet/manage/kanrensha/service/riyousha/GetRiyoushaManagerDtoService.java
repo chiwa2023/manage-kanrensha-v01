@@ -20,6 +20,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaManage
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerAccessRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerAddressRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerNameRepository;
+import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerRepository;
 
 /**
  * 運営者ユーザDtoを取得する
@@ -38,6 +39,10 @@ public class GetRiyoushaManagerDtoService {
     /** 運営者ユーザ名称Repository */
     @Autowired
     private RiyoushaManagerNameRepository riyoushaManagerNameRepository;
+
+    /** APIユーザユーザ名称Repository */
+    @Autowired
+    private RiyoushaManagerRepository riyoushaManagerRepository;
 
     /** 全角スペース */
     private static final String WIDE_SPACE = "　";
@@ -76,6 +81,11 @@ public class GetRiyoushaManagerDtoService {
             dto.setInputOrgNameDto(createInputOrgNameDto(nameEntity));
         }
         dto.setNameId(nameEntity.getRiyoushaManagerNameId());
+
+        // 組織の場合は紐づくユーザをリストアップ
+        if(!dto.getIsNotOrg()) {
+            dto.setListPerson(riyoushaManagerRepository.findCombinePerson(entity.getRiyoushaManagerCode()));
+        }
 
         return dto;
     }

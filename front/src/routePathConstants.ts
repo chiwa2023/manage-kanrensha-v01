@@ -128,7 +128,19 @@ export default class RoutePathConstants {
     /** ユーザ退会 */
     static readonly PAGE_USER_WITHDRAW: string = this.BASE_PATH + "/user/withdraw";
 
-        /** APIユーザ編集 */
+    /** APIユーザ編集 */
     static readonly PAGE_EDIT_COMRADE: string = this.BASE_PATH + "/edit-comrade";
+    /** 運営者編集 */
+    static readonly PAGE_EDIT_MANAGER: string = this.BASE_PATH + "/edit-manager";
+
+    /** APIユーザ組織に個人を招待 */
+    static readonly PAGE_INVITE_COMRADE_PERSON: string = this.BASE_PATH + "/invite-comrade";
+    /** APIユーザ組織に招待を個人が承認 */
+    static readonly PAGE_ACCEPT_COMRADE_PERSON: string = this.BASE_PATH + "/accept-comrade";
+
+    /** 運営者組織に個人を招待 */
+    static readonly PAGE_INVITE_MANAGER_PERSON: string = this.BASE_PATH + "/invite-manager";
+    /** 運営者組織に招待を個人が承認 */
+    static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
 
 }

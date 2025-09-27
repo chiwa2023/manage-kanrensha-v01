@@ -1,5 +1,7 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.service.riyousha;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
@@ -16,10 +18,12 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaManage
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaManagerAddressEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaManagerEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaManagerNameEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaOrgManagerEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.logic.user.InsertCombineUserRiyoushaLogic;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerAccessRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerAddressRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerRepository;
+import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaOrgManagerRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.repository.RiyoushaManagerNameRepository;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.ConvertPersonNameToAllNameUtil;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHistoryUtil;
@@ -45,6 +49,10 @@ public class SaveRiyoushaManagerEntityService {
     /** 利用者APIユーザ名称Respoitory */
     @Autowired
     private RiyoushaManagerNameRepository riyoushaManagerNameRepository;
+
+    /** 利用者APIユーザ組織個人紐づけRespoitory */
+    @Autowired
+    private RiyoushaOrgManagerRepository riyoushaOrgManagerRepository;
 
     /** テーブル履歴設定utility */
     @Autowired
@@ -120,6 +128,22 @@ public class SaveRiyoushaManagerEntityService {
             // TODO 他人が編集している可能性を考慮する
             insertCombineUserRiyoushaLogic.practcie(userDto.getUserPersonCode(), UserRoleConstants.ROLE_MANAGER, code, userDto);
         }
+
+        // 過去データを履歴にして新しいデータを追加
+        List<RiyoushaOrgManagerEntity> listOrgin = riyoushaOrgManagerRepository.findByRiyoushaOrgCodeAndIsLatest(
+                managerDto.getRiyoushaManagerCode(), SetTableDataHistoryUtil.INSERT_STATE);
+        for (RiyoushaOrgManagerEntity entityPerson : listOrgin) {
+            setTableDataHistoryUtil.practiceDelete(userDto, entityPerson);
+        }
+        riyoushaOrgManagerRepository.saveAll(listOrgin);
+
+        // リストを紐づけに変換してすべて保存
+        List<RiyoushaOrgManagerEntity> listOrgPerson = new ArrayList<>();
+
+        for (RiyoushaManagerEntity entityPerson : managerDto.getListPerson()) {
+            listOrgPerson.add(this.createOrgCombineEntity(entityPerson, code, userDto));
+        }
+        riyoushaOrgManagerRepository.saveAllAndFlush(listOrgPerson);
 
         return savedManagerEntity.getRiyoushaManagerId();
     }
@@ -202,6 +226,17 @@ public class SaveRiyoushaManagerEntityService {
         setTableDataHistoryUtil.practiceInsert(userDto, newNameEntity);
         return riyoushaManagerNameRepository.save(newNameEntity).getRiyoushaManagerNameId();
 
+    }
+
+    private RiyoushaOrgManagerEntity createOrgCombineEntity(final RiyoushaManagerEntity entityPerson,
+            final Integer code, final UserPersonLeastDto userDto) {
+        RiyoushaOrgManagerEntity entityCombine = new RiyoushaOrgManagerEntity();
+        entityCombine.setRiyoushaPersonCode(entityPerson.getRiyoushaManagerCode());
+        entityCombine.setRiyoushaOrgCode(code);
+        setTableDataHistoryUtil.practiceInsert(userDto, entityCombine);
+        entityCombine.setRiyoushaOrgManagerId(0);
+
+        return entityCombine;
     }
 
 }

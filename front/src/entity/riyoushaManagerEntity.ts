@@ -7,7 +7,7 @@ export default interface RiyoushaManagerInterface {
 export default class RiyoushaManagerEntity implements RiyoushaManagerInterface {
 
     /** 利用者運営者Id */
-    riyousharManagerId: number;
+    riyoushaManagerId: number;
 
     /** 利用者運営者コード */
     riyoushaManagerCode: number;
@@ -27,7 +27,7 @@ export default class RiyoushaManagerEntity implements RiyoushaManagerInterface {
         const INIT_STRING: string = "";
         const INIT_BOOLEAN: boolean = false;
 
-        this.riyousharManagerId = INIT_NUMBER;
+        this.riyoushaManagerId = INIT_NUMBER;
         this.riyoushaManagerCode = INIT_NUMBER;
         this.riyoushaManagerName = INIT_STRING;
         this.isLatest = INIT_BOOLEAN;

@@ -7,6 +7,7 @@ import java.util.List;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.SelectOptionIntegerDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaComradeEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaManagerEntity;
 
 /**
  * 利用者所属組織選択肢取得結果Dto
@@ -57,6 +58,27 @@ public class PickupOrgSelectOptionResultDto extends FrameworkMessageAndResultDto
      */
     public void setRiyoushaComradeEntity(final RiyoushaComradeEntity riyoushaComradeEntity) {
         this.riyoushaComradeEntity = riyoushaComradeEntity;
+    }
+
+    /** 呼び出し個人運営者Entity */
+    private RiyoushaManagerEntity riyoushaManagerEntity = new RiyoushaManagerEntity();
+
+    /**
+     * 呼び出し個人運営者Entityを取得する
+     *
+     * @return 呼び出し個人運営者Entity
+     */
+    public RiyoushaManagerEntity getRiyoushaManagerEntity() {
+        return riyoushaManagerEntity;
+    }
+
+    /**
+     * 呼び出し個人運営者Entityを設定する
+     *
+     * @param riyoushaManagerEntity 呼び出し個人運営者Entity
+     */
+    public void setRiyoushaManagerEntity(final RiyoushaManagerEntity riyoushaManagerEntity) {
+        this.riyoushaManagerEntity = riyoushaManagerEntity;
     }
 
 }

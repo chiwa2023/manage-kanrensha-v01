@@ -1,11 +1,14 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.dto.riyousha;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.address.InputAddressDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputAccessDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputOrgNameDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.input.InputPersonNameDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.RiyoushaManagerEntity;
 
 /**
  * ユーザ運営者Dto
@@ -254,4 +257,25 @@ public class RiyoushaManagerDto implements Serializable { // NOPMD DataClass
     public void setNameId(final Integer nameId) {
         this.nameId = nameId;
     }
+    /** 組織所属個人リスト */
+    private List<RiyoushaManagerEntity> listPerson = new ArrayList<>();
+
+    /**
+     * 組織所属個人リストを取得する
+     *
+     * @return 組織所属個人リスト
+     */
+    public List<RiyoushaManagerEntity> getListPerson() {
+        return listPerson;
+    }
+
+    /**
+     * 組織所属個人リストを設定する
+     *
+     * @param listPerson 組織所属個人リスト
+     */
+    public void setListPerson(final List<RiyoushaManagerEntity> listPerson) {
+        this.listPerson = listPerson;
+    }
+
 }

@@ -97,9 +97,18 @@ const routes = [
     { path: RoutePathConstants.PAGE_COMBINE_MANAGER, name: "CombineManager", component: () => import("./components/pages/combine_riyousha/CombineManager.vue") },
 
 
-    // 利用者検索編集
+    // 利用者APIユーザ編集
     { path: RoutePathConstants.PAGE_EDIT_COMRADE, name: "EditComrade", component: () => import("./components/pages/comrade_regist/EditComrade.vue") },
+    // 利用者運営者編集
+    { path: RoutePathConstants.PAGE_EDIT_MANAGER, name: "EditComrade", component: () => import("./components/pages/manager_regist/EditManager.vue") },
 
+    // APIユーザ組織個人紐づけ
+    { path: RoutePathConstants.PAGE_INVITE_COMRADE_PERSON, name: "InviteComradePerson", component: () => import("./components/pages/comrade_regist/InviteComradePerson.vue") },
+    { path: RoutePathConstants.PAGE_ACCEPT_COMRADE_PERSON, name: "AcceptComradePerson", component: () => import("./components/pages/comrade_regist/AcceptComradePerson.vue") },
+
+    // 運営者組織個人紐づけ
+    { path: RoutePathConstants.PAGE_INVITE_MANAGER_PERSON, name: "InviteManagerPerson", component: () => import("./components/pages/manager_regist/InviteManagerPerson.vue") },
+    { path: RoutePathConstants.PAGE_ACCEPT_MANAGER_PERSON, name: "AcceptManagerPerson", component: () => import("./components/pages/manager_regist/AcceptManagerPerson.vue") },
 
     // TODO 開発終了時に削除する コンポーネント台紙
     { path: "/component", name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },

@@ -119,7 +119,7 @@ function changeVisiblePassword() {
     </div>
     <div class="right-area">
         <input type="radio" id="role" v-model="newComer.role" value="manager">このサイトで<span
-            class="explain">大量・一括関連者データ編集</span>を行いたい<span class="kbn">管理者</span><br>
+            class="explain">大量・一括関連者データ編集</span>を行いたい<span class="kbn">運営者</span><br>
         <input type="radio" id="role" v-model="newComer.role" value="comrade">自作ソフトウェアに<span
             class="explain">このサイトの関連者情報を取り込みたい</span><span class="kbn">APIユーザ</span><br>
         <input type="radio" id="role" v-model="newComer.role" value="partner_person"><span
