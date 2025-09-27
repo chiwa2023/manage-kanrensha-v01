@@ -7,16 +7,15 @@ const props = defineProps<{ editDto: InputPersonNameInterface }>();
 const emits = defineEmits(["sendCancelInputPersonName", "sendInputPersonNameInterface"]);
 
 // 編集Dto
-const  inputNameDto: ComputedRef<InputPersonNameInterface> = computed(() => { return props.editDto });
+const inputNameDto: ComputedRef<InputPersonNameInterface> = computed(() => { return props.editDto });
 
-function onCancel(){
+function onSave() {
+    emits("sendInputPersonNameInterface", inputNameDto.value);
+}
+
+function onCancel() {
     emits("sendCancelInputPersonName");
 }
-
-function onSave(){
-    emits("sendInputPersonNameInterface",inputNameDto.value);
-}
-
 </script>
 <template>
     <h3>姓名入力</h3>
@@ -25,7 +24,8 @@ function onSave(){
     </div>
     <div class="right-area">
         <span>姓<input type="text" v-model="inputNameDto.lastNameKana" class="text-input"> </span>
-        <span class="left-space">ミドルネーム<input type="text" v-model="inputNameDto.middleNameKana" class="text-input"> </span>
+        <span class="left-space">ミドルネーム<input type="text" v-model="inputNameDto.middleNameKana" class="text-input">
+        </span>
         <span class="left-space">名<input type="text" v-model="inputNameDto.firstNameKana" class="text-input"> </span>
     </div>
     <div class="clear-both"></div>

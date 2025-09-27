@@ -42,7 +42,7 @@ function onSave() {
         法人番号(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"><br></div>
 
@@ -50,7 +50,7 @@ function onSave() {
         名前(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -74,7 +74,7 @@ function onSave() {
         関連者コード(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 

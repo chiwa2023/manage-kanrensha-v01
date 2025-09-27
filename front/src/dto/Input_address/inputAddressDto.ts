@@ -35,11 +35,11 @@ export default class InputAddressDto {
     rsdtId: string;
 
     /** 住所郵便番号まで編集有無1 */
-    isEditAddressPostal: boolean;
+    isPostalEdit: boolean;
     /** 住所番地編集有無 */
-    isEditAddressBlock: boolean;
+    isBlockEdit: boolean;
     /** 住所建物編集有無 */
-    isEditAddressBuilding: boolean;
+    isBuildingEdit: boolean;
 
     /** アドレス・ベース・レジストリ住所郵便番号まで */
     rsdtAddressPostl: string;
@@ -72,9 +72,9 @@ export default class InputAddressDto {
         this.blkId = INIT_STRING;
         this.rsdtId = INIT_STRING;
 
-        this.isEditAddressPostal = INIT_BOOLEAN;
-        this.isEditAddressBlock = INIT_BOOLEAN;
-        this.isEditAddressBuilding = INIT_BOOLEAN;
+        this.isPostalEdit = INIT_BOOLEAN;
+        this.isBlockEdit = INIT_BOOLEAN;
+        this.isBuildingEdit = INIT_BOOLEAN;
 
         this.rsdtAddressPostl = INIT_STRING;
         this.rsdtAddressBlock = INIT_STRING;

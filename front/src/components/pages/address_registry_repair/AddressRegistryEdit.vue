@@ -1,6 +1,5 @@
 ﻿<script setup lang="ts">
 import { ref, toRaw, type Ref } from 'vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
 import type AddressAllCityInterface from '../../../entity/addressAllCityEntity';
 import mockGetLgList from './mock/mockGetLgList';
 import AddressRsdtTemplateInterface from '../../../entity/addressRsdtTemplateEntity';
@@ -16,6 +15,7 @@ import type SearchAddressRegistoryCapsuleInterface from '../../../dto/address_re
 import SearchAddressRegistoryCapsuleDto from '../../../dto/address_registory/searchAddressRegistoryCapsuleDto';
 import type SearchAddressRegistoryResultInterface from '../../../dto/address_registory/searchAddressRegistoryResultDto';
 import SearchAddressRegistoryResultDto from '../../../dto/address_registory/searchAddressRegistoryResultDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // 地方自治体検索
 const selectedIdLg: Ref<string> = ref("");
@@ -157,7 +157,7 @@ function onSave() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
     <hr>
 
     <h1>アドレスベースレジストリ編集</h1>

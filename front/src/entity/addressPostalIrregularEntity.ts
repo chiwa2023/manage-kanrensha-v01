@@ -37,7 +37,7 @@ export default class AddressPostalIrregularEntity implements AddressPostalIrregu
     constructor() {
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
-        const INIT_BOOLERAN: boolean = false;
+        const INIT_BOOLEAN: boolean = false;
 
         this.addressPostalIrregularId = INIT_NUMBER;
         this.postal1 = INIT_STRING;
@@ -47,8 +47,8 @@ export default class AddressPostalIrregularEntity implements AddressPostalIrregu
         this.addressName = INIT_STRING;
         this.addressPostal = INIT_STRING;
         this.addressBlock = INIT_STRING;
-        this.isAddPostal = INIT_BOOLERAN;
-        this.isRepairRsdt = INIT_BOOLERAN;
+        this.isAddPostal = INIT_BOOLEAN;
+        this.isRepairRsdt = INIT_BOOLEAN;
 
     }
 

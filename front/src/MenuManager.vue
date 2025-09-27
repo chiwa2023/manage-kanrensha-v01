@@ -1,18 +1,27 @@
 ﻿<script setup lang="ts">
-import MockManagerInfo from './components/common/user_info/MockManagerInfo.vue';
+import { ref, type Ref } from 'vue';
+import ManagerInfo from './components/common/user_info/ManagerInfo.vue';
+import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
+import UserPersonLeastDto from './dto/user/userPersonLeastDto';
 import RoutePathConstants from './routePathConstants';
+
+// ユーザメニューで取得したユーザを保持
+const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+function recieveUser(user: UserPersonLeastInterface) {
+    userLeastDto.value = user;
+}
 
 </script>
 <template>
-    <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <!-- ユーザメニュー兼チェック -->
+    <ManagerInfo @send-user="recieveUser"></ManagerInfo>
     <hr>
 
-    <h1>管理者用メニュー</h1>
+    <h2>管理者用メニュー</h2>
 
     <h3>関連者メニュー</h3>
-    <RouterLink to="/partner-manage">関連者管理</RouterLink><br>
-    <RouterLink to="/works-approval">作業内容承認</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
 
     <hr>
 
@@ -46,7 +55,11 @@ import RoutePathConstants from './routePathConstants';
     <hr>
     <h3>関連者マスタ標準データダウンロード</h3>
     <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_STD>関連者マスタ標準データダウンロード</RouterLink><br>
-    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>関連者マスタ標準データダウンロード</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>差分関連者マスタ標準データダウンロード</RouterLink><br>
+
+    <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_EDIT_MANAGER>所属組織編集(登録)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_ACCEPT_MANAGER_PERSON>個人と組織紐づけ承認</RouterLink><br>
 
     <hr>
     <RouterLink to="/">ログインページ</RouterLink><br>

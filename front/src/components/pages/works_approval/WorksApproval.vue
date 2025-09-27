@@ -11,7 +11,7 @@ import InputAddress from '../../common/input_address/InputAddress.vue';
 import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyou from '../../common/input_shokugyou/InputShokugyou.vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 const viewStatus: Ref<string> = ref("1");
 const isAddressInput: Ref<boolean> = ref(false);
@@ -64,9 +64,9 @@ let editCorpNo: string = "";
 function editAddress(corpNo: string) {
     editCorpNo = corpNo;
     //　選択したデータ
-    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpNo === editCorpNo)[0];// idのため1件
-    inputAddressDto.value = structuredClone(toRaw(editDto.inputAddress));
-    bakupInputAddressDto.value = structuredClone(toRaw(editDto.inputAddress));
+    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === editCorpNo)[0];// idのため1件
+    inputAddressDto.value = structuredClone(toRaw(editDto.inputAddressDto));
+    bakupInputAddressDto.value = structuredClone(toRaw(editDto.inputAddressDto));
     //非表示
     isAddressInput.value = true;
 }
@@ -78,8 +78,8 @@ function editAddress(corpNo: string) {
 function recieveCancelInputAddress() {
 
     //　選択したデータ
-    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpNo === editCorpNo)[0];// idのため1件
-    editDto.inputAddress = bakupInputAddressDto.value;
+    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === editCorpNo)[0];// idのため1件
+    editDto.inputAddressDto = bakupInputAddressDto.value;
     //非表示
     isAddressInput.value = false;
 }
@@ -91,8 +91,8 @@ function recieveCancelInputAddress() {
 function recieveInputAddressInterface(sendDto: InputAddressDto) {
 
     //　選択したデータ
-    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpNo === editCorpNo)[0];// idのため1件
-    editDto.inputAddress = sendDto;
+    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === editCorpNo)[0];// idのため1件
+    editDto.inputAddressDto = sendDto;
 
     //非表示
     isAddressInput.value = false;
@@ -101,22 +101,22 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
 
 /** 支店を外す */
 function changeIsShiten(corpNo: string) {
-    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpNo === corpNo)[0];// idのため1件
+    const editDto: CorpNoApprovalInterface = listCorp.value.filter((e) => e.corpKanrenshaCode === corpNo)[0];// idのため1件
 
     if (editDto.isShiten === false) {
 
         if (confirm("支店入力をやめて、法人番号情報に書き換えしてもよいですか?")) {
             // 仮の法人番号の紐づ区データに更新
-            editDto.corpNo = editDto.houjinNo + "-abcde";
-            editDto.corpName = "ABCD企業";
-            editDto.corpNameKana = "えーびーしーでぃーきぎょう";
+            editDto.corpKanrenshaCode = editDto.houjinNo + "-abcde";
+            editDto.inputOrgNameDto.orgName = "ABCD企業";
+            editDto.inputOrgNameDto.orgNameKana = "えーびーしーでぃーきぎょう";
 
-            editDto.inputAddress.addressPostal = "法人番号住所1";
-            editDto.inputAddress.addressBlock = "法人番号住所2";
-            editDto.inputAddress.addressBuilding = "法人番号住所3";
-            editDto.inputAddress.rsdtAddressPostl = "法人番号住所1";
-            editDto.inputAddress.rsdtAddressBlock = "法人番号住所2";
-            editDto.inputAddress.rsdtAddressBuilding = "法人番号住所3";
+            editDto.inputAddressDto.addressPostal = "法人番号住所1";
+            editDto.inputAddressDto.addressBlock = "法人番号住所2";
+            editDto.inputAddressDto.addressBuilding = "法人番号住所3";
+            editDto.inputAddressDto.rsdtAddressPostl = "法人番号住所1";
+            editDto.inputAddressDto.rsdtAddressBlock = "法人番号住所2";
+            editDto.inputAddressDto.rsdtAddressBuilding = "法人番号住所3";
         } else {
             editDto.isShiten = true;
         }
@@ -160,7 +160,7 @@ function onSave() {
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
     <hr>
 
     <h1>登録内容承認</h1>
@@ -222,31 +222,31 @@ function onSave() {
                         <th>住所建物</th>
                     </tr>
                 </tbody>
-                <tbody v-for="dto in listPerson" :key="dto.personNo">
+                <tbody v-for="dto in listPerson" :key="dto.personKanrenshaCode">
                     <tr>
-                        <td>{{ dto.personNo }} </td>
-                        <td>{{ dto.nameAll }} </td>
-                        <td><input type="text" v-model="dto.inputAddress.addressPostal"
-                                :disabled="!dto.inputAddress.isEditAddressPostal"><br>{{
-                                    dto.inputAddress.rsdtAddressPostl }}&nbsp;
+                        <td>{{ dto.personKanrenshaCode }} </td>
+                        <td>{{ dto.inputPersonNameDto.allName }} </td>
+                        <td><input type="text" v-model="dto.inputAddressDto.addressPostal"
+                                :disabled="!dto.inputAddressDto.isPostalEdit"><br>{{
+                                    dto.inputAddressDto.rsdtAddressPostl }}&nbsp;
                         </td>
-                        <td><input type="text" v-model="dto.inputAddress.addressBlock"
-                                :disabled="!dto.inputAddress.isEditAddressBlock"><br>{{
-                                    dto.inputAddress.rsdtAddressBlock }}&nbsp;
+                        <td><input type="text" v-model="dto.inputAddressDto.addressBlock"
+                                :disabled="!dto.inputAddressDto.isBlockEdit"><br>{{
+                                    dto.inputAddressDto.rsdtAddressBlock }}&nbsp;
                         </td>
-                        <td><input type="text" v-model="dto.inputAddress.addressBuilding"
-                                :disabled="!dto.inputAddress.isEditAddressBuilding"><br>{{
-                                    dto.inputAddress.rsdtAddressBuilding
+                        <td><input type="text" v-model="dto.inputAddressDto.addressBuilding"
+                                :disabled="!dto.inputAddressDto.isBuildingEdit"><br>{{
+                                    dto.inputAddressDto.rsdtAddressBuilding
                                 }}&nbsp;
                         </td>
-                        <td>職　業:<input type="text" v-model="dto.shokugyou"
-                                :disabled="dto.inputShokugyou.shokugyouUserWrite == ''"><br>
-                            業　種:<input type="text" v-model="dto.inputShokugyou.gyoushu"
-                                :disabled="dto.inputShokugyou.shokugyouUserWrite == ''"><br>役　職:<input type="text"
-                                v-model="dto.inputShokugyou.yakushoku"
-                                :disabled="dto.inputShokugyou.shokugyouUserWrite == ''"><br>ユーザ:<input type="text"
-                                v-model="dto.inputShokugyou.shokugyouUserWrite"
-                                :disabled="dto.inputShokugyou.shokugyouUserWrite == ''">
+                        <td>職　業:<input type="text" v-model="dto.inputShokugyouDto.gyoushu"
+                                :disabled="dto.inputShokugyouDto.shokugyouUserWrite == ''"><br>
+                            業　種:<input type="text" v-model="dto.inputShokugyouDto.gyoushu"
+                                :disabled="dto.inputShokugyouDto.shokugyouUserWrite == ''"><br>役　職:<input type="text"
+                                v-model="dto.inputShokugyouDto.yakushoku"
+                                :disabled="dto.inputShokugyouDto.shokugyouUserWrite == ''"><br>ユーザ:<input type="text"
+                                v-model="dto.inputShokugyouDto.shokugyouUserWrite"
+                                :disabled="dto.inputShokugyouDto.shokugyouUserWrite == ''">
                         </td>
                         <td><input type="checkbox">登録内容を承認</td>
                     </tr>
@@ -276,27 +276,27 @@ function onSave() {
                         <th>編集</th>
                     </tr>
                 </tbody>
-                <tbody v-for="dto in listCorp" :key="dto.corpNo">
+                <tbody v-for="dto in listCorp" :key="dto.corpKanrenshaCode">
                     <tr>
-                        <td>{{ dto.corpNo }} </td>
+                        <td>{{ dto.corpKanrenshaCode }} </td>
                         <td>{{ dto.houjinNo }} </td>
-                        <td><input type="text" v-model="dto.corpNameKana" :disabled="!dto.isShiten"><br><input
-                                type="text" v-model="dto.corpName" :disabled="!dto.isShiten"></td>
-                        <td><input type="checkbox" v-model="dto.isShiten" @change="changeIsShiten(dto.corpNo)">支店</td>
-                        <td><input type="text" v-model="dto.inputAddress.addressPostal"
-                                :disabled="!(dto.inputAddress.isEditAddressPostal || dto.isShiten)"><br>{{
-                                    dto.inputAddress.rsdtAddressPostl }}&nbsp;
+                        <td><input type="text" v-model="dto.inputOrgNameDto.orgNameKana" :disabled="!dto.isShiten"><br><input
+                                type="text" v-model="dto.inputOrgNameDto.orgName" :disabled="!dto.isShiten"></td>
+                        <td><input type="checkbox" v-model="dto.isShiten" @change="changeIsShiten(dto.corpKanrenshaCode)">支店</td>
+                        <td><input type="text" v-model="dto.inputAddressDto.addressPostal"
+                                :disabled="!(dto.inputAddressDto.isPostalEdit || dto.isShiten)"><br>{{
+                                    dto.inputAddressDto.rsdtAddressPostl }}&nbsp;
                         </td>
-                        <td><input type="text" v-model="dto.inputAddress.addressBlock"
-                                :disabled="!(dto.inputAddress.isEditAddressPostal || dto.isShiten)"><br>{{
-                                    dto.inputAddress.rsdtAddressBlock }}&nbsp;
+                        <td><input type="text" v-model="dto.inputAddressDto.addressBlock"
+                                :disabled="!(dto.inputAddressDto.isPostalEdit || dto.isShiten)"><br>{{
+                                    dto.inputAddressDto.rsdtAddressBlock }}&nbsp;
                         </td>
-                        <td><input type="text" v-model="dto.inputAddress.addressBuilding"
-                                :disabled="!(dto.inputAddress.isEditAddressPostal || dto.isShiten)"><br>{{
-                                    dto.inputAddress.rsdtAddressBuilding
+                        <td><input type="text" v-model="dto.inputAddressDto.addressBuilding"
+                                :disabled="!(dto.inputAddressDto.isPostalEdit || dto.isShiten)"><br>{{
+                                    dto.inputAddressDto.rsdtAddressBuilding
                                 }}&nbsp;
                         </td>
-                        <td><button @click="editAddress(dto.corpNo)">住所編集</button></td>
+                        <td><button @click="editAddress(dto.corpKanrenshaCode)">住所編集</button></td>
 
                         <td><input type="checkbox">登録内容を承認</td>
                     </tr>
@@ -323,21 +323,21 @@ function onSave() {
                         <th>住所建物</th>
                     </tr>
                 </tbody>
-                <tbody v-for="dto in listPoliOrg" :key="dto.poliOrgNo">
+                <tbody v-for="dto in listPoliOrg" :key="dto.poliOrgKanrenshaCode">
                     <tr>
-                        <td>{{ dto.poliOrgNo }} </td>
-                        <td>{{ dto.inputName.orgNameKana }}<br>{{ dto.inputName.orgName }}</td>
-                        <td><input type="text" v-model="dto.inputAddress.addressPostal"
-                                :disabled="!dto.inputAddress.isEditAddressPostal"><br>{{
-                                    dto.inputAddress.rsdtAddressPostl }}&nbsp;
+                        <td>{{ dto.poliOrgKanrenshaCode }} </td>
+                        <td>{{ dto.inputOrgNameDto.orgNameKana }}<br>{{ dto.inputOrgNameDto.orgName }}</td>
+                        <td><input type="text" v-model="dto.inputAddressDto.addressPostal"
+                                :disabled="!dto.inputAddressDto.isPostalEdit"><br>{{
+                                    dto.inputAddressDto.rsdtAddressPostl }}&nbsp;
                         </td>
-                        <td><input type="text" v-model="dto.inputAddress.addressBlock"
-                                :disabled="!dto.inputAddress.isEditAddressBlock"><br>{{
-                                    dto.inputAddress.rsdtAddressBlock }}&nbsp;
+                        <td><input type="text" v-model="dto.inputAddressDto.addressBlock"
+                                :disabled="!dto.inputAddressDto.isBlockEdit"><br>{{
+                                    dto.inputAddressDto.rsdtAddressBlock }}&nbsp;
                         </td>
-                        <td><input type="text" v-model="dto.inputAddress.addressBuilding"
-                                :disabled="!dto.inputAddress.isEditAddressBuilding"><br>{{
-                                    dto.inputAddress.rsdtAddressBuilding
+                        <td><input type="text" v-model="dto.inputAddressDto.addressBuilding"
+                                :disabled="!dto.inputAddressDto.isBuildingEdit"><br>{{
+                                    dto.inputAddressDto.rsdtAddressBuilding
                                 }}&nbsp;
                         </td>
                         <td><input type="checkbox">登録内容を承認</td>

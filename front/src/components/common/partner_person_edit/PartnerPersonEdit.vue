@@ -6,95 +6,58 @@ import ViewInputPersonName from '../input_person_name/ViewInputPersonName.vue';
 import InputPersonNameInterface from '../../../dto/input_person_name/inputPersonNameDto';
 import InputPersonNameDto from '../../../dto/input_person_name/inputPersonNameDto';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
+import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
 import InputShokugyou from '../input_shokugyou/InputShokugyou.vue';
-import InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
+import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
-import mockGetAuthorizedPromiseArea from '../../../dto/login/mock/mockGetAuthorizedPromiseArea';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserRoleConstants from '../../../dto/user/userRoleConstants';
+import InputAccess from '../input_access/InputAccess.vue';
+import type SaveKanrenshaPersonCapsuleInterface from '../../../dto/partner_person/saveKanrenshaPersonCapsuleDto';
+import SaveKanrenshaPersonCapsuleDto from '../../../dto/partner_person/saveKanrenshaPersonCapsuleDto';
 
-const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean }>();
+// props,emmits
+const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean, isCombineUser: boolean, userDto: UserPersonLeastInterface }>();
 const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => props.editDto);
 
+// よく使う定数
 const BLANK: string = "";
-
-// // 職業入力用
-// const allShokugyou: ComputedRef<string> = computed(() => {
-//     // return gyoushu.value + yakushoku.value; 
-
-//     switch (inputPersonNoDto.value.yakushoku) {
-//         // フリーランス
-//         case yakushokuFree:
-//             isShokugyoEdit.value = false;
-//             if (BLANK === inputPersonNoDto.value.shokugyouUserWrite) {
-//                 return inputPersonNoDto.value.gyoushu + "業従事者";
-//             } else {
-//                 return inputPersonNoDto.value.shokugyouUserWrite;
-//             }
-//         // 団体所属者
-//         case yakushokuGeneral:
-//             isShokugyoEdit.value = false;
-//             if (BLANK === inputPersonNoDto.value.shokugyouUserWrite) {
-//                 return inputPersonNoDto.value.gyoushu + "業社員・職員";
-//             } else {
-//                 return inputPersonNoDto.value.shokugyouUserWrite;
-//             }
-
-//         // 役職者
-//         case yakushokuDirector:
-//             isShokugyoEdit.value = true;
-//             if (BLANK === corpNo.value) {
-//                 return inputPersonNoDto.value.gyoushu + "業役職者(社名記載拒否)";
-//             } else {
-//                 return corpName.value + "(" + corpPrefecture.value + ")" + "役員";
-//             }
-//         // 定職なし
-//         case yakushokuNoJob:
-//             isShokugyoEdit.value = false;
-//             return inputPersonNoDto.value.shokugyouUserWrite;
-//         default:
-//             isShokugyoEdit.value = true;
-//             return "";
-//     }
-// });
-// const isShokugyoEdit: Ref<boolean> = ref(true);
-
-function onCancel() {
-    alert("キャンセル");
-}
-function onSave() {
-    alert("保存");
-}
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
 
 /**
  *住所編集受信
  */
 function recieveInputAddressInterface(sendDto: InputAddressDto) {
-    inputPersonNoDto.value.inputAddress = sendDto;
+    inputPersonNoDto.value.inputAddressDto = sendDto;
+    inputPersonNoDto.value.inputAddressDto.addressAll = sendDto.addressPostal;
 }
-
 
 function resetData() {
     // コードのリセット
-    inputPersonNoDto.value.personNo = BLANK;
+    inputPersonNoDto.value.personKanrenshaCode = BLANK;
     // 名前情報のリセット
-    inputPersonNoDto.value.inputName = new InputPersonNameDto();
+    inputPersonNoDto.value.inputPersonNameDto = new InputPersonNameDto();
     // 住所情報のリセット   
-    inputPersonNoDto.value.inputAddress = new InputAddressDto();
+    inputPersonNoDto.value.inputAddressDto = new InputAddressDto();
     // 職業情報のリセット   
-    inputPersonNoDto.value.allShokugyou = BLANK;
-    inputPersonNoDto.value.inputShokugyou = new InputShokugyouDto();
+    inputPersonNoDto.value.inputShokugyouDto = new InputShokugyouDto();
 
 }
 
 function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
 
-    inputPersonNoDto.value.inputName = sendDto;
+    inputPersonNoDto.value.inputPersonNameDto = sendDto;
 }
 
 /**
  * すでに同じ法人番号で登録されているかチェック
  */
 function onCheckAlreadyRegist() {
-    if (inputPersonNoDto.value.personNo !== BLANK) {
+    if (inputPersonNoDto.value.personKanrenshaCode !== BLANK) {
         alert("現在既存または新規と確定したデータを編集中です");
     } else {
         // 仮で時効の秒数基準で既存だったり新規だったり動作を変更する
@@ -102,72 +65,112 @@ function onCheckAlreadyRegist() {
         const date: Date = new Date();
         if (date.getSeconds() % 2 == 0) {
             alert("新規データでした");
-            inputPersonNoDto.value.personNo = "新規";
+            inputPersonNoDto.value.personKanrenshaCode = "新規";
         } else {
             alert("既存データが存在します。変更が必要な場合はデータ検索からやり直してください");
-            inputPersonNoDto.value.personNo = "12-tye12er";
+            inputPersonNoDto.value.personKanrenshaCode = "12-tye12er";
         }
     }
 }
 
 /**国籍を確認する */
 function nationarityConfirm() {
-    
-    // トークンの有効確認
-    mockGetAuthorizedPromiseArea().then(token => {
-        if (token !== "") {
-            // チェックされた対象だけに絞る
-            // const list: PersonNoInterface[] = ref([]);
-            // list.push(inputPersonNoDto);
 
-            // // API接続時には不要な回答リスト初期処理
-            // listInquireAnswer.value.splice(0);
+    // チェックされた対象だけに絞る
+    // const list: PersonNoInterface[] = ref([]);
+    // list.push(inputPersonNoDto);
 
-            // // 外部APIに国籍情報問い合わせ
-            // // TODO (現在はRelationPersonNoを送付しているが、PersonNoDtoを送付する形に変更)
-            // // 国籍問い合わせInquireNationality.vueも編集
-            // const url = "http://localhost:7080/inquire-nationarity";
-            // const method = "POST";
-            // const body = JSON.stringify(list.value);
-            // const headers = {
-            //     'Accept': 'application/json',
-            //     'Content-Type': 'application/json'
-            // };
-            // fetch(url, { method, headers, body })
-            //     .then(async (response) => {
-            //         listInquireAnswer.value = await response.json();
-            //         listInquireAnswer.value[0];
-            //     })
-            //     .catch((error) => { alert(error); });
+    // // API接続時には不要な回答リスト初期処理
+    // listInquireAnswer.value.splice(0);
 
-            // 国籍確認mock実装
-            switch (parseInt(inputPersonNoDto.value.inputAddress.tel3) % 3) {
-                case 0:
-                    alert("日本国籍保持");
-                    break;
+    // // 外部APIに国籍情報問い合わせ
+    // // TODO (現在はRelationPersonNoを送付しているが、PersonNoDtoを送付する形に変更)
+    // // 国籍問い合わせInquireNationality.vueも編集
+    // const url = "http://localhost:7080/inquire-nationarity";
+    // const method = "POST";
+    // const body = JSON.stringify(list.value);
+    // const headers = {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    // };
+    // fetch(url, { method, headers, body })
+    //     .then(async (response) => {
+    //         listInquireAnswer.value = await response.json();
+    //         listInquireAnswer.value[0];
+    //     })
+    //     .catch((error) => { alert(error); });
 
-                case 1:
-                    alert("外国人籍");
-                    break;
+    // 国籍確認mock実装
+    switch (parseInt(inputPersonNoDto.value.inputAddressDto.tel3) % 3) {
+        case 0:
+            alert("日本国籍保持");
+            break;
 
-                case 2:
-                    alert("国籍不明");
-                    break;
+        case 1:
+            alert("外国人籍");
+            break;
 
-                default:
-                    break;
-            }
-        } else {
-            alert("TODO エラーのつもり");
-        }
-    });
+        case 2:
+            alert("国籍不明");
+            break;
 
+        default:
+            break;
+    }
 }
 
-const isGaikokuHoujin: Ref<boolean> = ref(false);
+function onCancel() {
+    const role: string = props.userDto.listRoles[0];
+    if (UserRoleConstants.ROLE_ADMIN === role) {
+        router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+        return;
+    }
+    if (UserRoleConstants.ROLE_MANAGER === role) {
+        router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+        return;
+    }
+    router.push(RoutePathConstants.PAGE_MENU_PARTNER);
+}
+
+function onSave() {
+
+    // 編集か新規作成かでアクセス先を変えるだけ
+    let url = BLANK;
+    if (props.isEditNew) {
+        url = "http://localhost:6080/add-user/partner-person";
+    } else {
+        url = "http://localhost:6080/user-kanrensha/edit-person";
+    }
+
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<SaveKanrenshaPersonCapsuleInterface> = ref(new SaveKanrenshaPersonCapsuleDto());
+        inputPersonNoDto.value.isCombineUser = props.isCombineUser;
+        capsuleDto.value.userPersonLeastDto = props.userDto;
+        capsuleDto.value.kanrenshaPersonDto = inputPersonNoDto.value;
+        if (token !== BLANK) {
+            // 保存処理
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: FrameworkResultInterface = await response.json();
+                    alert(resultDto.message);
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
+}
+
 function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
-    inputPersonNoDto.value.inputShokugyou = sendDto;
-    inputPersonNoDto.value.allShokugyou = sendDto.allShokugyou;
+    inputPersonNoDto.value.inputShokugyouDto = sendDto;
 }
 
 </script>
@@ -179,7 +182,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         姓名
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.inputName.allName" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputPersonNameDto.allName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -187,7 +190,7 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         住所
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.inputAddress.addressPostal" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputAddressDto.addressAll" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -195,12 +198,11 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         職業
     </div>
     <div class="right-area">
-        <input type="text" disabled="true" v-model="inputPersonNoDto.inputShokugyou.allShokugyou" class="max-input">
+        <input type="text" disabled="true" v-model="inputPersonNoDto.inputShokugyouDto.allShokugyou" class="max-input">
     </div>
     <div class="clear-both"></div>
 
     <hr>
-
 
     <h3>収支報告書公開入力</h3>
 
@@ -216,40 +218,23 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         政治資金関連者コード(個人)
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.personNo" disabled="true"><button class="left-space"
+        <input type="text" v-model="inputPersonNoDto.personKanrenshaCode" disabled="true"><button class="left-space"
             @click="onCheckAlreadyRegist">重複確認</button>
     </div>
     <div class="clear-both"></div>
 
     <!-- 姓名入力 -->
-    <ViewInputPersonName :edit-dto="inputPersonNoDto.inputName" :is-raise-edit-view="true"
+    <ViewInputPersonName :edit-dto="inputPersonNoDto.inputPersonNameDto" :is-raise-edit-view="true"
         @send-input-person-name-interface="recieveInputPersonNameInterface"></ViewInputPersonName>
 
     <!-- 住所入力 -->
-    <ViewInputAddress :edit-dto="inputPersonNoDto.inputAddress" :is-raise-edit-view="true"
+    <ViewInputAddress :edit-dto="inputPersonNoDto.inputAddressDto" :is-raise-edit-view="true"
         @send-input-address-interface="recieveInputAddressInterface"></ViewInputAddress>
 
-    <InputShokugyou :isfooter="false" :edit-dto="inputPersonNoDto.inputShokugyou"
+    <!-- 職業入力 -->
+    <InputShokugyou :isfooter="false" :edit-dto="inputPersonNoDto.inputShokugyouDto"
         @send-input-shokugyou-interface="recieveInputShokugyouInterface"></InputShokugyou>
-
     <hr>
-
-    <h3>連絡先(情報確認のため使用、非公開)</h3>
-    <div class="left-area">
-        メールアドレス
-    </div>
-    <div class="right-area">
-        <input type="email">
-    </div>
-    <div class="clear-both"></div>
-
-    <div class="left-area">
-        SNSアカウント
-    </div>
-    <div class="right-area">
-        <input type="email">
-    </div>
-    <div class="clear-both"></div>
 
     <h3>編集内容(違反判定情報)</h3>
 
@@ -257,10 +242,13 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
         国籍
     </div>
     <div class="right-area">
-        <input type="checkbox" v-model="isGaikokuHoujin" disabled="true">外国人である<span class="left-space"><button
+        <input type="checkbox" v-model="inputPersonNoDto.isForeign">外国人である<span class="left-space"><button
                 @click="nationarityConfirm">確認する</button></span>
     </div>
     <div class="clear-both"></div>
+
+    <!-- 連絡先入力 -->
+    <InputAccess :edit-dto="editDto.inputAccessDto"></InputAccess>
 
     <hr>
 
@@ -281,7 +269,5 @@ function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
     </div>
 
 </template>
-
-
 
 <style scoped></style>

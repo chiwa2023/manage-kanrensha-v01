@@ -1,15 +1,41 @@
 ﻿<script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import type poliOrgNoInterface from '../../../dto/partner_poli_org/poliOrgNoDto';
-import mockGetPoliOrgNoList from './mock/mockGetPoliOrgNoList';
+import type MasterPoliticalOrganizationInterface from '../../../entity/masterPoliticalOrganizationEntity';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTextSearchPagingCapsuleDto';
+import NaturalTextSearchPagingCapsuleDto from '../../../dto/naturalTextSearchPagingCapsuleDto';
+import type SearchKanrenshaPoliOrgResultInterface from '../../../dto/kanrensha/searchKanrenshaPoliOrgResultDto';
+import PoliOrgDantaiKbnConstants from '../../../dto/partner_poli_org/poliOrgDantaiKbnConstants';
 
 //props,emit
 const props = defineProps<{ isFooter: boolean }>();
 const emits = defineEmits(["sendCancelPoliOrgNo", "sendPoliOrgNoInterface"]);
-const poliOrgList: Ref<poliOrgNoInterface[]> = ref([])
+const poliOrgList: Ref<MasterPoliticalOrganizationInterface[]> = ref([])
 
 function onSearch() {
-    poliOrgList.value = mockGetPoliOrgNoList();
+
+    getAuthorizedPromiseArea().then(token => {
+        // 検索条件の設定
+        const capsuleDto: NaturalTextSearchPagingCapsuleInterface = new NaturalTextSearchPagingCapsuleDto();
+        capsuleDto.allCount = 0;
+        capsuleDto.limit = 30;
+        capsuleDto.pageNumber = 0;
+
+        const url = "http://localhost:6080/user-kanrensha/search-poli-org";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: SearchKanrenshaPoliOrgResultInterface = await response.json();
+                poliOrgList.value = resultDto.listMasterPoliOrg;
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
 /**  
@@ -22,9 +48,9 @@ function onCancel() {
 /**  
  * 入力内容を保存する
  */
-function onSave(selectedRow: string) {
+function onSave(selectedRow: number) {
     // Idでフィルタしているので1件だけ取得できる
-    const selectedDto: poliOrgNoInterface = poliOrgList.value.filter((e) => e.poliOrgNo === selectedRow)[0];
+    const selectedDto: MasterPoliticalOrganizationInterface = poliOrgList.value.filter((e) => e.masterPoliticalOrganizationId === selectedRow)[0];
     emits("sendPoliOrgNoInterface", selectedDto);
 }
 
@@ -35,7 +61,7 @@ function onSave(selectedRow: string) {
         関連者政治団体番号(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"><br></div>
 
@@ -43,7 +69,7 @@ function onSave(selectedRow: string) {
         名前(前方一致)
     </div>
     <div class="right-area">
-        <input type="text" class="text-input">
+        <input type="text" class="name-input">
     </div>
     <div class="clear-both"></div>
 
@@ -83,14 +109,16 @@ function onSave(selectedRow: string) {
                     <th>政治団体名称</th>
                     <th>市区町村</th>
                     <th>代表者</th>
+                    <th>団体区分</th>
                     <th>&nbsp;</th>
                 </tr>
-                <tr v-for="dto in poliOrgList" :key="dto.poliOrgNo">
-                    <td>{{ dto.poliOrgNo }}</td>
-                    <td>({{ dto.inputName.orgNameKana }}) <br>{{ dto.inputName.orgName }}</td>
-                    <td>{{ dto.inputAddress.addressPostal }}</td>
-                    <td>({{ dto.delegateNo }})<br> {{ dto.delegateName }}</td>
-                    <td><button @click="onSave(dto.poliOrgNo)">選択</button>
+                <tr v-for="entity in poliOrgList" :key="entity.masterPoliticalOrganizationId">
+                    <td>{{ entity.poliOrgKanrenshaCode }}</td>
+                    <td>{{ entity.partnerName }}</td>
+                    <td>{{ entity.allAddress }}</td>
+                    <td>{{ entity.poliOrgDelegate }}</td>
+                    <td>{{ PoliOrgDantaiKbnConstants.getLabel( entity.dantaiKbn) }}</td>
+                    <td><button @click="onSave(entity.masterPoliticalOrganizationId)">選択</button>
                     </td>
                 </tr>
             </tbody>

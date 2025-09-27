@@ -1,18 +1,33 @@
 ﻿<script setup lang="ts">
-import { ref, type Ref } from 'vue';
-import UploadFile from '../../common/upload_file/UploadFile.vue';
+import { ref, useTemplateRef, type Ref } from 'vue';
 import type SelectOptionNumberInterface from '../../../dto/selectOptionNumberDto';
 import KanrenshaKbnConstants from '../../../dto/kanrensha/kanrenshaKbnConstants';
 import PoliOrgDantaiKbnConstants from '../../../dto/partner_poli_org/poliOrgDantaiKbnConstants';
-import getMockRegistMasterXmlList from './mock/getMockRegistMasterXmlList';
-import type SearchWkTblAllMainHistoryPagingResultInterface from '../../../dto/add_xml/searchWkTblAllMainHistoryPagingResultDto';
-import SearchWkTblAllMainHistoryPagingResultDto from '../../../dto/add_xml/searchWkTblAllMainHistoryPagingResultDto';
 import getPagingOption from '../paging/getPagingOption';
 import type SearchWkTblPagingCapsuleInterface from '../../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import SearchWkTblPagingCapsuleDto from '../../../dto/add_xml/searchWkTbPagingCapsuleDto';
 import EditWkTblMinPerson from '../../common/wktbl_edit_min/EditWkTblMinPerson.vue';
 import EditWkTblMinCorp from '../../common/wktbl_edit_min/EditWkTblMinCorp.vue';
 import EditWkTblMinPoliOrg from '../../common/wktbl_edit_min/EditWkTblMinPoliOrg.vue';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type SearchWkTblAddByXmlPagingResultInterface from '../../../dto/add_xml/searchWkTblAddByXmlPagingResultDto';
+import SearchWkTblAddByXmlPagingResultDto from '../../../dto/add_xml/searchWkTblAddByXmlPagingResultDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type UpdateWkTblAddByXmlCapsuleInterface from '../../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
+import UpdateWkTblAddByXmlCapsuleDto from '../../../dto/add_xml/updateWkTblAddByXmlCapsuleDto';
+import type UpdateWkTblAddByXmlResultInterface from '../../../dto/add_xml/updateWkTblAddByXmlResultDto';
+import ReadPublishXml from '../../common/read_publish_xml/ReadPublishXml.vue';
+import type StorageFileInterface from '../../../dto/storage_file/storageFileDto';
+import StorageFileDto from '../../../dto/storage_file/storageFileDto';
+import type RegistDataByXmlCapsuleInterface from '../../../dto/add_xml/registDataByXmlCapsuleDto';
+import RegistDataByXmlCapsuleDto from '../../../dto/add_xml/registDataByXmlCapsuleDto';
+import type FrameworkMessageAndResultInterface from '../../../dto/frameworkMessageAndResultDto';
+import type RetryWktblBatchCapsuleInterface from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
+import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
+import UpdateWkTblAddByXmlTableListCapsuleInterface from '../../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
+import UpdateWkTblAddByXmlTableListCapsuleDto from '../../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 
 // 関連者区分定数
 const kanrenshaKbnNoSelect: number = KanrenshaKbnConstants.NO_SELECT;
@@ -31,27 +46,94 @@ const poliOrgKbnSonotaShibu: string = PoliOrgDantaiKbnConstants.SONOTA_SHIBU;
 
 // 表示用Dto
 const pageOptionAll: Ref<SelectOptionNumberInterface[]> = ref([]);
-const allCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
-const mainAndHistoryResultDto: Ref<SearchWkTblAllMainHistoryPagingResultInterface> = ref(new SearchWkTblAllMainHistoryPagingResultDto());
+const byXmlCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
+const byXmlResultDto: Ref<SearchWkTblAddByXmlPagingResultInterface> = ref(new SearchWkTblAddByXmlPagingResultDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+byXmlCapsuleDto.value.userLeast = userDto.value;
+byXmlCapsuleDto.value.limit = 30;
+byXmlCapsuleDto.value.pageNumber = 0;
+byXmlCapsuleDto.value.hasAffectNot = true;
 
+// XML登録
+const capsuleDto: Ref<RegistDataByXmlCapsuleInterface> = ref(new RegistDataByXmlCapsuleDto());
+capsuleDto.value.userPersonLeastDto = userDto.value;
 
-function recieveUint8ArrayDataBlock(data: Uint8Array) {
-    alert("アップロード処理");
+const editCapsuleDto: Ref<UpdateWkTblAddByXmlCapsuleInterface> = ref(new UpdateWkTblAddByXmlCapsuleDto());
+editCapsuleDto.value.userPersonLeastDto = userDto.value;
+
+// 関連者区分振り分け後の検索処理は各コンポーネントにお願いする
+let findIndex: number = 0;
+const refEditWkTblMinPerson = useTemplateRef('refEditWkTblMinPerson');
+const refEditWkTblMinCorp = useTemplateRef('refEditWkTblMinCorp');
+const refEditWkTblMinPoliOrg = useTemplateRef('refEditWkTblMinPoliOrg');
+
+// ファイル保全情報受信
+function recieveStorageFileInterface(storageFileDto: StorageFileInterface) {
+    capsuleDto.value.storageFileDto = storageFileDto;
 }
 
 function onChangePaging() {
+    onSearchAll();
 }
 
+// XMLファイルを解析しその結果をワークテーブルに保存
 function onSaveWkTbl() {
-    mainAndHistoryResultDto.value.listRegistDto = getMockRegistMasterXmlList();
-
-    mainAndHistoryResultDto.value.allCount = 195;
-    mainAndHistoryResultDto.value.limit = 30;
-    pageOptionAll.value = getPagingOption(mainAndHistoryResultDto.value);
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/analysis-xml/execute";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultInterface = await response.json();
+                alert(resultDto.message);
+                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
+                if (response.status === 200) {
+                    capsuleDto.value.storageFileDto = new StorageFileDto();
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
 // 作業内容検索
 function onSearchAll() {
+    //byXmlResultDto.value.listXmlEntity = getMockRegistByXmlList();
+
+    //byXmlResultDto.value.allCount = 195;
+    //byXmlResultDto.value.limit = 30;
+    //pageOptionAll.value = getPagingOption(byXmlResultDto.value);
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-by-xml/search";
+        const method = "POST";
+        const body = JSON.stringify(byXmlCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                byXmlResultDto.value = await response.json();
+                pageOptionAll.value = getPagingOption(byXmlResultDto.value);
+            })
+            .catch((error) => { alert(error); });
+    });
+
+    // 各テーブルの検索を行う
+    refEditWkTblMinCorp.value?.onSearchCorp();
+    refEditWkTblMinPerson.value?.onSearchPerson();
+    refEditWkTblMinPoliOrg.value?.onSearchPoliOrg();
 }
 
 // 様式によって元データが異なるので元データ分類リスト
@@ -69,35 +151,150 @@ const nameAddressList: number[] = [];
 nameAddressList.push(5);
 nameAddressList.push(14);
 nameAddressList.push(15);
+nameAddressList.push(16);
 
 const partnerList: number[] = [];
 nameAddressList.push(4);
 
 // 分類編集内容保存
-function onSaveBunrui() {
-    alert("保存");
+const notUseText: string = "使用しないに変更;";
+function onSaveBunrui(editId: number) {
+
+    findIndex = byXmlResultDto.value.listXmlEntity.findIndex((e) => e.wkTblMasterAllByXmlId === editId);
+    editCapsuleDto.value.wkTblMasterAllByXmlEntity = byXmlResultDto.value.listXmlEntity[findIndex];
+    // 使用しないにチェックが入っていたら必要な編集をする
+    if (editCapsuleDto.value.wkTblMasterAllByXmlEntity.isNotUse) {
+        editCapsuleDto.value.wkTblMasterAllByXmlEntity.judgeReason = notUseText;
+        editCapsuleDto.value.wkTblMasterAllByXmlEntity.isAffected = false;
+        editCapsuleDto.value.wkTblMasterAllByXmlEntity.isFinish = true;
+    }
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-by-xml/update";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                if (response.status < 400) {
+                    const resultDto: UpdateWkTblAddByXmlResultInterface = await response.json();
+                    if (response.status === 200) {
+                        // 正常に更新できた時だけ既存のリストと入れ替え
+                        // byXmlResultDto.value.listXmlEntity.splice(findIndex, 1, resultDto.wkTblMasterAllByXmlEntity);
+                        alert(resultDto.message);
+                        // 再表示
+                        onSearchAll();
+                    }
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
+
+}
+
+// 表示中データ全更新
+function onSaveTableList() {
+
+    // 編集条件を作成
+    const editListCapsuleDto: UpdateWkTblAddByXmlTableListCapsuleInterface = new UpdateWkTblAddByXmlTableListCapsuleDto();
+    editListCapsuleDto.userPersonLeastDto = userDto.value;
+    // リスト全件について、データを使用しないにチェックが入っていたら必要な編集をする
+    for (const entity of byXmlResultDto.value.listXmlEntity) {
+        if (entity.isNotUse) {
+            entity.judgeReason = notUseText;
+            entity.isAffected = false;
+            entity.isFinish = true;
+        }
+    }
+    editListCapsuleDto.listWkTblByXml = byXmlResultDto.value.listXmlEntity;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-by-xml/update-list";
+        const method = "POST";
+        const body = JSON.stringify(editListCapsuleDto);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                if (response.status < 400) {
+                    const resultDto: FrameworkMessageAndResultInterface = await response.json();
+                    alert(resultDto.message);
+                    // 再表示
+                    onSearchAll();
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
 }
 
 function onCancel() {
+
     alert("キャンセル");
     history.back();
 }
+
+
+// 再処理起動条件(ユーザ)
+const retryCapsuleDto: Ref<RetryWktblBatchCapsuleInterface> = ref(new RetryWktblBatchCapsuleDto());
+retryCapsuleDto.value.userDto = userDto.value;
+
+// 個人・企業団体・政治団体一括最小マスタ登録処理
 function onSave() {
-    alert("保存");
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-by-xml/retry";
+        const method = "POST";
+        const body = JSON.stringify(retryCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultInterface = await response.json();
+                alert(resultDto.message);
+                // 再表示
+                onSearchAll();
+            })
+            .catch((error) => { alert(error); });
+    });
+    // 再表示
+    onSearchAll();
 }
 
 </script>
 <template>
+
+    <!-- 管理者メニュー兼チェック -->
+    <ManagerInfo></ManagerInfo>
+
     <h1>政治資金収支報告書XMLより関連者登録</h1>
 
-    <h3>CSVファイル選択</h3>
-    <UploadFile @send-byte-data="recieveUint8ArrayDataBlock"></UploadFile>
+    <!-- XMLファイルアップロード -->
+    <ReadPublishXml @send-storage-file-interface="recieveStorageFileInterface"></ReadPublishXml>
+
+    <div class="left-area">
+        解析処理条件
+    </div>
+    <div class="right-area">
+        <input type="checkbox" v-model="capsuleDto.isNotBiko">1項目(備考)を使用して登録する関連者は除外する(様式区分3,4,6)<br>
+        <input type="checkbox" v-model="capsuleDto.isNotNameAddress">2項目(名前・住所)を使用して登録する関連者は除外する(様式区分5,14,15,16)<br>
+    </div>
+    <div class="clear-both"></div>
 
     <div class="left-area">
         XML解析処理
     </div>
     <div class="right-area">
-        <button @click="onSaveWkTbl">解析結果表示</button>
+        <button @click="onSaveWkTbl">解析開始</button>
     </div>
     <div class="clear-both"></div>
 
@@ -105,8 +302,9 @@ function onSave() {
         検索項目
     </div>
     <div class="right-area">
-        <input type="checkbox" v-model="allCapsuleDto.hasAffectNot">反映なし<span><input type="checkbox"
-                v-model="allCapsuleDto.hasFinished">作業完了</span>
+        <input type="checkbox" v-model="byXmlCapsuleDto.hasAffectNot">反映なし
+        <span class="left-space"><input type="checkbox" v-model="byXmlCapsuleDto.hasFinished">作業完了</span>
+        <span class="left-space"><input type="checkbox" v-model="byXmlCapsuleDto.hasHistorry">処理対象外履歴</span>
     </div>
     <div class="clear-both"></div>
     <div class="left-area">
@@ -121,7 +319,7 @@ function onSave() {
     <div class="one-line">
         関連者未区分<br>
         <!-- ページング -->
-        <select v-model="allCapsuleDto.pageNumber" @change="onChangePaging">
+        <select v-model="byXmlCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionAll" :key="option.value" :value="option.value"> {{ option.text
             }}
             </option>
@@ -137,44 +335,47 @@ function onSave() {
                     <th>入力項目2</th>
                 </tr>
             </tbody>
-            <tbody v-for="dto of mainAndHistoryResultDto.listRegistDto" style="margin-bottom: 1%;">
+            <tbody v-for="entity of byXmlResultDto.listXmlEntity" style="margin-bottom: 1%;">
 
                 <tr>
-                    <td rowspan="3"> &nbsp;</td>
-                    <td rowspan="2"><input type="checkbox" v-model="dto.isAffected" :disabled="dto.isDisabled">編集有効</td>
-                    <td colspan="4">処理判定：{{ dto.judgeReason }}</td>
+                    <td rowspan="3"> <button @click="onSaveBunrui(entity.wkTblMasterAllByXmlId)"
+                            :disabled="entity.isDisabled">編集</button></td>
+                    <td rowspan="2"><input type="checkbox" v-model="entity.isAffected"
+                            :disabled="entity.isDisabled">編集有効</td>
+                    <td colspan="4">処理判定：{{ entity.judgeReason }} <input type="checkbox" v-model="entity.isNotUse"
+                            class="left-space">このデータを使用しない</td>
                 </tr>
 
                 <!-- 手掛かりが備考欄のみ(様式3,6) -->
-                <tr v-if="bikoList.includes(dto.youshikiKbn)">
-                    <td colspan="4"><input type="text" v-model="dto.bikou" :disabled="true"></td>
+                <tr v-if="bikoList.includes(entity.youshikiKbn)">
+                    <td colspan="4"><input type="text" v-model="entity.bikou" :disabled="true"></td>
                 </tr>
 
                 <!-- 手掛かりが全部そろっている(様式7,8,11,12) -->
-                <tr v-if="fullList.includes(dto.youshikiKbn)">
-                    <td><input type="text" v-model="dto.inputSrcName" :disabled="true"></td>
-                    <td><input type="text" v-model="dto.inputSrcAddress" :disabled="true"></td>
-                    <td><input type="text" v-model="dto.inputSrcKey" :disabled="true"></td>
+                <tr v-if="fullList.includes(entity.youshikiKbn)">
+                    <td><input type="text" v-model="entity.inputSrcName" :disabled="true"></td>
+                    <td><input type="text" v-model="entity.inputSrcAddress" :disabled="true"></td>
+                    <td><input type="text" v-model="entity.inputSrcKey" :disabled="true"></td>
                     <td colspan="2">&nbsp;</td>
                 </tr>
 
                 <!-- 手掛かりが名前と住所(様式5,14,15) -->
-                <tr v-if="nameAddressList.includes(dto.youshikiKbn)">
-                    <td><input type="text" v-model="dto.inputSrcName" :disabled="true"></td>
-                    <td><input type="text" v-model="dto.inputSrcAddress" :disabled="true"></td>
+                <tr v-if="nameAddressList.includes(entity.youshikiKbn)">
+                    <td><input type="text" v-model="entity.inputSrcName" :disabled="true"></td>
+                    <td><input type="text" v-model="entity.inputSrcAddress" :disabled="true"></td>
                     <td colspan="3">&nbsp;</td>
                 </tr>
 
                 <!-- 手掛かりが名前のみ(様式4) -->
-                <tr v-if="partnerList.includes(dto.youshikiKbn)">
-                    <td colspan="4"><input type="text" v-model="dto.inputSrcName" :disabled="true"></td>
+                <tr v-if="partnerList.includes(entity.youshikiKbn)">
+                    <td colspan="4"><input type="text" v-model="entity.inputSrcName" :disabled="true"></td>
                 </tr>
 
                 <tr>
                     <td>
-                        様式 {{ dto.youshikiKbn }} 様式枝区分 {{ dto.youshikiEdaKbn }}<br>
-                        <select v-model="dto.kanrenshaKbn"
-                            :disabled="!dto.isAffected || fullList.includes(dto.youshikiKbn)">
+                        様式 {{ entity.youshikiKbn }} 様式枝区分 {{ entity.youshikiEdaKbn }}<br>
+                        <select v-model="entity.kanrenshaKbn"
+                            :disabled="!entity.isAffected || fullList.includes(entity.youshikiKbn) || entity.isDisabled">
                             <option :value=kanrenshaKbnNoSelect> </option>
                             <option :value=kanrenshaKbnPerson>個人</option>
                             <option :value=kanrenshaKbnCorp>企業／団体</option>
@@ -183,44 +384,50 @@ function onSave() {
                     </td>
                     <td>
                         名称<br>
-                        <input type="text" v-model="dto.partnerName" :disabled="!dto.isAffected" />
+                        <input type="text" v-model="entity.partnerName"
+                            :disabled="!entity.isAffected || entity.isDisabled" />
                     </td>
                     <td>
                         全住所<br>
-                        <input type="text" v-model="dto.allAddress" :disabled="!dto.isAffected" />
+                        <input type="text" v-model="entity.allAddress"
+                            :disabled="!entity.isAffected || entity.isDisabled" />
                     </td>
                     <td>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnNoSelect">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnNoSelect">
                             &nbsp;
                         </div>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnPerson">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnPerson">
                             職業<br>
-                            <input type="text" v-model="dto.personShokugyou" :disabled="!dto.isAffected" />
+                            <input type="text" v-model="entity.personShokugyou"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnCorp">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnCorp">
                             団体代表者<br>
-                            <input type="text" v-model="dto.orgDelegate" :disabled="!dto.isAffected" />
+                            <input type="text" v-model="entity.orgDelegate"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnPoliOrg">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnPoliOrg">
                             団体代表者<br>
-                            <input type="text" v-model="dto.orgDelegate" :disabled="!dto.isAffected" />
+                            <input type="text" v-model="entity.orgDelegate"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
                     </td>
 
                     <td>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnNoSelect">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnNoSelect">
                             &nbsp;
                         </div>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnPerson">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnPerson">
                             &nbsp;
                         </div>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnCorp">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnCorp">
                             法人番号<br>
-                            <input type="text" v-model="dto.houjinNo" :disabled="!dto.isAffected" />
+                            <input type="text" v-model="entity.houjinNo"
+                                :disabled="!entity.isAffected || entity.isDisabled" />
                         </div>
-                        <div v-if="dto.kanrenshaKbn === kanrenshaKbnPoliOrg">
+                        <div v-if="entity.kanrenshaKbn === kanrenshaKbnPoliOrg">
                             政治団体区分<br>
-                            <select v-model="dto.dantaiKbn" :disabled="!dto.isAffected">
+                            <select v-model="entity.dantaiKbn" :disabled="!entity.isAffected || entity.isDisabled">
                                 <option :value=poliOrgKbnNoSelect> </option>
                                 <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
                                 }}</option>
@@ -243,191 +450,25 @@ function onSave() {
             </tbody>
         </table>
         <br>
-        <button @click="onSaveBunrui">分類編集送信</button>
+        <button @click="onSaveTableList">表示中の {{ byXmlCapsuleDto.limit }}件すべて更新</button>
     </div>
     <div class="clear-both"><br></div>
 
     <hr>
     </hr>
 
-        <!-- ワークテーブル編集マスタ最小個人 -->
-    <EditWkTblMinPerson></EditWkTblMinPerson>
-
-    <!-- 
-    <h3>関連者個人検索条件</h3>
-    <div class="left-area">
-        検索項目
-    </div>
-    <div class="right-area">
-        <input type="checkbox" v-model="personCapsuleDto.hasAffectNot">反映なし<span><input type="checkbox"
-                v-model="personCapsuleDto.hasFinished">作業完了</span>
-    </div>
-    <div class="clear-both"></div>
-    <div class="left-area">
-        作業結果表示
-    </div>
-    <div class="right-area">
-        <button @click="onSearchPerson">表示</button>
-    </div>
-    <div class="clear-both"></div>
-
-    <h3>関連者個人処理予定</h3>
-    <div class="one-line">
-        <select v-model="personCapsuleDto.pageNumber" @change="onChangePaging">
-            <option v-for="option in pageOptionPerson" :key="option.value" :value="option.value"> {{ option.text
-            }}
-            </option>
-        </select><br>
-        <table>
-            <tbody>
-                <tr>
-                    <th>反映該否</th>
-                    <th>個人氏名</th>
-                    <th>全住所</th>
-                    <th>職業</th>
-                </tr>
-            </tbody>
-            <tbody v-for="entityPerson of personResultDto.listWktblPerson"
-                :key="entityPerson.wkTblPartnerPersonAddMinId">
-                <tr>
-                    <td rowspan="2"><input type="checkbox" v-model="entityPerson.isAffected" disabled="true">反映する</td>
-                    <td colspan="3">{{ entityPerson.judgeReason }}</td>
-                </tr>
-                <tr>
-                    <td>{{ entityPerson.partnerName }}</td>
-                    <td>{{ entityPerson.allAddress }}</td>
-                    <td>{{ entityPerson.personShokugyou }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="clear-both"><br></div>
-    -->
-
+    <!-- ワークテーブル編集マスタ最小個人 -->
+    <EditWkTblMinPerson ref="refEditWkTblMinPerson"></EditWkTblMinPerson>
     <hr>
-    </hr>
 
     <!-- ワークテーブル編集マスタ最小企業／団体 -->
-    <EditWkTblMinCorp></EditWkTblMinCorp>
-
-
-    <!-- 
-    <h3>関連者企業／団体検索条件</h3>
-    <div class="left-area">
-        検索項目
-    </div>
-    <div class="right-area">
-        <input type="checkbox" v-model="corpCapsuleDto.hasAffectNot">反映なし<span><input type="checkbox"
-                v-model="corpCapsuleDto.hasFinished">作業完了</span>
-    </div>
-    <div class="clear-both"></div>
-    <div class="left-area">
-        作業結果表示
-    </div>
-    <div class="right-area">
-        <button @click="onSearchCorp">表示</button>
-    </div>
-    <div class="clear-both"></div>
-
-    <h3>関連者企業／団体処理予定</h3>
-    <div class="one-line">
-        <select v-model="corpCapsuleDto.pageNumber" @change="onChangePaging">
-            <option v-for="option in pageOptionCorp" :key="option.value" :value="option.value"> {{ option.text
-            }}
-            </option>
-        </select><br>
-        <table>
-            <tbody>
-                <tr>
-                    <th>反映該否</th>
-                    <th>企業／団体氏名</th>
-                    <th>全住所</th>
-                    <th>団体代表者</th>
-                    <th>法人番号</th>
-                </tr>
-            </tbody>
-            <tbody v-for="entityCorp of corpResultDto.listWktblCorp" :key="entityCorp.wkTblPartnerCorpAddMinId">
-                <tr>
-                    <td rowspan="2"><input type="checkbox" v-model="entityCorp.isAffected" disabled="true">反映する</td>
-                    <td colspan="4">{{ entityCorp.judgeReason }}</td>
-                </tr>
-                <tr>
-                    <td>{{ entityCorp.partnerName }}</td>
-                    <td>{{ entityCorp.allAddress }}</td>
-                    <td>{{ entityCorp.corpDelegate }}</td>
-                    <td>{{ entityCorp.houjinNo }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="clear-both"><br></div>
--->
-
+    <EditWkTblMinCorp ref="refEditWkTblMinCorp"></EditWkTblMinCorp>
     <hr>
-    </hr>
 
-        <!-- ワークテーブル編集マスタ最小政治団体 -->
-    <EditWkTblMinPoliOrg></EditWkTblMinPoliOrg>
-
-    <!-- 
-    <h3>関連者政治団体検索条件</h3>
-    <div class="left-area">
-        検索項目
-    </div>
-    <div class="right-area">
-        <input type="checkbox" v-model="poliOrgCapsuleDto.hasAffectNot">反映なし<span><input type="checkbox"
-                v-model="poliOrgCapsuleDto.hasFinished">作業完了</span>
-    </div>
-    <div class="clear-both"></div>
-    <div class="left-area">
-        作業結果表示
-    </div>
-    <div class="right-area">
-        <button @click="onSearchPoliOrg">表示</button>
-    </div>
-    <div class="clear-both"></div>
-
-    <h3>関連者政治団体処理予定</h3>
-    <div class="one-line">
-        <select v-model="poliOrgCapsuleDto.pageNumber" @change="onChangePaging">
-            <option v-for="option in pageOptionPoliOrg" :key="option.value" :value="option.value"> {{ option.text
-            }}
-            </option>
-        </select><br>
-        <table>
-            <tbody>
-                <tr>
-                    <th>反映該否</th>
-                    <th>企業／団体氏名</th>
-                    <th>全住所</th>
-                    <th>団体代表者</th>
-                    <th>団体区分</th>
-                </tr>
-            </tbody>
-            <tbody v-for="entityPoliOrg of poliOrgResultDto.listWktblPoliOrg"
-                :key="entityPoliOrg.wkTblPartnerPoliOrgAddMinId">
-                <tr>
-                    <td rowspan="2"><input type="checkbox" v-model="entityPoliOrg.isAffected" disabled="true">反映する</td>
-                    <td colspan="4">{{ entityPoliOrg.judgeReason }}</td>
-                </tr>
-                <tr>
-                    <td>{{ entityPoliOrg.partnerName }}</td>
-                    <td>{{ entityPoliOrg.allAddress }}</td>
-                    <td>{{ entityPoliOrg.poliOrgDelegate }}</td>
-                    <td>{{ PoliOrgDantaiKbnConstants.getLabel(entityPoliOrg.dantaiKbn) }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="clear-both"><br></div>
-    -->
-
+    <!-- ワークテーブル編集マスタ最小政治団体 -->
+    <EditWkTblMinPoliOrg ref="refEditWkTblMinPoliOrg"></EditWkTblMinPoliOrg>
     <hr>
-    </hr>
-    <br>
+
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
         <button @click="onSave" class="footer-button left-space">送信</button>

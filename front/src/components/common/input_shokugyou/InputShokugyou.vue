@@ -1,68 +1,63 @@
 ﻿<script setup lang="ts">
-import { ref, toRaw, type Ref } from 'vue';
+import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import SearchCorpNo from '../search_corp_no/SearchCorpNo.vue';
 import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
 import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
+import type MasterCorporationInterface from '../../../entity/masterCorporationEntity';
 
 // props,emit
 const props = defineProps<{ editDto: InputShokugyouDto, isfooter: boolean }>();
 const emits = defineEmits(["sendCancelInputShokugyou", "sendInputShokugyouInterface"]);
 
 const BLANK: string = "";
-const inputShokugyouDto: Ref<InputShokugyouInterface> = ref(structuredClone(toRaw(props.editDto)));
+const inputShokugyouDto: ComputedRef<InputShokugyouInterface> = computed(() => props.editDto);
 
-/** 生成食用文字列を送信する */
+/** 生成職業文字列を送信する */
 function sendAllShokugyou() {
     switch (inputShokugyouDto.value.yakushoku) {
         // フリーランス
         case yakushokuFree:
-            isShokugyoEdit.value = false;
             if (BLANK === inputShokugyouDto.value.shokugyouUserWrite) {
-                // return inputPersonNoDto.value.gyoushu + "業従事者";
                 inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + "業従事者";
                 emits("sendInputShokugyouInterface", inputShokugyouDto.value);
             } else {
-                //return inputPersonNoDto.value.shokugyouUserWrite;
                 inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.shokugyouUserWrite;
                 emits("sendInputShokugyouInterface", inputShokugyouDto.value);
             }
             break;
         // 団体所属者
         case yakushokuGeneral:
-            isShokugyoEdit.value = false;
             if (BLANK === inputShokugyouDto.value.shokugyouUserWrite) {
-                //return inputPersonNoDto.value.gyoushu + "業社員・職員";
                 inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + "業社員・職員";
                 emits("sendInputShokugyouInterface", inputShokugyouDto.value);
             } else {
-                //return inputPersonNoDto.value.shokugyouUserWrite;
                 inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.shokugyouUserWrite;
                 emits("sendInputShokugyouInterface", inputShokugyouDto.value);
             }
             break;
         // 役職者
         case yakushokuDirector:
-            isShokugyoEdit.value = true;
-            if (BLANK === inputShokugyouDto.value.corpNo) {
-                //return inputPersonNoDto.value.gyoushu + "業役職者(社名記載拒否)";
-                inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + "業役職者(社名記載拒否)";
+
+            if (BLANK !== inputShokugyouDto.value.shokugyouUserWrite) {
+                inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.shokugyouUserWrite;
                 emits("sendInputShokugyouInterface", inputShokugyouDto.value);
             } else {
-                //return corpName.value + "(" + corpPrefecture.value + ")" + "役員";
-                //emits("sendInputShokugyouInterface", inputShokugyouDto.value.gyoushu + corpName.value + "(" + corpPrefecture.value + ")" + "役員");
-                inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + inputShokugyouDto.value.corpName + "(" + inputShokugyouDto.value.corpAddress + ")" + "役員";
-                emits("sendInputShokugyouInterface", inputShokugyouDto.value);
+                if (BLANK === inputShokugyouDto.value.corpNo) {
+                    inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + "業役職者(社名記載拒否)";
+                    emits("sendInputShokugyouInterface", inputShokugyouDto.value);
+                } else {
+                    inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.gyoushu + "業:" + inputShokugyouDto.value.corpName + "(" + inputShokugyouDto.value.corpAddress + ")" + "役員";
+                    emits("sendInputShokugyouInterface", inputShokugyouDto.value);
+                }
             }
             break;
         // 定職なし
         case yakushokuNoJob:
-            isShokugyoEdit.value = false;
             inputShokugyouDto.value.allShokugyou = inputShokugyouDto.value.shokugyouUserWrite;
             emits("sendInputShokugyouInterface", inputShokugyouDto.value);
             break;
         default:
-            isShokugyoEdit.value = true;
             break;
     }
 }
@@ -72,8 +67,6 @@ const yakushokuFree: string = "所属なし";
 const yakushokuGeneral: string = "一般職員";
 const yakushokuDirector: string = "役職者";
 const yakushokuNoJob: string = "定職なし";
-
-const isShokugyoEdit: Ref<boolean> = ref(true);
 
 const isCorpSearch: Ref<boolean> = ref(false);
 // 検索リスト
@@ -90,11 +83,10 @@ function onSearchCorpNo() {
 /**
  * 法人情報受信
  */
-function recieveCorpNoInterface(sendDto: CorpNoInterface) {
-
-    inputShokugyouDto.value.corpNo = sendDto.corpNo;
-    inputShokugyouDto.value.corpAddress = sendDto.inputAddress.addressPostal;
-    inputShokugyouDto.value.corpName = sendDto.corpName;
+function recieveCorpNoInterface(sendDto: MasterCorporationInterface) {
+    inputShokugyouDto.value.corpNo = sendDto.corpKanrenshaCode;
+    inputShokugyouDto.value.corpAddress = sendDto.allAddress;
+    inputShokugyouDto.value.corpName = sendDto.partnerName;
 
     sendAllShokugyou();
 
@@ -126,7 +118,7 @@ function onCancel() {
         </div>
         <div class="clear-both"><br></div>
     </div>
-    
+
     <div class="left-area">
         職業(1)
     </div>
@@ -166,15 +158,13 @@ function onCancel() {
         職業(2)
     </div>
     <div class="right-area">
-        <div v-if="yakushokuDirector !== inputShokugyouDto.yakushoku"><input type="text"
-                v-model="inputShokugyouDto.shokugyouUserWrite" :disabled="isShokugyoEdit" class="max-input"
-                @change="sendAllShokugyou"></div>
         <div v-if="yakushokuDirector === inputShokugyouDto.yakushoku">
             <input type="text" v-model="inputShokugyouDto.corpNo" class="code-input" disabled="true">
             <input type="text" v-model="inputShokugyouDto.corpAddress" class="code-input left-space" disabled="true">
-            <input type="text" v-model="inputShokugyouDto.corpName" class="left-space text-input" disabled="true">
+            <input type="text" v-model="inputShokugyouDto.corpName" class="left-space name-input" disabled="true">
             <button class="left-space" @click="onSearchCorpNo">企業／団体検索</button>
         </div>
+        <input type="text" v-model="inputShokugyouDto.shokugyouUserWrite" class="max-input" @input="sendAllShokugyou">
     </div>
     <div class="clear-both"></div>
 

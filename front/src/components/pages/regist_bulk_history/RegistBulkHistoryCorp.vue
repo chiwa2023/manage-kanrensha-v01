@@ -2,7 +2,17 @@
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import ReadCsv from '../../common/read_csv/ReadCsv.vue';
 import EditWkTblHistoryCorp from '../../common/wktbl_edit_history/EditWkTblHistoryCorp.vue';
-import MockManagerInfo from '../../common/user_info/MockManagerInfo.vue';
+import StorageFileInterface from '../../../dto/storage_file/storageFileDto';
+import type RegistDataByCsvFileCapsuleInterface from '../../../dto/storage_file/registDataByCsvFileCapsuleDto';
+import RegistDataByCsvFileCapsuleDto from '../../../dto/storage_file/registDataByCsvFileCapsuleDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkMessageAndResultInterface from '../../../dto/frameworkMessageAndResultDto';
+import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import StorageFileDto from '../../../dto/storage_file/storageFileDto';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type RetryWktblBatchCapsuleInterface from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
+import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -11,48 +21,87 @@ function viewSample() {
     isVisibleTemplate.value = !isVisibleTemplate.value;
 }
 
-// csv読み出し
-const tableData: Ref<string[][]> = ref([[]]);
-function recieveTextDataBlock(data: string) {
-    tableData.value = parseCSV(data);
-}
-function parseCSV(data: string): string[][] {
-    return data.split('\r\n').map((row) => row.split(','));
-}
-function removeQuote(data: string): string {
-    return data.replace('"', '').replace('"', '');
-}
 
 function onCancel() {
     alert("キャンセル");
     history.back();
 }
+
 function onSave() {
-    alert("保存");
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-history/retry-corp";
+        const method = "POST";
+        const body = JSON.stringify(retryCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto:FrameworkMessageAndResultInterface = await response.json();
+                alert(resultDto.message);
+            })
+            .catch((error) => { alert(error); });
+    });
 }
+
+function onBatchByFile() {
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-history/execute-corp";
+        const method = "POST";
+        const body = JSON.stringify(capsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                const resultDto: FrameworkMessageAndResultInterface = await response.json();
+                alert(resultDto.message);
+                // 処理が成功したら再登録できないようにアップロードファイル情報を初期化
+                if (response.status === 200) {
+                    capsuleDto.value.storageFileDto = new StorageFileDto();
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
+}
+
+// ファイルからバッチ起動条件
+const capsuleDto: Ref<RegistDataByCsvFileCapsuleInterface> = ref(new RegistDataByCsvFileCapsuleDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+capsuleDto.value.userPersonLeastDto = userDto.value;
+
+// 再処理起動条件(ユーザ)
+const retryCapsuleDto:Ref<RetryWktblBatchCapsuleInterface> = ref(new RetryWktblBatchCapsuleDto());
+retryCapsuleDto.value.userDto = userDto.value;
+
+// ファイル保全情報受信
+function recieveStorageFileInterface(storageFileDto: StorageFileInterface) {
+    capsuleDto.value.storageFileDto = storageFileDto;
+}
+
 </script>
 <template>
     <!-- 管理者メニュー兼チェック -->
-    <MockManagerInfo></MockManagerInfo>
+    <ManagerInfo></ManagerInfo>
 
     <h1>関連者企業・団体履歴一括登録</h1>
 
-    <h3>CSVファイル選択</h3>
-    <ReadCsv :is-text="true" @send-text-data="recieveTextDataBlock"></ReadCsv>
+    <!-- csv読み出し10行 -->
+    <ReadCsv @send-storage-file-interface="recieveStorageFileInterface"></ReadCsv>
 
-        <h3>読み取り結果(最初の10行)</h3>
     <div class="one-line">
-        <table>
-            <tbody>
-                <tr v-for="row, index of tableData" :key="index">
-                    <td v-for="cell, index of row" :key="index">
-                        {{ removeQuote(cell) }}
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
+        <button @click="onBatchByFile">頭出ししたcsvファイルで一括処理</button>
     </div>
+    <div class="clear-both"><br></div>
 
     <div class="one-line">
         <button @click="viewSample">{{ templateViewButtonText }}</button>
@@ -120,9 +169,11 @@ th {
     border-style: solid;
     border-width: 1px;
 }
+
 th.hojo {
     background-color: lightgray;
 }
+
 th.explain {
     background-color: lightcyan;
 }

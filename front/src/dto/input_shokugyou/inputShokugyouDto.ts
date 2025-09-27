@@ -16,7 +16,6 @@ export default class InputShokugyouDto implements InputShokugyouInterface {
     /** ユーザ記述の職業 */
     shokugyouUserWrite: string;
 
-
     /** 企業番号 */
     corpNo: string;
     /** 企業所在地 */

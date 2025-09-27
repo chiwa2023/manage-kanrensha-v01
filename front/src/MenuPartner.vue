@@ -1,18 +1,27 @@
 ﻿<script setup lang="ts">
-import MockPartnerInfo from './components/common/user_info/MockPartnerInfo.vue';
+import { ref, type Ref } from 'vue';
+import PartnerInfo from './components/common/user_info/PartnerInfo.vue';
+import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
+import UserPersonLeastDto from './dto/user/userPersonLeastDto';
+import RoutePathConstants from './routePathConstants';
+
+// ユーザメニューで取得したユーザを保持
+const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+function recieveUser(user:UserPersonLeastInterface){
+    userLeastDto.value = user;
+}
 
 </script>
 <template>
-    <!-- 関連者メニュー兼チェック -->
-    <MockPartnerInfo></MockPartnerInfo>
+    <!-- ユーザメニュー兼チェック -->
+    <PartnerInfo @send-user="recieveUser"></PartnerInfo>
     <hr>
 
-    <h1>関連者用メニュー</h1>
+    <h2>関連者用メニュー</h2>
 
-    <RouterLink to="/partner-edit">関連者編集</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_EDIT>関連者編集</RouterLink><br>
 
-    <hr>
-    <RouterLink to="/">ログインページ</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
 
 </template>
 <style scoped></style>

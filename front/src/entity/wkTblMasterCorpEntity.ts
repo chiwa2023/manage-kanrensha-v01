@@ -104,18 +104,18 @@ export default class WkTblMasterCorpEntity implements WkTblMasterCorpInterface {
 
         const INIT_NUMBER: number = 0;
         const INIT_STRING: string = "";
-        const INIT_BOOLERAN: boolean = false;
+        const INIT_BOOLEAN: boolean = false;
 
         this.wkTblMasterCorpId = INIT_NUMBER;
         this.wkTblMasterCorpCode = INIT_NUMBER;
-        this.isLatest = INIT_BOOLERAN;
-        this.isFinish = INIT_BOOLERAN;
+        this.isLatest = INIT_BOOLEAN;
+        this.isFinish = INIT_BOOLEAN;
         this.partnerName = INIT_STRING;
         this.allAddress = INIT_STRING;
         this.corpDelegate = INIT_STRING;
         this.houjinNo = INIT_STRING;
         this.orgNameKana = INIT_STRING;
-        this.isShiten = INIT_BOOLERAN;
+        this.isShiten = INIT_BOOLEAN;
         this.orgDelegateCode = INIT_STRING;
         this.addressPostal = INIT_STRING;
         this.addressBlock = INIT_STRING;
@@ -135,8 +135,8 @@ export default class WkTblMasterCorpEntity implements WkTblMasterCorpInterface {
         this.snsServiceName = INIT_STRING;
         this.snsAccount = INIT_STRING;
         this.houjinSbts = INIT_STRING;
-        this.isForeign = INIT_BOOLERAN;
-        this.isAffected = INIT_BOOLERAN;
+        this.isForeign = INIT_BOOLEAN;
+        this.isAffected = INIT_BOOLEAN;
         this.judgeReason = INIT_STRING;
     }
 

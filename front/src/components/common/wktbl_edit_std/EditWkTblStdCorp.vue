@@ -6,29 +6,61 @@ import SearchWkTblPagingCapsuleDto from '../../../dto/add_xml/searchWkTbPagingCa
 import type SearchWkTblStdCorpPagingResultInterface from '../../../dto/wktbl_std/searchWkTblStdCorpPagingResultDto';
 import SearchWkTblStdCorpPagingResultDto from '../../../dto/wktbl_std/searchWkTblStdCorpPagingResultDto';
 import getPagingOption from '../../pages/paging/getPagingOption';
-import getMockWkTblCorpList from './mock/getMockWkTblCorpList';
 import type WkTblMasterCorpInterface from '../../../entity/wkTblMasterCorpEntity';
 import WkTblMasterCorpEntity from '../../../entity/wkTblMasterCorpEntity';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
+import type UpdateWkTblStdCorpCapsuleInterface from '../../../dto/wktbl_std/updateWkTblStdCorpCapsuleDto';
+import UpdateWkTblStdCorpCapsuleDto from '../../../dto/wktbl_std/updateWkTblStdCorpCapsuleDto';
+import type UpdateWkTblStdCorpResultInterface from '../../../dto/wktbl_std/updateWkTblStdCorpResultDto';
 
 const pageOptionCorp: Ref<SelectOptionNumberInterface[]> = ref([]);
 const corpCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+if (userDtoText !== null) {
+    userDto.value = JSON.parse(userDtoText);
+}
+corpCapsuleDto.value.userLeast = userDto.value;
+corpCapsuleDto.value.limit = 30;
+corpCapsuleDto.value.pageNumber = 0;
+corpCapsuleDto.value.hasAffectNot = true;
+
 const corpResultDto: Ref<SearchWkTblStdCorpPagingResultInterface> = ref(new SearchWkTblStdCorpPagingResultDto());
 
 function onSearchCorp() {
-    corpResultDto.value.allCount = 223;
-    corpResultDto.value.limit = 30;
-    pageOptionCorp.value = getPagingOption(corpResultDto.value);
-    corpResultDto.value.listWktblCorp = getMockWkTblCorpList();
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-master-std/search-corp";
+        const method = "POST";
+        const body = JSON.stringify(corpCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                corpResultDto.value = await response.json();
+                pageOptionCorp.value = getPagingOption(corpResultDto.value);
+            })
+            .catch((error) => { alert(error); });
+    });
 
 }
 // ページング変更
 function onChangePaging() {
-    // personResultDto.value.listWktblPerson = getMockWkTblPersonList();
+    onSearchCorp();
 }
 
 // 編集用
 const isEditData: Ref<boolean> = ref(false);
 const entityEdit: Ref<WkTblMasterCorpInterface> = ref(new WkTblMasterCorpEntity());
+const editCapsuleDto: Ref<UpdateWkTblStdCorpCapsuleInterface> = ref(new UpdateWkTblStdCorpCapsuleDto());
+editCapsuleDto.value.userPersonLeastDto = userDto.value;
+
 let findIndex: number = 0;
 function onEditData(editId: number) {
     // 指定されたデータを呼び出し(編集決定時には置き換えするので配列indexが必要)
@@ -38,14 +70,57 @@ function onEditData(editId: number) {
     isEditData.value = true;
 }
 function onEditUpdate() {
+
+    // 編集中のEntityを編集のためにBack側に受け渡し
+    editCapsuleDto.value.wkTblMasterCorpEntity = entityEdit.value;
+
+    getAuthorizedPromiseArea().then(token => {
+        const url = "http://localhost:6080/regist-bulk-master-std/update-corp";
+        const method = "POST";
+        const body = JSON.stringify(editCapsuleDto.value);
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AUTH-TOKEN': 'Bearer ' + token
+        };
+        fetch(url, { method, headers, body })
+            .then(async (response) => {
+                if (response.status < 400) {
+                    // TODO 処理内容
+                    const resultDto: UpdateWkTblStdCorpResultInterface = await response.json();
+                    alert(resultDto.message);
+                    // 表示更新
+                    onSearchCorp();
+                }
+            })
+            .catch((error) => { alert(error); });
+    });
+
     // 指定された値に置き換え
-    corpResultDto.value.listWktblCorp.splice(findIndex, 1, structuredClone(toRaw(entityEdit.value)));
+    // corpResultDto.value.listWktblCorp.splice(findIndex, 1, structuredClone(toRaw(entityEdit.value)));
     // 編集コンポーネントを閉じる
     isEditData.value = false;
+
 }
+
 function onEditClose() {
     // 編集コンポーネントを閉じる
     isEditData.value = false;
+}
+
+const notUseText:string = "使用しないに変更;";
+function onHideData() {
+    entityEdit.value.judgeReason = notUseText;
+    entityEdit.value.isAffected = false;
+    entityEdit.value.isFinish = true;
+    onEditUpdate();
+}
+
+// 編集画面データ更新禁止
+const listEditProhibit: string[] = [];
+listEditProhibit.push("正常終了");
+function isEdit(): boolean {
+    return listEditProhibit.includes(entityEdit.value.judgeReason);
 }
 
 </script>
@@ -73,7 +148,7 @@ function onEditClose() {
         <!-- ページング -->
         <select v-model="corpCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionCorp" :key="option.value" :value="option.value"> {{ option.text
-                }}
+            }}
             </option>
         </select><br>
 
@@ -115,7 +190,8 @@ function onEditClose() {
                     <td colspan="26">{{ entity.judgeReason }}</td>
                 </tr>
                 <tr>
-                    <td><button @click="onEditData(entity.wkTblMasterCorpId)" :disabled="!entity.isLatest">{{ entity.partnerName }}</button></td>
+                    <td><button @click="onEditData(entity.wkTblMasterCorpId)" :disabled="!entity.isLatest">{{
+                        entity.partnerName }}</button></td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.corpDelegate }}</td>
                     <td>{{ entity.houjinNo }}</td>
@@ -155,8 +231,9 @@ function onEditClose() {
                 反映該否
             </div>
             <div class="right-area">
-                <input type="checkbox" v-model="entityEdit.isAffected">反映あり
-                <br>※データが重複していると反映該否が動かせないことがあります
+                <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
+                        class="left-space">このデータを使用しない</button>
+                    <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>
             <div class="left-area">
@@ -353,7 +430,8 @@ function onEditClose() {
                 &nbsp;
             </div>
             <div class="right-area">
-                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()">更新</button>
+                <button @click="onEditClose">閉じる</button><button class="left-space" @click="onEditUpdate()"
+                    :disabled="isEdit()">更新</button>
             </div>
             <div class="clear-both"></div>
         </div>

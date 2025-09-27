@@ -1,18 +1,36 @@
 ﻿<script setup lang="ts">
-import MockComradeInfo from './components/common/user_info/MockComradeInfo.vue';
+import { ref, type Ref } from 'vue';
+import ComradeInfo from './components/common/user_info/ComradeInfo.vue';
+import UserPersonLeastDto from './dto/user/userPersonLeastDto';
+import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
+import RoutePathConstants from './routePathConstants';
+
+// ユーザメニューで取得したユーザを保持
+const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+function recieveUser(user: UserPersonLeastInterface) {
+    userLeastDto.value = user;
+}
 
 </script>
 <template>
-    <!-- APIユーザメニュー兼チェック -->
-    <MockComradeInfo></MockComradeInfo>
+    <!-- ユーザメニュー兼チェック -->
+    <ComradeInfo @send-user="recieveUser"></ComradeInfo>
     <hr>
 
-    <h1>APIユーザ用メニュー</h1>
+    <h2>APIユーザ用メニュー</h2>
 
-    <a href="#">接続トークン更新</a><br>
+    <a href="#">Bearer更新</a><br>
+
+    <RouterLink :to=RoutePathConstants.PAGE_EDIT_COMRADE>所属組織編集(登録)</RouterLink><br>
+    <!--
+        <RouterLink to="#">個人と組織の紐づけ</RouterLink><br>
+
+        <RouterLink to="#">APIユーザ個人招待</RouterLink><br>
+    -->
+    <RouterLink :to=RoutePathConstants.PAGE_ACCEPT_COMRADE_PERSON>個人と組織紐づけ承認</RouterLink><br>
 
     <hr>
-    <RouterLink to="/">ログインページ</RouterLink><br>
+    <RouterLink :to="RoutePathConstants.PAGE_LOGIN">ログインページ</RouterLink><br>
 
 </template>
-<style scoped></style>
+<style scoped></style><br>

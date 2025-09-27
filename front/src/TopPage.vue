@@ -1,6 +1,18 @@
 ﻿<script setup lang="ts">
+import { ref, type Ref } from 'vue';
 import RoutePathConstants from './routePathConstants';
+import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
+import UserPersonLeastDto from './dto/user/userPersonLeastDto';
+import UserRoleConstants from './dto/user/userRoleConstants';
 
+const userDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+userDto.value.listRoles.push(UserRoleConstants.ROLE_ADMIN);
+userDto.value.listRoles.push(UserRoleConstants.ROLE_MANAGER);
+userDto.value.listRoles.push(UserRoleConstants.ROLE_COMRADE);
+userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_PERSON);
+userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_CORP);
+userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_POLI_ORG);
+sessionStorage.setItem("userDto", JSON.stringify(userDto.value));
 
 </script>
 <template>
