@@ -62,7 +62,7 @@ class PartnerPersonJudgeProcessorTest {
 
         WkTblPartnerPersonJudgeEntity judgeEntity02 = partnerPersonJudgeProcessor.process(historyEntity02);
         assertEquals(true, judgeEntity02.getIsAffected());
-        assertEquals("", judgeEntity02.getJudgeReason());
+        assertEquals(" ", judgeEntity02.getJudgeReason());
     }
 
 }

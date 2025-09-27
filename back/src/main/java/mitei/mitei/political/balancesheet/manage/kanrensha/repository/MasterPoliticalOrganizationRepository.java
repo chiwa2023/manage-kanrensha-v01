@@ -41,6 +41,15 @@ public interface MasterPoliticalOrganizationRepository
             boolean isLatest, Pageable pageable);
 
     /**
+     * 団体名で検索する
+     *
+     * @param nameText 団体名自然検索用名称
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPoliticalOrganizationEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
+
+    /**
      * 基準時間開始以上かつ終了より前の最新を取得する
      *
      * @param dateTimeStart 基準日時開始
@@ -58,7 +67,7 @@ public interface MasterPoliticalOrganizationRepository
      * @param kanrenshaCode 関連者コード
      * @return 検索結果
      */
-    @Query(value = "SELECT  1 AS kanrensha_kbn ,partner_name ,all_address " + " ,person_shokugyou AS recognized_key "
+    @Query(value = "SELECT 1 AS kanrensha_kbn ,partner_name ,all_address " + " ,person_shokugyou AS recognized_key "
             + " ,person_kanrensha_code AS kanrensha_code "
             + "   FROM  master_person  WHERE person_kanrensha_code = ?1 AND is_latest = 1 " + "UNION "
             + "SELECT 2 AS kanrensha_kbn  ,partner_name ,all_address " + " ,corp_delegate AS recognized_key "
@@ -70,15 +79,6 @@ public interface MasterPoliticalOrganizationRepository
     List<PartnerCommonInfoDto> findKanrenshaCode(String kanrenshaCode);
 
     /**
-     * 最新かつ比較用名称リストを取得する
-     *
-     * @param nameText 比較用名称
-     * @param isLatest 最新該否
-     * @return 検索結果
-     */
-    List<MasterPoliticalOrganizationEntity> findByCompareNameTextAndIsLatest(String nameText, Boolean isLatest);
-
-    /**
      * 該当コードかつ最新該否でデータを取得する
      *
      * @param code     関連者コード
@@ -86,6 +86,42 @@ public interface MasterPoliticalOrganizationRepository
      * @return 検索結果
      */
     Optional<MasterPoliticalOrganizationEntity> findFirstByPoliOrgKanrenshaCodeAndIsLatest(String code,
+            Boolean isLatest);
+
+    /**
+     * 現在利用できるリストをページングで取得する(TODO 自然検索に変更の予定)
+     *
+     * @param isLatest 最新該否
+     * @param pageable ページング条件
+     * @return 検索結果
+     */
+    List<MasterPoliticalOrganizationEntity> findByIsLatest(Boolean isLatest, Pageable pageable);
+
+    /**
+     * 現在利用できる件数取得する(TODO 自然検索に変更の予定)
+     *
+     * @param isLatest 最新該否
+     * @return 検索件数
+     */
+    Integer countByIsLatest(Boolean isLatest);
+
+    /**
+     * 関連者コードからテーブルid降順で取得する
+     *
+     * @param kanrenshaCode 関連者コード
+     * @return 検索結果
+     */
+    List<MasterPoliticalOrganizationEntity> findByPoliOrgKanrenshaCodeOrderByMasterPoliticalOrganizationIdDesc(
+            String kanrenshaCode);
+
+    /**
+     * 関連者コードリストかつ最新を取得する
+     *
+     * @param listCode 関連者コードリスト
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPoliticalOrganizationEntity> findByPoliOrgKanrenshaCodeInAndIsLatest(List<String> listCode,
             Boolean isLatest);
 
 }

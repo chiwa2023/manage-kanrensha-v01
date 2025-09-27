@@ -41,8 +41,8 @@ public interface WkTblPartnerPersonHistoryRepository extends JpaRepository<WkTbl
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblPartnerPersonHistoryEntity> findByInsertUserCodeAndIsLatest(Integer userCode, boolean isLatest,
-            Pageable pageable);
+    Page<WkTblPartnerPersonHistoryEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode,
+            boolean isLatest, boolean isAffected, boolean isFinish, Pageable pageable);
 
     /**
      * 重複キーを検出する
@@ -77,8 +77,9 @@ public interface WkTblPartnerPersonHistoryRepository extends JpaRepository<WkTbl
      * @param pageable   ページング
      * @return 検索結果
      */
-    List<WkTblPartnerPersonHistoryEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(Integer userCode,
-            List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish, Pageable pageable);
+    List<WkTblPartnerPersonHistoryEntity> findByInsertUserCodeAndIsLatestInAndIsAffectedInAndIsFinishIn(
+            Integer userCode, List<Boolean> listLatest, List<Boolean> isAffected, List<Boolean> listFinish,
+            Pageable pageable);
 
     /**
      * 編集用に検索を行う際の該当件数を返却する

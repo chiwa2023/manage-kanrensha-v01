@@ -34,13 +34,13 @@ class SearchPartnerAllByKanrenshaCodeServiceTest {
     private SearchPartnerAllByKanrenshaCodeService searchPartnerAllByKanrenshaCodeService;
 
     /** 関連者区分個人 */
-    private final static int PERSON = 1;
+    private final static short PERSON = 1;
 
     /** 関連者区分個人 */
-    private final static int CORP = 2;
+    private final static short CORP = 2;
 
     /** 関連者区分個人 */
-    private final static int POLI_ORG = 3;
+    private final static short POLI_ORG = 3;
 
     @Test
     @Tag("TableTruncate")

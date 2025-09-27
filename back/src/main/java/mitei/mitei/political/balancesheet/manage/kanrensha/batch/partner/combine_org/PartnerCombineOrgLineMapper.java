@@ -29,7 +29,8 @@ public class PartnerCombineOrgLineMapper implements LineMapper<PartnerCombineOrg
 
     /** 空文字 */
     private static final String EMPTY = "";
-
+    
+    
     /**
      * 処理を行う
      */
@@ -42,9 +43,9 @@ public class PartnerCombineOrgLineMapper implements LineMapper<PartnerCombineOrg
         dto.setPersonName(this.removeQuote(cell[POS_PERSON_NAME]));
         dto.setOrgKanrenshaCode(this.removeQuote(cell[POS_ORG_CODE]));
         dto.setOrgName(this.removeQuote(cell[POS_ORG_NAME]));
-        dto.setStartyear(this.convertShort(this.removeQuote(cell[POS_YEAR_START])));
-        dto.setEndyear(this.convertShort(this.removeQuote(cell[POS_YEAR_END])));
-
+        dto.setStartYear(this.convertShort(this.removeQuote(cell[POS_YEAR_START])));
+        dto.setEndYear(this.convertShort(this.removeQuote(cell[POS_YEAR_END])));
+        
         return dto;
     }
 

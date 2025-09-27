@@ -63,8 +63,8 @@ class CombineOrgCsvItemWriterTest {
         entity00.setPersonName("個人名称");
         entity00.setOrgKanrenshaCode("団体コード");
         entity00.setOrgName("団体名称");
-        entity00.setStartyear(Short.valueOf("2021"));
-        entity00.setEndyear(Short.valueOf("2022"));
+        entity00.setStartYear(Short.valueOf("2021"));
+        entity00.setEndYear(Short.valueOf("2022"));
         entity00.setYearArrayText("12345");
         entity00.setIsAffected(true);
         entity00.setIsFinish(false);
@@ -88,8 +88,8 @@ class CombineOrgCsvItemWriterTest {
         assertEquals(entity00.getPersonName(), entityAns.getPersonName());
         assertEquals(entity00.getOrgKanrenshaCode(), entityAns.getOrgKanrenshaCode());
         assertEquals(entity00.getOrgName(), entityAns.getOrgName());
-        assertEquals(entity00.getStartyear(), entityAns.getStartyear());
-        assertEquals(entity00.getEndyear(), entityAns.getEndyear());
+        assertEquals(entity00.getStartYear(), entityAns.getStartYear());
+        assertEquals(entity00.getEndYear(), entityAns.getEndYear());
         assertEquals(entity00.getYearArrayText(), entityAns.getYearArrayText());
         assertEquals(entity00.getIsAffected(), entityAns.getIsAffected());
         assertEquals(entity00.getIsFinish(), entityAns.getIsFinish());

@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_history.UpdateWkTblHistoryPoliOrgCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_history.UpdateWkTblHistoryPoliOrgResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerPoliOrgHistoryEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_bulk_history.RegistBulkHistoryPoliOrgService;
 
 /**
@@ -30,18 +31,20 @@ public class RegistBulkHistoryPoliOrgController {
      * @return 追加されたId
      */
     @PostMapping("/update-poli-org")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+    public ResponseEntity<UpdateWkTblHistoryPoliOrgResultDto> practice(
             final @RequestBody UpdateWkTblHistoryPoliOrgCapsuleDto capsuleDto) {
 
-        Integer newId = registBulkHistoryPoliOrgService.practice(capsuleDto);
+        WkTblPartnerPoliOrgHistoryEntity entity = registBulkHistoryPoliOrgService.practice(capsuleDto);
+        Integer newId = entity.getWkPartnerPoliOrgHistoryId();
 
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        UpdateWkTblHistoryPoliOrgResultDto resultDto = new UpdateWkTblHistoryPoliOrgResultDto();
         if (0 == newId) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("更新できませんでした");
             return ResponseEntity.status(HttpResponseStatus.NOT_FOUND.code()).body(resultDto);
         } else {
             resultDto.setMessage("正常に登録できました");
+            resultDto.setWkTblPartnerPoliOrgHistoryEntity(entity);
             return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
         }
     }

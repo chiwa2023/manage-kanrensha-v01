@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +12,6 @@ import jakarta.persistence.GenerationType;
 /**
  * master_corporation接続用Entity
  */
-@Entity
 public class MasterCorporationDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
@@ -33,6 +31,58 @@ public class MasterCorporationDto implements Serializable { // NOPMD DataClass
 
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
+
+    /**
+     * コンストラクタ
+     */
+    public MasterCorporationDto() {
+
+    }
+
+    /**
+     * コンストラクタ
+     *
+     * @param masterCorporationId 企業マスタId
+     * @param corpKanrenshaCode   関連者コード企業
+     * @param houjinNo            法人番号
+     * @param isLatest            最新該否
+     * @param partnerName         企業団体名称
+     * @param allAddress          全住所
+     * @param corpDelegate        団体代表者
+     * @param compareNameText     全文検索用比較テキスト
+     * @param insertUserId        挿入ユーザId
+     * @param insertUserCode      挿入ユーザコード
+     * @param insertUserName      挿入ユーザ氏名
+     * @param insertTimestamp     挿入日時
+     * @param deleteUserId        削除Id
+     * @param deleteUserCode      削除ユーザコード
+     * @param deleteUserName      削除ユーザ氏名
+     * @param deleteTimestamp     削除日時
+     */
+    public MasterCorporationDto(final Integer masterCorporationId, final String corpKanrenshaCode,
+            final String houjinNo, final Boolean isLatest, final String partnerName, final String allAddress,
+            final String corpDelegate, final String compareNameText, final Integer insertUserId,
+            final Integer insertUserCode, final String insertUserName, final LocalDateTime insertTimestamp,
+            final Integer deleteUserId, final Integer deleteUserCode, final String deleteUserName,
+            final LocalDateTime deleteTimestamp) {
+        super();
+        this.masterCorporationId = masterCorporationId;
+        this.corpKanrenshaCode = corpKanrenshaCode;
+        this.houjinNo = houjinNo;
+        this.isLatest = isLatest;
+        this.partnerName = partnerName;
+        this.allAddress = allAddress;
+        this.corpDelegate = corpDelegate;
+        this.compareNameText = compareNameText;
+        this.insertUserId = insertUserId;
+        this.insertUserCode = insertUserCode;
+        this.insertUserName = insertUserName;
+        this.insertTimestamp = insertTimestamp;
+        this.deleteUserId = deleteUserId;
+        this.deleteUserCode = deleteUserCode;
+        this.deleteUserName = deleteUserName;
+        this.deleteTimestamp = deleteTimestamp;
+    }
 
     /** テーブルId */
     @Id

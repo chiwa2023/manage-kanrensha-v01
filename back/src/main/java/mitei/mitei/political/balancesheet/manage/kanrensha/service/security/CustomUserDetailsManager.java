@@ -26,6 +26,12 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.SetTableDataHis
 @Component
 public class CustomUserDetailsManager implements UserDetailsManager {
 
+    /** パスワード変更期限 */
+    public static final long LIMIT_PASS_CHANGE = 12L;
+
+    /** 無活動期限 */
+    public static final long LIMIT_ACTIVE = 2L;
+
     /** ログイン状態Repository */
     @Autowired
     private LoginStatusRepository loginStatusRepository;
@@ -45,12 +51,6 @@ public class CustomUserDetailsManager implements UserDetailsManager {
     /** テーブル履歴設定Util */
     @Autowired
     private SetTableDataHistoryUtil setTableDataHistoryUtil;
-
-    /** パスワード変更期限 */
-    private static final long LIMIT_PASS_CHANGE = 12L;
-
-    /** 無活動期限 */
-    private static final long LIMIT_ACTIVE = 2L;
 
     /**
      * ユーザ名で該当データを呼び出す
@@ -177,9 +177,9 @@ public class CustomUserDetailsManager implements UserDetailsManager {
         Optional<LoginStatusEntity> optional = loginStatusRepository.findById(username);
         if (!optional.isEmpty()) {
             LoginStatusEntity statusEntity = optional.get();
-            
+
             // TODO 旧パスワード比較
-            
+
             statusEntity.setPassword(newPasswordEncoded);
             loginStatusRepository.saveAndFlush(statusEntity);
             return true;

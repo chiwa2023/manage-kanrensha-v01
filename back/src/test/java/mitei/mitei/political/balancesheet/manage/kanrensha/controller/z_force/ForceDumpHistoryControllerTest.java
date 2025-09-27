@@ -123,26 +123,26 @@ class ForceDumpHistoryControllerTest {
                 .toString();
 
         // 配下を全削除
-        Path pathRootCorp = Paths.get(pathSaved, frontDumpFolder, "/dump_hisotry_corp");
+        Path pathRootCorp = Paths.get(pathSaved, frontDumpFolder, "/dump_history_corp");
         if (Files.exists(pathRootCorp)) {
             Files.walk(pathRootCorp).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(java.io.File::delete);
         }
-        Path pathRootPerson = Paths.get(pathSaved, frontDumpFolder, "/dump_hisotry_person");
+        Path pathRootPerson = Paths.get(pathSaved, frontDumpFolder, "/dump_history_person");
         if (Files.exists(pathRootPerson)) {
             Files.walk(pathRootPerson).sorted(Comparator.reverseOrder()).map(Path::toFile)
                     .forEach(java.io.File::delete);
         }
-        Path pathRootPoliOrg = Paths.get(pathSaved, frontDumpFolder, "/dump_hisotry_poli_org");
+        Path pathRootPoliOrg = Paths.get(pathSaved, frontDumpFolder, "/dump_history_poli_org");
         if (Files.exists(pathRootPoliOrg)) {
             Files.walk(pathRootPoliOrg).sorted(Comparator.reverseOrder()).map(Path::toFile)
                     .forEach(java.io.File::delete);
         }
 
-        Path pathRootCorpZip = Paths.get(pathSaved, frontDumpFolder, "dump_hisotry_corp.zip");
+        Path pathRootCorpZip = Paths.get(pathSaved, frontDumpFolder, "dump_history_corp.zip");
         Files.deleteIfExists(pathRootCorpZip);
-        Path pathRootPersonZip = Paths.get(pathSaved, frontDumpFolder, "dump_hisotry_person.zip");
+        Path pathRootPersonZip = Paths.get(pathSaved, frontDumpFolder, "dump_history_person.zip");
         Files.deleteIfExists(pathRootPersonZip);
-        Path pathRootPoliOrgZip = Paths.get(pathSaved, frontDumpFolder, "dump_hisotry_poli_org.zip");
+        Path pathRootPoliOrgZip = Paths.get(pathSaved, frontDumpFolder, "dump_history_poli_org.zip");
         Files.deleteIfExists(pathRootPoliOrgZip);
 
         // ファイル否存在確認

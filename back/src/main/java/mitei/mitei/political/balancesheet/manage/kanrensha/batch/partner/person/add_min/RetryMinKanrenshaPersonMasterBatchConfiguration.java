@@ -78,7 +78,7 @@ public class RetryMinKanrenshaPersonMasterBatchConfiguration {
     }
 
     /**
-     * StepCsvを返却する
+     * StepRecordを返却する
      *
      * @param jobRepository      jobRepository
      * @param transactionManager transactionManager

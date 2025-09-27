@@ -26,6 +26,9 @@ public class PartnerPoliOrgAddMiniCsvProcessor
     /** 空文字 */
     private static final String BLANK = "";
 
+    /** 正常登録 */
+    private static final String RIGHT = "正)";
+
     /** 関連者政治団体同属性取得Service */
     @Autowired
     private GetPartnerPoliOrgSameHistoryService getPartnerPoliOrgSameHistoryService;
@@ -65,9 +68,9 @@ public class PartnerPoliOrgAddMiniCsvProcessor
         if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(entity.getPoliOrgDelegate())) {
-            stringBuilder.append("代表者が入力されていません;");
-        }
+        // if (BLANK.equals(entity.getPoliOrgDelegate())) {
+        // stringBuilder.append("代表者が入力されていません;");
+        // }
         String dantaiKbn = entity.getDantaiKbn();
         List<String> listDantaiKbn = PoliOrgDantaiKbnConstants.getList();
         if (BLANK.equals(dantaiKbn)) {
@@ -82,7 +85,6 @@ public class PartnerPoliOrgAddMiniCsvProcessor
         List<PartnerPoliOrgHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getPartnerName(),
                 entity.getAllAddress(), entity.getPoliOrgDelegate());
         if (listHistory.isEmpty()) {
-
             if (!entity.getIsAffected()) {
                 // マスタに同名の団体があるかどうか確認する
                 List<MasterPoliticalOrganizationEntity> listMaster = masterPoliticalOrganizationRepository
@@ -101,10 +103,11 @@ public class PartnerPoliOrgAddMiniCsvProcessor
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
             entity.setIsFinish(false);
+            entity.setJudgeReason(RIGHT);
         } else {
             entity.setIsAffected(false);
             entity.setJudgeReason(stringBuilder.toString());
-            entity.setIsFinish(true);
+            entity.setIsFinish(false);
         }
 
         return entity;
@@ -114,8 +117,11 @@ public class PartnerPoliOrgAddMiniCsvProcessor
      * 同属性リストを取得する
      *
      * @param name 団体名称
+     * 
      * @param address 全住所
+     * 
      * @param delegate 代表者名
+     * 
      * @return 検索結果
      */
     private List<PartnerPoliOrgHistoryBaseEntity> selectSameRirekiList(final String name, final String address,

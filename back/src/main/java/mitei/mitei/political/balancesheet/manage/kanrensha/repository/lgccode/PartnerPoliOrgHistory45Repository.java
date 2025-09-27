@@ -36,8 +36,8 @@ public interface PartnerPoliOrgHistory45Repository extends JpaRepository<Partner
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<PartnerPoliOrgHistory45Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime, boolean isLatest,
-            Pageable pageable);
+    Page<PartnerPoliOrgHistory45Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime,
+            boolean isLatest, Pageable pageable);
 
     /**
      * 基準時間開始以上かつ終了より前の最新を取得する

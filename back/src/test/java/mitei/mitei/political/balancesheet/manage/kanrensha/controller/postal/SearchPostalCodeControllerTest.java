@@ -13,14 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.transaction.Transactional;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.postal.SearchPostalCodeCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapperWithTimeModuleUtil;
 
@@ -42,6 +43,7 @@ class SearchPostalCodeControllerTest {
     @Test
     @Tag("TableTruncate")
     @Transactional
+    @WithMockUser
     void test() throws Exception {
 
         SearchPostalCodeCapsuleDto capsuleDto = new SearchPostalCodeCapsuleDto();

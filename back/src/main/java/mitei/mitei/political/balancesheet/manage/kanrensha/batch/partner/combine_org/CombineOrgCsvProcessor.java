@@ -51,6 +51,9 @@ public class CombineOrgCsvProcessor
     /** 空文字 */
     private static final String BLANK = "";
 
+    /** 正常登録 */
+    private static final String RIGHT = "正)";
+
     /** 関連者区分 */
     private Short kanrenshaKbn;
     /** 最小登録年 */
@@ -95,32 +98,29 @@ public class CombineOrgCsvProcessor
         // 未入力チェック
         this.checkSetValue(stringBuilder, entity);
 
-        // 登録年チェック
-        boolean isRecord = this.checkSetYear(stringBuilder, entity, yMin, yMax);
+        // 登録年チェック(front側で生成した場合はチェックをスキップ)
+        if (BLANK.equals(entity.getYearArrayText())) {
+            if (this.checkSetYear(stringBuilder, entity, yMin, yMax)) {
+                short start = entity.getStartYear();
+                short end = entity.getEndYear();
 
-        // コード存在チェック
-        this.checkExistCode(stringBuilder, entity);
+                StringBuilder builder = new StringBuilder();
+                for (short year = start; year <= end; year++) {
+                    builder.append(year).append(YEAR_SPLITER);
+                }
 
-        // その他の値が正常かどうかにかかわらず、登録年さえちゃんと(笑)していれば配列を作成
-        if (isRecord) {
-            short start = entity.getStartyear();
-            short end = entity.getEndyear();
-
-            StringBuilder builder = new StringBuilder();
-            for (short year = start; year <= end; year++) {
-                builder.append(year).append(YEAR_SPLITER);
+                if (builder.isEmpty()) { // SUPPRESS CHECKSTYLE IfNest
+                    stringBuilder.append("終了年より開始年が大きい値です;");
+                } else {
+                    String text = builder.toString();
+                    entity.setYearArrayText(text.substring(0, text.length() - 1));
+                }
             }
 
-            if (builder.isEmpty()) {
-                stringBuilder.append("終了年より開始年が大きい値です;");
-            } else {
-                String text = builder.toString();
-                entity.setYearArrayText(text.substring(0, text.length() - 1));
-            }
         } else {
             entity.setYearArrayText(BLANK); // 最初の指定時はよかったのに、編集時にダメにした場合の対策
         }
-
+        
         // 作成予定の各年のテーブルについてチェックを行う
         if (!BLANK.equals(entity.getYearArrayText())) {
             String conditon = this.createCondition(entity);
@@ -134,17 +134,21 @@ public class CombineOrgCsvProcessor
                     stringBuilder.append("すでに登録があります(").append(year).append(")年;");
                 }
             }
+
         }
+
+        // コード存在チェック
+        this.checkExistCode(stringBuilder, entity);
 
         // 入力に問題がある場合は記録だけ残して処理中断
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
-            entity.setJudgeReason(BLANK);
+            entity.setJudgeReason(RIGHT);
             entity.setIsFinish(false);
         } else {
             entity.setIsAffected(false);
             entity.setJudgeReason(stringBuilder.toString());
-            entity.setIsFinish(true);
+            entity.setIsFinish(false);
         }
 
         return entity;
@@ -171,20 +175,20 @@ public class CombineOrgCsvProcessor
 
         final Short notSetyear = Short.valueOf("-1");
         boolean isRecord = true;
-        if (notSetyear.equals(entity.getStartyear())) {
+        if (notSetyear.equals(entity.getStartYear())) {
             stringBuilder.append("登録開始年が正常に指定されませんでした;");
             isRecord = false;
         } else {
-            if (yMin > entity.getStartyear() || yMax < entity.getStartyear()) {
+            if (yMin > entity.getStartYear() || yMax < entity.getStartYear()) {
                 stringBuilder.append("登録開始年がシステム登録可能年の範囲でありません;");
                 isRecord = false;
             }
         }
-        if (notSetyear.equals(entity.getEndyear())) {
+        if (notSetyear.equals(entity.getEndYear())) {
             stringBuilder.append("登録終了年が正常に指定されませんでした;");
             isRecord = false;
         } else {
-            if (yMin > entity.getEndyear() || yMax < entity.getEndyear()) {
+            if (yMin > entity.getEndYear() || yMax < entity.getEndYear()) {
                 stringBuilder.append("登録終了年がシステム登録可能年の範囲でありません;");
                 isRecord = false;
             }

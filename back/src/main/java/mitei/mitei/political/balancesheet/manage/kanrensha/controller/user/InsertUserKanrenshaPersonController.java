@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkCapsuleDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.EditKanrenshaPersonService;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.user.SaveKanrenshaPersonCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.service.kanrensha.InsertKanrenshaPersonService;
 
 /**
  * 関連者個人追加Controller
@@ -21,7 +21,7 @@ public class InsertUserKanrenshaPersonController {
 
     /** 関連者個人編集Service */
     @Autowired
-    private EditKanrenshaPersonService editKanrenshaPersonService;
+    private InsertKanrenshaPersonService insertKanrenshaPersonService;
 
     /**
      * 処理を行う
@@ -30,9 +30,26 @@ public class InsertUserKanrenshaPersonController {
      * @return 処理結果Dto
      */
     @PostMapping("/partner-person")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(@RequestBody final FrameworkCapsuleDto capsuleDto) {
-        
-        return ResponseEntity.status(HttpStatus.OK).body(editKanrenshaPersonService.practice(capsuleDto));
+    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+            @RequestBody final SaveKanrenshaPersonCapsuleDto capsuleDto) {
+
+        // 更新処理に対して処理結果を返す
+        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        try {
+            Integer newId = insertKanrenshaPersonService.practice(capsuleDto);
+            if (0 == newId) {
+                resultDto.setMessage("登録できませんでした");
+                resultDto.setIsFailure(true);
+            } else {
+                resultDto.setMessage("登録できました");
+                return ResponseEntity.status(HttpStatus.OK).body(resultDto);
+            }
+        } catch (Exception exception) { // NOPMD
+            resultDto.setMessage("登録できませんでした");
+            resultDto.setIsFailure(true);
+        }
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultDto);
 
     }
 

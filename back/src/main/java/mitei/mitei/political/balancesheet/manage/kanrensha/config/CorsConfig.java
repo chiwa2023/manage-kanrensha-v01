@@ -16,7 +16,7 @@ import org.springframework.web.filter.CorsFilter;
 public class CorsConfig {
 
     /** サイトをまたいでアクセスを許可するURL(自front側) */
-    private static final String ALLOW_URL_CREATE = "http://localhost:5173";
+    private static final String ALLOW_URL_CREATE = "http://localhost:5273";
 
     /**
      * クロスサイトアクセスフィルタ

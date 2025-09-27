@@ -32,7 +32,7 @@ public class PartnerCorpAddMiniRecordItemReader extends RepositoryItemReader<WkT
         super();
         super.setRepository(wkTblPartnerCorpAddMinRepository);
         super.setSort(new HashMap<String, Direction>()); // NOPMD
-        super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffected");
+        super.setMethodName("findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish");
 
         List<Object> list = new ArrayList<>();
         super.setArguments(list); // NOPMD
@@ -52,6 +52,7 @@ public class PartnerCorpAddMiniRecordItemReader extends RepositoryItemReader<WkT
         list.add(userCode);
         list.add(SetTableDataHistoryUtil.INSERT_STATE);
         list.add(true);
+        list.add(false);
 
         super.setArguments(list); // NOPMD
     }

@@ -48,35 +48,35 @@ class PartnerCorpAddMiniCsvItemReaderTest {
         assertEquals("ぼったくり企業", dto01.getPartnerName());
         assertEquals("和歌山県架空市実在町", dto01.getAllAddress());
         assertEquals("代表者　太郎", dto01.getCorpDelegate());
-        assertEquals("1233444", dto01.getHoujinNo());
+        assertEquals("1234567890123", dto01.getHoujinNo());
 
         PartnerCorpAddMiniDto dto02 = partnerCorpAddMiniCsvItemReader.read();
         // "ぼったくり企業","和歌山県架空市実在町","代表者 太郎","1233444"
         assertEquals("ぼったくり企業", dto02.getPartnerName());
         assertEquals("和歌山県架空市実在町", dto02.getAllAddress());
         assertEquals("代表者　太郎", dto02.getCorpDelegate());
-        assertEquals("1233444", dto02.getHoujinNo());
+        assertEquals("1234567890123", dto02.getHoujinNo());
 
         PartnerCorpAddMiniDto dto05 = partnerCorpAddMiniCsvItemReader.read();
         // "ふんだくり企業","宮崎県架空市実在町","代表者 次郎","23445677"
         assertEquals("ふんだくり企業", dto05.getPartnerName());
         assertEquals("宮崎県架空市実在町", dto05.getAllAddress());
         assertEquals("代表者　次郎", dto05.getCorpDelegate());
-        assertEquals("23445677", dto05.getHoujinNo());
+        assertEquals("1234567890222", dto05.getHoujinNo());
 
         PartnerCorpAddMiniDto dto06 = partnerCorpAddMiniCsvItemReader.read();
         // "職業組合A","山形県架空市実在町","代表者 三郎","3989865"
         assertEquals("職業組合A", dto06.getPartnerName());
         assertEquals("山形県架空市実在町", dto06.getAllAddress());
         assertEquals("代表者　三郎", dto06.getCorpDelegate());
-        assertEquals("3989865", dto06.getHoujinNo());
+        assertEquals("1234567890333", dto06.getHoujinNo());
 
         PartnerCorpAddMiniDto dto07 = partnerCorpAddMiniCsvItemReader.read();
         // "職業組合B","山梨県架空市実在町","代表者 四郎","4878754"
         assertEquals("職業組合B", dto07.getPartnerName());
         assertEquals("山梨県架空市実在町", dto07.getAllAddress());
         assertEquals("代表者　四郎", dto07.getCorpDelegate());
-        assertEquals("4878754", dto07.getHoujinNo());
+        assertEquals("1234567890444", dto07.getHoujinNo());
 
         assertNull(partnerCorpAddMiniCsvItemReader.read());
     }

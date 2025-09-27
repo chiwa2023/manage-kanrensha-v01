@@ -22,8 +22,8 @@ class PartnerCombineOrgLineMapperTest {
         assertEquals("迂回献金　太郎", dto.getPersonName());
         assertEquals("1-2345-67-890123-4567890", dto.getOrgKanrenshaCode());
         assertEquals("ふんだくり企業", dto.getOrgName());
-        assertEquals(Short.valueOf("2021"), dto.getStartyear());
-        assertEquals(Short.valueOf("-1"), dto.getEndyear()); // 数字変換できないときは-1
+        assertEquals(Short.valueOf("2021"), dto.getStartYear());
+        assertEquals(Short.valueOf("-1"), dto.getEndYear()); // 数字変換できないときは-1
     }
 
 }

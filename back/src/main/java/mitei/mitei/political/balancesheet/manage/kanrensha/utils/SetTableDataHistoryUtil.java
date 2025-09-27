@@ -36,7 +36,6 @@ public class SetTableDataHistoryUtil {
         interfaceImple.setInsertUserCode(userDto.getUserPersonCode());
         interfaceImple.setInsertUserName(userDto.getUserPersonName());
         interfaceImple.setInsertTimestamp(timestamp);
-
     }
 
     /**
@@ -57,5 +56,4 @@ public class SetTableDataHistoryUtil {
         interfaceImple.setDeleteUserName(userDto.getUserPersonName());
         interfaceImple.setDeleteTimestamp(timestamp);
     }
-
 }

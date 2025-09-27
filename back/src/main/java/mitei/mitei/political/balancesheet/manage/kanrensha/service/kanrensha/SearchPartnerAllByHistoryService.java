@@ -221,6 +221,7 @@ public class SearchPartnerAllByHistoryService {
      */
     public List<PartnerCommonInfoDto> practice( // SUPPRESS CHECKSTYLE ReturnCount NOPMD
             final String name, final String address, final String recognizedKey) {
+
         switch (getPrefectureLgCodeService.practice(address)) {
             case GetPrefectureLgCodeService.PREF_01:
                 return partnerPersonHistory01Repository.findAllKanrensha(name, address, recognizedKey);

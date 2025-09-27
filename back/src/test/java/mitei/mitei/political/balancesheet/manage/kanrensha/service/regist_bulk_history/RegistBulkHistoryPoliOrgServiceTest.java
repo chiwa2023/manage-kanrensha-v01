@@ -54,7 +54,7 @@ class RegistBulkHistoryPoliOrgServiceTest {
         capsuleDto00.setWkTblPartnerPoliOrgHistoryEntity(entityInput00);
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         capsuleDto00.setUserPersonLeastDto(userDto);
-        assertEquals(0, registBulkHistoryPoliOrgService.practice(capsuleDto00));
+        assertEquals(0, registBulkHistoryPoliOrgService.practice(capsuleDto00).getWkPartnerPoliOrgHistoryId());
 
         final Integer callId = 313;
 
@@ -68,7 +68,7 @@ class RegistBulkHistoryPoliOrgServiceTest {
         entityBase.setPartnerName("");
         capsuleDto01.setWkTblPartnerPoliOrgHistoryEntity(entityBase);
 
-        Integer newId = registBulkHistoryPoliOrgService.practice(capsuleDto01);
+        Integer newId = registBulkHistoryPoliOrgService.practice(capsuleDto01).getWkPartnerPoliOrgHistoryId();
         assertNotEquals(0, newId);
         WkTblPartnerPoliOrgHistoryEntity entityInput02 = wkTblPartnerPoliOrgHistoryRepository.findById(callId).get();
         assertEquals(SetTableDataHistoryUtil.DELETE_STATE, entityInput02.getIsLatest());

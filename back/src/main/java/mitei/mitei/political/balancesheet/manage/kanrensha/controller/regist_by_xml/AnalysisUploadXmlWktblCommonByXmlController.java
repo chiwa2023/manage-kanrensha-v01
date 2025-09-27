@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import io.netty.handler.codec.http.HttpResponseStatus;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.RegistDataByXmlCapsuleDto;
@@ -33,18 +31,13 @@ public class AnalysisUploadXmlWktblCommonByXmlController {
     @PostMapping("/execute")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             @RequestBody final RegistDataByXmlCapsuleDto capsuleDto) {
+        
+        analysisUploadXmlWktblCommonByXmlService.practice(capsuleDto);
+        
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
-        try {
-            analysisUploadXmlWktblCommonByXmlService.practice(capsuleDto);
-            resultDto.setMessage("正常に登録できました");
-            return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
-
-        } catch (JsonProcessingException exception) {
-            // TODO: handle exception
-            resultDto.setMessage("正常に登録できませんでした");
-            return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
-        }
-
+        resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
+        
+        return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
     }
 
 }

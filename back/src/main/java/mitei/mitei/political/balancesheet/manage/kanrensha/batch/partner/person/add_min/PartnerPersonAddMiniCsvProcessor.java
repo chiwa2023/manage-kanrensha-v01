@@ -25,6 +25,9 @@ public class PartnerPersonAddMiniCsvProcessor
     /** 空文字 */
     private static final String BLANK = "";
 
+    /** 正常登録 */
+    private static final String RIGHT = "正)";
+
     /** 関連者個人同属性取得Service */
     @Autowired
     private GetPartnerPersonSameHistoryService getPartnerPersonSameHistoryService;
@@ -64,14 +67,15 @@ public class PartnerPersonAddMiniCsvProcessor
         if (BLANK.equals(entity.getAllAddress())) {
             stringBuilder.append("住所が入力されていません;");
         }
-        if (BLANK.equals(entity.getPersonShokugyou())) {
-            stringBuilder.append("職業が入力されていません;");
-        }
+        // if (BLANK.equals(entity.getPersonShokugyou())) {
+        // stringBuilder.append("職業が入力されていません;");
+        // }
 
         // 全く同じ履歴があるかどうか確認する
         List<PartnerPersonHistoryBaseEntity> listHistory = this.selectSameRirekiList(entity.getPartnerName(),
                 entity.getAllAddress(), entity.getPersonShokugyou());
         if (listHistory.isEmpty()) {
+            // マスタに同名の団体があるかどうか確認する
             if (!entity.getIsAffected()) {
                 // マスタに同名の団体があるかどうか確認する
                 List<MasterPersonEntity> listMaster = masterPersonRepository.findByCompareNameTextAndIsLatest(
@@ -90,10 +94,11 @@ public class PartnerPersonAddMiniCsvProcessor
         if (stringBuilder.isEmpty()) {
             entity.setIsAffected(true);
             entity.setIsFinish(false);
+            entity.setJudgeReason(RIGHT);
         } else {
             entity.setIsAffected(false);
             entity.setJudgeReason(stringBuilder.toString());
-            entity.setIsFinish(true);
+            entity.setIsFinish(false);
         }
 
         return entity;
@@ -103,8 +108,11 @@ public class PartnerPersonAddMiniCsvProcessor
      * 同属性リストを取得する
      *
      * @param name 団体名称
+     * 
      * @param address 全住所
+     * 
      * @param delegate 代表者名
+     * 
      * @return 検索結果
      */
     private List<PartnerPersonHistoryBaseEntity> selectSameRirekiList(final String name, final String address,

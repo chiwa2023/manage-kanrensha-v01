@@ -28,7 +28,6 @@ public interface PartnerPoliOrgHistory13Repository extends JpaRepository<Partner
             + "   AND poli_org_delegate = ?3 AND is_latest=1", nativeQuery = true)
     List<PartnerPoliOrgHistoryBaseEntity> selectByProperty(String name, String address, String delegate);
 
-
     /**
      * 基準時間より前の最新データを取得する
      *
@@ -51,4 +50,5 @@ public interface PartnerPoliOrgHistory13Repository extends JpaRepository<Partner
      */
     Page<PartnerPoliOrgHistory13Entity> findByInsertTimestampGreaterThanEqualAndInsertTimestampLessThanAndIsLatest(
             LocalDateTime dateTimeStart, LocalDateTime dateTimeEnd, boolean isLatest, Pageable pageable);
+
 }

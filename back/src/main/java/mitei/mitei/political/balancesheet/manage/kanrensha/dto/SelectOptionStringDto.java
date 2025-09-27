@@ -3,13 +3,11 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto;
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 /**
  * 選択肢値文字列Dto
  */
-@Entity
 public class SelectOptionStringDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */

@@ -63,8 +63,8 @@ class RegistCombineOrganizationControllerTest {
         WkTblPartnerCombineOrgEntity entityBase = new WkTblPartnerCombineOrgEntity();
         BeanUtils.copyProperties(entityInput01, entityBase);
         entityBase.setOrgName("超元素製造組合");
-        entityBase.setStartyear(Short.valueOf("2025"));
-        entityBase.setEndyear(Short.valueOf("2023"));
+        entityBase.setStartYear(Short.valueOf("2025"));
+        entityBase.setEndYear(Short.valueOf("2023"));
         entityBase.setYearArrayText("2025");
         capsuleDto01.setWkTblPartnerCombineOrgEntity(entityBase);
 

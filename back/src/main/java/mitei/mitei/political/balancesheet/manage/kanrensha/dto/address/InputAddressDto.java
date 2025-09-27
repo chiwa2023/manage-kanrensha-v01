@@ -25,6 +25,7 @@ public class InputAddressDto implements Serializable { // NOPMD DataClass
     private String postalcode1 = INIT_String;
     /** 郵便番号2 */
     private String postalcode2 = INIT_String;
+
     /** 住所郵便番号まで1 */
     private String addressPostal = INIT_String;
     /** 住所番地 */
@@ -47,12 +48,12 @@ public class InputAddressDto implements Serializable { // NOPMD DataClass
     /** 住居Id */
     private String rsdtId = INIT_String;
 
-    /** 住所郵便番号まで編集有無1 */
-    private Boolean isEditAddressPostal = INIT_Boolean;
-    /** 住所番地編集有無 */
-    private Boolean isEditAddressBlock = INIT_Boolean;
-    /** 住所建物編集有無 */
-    private Boolean isEditAddressBuilding = INIT_Boolean;
+    /** 住所郵便番号編集該否 */
+    private Boolean isPostalEdit = INIT_Boolean;
+    /** 住所番地編集該否 */
+    private Boolean isBlockEdit = INIT_Boolean;
+    /** 住所建物編集該否 */
+    private Boolean isBuildingEdit = INIT_Boolean;
 
     /**
      * 住所全体を取得する
@@ -88,42 +89,6 @@ public class InputAddressDto implements Serializable { // NOPMD DataClass
      */
     public void setOrginAddressAll(final String orginAddressAll) {
         this.orginAddressAll = orginAddressAll;
-    }
-
-    /**
-     * 郵便番号1を取得する
-     *
-     * @return 郵便番号1
-     */
-    public String getPostalcode1() {
-        return postalcode1;
-    }
-
-    /**
-     * 郵便番号1を設定する
-     *
-     * @param postalcode1 郵便番号1
-     */
-    public void setPostalcode1(final String postalcode1) {
-        this.postalcode1 = postalcode1;
-    }
-
-    /**
-     * 郵便番号2を取得する
-     *
-     * @return 郵便番号2
-     */
-    public String getPostalcode2() {
-        return postalcode2;
-    }
-
-    /**
-     * 郵便番号2を設定する
-     *
-     * @param postalcode2 郵便番号2
-     */
-    public void setPostalcode2(final String postalcode2) {
-        this.postalcode2 = postalcode2;
     }
 
     /**
@@ -307,57 +272,93 @@ public class InputAddressDto implements Serializable { // NOPMD DataClass
     }
 
     /**
-     * 住所郵便番号まで編集有無を取得する
+     * 住所郵便番号編集該否を取得する
      *
-     * @return 住所郵便番号まで編集有無
+     * @return 住所郵便番号編集該否
      */
-    public Boolean getIsEditAddressPostal() {
-        return isEditAddressPostal;
+    public Boolean getIsPostalEdit() {
+        return isPostalEdit;
     }
 
     /**
-     * 住所郵便番号まで編集有無
+     * 住所郵便番号編集該否を設定する
      *
-     * @param isEditAddressPostal 住所郵便番号まで編集有無
+     * @param isPostalEdit 住所郵便番号編集該否
      */
-    public void setIsEditAddressPostal(final Boolean isEditAddressPostal) {
-        this.isEditAddressPostal = isEditAddressPostal;
+    public void setIsPostalEdit(final Boolean isPostalEdit) {
+        this.isPostalEdit = isPostalEdit;
     }
 
     /**
-     * 住所番地編集有無を取得する
+     * 住所番地編集該否を取得する
      *
-     * @return 住所番地編集有無
+     * @return 住所番地編集該否
      */
-    public Boolean getIsEditAddressBlock() {
-        return isEditAddressBlock;
+    public Boolean getIsBlockEdit() {
+        return isBlockEdit;
     }
 
     /**
-     * 住所番地編集有無を設定する
+     * 住所番地編集該否を設定する
      *
-     * @param isEditAddressBlock 住所番地編集有無
+     * @param isBlockEdit 住所番地編集該否
      */
-    public void setIsEditAddressBlock(final Boolean isEditAddressBlock) {
-        this.isEditAddressBlock = isEditAddressBlock;
+    public void setIsBlockEdit(final Boolean isBlockEdit) {
+        this.isBlockEdit = isBlockEdit;
     }
 
     /**
-     * 住所建物編集有無を取得する
+     * 住所建物編集該否を取得する
      *
-     * @return 住所建物編集有無
+     * @return 住所建物編集該否
      */
-    public Boolean getIsEditAddressBuilding() {
-        return isEditAddressBuilding;
+    public Boolean getIsBuildingEdit() {
+        return isBuildingEdit;
     }
 
     /**
-     * 住所建物編集有無を設定する
+     * 住所建物編集該否を設定する
      *
-     * @param isEditAddressBuilding 住所建物編集有無
+     * @param isBuildingEdit 住所建物編集該否
      */
-    public void setIsEditAddressBuilding(final Boolean isEditAddressBuilding) {
-        this.isEditAddressBuilding = isEditAddressBuilding;
+    public void setIsBuildingEdit(final Boolean isBuildingEdit) {
+        this.isBuildingEdit = isBuildingEdit;
+    }
+
+    /**
+     * 郵便番号1を取得する
+     *
+     * @return 郵便番号1
+     */
+    public String getPostalcode1() {
+        return postalcode1;
+    }
+
+    /**
+     * 郵便番号1を設定する
+     *
+     * @param postalcode1 郵便番号1
+     */
+    public void setPostalcode1(final String postalcode1) {
+        this.postalcode1 = postalcode1;
+    }
+
+    /**
+     * 郵便番号2を取得する
+     *
+     * @return 郵便番号2
+     */
+    public String getPostalcode2() {
+        return postalcode2;
+    }
+
+    /**
+     * 郵便番号2を設定する
+     *
+     * @param postalcode2 郵便番号2
+     */
+    public void setPostalcode2(final String postalcode2) {
+        this.postalcode2 = postalcode2;
     }
 
 }

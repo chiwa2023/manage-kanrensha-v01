@@ -42,7 +42,7 @@ public class RegistCombineOrganizationService {
      * @param capsuleDto 編集条件Dto
      * @return 新規Id
      */
-    public Integer practice(final UpdateWkTblCombineOrgCapsuleDto capsuleDto) {
+    public WkTblPartnerCombineOrgEntity practice(final UpdateWkTblCombineOrgCapsuleDto capsuleDto) {
 
         WkTblPartnerCombineOrgEntity entityInput = capsuleDto.getWkTblPartnerCombineOrgEntity();
 
@@ -51,7 +51,7 @@ public class RegistCombineOrganizationService {
 
         // 万が一元データが探せない場合は処理中断
         if (optional.isEmpty()) {
-            return 0;
+            return new WkTblPartnerCombineOrgEntity();
         }
 
         // 登録作業年を取得してprocessorによるチェックにセット
@@ -67,7 +67,7 @@ public class RegistCombineOrganizationService {
         entityInput.setWkTblPartnerCombineOrgId(0); // 履歴を積むのでauto_increment
         setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
 
-        return wkTblPartnerCombineOrgRepository.save(entityInput).getWkTblPartnerCombineOrgId();
+        return wkTblPartnerCombineOrgRepository.save(entityInput);
     }
 
 }

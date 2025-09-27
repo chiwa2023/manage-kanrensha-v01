@@ -1,5 +1,6 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.controller.regist_bulk_history;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner.RegistDataByCsvFileCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.sequrity.UserPersonLeastDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.storage_file.StorageFileDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_bulk_history.ExecuteBatchHistoryCorpService;
-
 
 /**
  * 企業団体履歴Csv登録Controller
@@ -27,6 +28,10 @@ public class ExecuteBatchHistoryCorpController {
     @Autowired
     private ExecuteBatchHistoryCorpService executeBatchHistoryCorpService;
 
+    //    /** 仮ファイル本登録Service */
+    //    @Autowired
+    //    private CopyTempToUseSavedFileService copyTempToUseSavedFileService;
+
     /**
      * 処理を行う
      *
@@ -36,12 +41,31 @@ public class ExecuteBatchHistoryCorpController {
     @PostMapping("/execute-corp")
     public ResponseEntity<FrameworkMessageAndResultDto> practice(
             final @RequestBody RegistDataByCsvFileCapsuleDto capsuleDto) {
+
+        // TODO ファイルタイプとタスク種類は決定次第修正する
+        // int year = LocalDate.now().getYear();
+        // Short fileType = Short.valueOf("205");
+        // int taskConstants = 1;
+        try {
+            StorageFileDto fileDto = capsuleDto.getStorageFileDto();
+            UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
+
+            // copyTempToUseSavedFileService.practice(year, fileDto, userDto, fileType,
+            // taskConstants);
+
+            Path path = Paths.get(fileDto.getSavedDir(), fileDto.getFileName());
+            executeBatchHistoryCorpService.practice(path.toString(), userDto);
+        } catch (Exception exception) { // NOPMD
+
+            FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+            resultDto.setIsFailure(true);
+            resultDto.setMessage("ファイルが正常に登録できませんでした。");
+
+            return ResponseEntity.status(HttpResponseStatus.NO_CONTENT.code()).body(resultDto);
+        }
+
         FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
         resultDto.setMessage("処理を開始しました。完了までしばらくお待ちください。");
-
-        StorageFileDto fileDto = capsuleDto.getStorageFileDto();
-        executeBatchHistoryCorpService.practice(Paths.get(fileDto.getSavedDir(), fileDto.getFileName()).toString(),
-                capsuleDto.getUserPersonLeastDto());
 
         return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
     }

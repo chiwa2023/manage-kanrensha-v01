@@ -95,7 +95,7 @@ public class PartnerPersonAddMiniRecordItemWriter extends JpaItemWriter<WkTblPar
         for (WkTblPartnerPersonAddMinEntity entity : items) {
 
             String kanrenshaCode = createDokujiCodeForPersonUtil.practice("");
-
+            
             int masterId = this.insertMaster(entity, kanrenshaCode);
             int historyId = this.insertHistory(entity, kanrenshaCode);
 

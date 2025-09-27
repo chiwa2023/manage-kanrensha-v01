@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -51,6 +52,7 @@ class RegistAddByXmlControllerTest {
     @Transactional
     @Tag("TableTruncate")
     @Sql("../../service/regist_by_xml/sample_wk_tbl_master_all_by_xml.sql")
+    @WithMockUser
     void test() throws Exception {
 
         // 編集内容が追加され、元データが履歴になっている

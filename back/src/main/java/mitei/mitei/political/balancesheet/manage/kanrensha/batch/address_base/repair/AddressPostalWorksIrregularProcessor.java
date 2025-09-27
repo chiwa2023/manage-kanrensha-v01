@@ -25,5 +25,4 @@ public class AddressPostalWorksIrregularProcessor
 
         return entity;
     }
-
 }

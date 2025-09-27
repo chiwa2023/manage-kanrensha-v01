@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.jdbc.Sql;
@@ -32,7 +33,10 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.GetObjectMapper
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 //すべてのマスタと履歴を削除してバッティングしないようにする
-@Sql({ "../../service/regist_by_xml/sample_wk_tbl_master_all_by_xml2.sql",
+@Sql({ 
+    "../../service/regist_by_xml/sample_wk_tbl_partner_corp_add_min.sql",
+    "../../service/regist_by_xml/sample_wk_tbl_partner_person_add_min.sql",
+    "../../service/regist_by_xml/sample_wk_tbl_partner_poli_org_add_min.sql",
         "../../service/regist_by_xml/delete_history_corp01.sql",
         "../../service/regist_by_xml/delete_history_person01.sql", "../../service/regist_by_xml/delete_master_corp.sql",
         "../../service/regist_by_xml/delete_master_person.sql",
@@ -46,6 +50,7 @@ class RetryBatchAddByXmlControllerTest {
 
     @Test
     @Tag("TableTruncate")
+    @WithMockUser
     void test() throws Exception {
 
         RetryWktblBatchCapsuleDto capsuleDto = new RetryWktblBatchCapsuleDto();

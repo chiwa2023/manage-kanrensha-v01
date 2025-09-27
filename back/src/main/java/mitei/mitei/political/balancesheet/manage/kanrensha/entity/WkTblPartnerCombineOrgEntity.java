@@ -243,46 +243,46 @@ public class WkTblPartnerCombineOrgEntity implements Serializable, AllTabeDataHi
 
     /** 登録開始年 */
     @Column(name = "start_year")
-    private Short startyear = INIT_Short;
+    private Short startYear = INIT_Short;
 
     /**
      * 登録開始年を取得する
      *
      * @return 登録開始年
      */
-    public Short getStartyear() {
-        return startyear;
+    public Short getStartYear() {
+        return startYear;
     }
 
     /**
      * 登録開始年を設定する
      *
-     * @param startyear 登録開始年
+     * @param startYear 登録開始年
      */
-    public void setStartyear(final Short startyear) {
-        this.startyear = startyear;
+    public void setStartYear(final Short startYear) {
+        this.startYear = startYear;
     }
 
     /** 登録終了年 */
     @Column(name = "end_year")
-    private Short endyear = INIT_Short;
+    private Short endYear = INIT_Short;
 
     /**
      * 登録終了年を取得する
      *
      * @return 登録終了年
      */
-    public Short getEndyear() {
-        return endyear;
+    public Short getEndYear() {
+        return endYear;
     }
 
     /**
      * 登録終了年を設定する
      *
-     * @param endyear 登録終了年
+     * @param endYear 登録終了年
      */
-    public void setEndyear(final Short endyear) {
-        this.endyear = endyear;
+    public void setEndYear(final Short endYear) {
+        this.endYear = endYear;
     }
 
     /** 登録年配列 */

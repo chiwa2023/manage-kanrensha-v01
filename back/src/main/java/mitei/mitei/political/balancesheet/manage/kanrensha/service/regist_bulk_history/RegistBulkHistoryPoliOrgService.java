@@ -38,7 +38,7 @@ public class RegistBulkHistoryPoliOrgService {
      * @return 追加されたId
      */
     @Transactional
-    public Integer practice(final UpdateWkTblHistoryPoliOrgCapsuleDto capsuleDto) {
+    public WkTblPartnerPoliOrgHistoryEntity practice(final UpdateWkTblHistoryPoliOrgCapsuleDto capsuleDto) {
 
         WkTblPartnerPoliOrgHistoryEntity entityInput = capsuleDto.getWkTblPartnerPoliOrgHistoryEntity();
 
@@ -47,10 +47,14 @@ public class RegistBulkHistoryPoliOrgService {
 
         // 万が一元データが探せない場合は処理中断
         if (optional.isEmpty()) {
-            return 0;
+            return new WkTblPartnerPoliOrgHistoryEntity();
         }
 
-        entityInput = partnerPoliOrgJudgeProcessor.check(entityInput);
+        // ユーザさんが変更しないと決断したらデータ整合チェックはしないで意図をそのまま通す
+        final String notUseText = "使用しないに変更;";
+        if (!notUseText.equals(entityInput.getJudgeReason())) {
+            entityInput = partnerPoliOrgJudgeProcessor.check(entityInput);
+        }
 
         UserPersonLeastDto userDto = capsuleDto.getUserPersonLeastDto();
 
@@ -61,7 +65,7 @@ public class RegistBulkHistoryPoliOrgService {
         entityInput.setWkPartnerPoliOrgHistoryId(0); // 履歴を積むのでauto_increment
         setTableDataHistoryUtil.practiceInsert(userDto, entityInput);
 
-        return wkTblPartnerPoliOrgHistoryRepository.save(entityInput).getWkPartnerPoliOrgHistoryId();
+        return wkTblPartnerPoliOrgHistoryRepository.save(entityInput);
     }
 
 }

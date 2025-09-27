@@ -33,7 +33,7 @@ public class SaveAddressRegistoryRsdtController {
         try {
             return ResponseEntity.ok(saveAddressRegistoryRsdtService.practice(capsuleDto));
 
-        } catch (Exception exception) { // TODO 徐々にCatch範囲を細かくしていく
+        } catch (Exception exception) { // NOPMD TODO 徐々にCatch範囲を細かくしていく
 
             // 保存できない場合は保存できないかったメッセージを挿入
             FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();

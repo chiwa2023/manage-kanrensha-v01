@@ -3,25 +3,39 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.batch.partner.corp.r
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Value;
 
 /**
  * 関連者企業・団体の一意キー取得Dto
  */
-@Entity
+@Value
 public class PartnerCorpUniquekeyDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
 
-    /** 初期データ(String) */
-    private static final String INIT_String = "";
+    /**
+     * コンストラクタ
+     *
+     * @param partnerName       企業団体名称
+     * @param allAddress        全住所
+     * @param corpDelegate      団体代表者
+     * @param corpKanrenshaCode 関連者コード
+     */
+    public PartnerCorpUniquekeyDto(final String partnerName, final String allAddress, final String corpDelegate,
+            final String corpKanrenshaCode) {
+        super();
+        this.partnerName = partnerName;
+        this.allAddress = allAddress;
+        this.corpDelegate = corpDelegate;
+        this.corpKanrenshaCode = corpKanrenshaCode;
+    }
 
     /** 企業・団体名 */
     @Id
     @Column(name = "partner_name")
-    private String partnerName = INIT_String;
+    private String partnerName;
 
     /**
      * 企業・団体名を取得する
@@ -44,7 +58,7 @@ public class PartnerCorpUniquekeyDto implements Serializable { // NOPMD DataClas
     /** 企業・団体全住所 */
     @Id
     @Column(name = "all_address")
-    private String allAddress = INIT_String;
+    private String allAddress;
 
     /**
      * 企業・団体全住所を取得する
@@ -67,7 +81,7 @@ public class PartnerCorpUniquekeyDto implements Serializable { // NOPMD DataClas
     /** 企業・団体代表者 */
     @Id
     @Column(name = "corp_delegate")
-    private String corpDelegate = INIT_String;
+    private String corpDelegate;
 
     /**
      * 企業・団体代表者を取得する
@@ -90,7 +104,7 @@ public class PartnerCorpUniquekeyDto implements Serializable { // NOPMD DataClas
     /** 企業・団体関連者コード */
     @Id
     @Column(name = "corp_kanrensha_code")
-    private String corpKanrenshaCode = INIT_String;
+    private String corpKanrenshaCode;
 
     /**
      * 企業・団体関連者コードを取得する

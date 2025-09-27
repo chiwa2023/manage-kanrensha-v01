@@ -43,8 +43,8 @@ public interface WkTblPartnerCorpAddMinRepository extends JpaRepository<WkTblPar
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<WkTblPartnerCorpAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffected(Integer userCode, boolean isLatest,
-            boolean isAffected, Pageable pageable);
+    Page<WkTblPartnerCorpAddMinEntity> findByInsertUserCodeAndIsLatestAndIsAffectedAndIsFinish(Integer userCode, boolean isLatest,
+            boolean isAffected,boolean isFinish, Pageable pageable);
 
     /**
      * 重複キーを検出する

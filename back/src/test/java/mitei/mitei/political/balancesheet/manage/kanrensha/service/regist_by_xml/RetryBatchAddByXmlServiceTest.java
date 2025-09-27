@@ -24,7 +24,8 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUser
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 //すべてのマスタと履歴を削除してバッティングしないようにする
-@Sql({ "sample_wk_tbl_master_all_by_xml2.sql", "delete_history_corp01.sql", "delete_history_person01.sql",
+@Sql({ "sample_wk_tbl_partner_poli_org_add_min.sql", "sample_wk_tbl_partner_person_add_min.sql",
+        "sample_wk_tbl_partner_corp_add_min.sql", "delete_history_corp01.sql", "delete_history_person01.sql",
         "delete_master_corp.sql", "delete_master_person.sql", "delete_history_poli_org01.sql",
         "delete_master_political_organization.sql" })
 class RetryBatchAddByXmlServiceTest {

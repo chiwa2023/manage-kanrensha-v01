@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +12,6 @@ import jakarta.persistence.GenerationType;
 /**
  * master_political_organization接続用Entity
  */
-@Entity
 public class MasterPoliticalOrganizationDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
@@ -33,6 +31,56 @@ public class MasterPoliticalOrganizationDto implements Serializable { // NOPMD D
 
     /** 初期データ(Timestamp) */
     private static final LocalDateTime INIT_Timestamp = INIT_LocalDate.atTime(0, 0, 0);
+
+    /**
+     * コンストラクタ
+     */
+    public MasterPoliticalOrganizationDto() {
+
+    }
+
+    /**
+     * コンストラクタ
+     *
+     * @param masterPoliticalOrganizationId 政治団体マスタId
+     * @param poliOrgKanrenshaCode          政治団体マスタコード
+     * @param isLatest                      最新該否
+     * @param partnerName                   政治団体名称
+     * @param allAddress                    全住所
+     * @param poliOrgDelegate               政治団体代表者
+     * @param compareNameText               全文検索用テキスト
+     * @param insertUserId                  挿入ユーザId
+     * @param insertUserCode                挿入ユーザコード
+     * @param insertUserName                挿入ユーザ氏名
+     * @param insertTimestamp               挿入日時
+     * @param deleteUserId                  削除ユーザId
+     * @param deleteUserCode                削除ユーザコード
+     * @param deleteUserName                削除ユーザ氏名
+     * @param deleteTimestamp               削除日時
+     */
+    public MasterPoliticalOrganizationDto(final Integer masterPoliticalOrganizationId,
+            final String poliOrgKanrenshaCode, final Boolean isLatest, final String partnerName,
+            final String allAddress, final String poliOrgDelegate, final String compareNameText,
+            final Integer insertUserId, final Integer insertUserCode, final String insertUserName,
+            final LocalDateTime insertTimestamp, final Integer deleteUserId, final Integer deleteUserCode,
+            final String deleteUserName, final LocalDateTime deleteTimestamp) {
+        super();
+        this.masterPoliticalOrganizationId = masterPoliticalOrganizationId;
+        this.poliOrgKanrenshaCode = poliOrgKanrenshaCode;
+        this.isLatest = isLatest;
+        this.partnerName = partnerName;
+        this.allAddress = allAddress;
+        this.poliOrgDelegate = poliOrgDelegate;
+        this.compareNameText = compareNameText;
+        this.insertUserId = insertUserId;
+        this.insertUserCode = insertUserCode;
+        this.insertUserName = insertUserName;
+        this.insertTimestamp = insertTimestamp;
+        this.deleteUserId = deleteUserId;
+        this.deleteUserCode = deleteUserCode;
+        this.deleteUserName = deleteUserName;
+        this.deleteTimestamp = deleteTimestamp;
+    }
 
     /** テーブルId */
     @Id

@@ -67,4 +67,38 @@ public interface MasterPersonRepository extends JpaRepository<MasterPersonEntity
      */
     Optional<MasterPersonEntity> findFirstByPersonKanrenshaCodeAndIsLatest(String code, Boolean isLatest);
 
+    /**
+     * 関連者コードを基にテーブルId降順で取得する
+     *
+     * @param code 関連者コード
+     * @return 検索結果
+     */
+    List<MasterPersonEntity> findByPersonKanrenshaCodeOrderByMasterPersonIdDesc(String code);
+
+    /**
+     * 現在利用できるリストをページングで取得する(TODO 自然検索に変更の予定)
+     *
+     * @param isLatest 最新該否
+     * @param pageable ページング条件
+     * @return 検索結果
+     */
+    List<MasterPersonEntity> findByIsLatest(Boolean isLatest, Pageable pageable);
+
+    /**
+     * 現在利用できる件数取得する(TODO 自然検索に変更の予定)
+     *
+     * @param isLatest 最新該否
+     * @return 検索件数
+     */
+    Integer countByIsLatest(Boolean isLatest);
+
+    /**
+     * 関連者コードと最新該否から個人マスタリストを取得する
+     *
+     * @param code     関連者コード
+     * @param isLatest 最新該否
+     * @return 検索結果
+     */
+    List<MasterPersonEntity> findByPersonKanrenshaCodeAndIsLatest(String code, boolean isLatest);
+
 }

@@ -33,9 +33,9 @@ class SearchAddressBlockServiceTest {
 
     @Test
     @Tag("TableTruncate")
-    void test()throws Exception {
-        
-         PostalCodeBlockResultDto resultDto0 = searchAddressBlockService.practice(124790, true);
+    void test() throws Exception {
+
+        PostalCodeBlockResultDto resultDto0 = searchAddressBlockService.practice(124790, true);
         assertEquals("011029", resultDto0.getLgCode());
         List<SelectOptionStringDto> list0 = resultDto0.getListOptions();
         assertEquals(44, list0.size());

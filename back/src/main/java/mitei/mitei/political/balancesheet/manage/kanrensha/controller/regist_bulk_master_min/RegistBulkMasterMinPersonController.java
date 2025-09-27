@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.FrameworkMessageAndResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_min.UpdateWkTblMinPersonCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_min.UpdateWkTblMinPersonResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerPersonAddMinEntity;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_bulk_master_min.RegistBulkMasterMinPersonService;
 
 /**
@@ -30,18 +31,20 @@ public class RegistBulkMasterMinPersonController {
      * @return 追加されたId
      */
     @PostMapping("/update-person")
-    public ResponseEntity<FrameworkMessageAndResultDto> practice(
+    public ResponseEntity<UpdateWkTblMinPersonResultDto> practice(
             final @RequestBody UpdateWkTblMinPersonCapsuleDto capsuleDto) {
 
-        Integer newId = registBulkMasterMinPersonService.practice(capsuleDto);
+        WkTblPartnerPersonAddMinEntity entity = registBulkMasterMinPersonService.practice(capsuleDto);
+        Integer newId = entity.getWkTblPartnerPersonAddMinId();
 
-        FrameworkMessageAndResultDto resultDto = new FrameworkMessageAndResultDto();
+        UpdateWkTblMinPersonResultDto resultDto = new UpdateWkTblMinPersonResultDto();
         if (0 == newId) {
             resultDto.setIsFailure(true);
             resultDto.setMessage("更新できませんでした");
             return ResponseEntity.status(HttpResponseStatus.NOT_FOUND.code()).body(resultDto);
         } else {
             resultDto.setMessage("正常に登録できました");
+            resultDto.setWkTblPartnerPersonAddMinEntity(entity);
             return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
         }
     }

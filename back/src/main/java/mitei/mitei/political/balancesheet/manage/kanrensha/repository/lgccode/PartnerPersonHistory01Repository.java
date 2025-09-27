@@ -29,7 +29,6 @@ public interface PartnerPersonHistory01Repository extends JpaRepository<PartnerP
             + "   AND person_shokugyou = ?3 AND is_latest=1", nativeQuery = true)
     List<PartnerPersonHistoryBaseEntity> selectByProperty(String name, String address, String shokugyou);
 
-
     /**
      * 基準時間より前の最新データを取得する
      *
@@ -38,8 +37,8 @@ public interface PartnerPersonHistory01Repository extends JpaRepository<PartnerP
      * @param pageable ページング条件
      * @return 検索結果
      */
-    Page<PartnerPersonHistory01Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime, boolean isLatest,
-            Pageable pageable);
+    Page<PartnerPersonHistory01Entity> findByInsertTimestampLessThanAndIsLatest(LocalDateTime dateTime,
+            boolean isLatest, Pageable pageable);
 
     /**
      * 基準時間開始以上かつ終了より前の最新を取得する

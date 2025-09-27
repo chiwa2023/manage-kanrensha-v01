@@ -1,0 +1,50 @@
+package mitei.mitei.political.balancesheet.manage.kanrensha.batch.partner.poli_org.add_min;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
+
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerPoliOrgAddMinEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.WkTblPartnerPoliOrgAddMinResultEntity;
+
+/**
+ * PartnerPoliOrgAddMiniWkTblFixProcessor単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+class PartnerPoliOrgAddMiniWkTblFixProcessorTest {
+    // CHECKSTYLE:OFF
+
+    /** テスト対象 */
+    @Autowired
+    private PartnerPoliOrgAddMiniWkTblFixProcessor partnerPoliOrgAddMiniWkTblFixProcessor;
+
+    @Test
+    @Tag("TableTruncate")
+    @Transactional
+    @Sql("sample_wk_tbl_partner_poli_org_add_min.sql")
+    void test() throws Exception {
+
+        WkTblPartnerPoliOrgAddMinResultEntity minResultEntity = new WkTblPartnerPoliOrgAddMinResultEntity();
+        minResultEntity.setWkTblPartnerPoliOrgAddMinId(301);
+
+        WkTblPartnerPoliOrgAddMinEntity entity = partnerPoliOrgAddMiniWkTblFixProcessor.process(minResultEntity);
+
+        assertEquals(true, entity.getIsFinish());
+        assertEquals("正常終了", entity.getJudgeReason());
+
+    }
+
+}

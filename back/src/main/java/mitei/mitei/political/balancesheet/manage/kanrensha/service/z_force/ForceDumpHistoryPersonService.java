@@ -72,7 +72,7 @@ public class ForceDumpHistoryPersonService {
 
         final String pathSaved = Paths.get(GetCurrentResourcePath.getBackSrcPath("")).getParent().getParent()
                 .toString();
-        final String folder = frontDumpFolder + "/dump_hisotry_person";
+        final String folder = frontDumpFolder + "/dump_history_person";
 
         JobParameters jobParameters = new JobParametersBuilder(
                 dumpPartnerPersonHistory.getJobParametersIncrementer().getNext(new JobParameters())) // NOPMD

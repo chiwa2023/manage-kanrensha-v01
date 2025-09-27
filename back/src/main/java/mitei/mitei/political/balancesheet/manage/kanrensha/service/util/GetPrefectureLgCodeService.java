@@ -107,7 +107,6 @@ public class GetPrefectureLgCodeService {
 
     /** 文字コード出力する際の0付加上限 */
     private static final int PLUS_ZERO_NUM = 10;
-    
     /**
      * 処理を行う
      *

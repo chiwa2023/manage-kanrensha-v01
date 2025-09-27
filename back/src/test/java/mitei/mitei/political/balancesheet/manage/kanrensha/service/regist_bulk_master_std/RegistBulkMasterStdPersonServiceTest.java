@@ -54,7 +54,7 @@ class RegistBulkMasterStdPersonServiceTest {
         capsuleDto00.setWkTblMasterPersonEntity(entityInput00);
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         capsuleDto00.setUserPersonLeastDto(userDto);
-        assertEquals(0, registBulkMasterStdPersonService.practice(capsuleDto00));
+        assertEquals(0, registBulkMasterStdPersonService.practice(capsuleDto00).getWkTblMasterPersonId());
 
         final Integer callId = 296;
         // 編集内容が追加され、元データが履歴になっている
@@ -67,7 +67,7 @@ class RegistBulkMasterStdPersonServiceTest {
         entityBase.setPartnerName("");
         capsuleDto01.setWkTblMasterPersonEntity(entityBase);
 
-        Integer newId = registBulkMasterStdPersonService.practice(capsuleDto01);
+        Integer newId = registBulkMasterStdPersonService.practice(capsuleDto01).getWkTblMasterPersonId();
         assertNotEquals(0, newId);
         WkTblMasterPersonEntity entityInput02 = wkTblMasterPersonRepository.findById(callId).get();
         assertEquals(SetTableDataHistoryUtil.DELETE_STATE, entityInput02.getIsLatest());

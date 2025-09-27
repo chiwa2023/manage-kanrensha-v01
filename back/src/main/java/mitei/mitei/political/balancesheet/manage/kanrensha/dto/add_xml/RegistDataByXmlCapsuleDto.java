@@ -55,4 +55,46 @@ public class RegistDataByXmlCapsuleDto implements Serializable { // NOPMD DataCl
         this.storageFileDto = storageFileDto;
     }
 
+    /** 備考1項目解析該否 */
+    private Boolean isNotBiko = false;
+
+    /** 名前住所2項目解析該否 */
+    private Boolean isNotNameAddress = false;
+
+    /**
+     * 備考1項目解析該否を取得する
+     *
+     * @return 備考1項目解析該否
+     */
+    public Boolean getIsNotBiko() {
+        return isNotBiko;
+    }
+
+    /**
+     * 備考1項目解析該否を設定する
+     *
+     * @param isNotBiko 備考1項目解析該否
+     */
+    public void setIsNotBiko(final Boolean isNotBiko) {
+        this.isNotBiko = isNotBiko;
+    }
+
+    /**
+     * 名前住所2項目解析該否を取得する
+     *
+     * @return 名前住所2項目解析該否
+     */
+    public Boolean getIsNotNameAddress() {
+        return isNotNameAddress;
+    }
+
+    /**
+     * 名前住所2項目解析該否を設定する
+     *
+     * @param isNotNameAddress 名前住所2項目解析該否
+     */
+    public void setIsNotNameAddress(final Boolean isNotNameAddress) {
+        this.isNotNameAddress = isNotNameAddress;
+    }
+
 }

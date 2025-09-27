@@ -50,8 +50,8 @@ class CombineOrgCsvItemReaderTest {
         assertEquals("迂回献金　太郎", dto01.getPersonName());
         assertEquals("1-ABCD-67-890123-4567890", dto01.getOrgKanrenshaCode());
         assertEquals("ふんだくり企業", dto01.getOrgName());
-        assertEquals(Short.valueOf("2021"), dto01.getStartyear());
-        assertEquals(Short.valueOf("-1"), dto01.getEndyear()); // 数字変換できないときは-1
+        assertEquals(Short.valueOf("2021"), dto01.getStartYear());
+        assertEquals(Short.valueOf("-1"), dto01.getEndYear()); // 数字変換できないときは-1
 
         PartnerCombineOrgDto dto02 = combineOrgCsvItemReader.read();
         // "12-34567-8901-2345-67891","迂回献金
@@ -60,8 +60,8 @@ class CombineOrgCsvItemReaderTest {
         assertEquals("迂回献金　花子", dto02.getPersonName());
         assertEquals("1-ABCD-67-890123-4567890", dto02.getOrgKanrenshaCode());
         assertEquals("ふんだくり企業", dto02.getOrgName());
-        assertEquals(Short.valueOf("-1"), dto02.getStartyear());
-        assertEquals(Short.valueOf("2024"), dto02.getEndyear());
+        assertEquals(Short.valueOf("-1"), dto02.getStartYear());
+        assertEquals(Short.valueOf("2024"), dto02.getEndYear());
 
         assertNull(combineOrgCsvItemReader.read());
     }

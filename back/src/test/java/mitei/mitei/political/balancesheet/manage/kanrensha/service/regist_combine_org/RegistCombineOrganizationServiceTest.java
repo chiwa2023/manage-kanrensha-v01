@@ -55,7 +55,7 @@ class RegistCombineOrganizationServiceTest {
         capsuleDto00.setWkTblPartnerCombineOrgEntity(entityInput00);
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();
         capsuleDto00.setUserPersonLeastDto(userDto);
-        assertEquals(0, registCombineOrganizationService.practice(capsuleDto00));
+        assertEquals(0, registCombineOrganizationService.practice(capsuleDto00).getWkTblPartnerCombineOrgId());
 
         final Integer callId = 211;
 
@@ -67,11 +67,11 @@ class RegistCombineOrganizationServiceTest {
         BeanUtils.copyProperties(entityInput01, entityBase);
         entityBase.setOrgName("超元素製造組合");
         entityBase.setYearArrayText("2024");
-        entityBase.setStartyear(Short.valueOf("2024"));
-        entityBase.setEndyear(Short.valueOf("2023"));
+        entityBase.setStartYear(Short.valueOf("2024"));
+        entityBase.setEndYear(Short.valueOf("2023"));
         capsuleDto01.setWkTblPartnerCombineOrgEntity(entityBase);
 
-        Integer newId = registCombineOrganizationService.practice(capsuleDto01);
+        Integer newId = registCombineOrganizationService.practice(capsuleDto01).getWkTblPartnerCombineOrgId();
         assertNotEquals(0, newId);
         WkTblPartnerCombineOrgEntity entityInput02 = wkTblPartnerCombineOrgRepository.findById(callId).get();
         assertEquals(SetTableDataHistoryUtil.DELETE_STATE, entityInput02.getIsLatest());

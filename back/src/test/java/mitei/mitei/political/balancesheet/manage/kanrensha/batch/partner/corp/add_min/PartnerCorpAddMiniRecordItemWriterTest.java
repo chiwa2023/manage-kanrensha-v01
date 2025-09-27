@@ -110,6 +110,7 @@ class PartnerCorpAddMiniRecordItemWriterTest {
         assertEquals(entity00.getAllAddress(), entity11.getAllAddress());
         assertEquals(entity00.getCorpDelegate(), entity11.getCorpDelegate());
         assertTrue(entity11.getCorpKanrenshaCode().startsWith(key));
+        assertEquals("超元素製造組合", entity11.getCompareNameText());
 
         // 処理結果に正常登録
         List<WkTblPartnerCorpAddMinResultEntity> listResult = wkTblPartnerCorpAddMinResultRepository.findAll();
