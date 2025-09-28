@@ -32,6 +32,7 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.AddressRsdtTem
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 class SaveAddressRegistoryRsdtServiceTest {
+    // CHECKSTYLE:OFF
 
     /** テスト対象 */
     @Autowired
