@@ -12,6 +12,9 @@ import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 import mockGetUserList from './mock/mockGetUserList';
 import type UserPersonInterface from '../../../entity/userPersonEntity';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -29,7 +32,7 @@ function onSave() {
         capsuleDto.value.userPersonLeastDto = userLeastDto.value;
         if (token !== "") {
             // パスワード更新
-            const url = "http://localhost:6080/user-role/promote";
+            const url = urlBack + "/user-role/promote";
             const method = "POST";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
@@ -51,7 +54,7 @@ function onSave() {
 }
 
 // ユーザ検索と選択
-const selectedUserId:Ref<string> = ref("");
+const selectedUserId: Ref<string> = ref("");
 const listEntity: Ref<UserPersonInterface[]> = ref([]);
 function onSearch() {
     listEntity.value = mockGetUserList();
@@ -94,7 +97,8 @@ function onSearch() {
                     <th>名前</th>
                 </tr>
                 <tr v-for="entity of listEntity" :key="entity.userPersonId">
-                    <td><input type="radio" id="promoteEntity" v-model="selectedUserId" :value="entity.userPersonId"> </td>
+                    <td><input type="radio" id="promoteEntity" v-model="selectedUserId" :value="entity.userPersonId">
+                    </td>
                     <td>{{ entity.userPersonCode }}</td>
                     <td>{{ entity.userPersonName }}</td>
                 </tr>

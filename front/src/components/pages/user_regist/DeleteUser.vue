@@ -12,6 +12,9 @@ import RoutePathConstants from '../../../routePathConstants';
 import type UserPersonInterface from '../../../entity/userPersonEntity';
 import mockGetUserList from './mock/mockGetUserList';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -29,7 +32,7 @@ function onDelete() {
             const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
             capsuleDto.value.userPersonLeastDto = userLeastDto.value;
 
-            const url = "http://localhost:6080/user/delete";
+            const url = urlBack + "/user/delete";
             const method = "POST";
             const body = JSON.stringify(capsuleDto);
             const headers = {

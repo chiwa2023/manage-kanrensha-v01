@@ -21,13 +21,16 @@ import InputAccess from '../input_access/InputAccess.vue';
 import router from '../../../router';
 import RoutePathConstants from '../../../routePathConstants';
 
+// props,emmits
+const props = defineProps<{ baseEntity: RiyoushaManagerEntityInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
+
 // よく使う定数
 // const BLANK: string = "";
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 
-// props,emmits
-const props = defineProps<{ baseEntity: RiyoushaManagerEntityInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const inputManagerDto: Ref<RiyoushaManagerDtoInterface> = ref(new RiyoushaManagerDto());
 inputManagerDto.value.isNotOrg = props.baseEntity.isNotOrg;
@@ -47,7 +50,7 @@ function onChangeEntity() {
         capsuleDto.userPersonLeastDto = props.userDto;
 
         getAuthorizedPromiseArea().then(token => {
-            const url = "http://localhost:6080/user-riyousha/get-manager";
+            const url = urlBack + "/user-riyousha/get-manager";
             const method = "POST";
             const body = JSON.stringify(capsuleDto);
             const headers = {
@@ -99,7 +102,7 @@ function onSave() {
     capsuleDto.userPersonLeastDto = props.userDto;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/save-manager";
+        const url = urlBack + "/user-riyousha/save-manager";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {

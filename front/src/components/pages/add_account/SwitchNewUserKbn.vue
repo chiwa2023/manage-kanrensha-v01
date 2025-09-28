@@ -7,6 +7,9 @@ import type LoginUserResultInterface from '../../../dto/login/loginUserResultDto
 import router from '../../../router';
 import RoutePathConstants from '../../../routePathConstants';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // 入力用Dto
 const sessionStorage = window["sessionStorage"];
 const newComer: Ref<NewComerInterface> = ref(new NewComerDto());
@@ -19,7 +22,7 @@ if (null !== dtoJson) {
 // 権限を選択してもらう
 function onRegistUser() {
     // パスワード、権限、ニックネームを登録
-    const url = "http://localhost:6080/add-user/user";
+    const url = urlBack + "/add-user/user";
     const method = "POST";
     const body = JSON.stringify(newComer.value);
     const headers = {

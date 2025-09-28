@@ -10,6 +10,9 @@ import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 import type UserPersonLeastInterface from './../../../dto/user/userPersonLeastDto';
 import RoutePathConstants from '../../../routePathConstants';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -25,7 +28,7 @@ function onWithdraw() {
             const capsuleDto: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsuleDto());
             capsuleDto.value.userPersonLeastDto = userLeastDto.value;
             // TODO capsuleDtoを新設しUserDtoを削除対象、操作者両方に指定する処理
-            const url = "http://localhost:6080/user/delete";
+            const url = urlBack + "/user/delete";
             const method = "POST";
             const body = JSON.stringify(capsuleDto);
             const headers = {

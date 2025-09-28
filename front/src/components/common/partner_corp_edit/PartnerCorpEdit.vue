@@ -24,6 +24,9 @@ import type MasterPersonInterface from '../../../entity/masterPersonEntity';
 const props = defineProps<{ editDto: CorpNoInterface, userDto: UserPersonLeastInterface, isEditNew: boolean, isCombineUser: boolean }>();
 const editCorpDto: ComputedRef<CorpNoInterface> = computed(() => { return props.editDto });
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // よく使う定数
 const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
@@ -156,9 +159,9 @@ function onSave() {
     // 編集か新規作成かでアクセス先を変えるだけ
     let url = BLANK;
     if (props.isEditNew) {
-        url = "http://localhost:6080/add-user/partner-corp";
+        url = urlBack + "/add-user/partner-corp";
     } else {
-        url = "http://localhost:6080/user-kanrensha/edit-corp";
+        url = urlBack + "/user-kanrensha/edit-corp";
     }
 
     getAuthorizedPromiseArea().then(token => {

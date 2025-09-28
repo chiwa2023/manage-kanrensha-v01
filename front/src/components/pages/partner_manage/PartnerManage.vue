@@ -28,11 +28,15 @@ import type MasterCorporationInterface from '../../../entity/masterCorporationEn
 import type GetKanrenshaCorpCapsuleInterface from '../../../dto/kanrensha/getKanrenshaCorpCapsuleDto';
 import GetKanrenshaCorpCapsuleDto from '../../../dto/kanrensha/getKanrenshaCorpCapsuleDto';
 import type GetKanrenshaCorpResultInterface from '../../../dto/kanrensha/getKanrenshaCorpResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
 // よく使う定数
 const BLANK: string = "";
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
@@ -55,7 +59,7 @@ function recievePersonNoInterface(sendDto: MasterPersonInterface) {
         if (token !== BLANK) {
             // 保存処理
             const method = "POST";
-            const url: string = "http://localhost:6080/user-kanrensha/get-person";
+            const url: string = urlBack + "/user-kanrensha/get-person";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
                 'Accept': 'application/json',
@@ -90,7 +94,7 @@ function recievePoliOrgNoInterface(sendDto: MasterPoliticalOrganizationInterface
         if (token !== BLANK) {
             // 保存処理
             const method = "POST";
-            const url: string = "http://localhost:6080/user-kanrensha/get-poli-org";
+            const url: string = urlBack + "/user-kanrensha/get-poli-org";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
                 'Accept': 'application/json',
@@ -127,7 +131,7 @@ function recieveCorpCoInterface(sendDto: MasterCorporationInterface) {
         if (token !== BLANK) {
             // 保存処理
             const method = "POST";
-            const url: string = "http://localhost:6080/user-kanrensha/get-corp";
+            const url: string = urlBack + "/user-kanrensha/get-corp";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
                 'Accept': 'application/json',

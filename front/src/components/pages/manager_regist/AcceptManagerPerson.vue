@@ -20,6 +20,9 @@ import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -37,7 +40,7 @@ const capsuleDtoGetList: Ref<FrameworkCapsuleInterface> = ref(new FrameworkCapsu
 
 getAuthorizedPromiseArea().then(token => {
     capsuleDtoGetList.value.userPersonLeastDto = userLeastDto.value;
-    const url = "http://localhost:6080/user-riyousha/get-accept-code-list";
+    const url = urlBack + "/user-riyousha/get-accept-code-list";
     const method = "POST";
     const body = JSON.stringify(capsuleDtoGetList.value);
     const headers = {
@@ -53,7 +56,7 @@ getAuthorizedPromiseArea().then(token => {
             } else {
                 // リストに複写して候補が1件なら選択
                 listAcceptCode.value = resultDto.listAcceptCode;
-                if(listAcceptCode.value.length === 1){
+                if (listAcceptCode.value.length === 1) {
                     selectedDantai.value = listAcceptCode.value[0].riyoushaInviteNewId;
                     onChangeDantai();
                 }
@@ -65,7 +68,7 @@ getAuthorizedPromiseArea().then(token => {
 function onCheckSendCode() {
     capsuleDto.value.riyoushaInviteNewEntity = entityEdit.value;
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/save-accept-code";
+        const url = urlBack + "/user-riyousha/save-accept-code";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {

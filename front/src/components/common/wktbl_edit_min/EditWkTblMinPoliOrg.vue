@@ -15,6 +15,10 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblMinPoliOrgCapsuleInterface from '../../../dto/wktbl_min/updateWkTblMinPoliOrgCapsuleDto';
 import UpdateWkTblMinPoliOrgCapsuleDto from '../../../dto/wktbl_min/updateWkTblMinPoliOrgCapsuleDto';
 import type UpdateWkTblMinPoliOrgResultInterface from '../../../dto/wktbl_min/updateWkTblMinPoliOrgResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // 政治団体区分定数
 const poliOrgKbnNoSelect: string = PoliOrgDantaiKbnConstants.NO_SELECT;
@@ -44,7 +48,7 @@ const poliOrgResultDto: Ref<SearchWkTblMinPoliOrgPagingResultInterface> = ref(ne
 
 function onSearchPoliOrg() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-min/search-poli-org";
+        const url = urlBack + "/regist-bulk-master-min/search-poli-org";
         const method = "POST";
         const body = JSON.stringify(poliOrgCapsuleDto.value);
         const headers = {
@@ -86,7 +90,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblPartnerPoliOrgAddMinEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-min/update-poli-org";
+        const url = urlBack + "/regist-bulk-master-min/update-poli-org";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {
@@ -161,7 +165,7 @@ defineExpose({
     <div class="one-line">
         <select v-model="poliOrgCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPoliOrg" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>
@@ -242,7 +246,7 @@ defineExpose({
                 <select v-model="entityEdit.dantaiKbn">
                     <option :value=poliOrgKbnNoSelect> </option>
                     <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSeitouShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitouShibu) }}</option>
                     <option :value=poliOrgKbnSeijishikin>{{
@@ -250,7 +254,7 @@ defineExpose({
                     <option :value=poliOrgKbn18Jou2KouDantai>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbn18Jou2KouDantai) }}</option>
                     <option :value=poliOrgKbnSonota>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonota)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSonotaShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonotaShibu) }}</option>
                 </select>

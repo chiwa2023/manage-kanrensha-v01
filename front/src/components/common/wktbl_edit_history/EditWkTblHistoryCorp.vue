@@ -14,6 +14,10 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblHistoryCorpCapsuleInterface from '../../../dto/wktbl_history/updateWkTblHistoryCorpCapsuleDto';
 import UpdateWkTblHistoryCorpCapsuleDto from '../../../dto/wktbl_history/updateWkTblHistoryCorpCapsuleDto';
 import type UpdateWkTblHistoryCorpResultInterface from '../../../dto/wktbl_history/updateWkTblHistoryCorpResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const pageOptionCorp: Ref<SelectOptionNumberInterface[]> = ref([]);
 const corpCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -32,7 +36,7 @@ corpCapsuleDto.value.hasAffectNot = true;
 function onSearchCorp() {
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/search-corp";
+        const url = urlBack + "/regist-bulk-history/search-corp";
         const method = "POST";
         const body = JSON.stringify(corpCapsuleDto.value);
         const headers = {
@@ -74,7 +78,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblPartnerCorpHistoryEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/update-corp";
+        const url = urlBack + "/regist-bulk-history/update-corp";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {
@@ -167,7 +171,7 @@ function onHideData() {
                 </tr>
                 <tr>
                     <td><button @click="onEditData(entity.wkPartnerCorpHistoryId)" :disabled="!entity.isLatest">{{
-                            entity.partnerName }}</button></td>
+                        entity.partnerName }}</button></td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.corpDelegate }}</td>
                     <td>{{ entity.corpKanrenshaCode }}</td>

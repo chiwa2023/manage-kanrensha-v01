@@ -14,6 +14,10 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblMinPersonCapsuleInterface from '../../../dto/wktbl_min/updateWkTblMinPersonCapsuleDto';
 import UpdateWkTblMinPersonCapsuleDto from '../../../dto/wktbl_min/updateWkTblMinPersonCapsuleDto';
 import type UpdateWkTblMinPersonResultInterface from '../../../dto/wktbl_min/updateWkTblMinPersonResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // 表示必要なDto
 const pageOptionPerson: Ref<SelectOptionNumberInterface[]> = ref([]);
@@ -34,7 +38,7 @@ const personResultDto: Ref<SearchWkTblMinPersonPagingResultInterface> = ref(new 
 // 検索処理
 function onSearchPerson() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-min/search-person";
+        const url = urlBack + "/regist-bulk-master-min/search-person";
         const method = "POST";
         const body = JSON.stringify(personCapsuleDto.value);
         const headers = {
@@ -77,7 +81,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblPartnerPersonAddMinEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-min/update-person";
+        const url = urlBack + "/regist-bulk-master-min/update-person";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {

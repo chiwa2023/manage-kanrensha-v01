@@ -30,7 +30,7 @@ function onSearch() {
     //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
     //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
     //
-    //         const url = "http://localhost:6080/postal-code/search";
+    //         const url = urlBack + "/postal-code/search";
     //         const method = "POST";
     //         const body = JSON.stringify(null);
     //         const headers = {
@@ -83,7 +83,7 @@ function onSave() {
     //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
     //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
     //
-    //         const url = "http://localhost:6080/postal-code/save";
+    //         const url = urlBack + "/postal-code/save";
     //         const method = "POST";
     //         const body = JSON.stringify(null);
     //         const headers = {

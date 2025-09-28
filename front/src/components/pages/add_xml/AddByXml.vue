@@ -28,6 +28,10 @@ import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsu
 import UpdateWkTblAddByXmlTableListCapsuleInterface from '../../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import UpdateWkTblAddByXmlTableListCapsuleDto from '../../../dto/add_xml/updateWkTblAddByXmlTableListCapsuleDto';
 import ManagerInfo from '../../common/user_info/ManagerInfo.vue';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // 関連者区分定数
 const kanrenshaKbnNoSelect: number = KanrenshaKbnConstants.NO_SELECT;
@@ -84,7 +88,7 @@ function onChangePaging() {
 // XMLファイルを解析しその結果をワークテーブルに保存
 function onSaveWkTbl() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/analysis-xml/execute";
+        const url = urlBack + "/analysis-xml/execute";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {
@@ -114,7 +118,7 @@ function onSearchAll() {
     //pageOptionAll.value = getPagingOption(byXmlResultDto.value);
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-by-xml/search";
+        const url = urlBack + "/regist-by-xml/search";
         const method = "POST";
         const body = JSON.stringify(byXmlCapsuleDto.value);
         const headers = {
@@ -170,7 +174,7 @@ function onSaveBunrui(editId: number) {
     }
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-by-xml/update";
+        const url = urlBack + "/regist-by-xml/update";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {
@@ -213,7 +217,7 @@ function onSaveTableList() {
     editListCapsuleDto.listWkTblByXml = byXmlResultDto.value.listXmlEntity;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-by-xml/update-list";
+        const url = urlBack + "/regist-by-xml/update-list";
         const method = "POST";
         const body = JSON.stringify(editListCapsuleDto);
         const headers = {
@@ -249,7 +253,7 @@ retryCapsuleDto.value.userDto = userDto.value;
 function onSave() {
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-by-xml/retry";
+        const url = urlBack + "/regist-by-xml/retry";
         const method = "POST";
         const body = JSON.stringify(retryCapsuleDto.value);
         const headers = {

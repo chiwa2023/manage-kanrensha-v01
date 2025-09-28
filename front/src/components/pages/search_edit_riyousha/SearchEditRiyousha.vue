@@ -17,11 +17,15 @@ import SearchRiyoushaResultDto from '../../../dto/riyousha/searchRiyoushaResultD
 import type SearchRiyoushaCapsuleInterface from '../../../dto/riyousha/searchRiyoushaCapsuleDto';
 import SearchRiyoushaCapsuleDto from '../../../dto/riyousha/searchRiyoushaCapsuleDto';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import RoutePathConstants from '../../../routePathConstants';
 
 // よく使う定数
 // const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // ユーザメニューで取得したユーザを保持
 const sessionStorage = window["sessionStorage"];
@@ -61,7 +65,7 @@ function onEditAdmin(id: number) {
 
 function onSearch() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/search";
+        const url = urlBack + "/user-riyousha/search";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {
@@ -182,5 +186,4 @@ th {
     border-style: solid;
     border-width: 1px;
 }
-
 </style>

@@ -14,6 +14,10 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblHistoryPersonCapsuleInterface from '../../../dto/wktbl_history/updateWkTblHistoryPersonCapsuleDto';
 import UpdateWkTblHistoryPersonCapsuleDto from '../../../dto/wktbl_history/updateWkTblHistoryPersonCapsuleDto';
 import type UpdateWkTblHistoryPersonResultInterface from '../../../dto/wktbl_history/updateWkTblHistoryPersonResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const pageOptionPerson: Ref<SelectOptionNumberInterface[]> = ref([]);
 const personCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -33,7 +37,7 @@ const personResultDto: Ref<SearchWkTblPersonPagingResultInterface> = ref(new Sea
 function onSearchPerson() {
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/search-person";
+        const url = urlBack + "/regist-bulk-history/search-person";
         const method = "POST";
         const body = JSON.stringify(personCapsuleDto.value);
         const headers = {
@@ -75,7 +79,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblPartnerPersonHistoryEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/update-person";
+        const url = urlBack + "/regist-bulk-history/update-person";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {

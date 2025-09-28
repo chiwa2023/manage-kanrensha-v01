@@ -8,10 +8,14 @@ import type SelectOptionNumberInterface from "../../../dto/selectOptionNumberDto
 import type PostalCodeBlockResultInterface from "../../../dto/postal/postalCodeBlockResultDto";
 import type PostalCodeBuildingResultInterface from "../../../dto/postal/postalCodeBuildingResultDto";
 import getAuthorizedPromiseArea from "../../../dto/login/getAuthorizedPromiseArea";
+import RoutePathConstants from "../../../routePathConstants";
 
 //props,emit
 const props = defineProps<{ editDto: InputAddressDto }>();
 const emits = defineEmits(["sendCancelInputAddress", "sendInputAddressInterface"]);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 /** 入力用Dto */
 const inputAddressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
@@ -52,7 +56,7 @@ function getAddressPostal() {
             const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
             conditionDto.postal1 = inputAddressDto.value.postalcode1;
             conditionDto.postal2 = inputAddressDto.value.postalcode2;
-            const url = "http://localhost:6080/postal-search/postal";
+            const url = urlBack + "/postal-search/postal";
             const method = "POST";
             const body = JSON.stringify(conditionDto);
             const headers = {
@@ -100,7 +104,7 @@ function searchBlock() {
         conditionDto.selectedPostal = selectedAddressPostal.value;
         conditionDto.isGyouseikuData = isGyouseiku.value;
 
-        const url = "http://localhost:6080/postal-search/block";
+        const url = urlBack + "/postal-search/block";
         const method = "POST";
         const body = JSON.stringify(conditionDto);
         const headers = {
@@ -155,7 +159,7 @@ function searchBuilding() {
         conditionDto.lgCode = inputAddressDto.value.lgCode;
         conditionDto.isGyouseikuData = isGyouseiku.value;
 
-        const url = "http://localhost:6080/postal-search/building";
+        const url = urlBack + "/postal-search/building";
         const method = "POST";
         const body = JSON.stringify(conditionDto);
         const headers = {
@@ -261,8 +265,7 @@ function onSave() {
                     optionDto.text }}</option>
             </select><span class="left-space"><input v-model="inputAddressDto.isBuildingEdit"
                     type="checkbox">編集</span><br>
-            <textarea v-model="inputAddressDto.addressBuilding"
-                :disabled="!inputAddressDto.isBuildingEdit"></textarea>
+            <textarea v-model="inputAddressDto.addressBuilding" :disabled="!inputAddressDto.isBuildingEdit"></textarea>
         </div>
         <div class="clear-both"></div>
         <div class="left-area">

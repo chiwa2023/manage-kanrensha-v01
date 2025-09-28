@@ -16,6 +16,9 @@ import ComradeInfo from '../../common/user_info/ComradeInfo.vue';
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -35,7 +38,7 @@ if (orgId !== null) {
 
 function onSendCode() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/publish-accept-code";
+        const url = urlBack + "/user-riyousha/publish-accept-code";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {

@@ -23,6 +23,9 @@ import SaveKanrenshaPersonCapsuleDto from '../../../dto/partner_person/saveKanre
 const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean, isCombineUser: boolean, userDto: UserPersonLeastInterface }>();
 const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => props.editDto);
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // よく使う定数
 const BLANK: string = "";
 // const SERVER_STATUS_OK: number = 200;
@@ -137,9 +140,9 @@ function onSave() {
     // 編集か新規作成かでアクセス先を変えるだけ
     let url = BLANK;
     if (props.isEditNew) {
-        url = "http://localhost:6080/add-user/partner-person";
+        url = urlBack + "/add-user/partner-person";
     } else {
-        url = "http://localhost:6080/user-kanrensha/edit-person";
+        url = urlBack + "/user-kanrensha/edit-person";
     }
 
     getAuthorizedPromiseArea().then(token => {

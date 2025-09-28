@@ -14,6 +14,10 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblStdCorpCapsuleInterface from '../../../dto/wktbl_std/updateWkTblStdCorpCapsuleDto';
 import UpdateWkTblStdCorpCapsuleDto from '../../../dto/wktbl_std/updateWkTblStdCorpCapsuleDto';
 import type UpdateWkTblStdCorpResultInterface from '../../../dto/wktbl_std/updateWkTblStdCorpResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const pageOptionCorp: Ref<SelectOptionNumberInterface[]> = ref([]);
 const corpCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -33,7 +37,7 @@ const corpResultDto: Ref<SearchWkTblStdCorpPagingResultInterface> = ref(new Sear
 function onSearchCorp() {
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-std/search-corp";
+        const url = urlBack + "/regist-bulk-master-std/search-corp";
         const method = "POST";
         const body = JSON.stringify(corpCapsuleDto.value);
         const headers = {
@@ -75,7 +79,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblMasterCorpEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-std/update-corp";
+        const url = urlBack + "/regist-bulk-master-std/update-corp";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {
@@ -108,7 +112,7 @@ function onEditClose() {
     isEditData.value = false;
 }
 
-const notUseText:string = "使用しないに変更;";
+const notUseText: string = "使用しないに変更;";
 function onHideData() {
     entityEdit.value.judgeReason = notUseText;
     entityEdit.value.isAffected = false;
@@ -148,7 +152,7 @@ function isEdit(): boolean {
         <!-- ページング -->
         <select v-model="corpCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionCorp" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
 
@@ -232,8 +236,8 @@ function isEdit(): boolean {
             </div>
             <div class="right-area">
                 <input type="checkbox" v-model="entityEdit.isAffected">反映あり<button @click="onHideData"
-                        class="left-space">このデータを使用しない</button>
-                    <br>※データが重複していると反映該否が動かせないことがあります
+                    class="left-space">このデータを使用しない</button>
+                <br>※データが重複していると反映該否が動かせないことがあります
             </div>
             <div class="clear-both"></div>
             <div class="left-area">

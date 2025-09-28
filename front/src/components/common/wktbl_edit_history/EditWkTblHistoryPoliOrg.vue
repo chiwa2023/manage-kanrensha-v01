@@ -14,6 +14,10 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblHistoryPoliOrgCapsuleInterface from '../../../dto/wktbl_history/updateWkTblHistoryPoliOrgCapsuleDto';
 import UpdateWkTblHistoryPoliOrgCapsuleDto from '../../../dto/wktbl_history/updateWkTblHistoryPoliOrgCapsuleDto';
 import type UpdateWkTblHistoryPoliOrgResultInterface from '../../../dto/wktbl_history/updateWkTblHistoryPoliOrgResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const pageOptionPoliOrg: Ref<SelectOptionNumberInterface[]> = ref([]);
 const poliOrgCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -33,7 +37,7 @@ const poliOrgResultDto: Ref<SearchWkTblHistoryPoliOrgPagingResultInterface> = re
 function onSearchPoliOrg() {
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/search-poli-org";
+        const url = urlBack + "/regist-bulk-history/search-poli-org";
         const method = "POST";
         const body = JSON.stringify(poliOrgCapsuleDto.value);
         const headers = {
@@ -74,7 +78,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblPartnerPoliOrgHistoryEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/update-poli-org";
+        const url = urlBack + "/regist-bulk-history/update-poli-org";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {

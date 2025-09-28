@@ -5,9 +5,13 @@ import UploadContentCapsuleDto from '../../../dto/storage_file/uploadContentCaps
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
 import type LookAheadPublishXmlResultInterface from '../../../dto/storage_file/lookAheadPublishXmlResultDto';
 import LookAheadPublishXmlResultDto from '../../../dto/storage_file/lookAheadPublishXmlResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
 //props,emit
 const emits = defineEmits(["sendStorageFileInterface"]);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // 文字コード
 const capsuleDto: Ref<UploadContentCapsuleInterface> = ref(new UploadContentCapsuleDto());
@@ -50,7 +54,7 @@ function readXmlFile() {
                     if (reader.result !== null) {
                         capsuleDto.value.uploadFileDto.fileContent = String(reader.result);
                         getAuthorizedPromiseArea().then(token => {
-                            const url = "http://localhost:6080/xml/look-ahead";
+                            const url = urlBack + "/xml/look-ahead";
                             const method = "POST";
                             const body = JSON.stringify(capsuleDto.value);
                             const headers = {

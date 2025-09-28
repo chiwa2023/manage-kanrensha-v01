@@ -33,8 +33,10 @@ import GetKanrenshaPoliOrgCapsuleDto from '../../../dto/kanrensha/getKanrenshaPo
 import GetKanrenshaPersonCapsuleDto from '../../../dto/kanrensha/getKanrenshaPersonCapsuleDto';
 import type GetKanrenshaPersonCapsuleInterface from '../../../dto/kanrensha/getKanrenshaPersonCapsuleDto';
 import type MasterPersonInterface from '../../../entity/masterPersonEntity';
+import RoutePathConstants from '../../../routePathConstants';
 
-
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // よく使う定数
 const BLANK: string = "";
@@ -85,7 +87,7 @@ getAuthorizedPromiseArea().then(token => {
     if (token !== BLANK) {
         // 取得処理
         const method = "POST";
-        const url: string = "http://localhost:6080/user-kanrensha/get-by-user";
+        const url: string = urlBack + "/user-kanrensha/get-by-user";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {
             'Accept': 'application/json',
@@ -190,7 +192,7 @@ function recievePersonNoInterface(sendDto: MasterPersonInterface) {
         if (token !== BLANK) {
             // 保存処理
             const method = "POST";
-            const url: string = "http://localhost:6080/user-kanrensha/get-person";
+            const url: string = urlBack + "/user-kanrensha/get-person";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
                 'Accept': 'application/json',
@@ -224,7 +226,7 @@ function recievePoliOrgNoInterface(sendDto: MasterPoliticalOrganizationInterface
         if (token !== BLANK) {
             // 保存処理
             const method = "POST";
-            const url: string = "http://localhost:6080/user-kanrensha/get-poli-org";
+            const url: string = urlBack + "/user-kanrensha/get-poli-org";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
                 'Accept': 'application/json',
@@ -260,7 +262,7 @@ function recieveCorpCoInterface(sendDto: MasterCorporationInterface) {
         if (token !== BLANK) {
             // 保存処理
             const method = "POST";
-            const url: string = "http://localhost:6080/user-kanrensha/get-corp";
+            const url: string = urlBack + "/user-kanrensha/get-corp";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {
                 'Accept': 'application/json',

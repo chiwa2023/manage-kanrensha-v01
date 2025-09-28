@@ -4,6 +4,10 @@ import type ForceDumpCapsuleInterface from '../../../dto/z_force_dump/forceDumpC
 import ForceDumpCapsuleDto from '../../../dto/z_force_dump/forceDumpCapsuleDto';
 import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // 実行条件
 const capsuleDto: Ref<ForceDumpCapsuleInterface> = ref(new ForceDumpCapsuleDto());
@@ -39,7 +43,7 @@ function onCancel() {
 function onSave() {
     getAuthorizedPromiseArea().then(token => {
         // 処理条件再設定なしでそのまま
-        const url = "http://localhost:6080/dump-master-std/execute";
+        const url = urlBack + "/dump-master-std/execute";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {

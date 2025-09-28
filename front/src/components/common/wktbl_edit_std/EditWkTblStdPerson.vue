@@ -14,6 +14,10 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblStdPersonCapsuleInterface from '../../../dto/wktbl_std/updateWkTblStdPersonCapsuleDto';
 import UpdateWkTblStdPersonCapsuleDto from '../../../dto/wktbl_std/updateWkTblStdPersonCapsuleDto';
 import type UpdateWkTblStdPersonResultInterface from '../../../dto/wktbl_std/updateWkTblStdPersonResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const pageOptionPerson: Ref<SelectOptionNumberInterface[]> = ref([]);
 const personCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -32,7 +36,7 @@ const personResultDto: Ref<SearchWkTblStdPersonPagingResultInterface> = ref(new 
 
 function onSearchPerson() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-std/search-person";
+        const url = urlBack + "/regist-bulk-master-std/search-person";
         const method = "POST";
         const body = JSON.stringify(personCapsuleDto.value);
         const headers = {
@@ -75,7 +79,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblMasterPersonEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-std/update-person";
+        const url = urlBack + "/regist-bulk-master-std/update-person";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {
@@ -148,7 +152,7 @@ function onHideData() {
         <!-- ページング -->
         <select v-model="personCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPerson" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table class="std">

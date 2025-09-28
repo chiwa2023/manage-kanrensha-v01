@@ -14,6 +14,10 @@ import UpdateWkTblMinCorpCapsuleDto from '../../../dto/wktbl_min/updateWkTblMinC
 import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
 import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblMinCorpResultInterface from '../../../dto/wktbl_min/updateWkTblMinCorpResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const pageOptionCorp: Ref<SelectOptionNumberInterface[]> = ref([]);
 const corpCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -33,7 +37,7 @@ const corpResultDto: Ref<SearchWkTblMinCorpPagingResultInterface> = ref(new Sear
 
 function onSearchCorp() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-min/search-corp";
+        const url = urlBack + "/regist-bulk-master-min/search-corp";
         const method = "POST";
         const body = JSON.stringify(corpCapsuleDto.value);
         const headers = {
@@ -74,7 +78,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblPartnerCorpAddMinEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-min/update-corp";
+        const url = urlBack + "/regist-bulk-master-min/update-corp";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {

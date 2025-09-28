@@ -13,6 +13,10 @@ import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto'
 import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type RetryWktblBatchCapsuleInterface from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
 import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -37,7 +41,7 @@ if (userDtoText !== null) {
 capsuleDto.value.userPersonLeastDto = userDto.value;
 
 // 再処理起動条件(ユーザ)
-const retryCapsuleDto:Ref<RetryWktblBatchCapsuleInterface> = ref(new RetryWktblBatchCapsuleDto());
+const retryCapsuleDto: Ref<RetryWktblBatchCapsuleInterface> = ref(new RetryWktblBatchCapsuleDto());
 retryCapsuleDto.value.userDto = userDto.value;
 
 // ファイル保全情報受信
@@ -56,10 +60,10 @@ function onSave() {
 
     getAuthorizedPromiseArea().then(token => {
         if (isVisibleFormat.value === formatMin) {
-            url = "http://localhost:6080/regist-bulk-master-min/retry-person";
+            url = urlBack + "/regist-bulk-master-min/retry-person";
         }
         if (isVisibleFormat.value === formatStd) {
-            url = "http://localhost:6080/regist-bulk-master-std/retry-person";
+            url = urlBack + "/regist-bulk-master-std/retry-person";
         }
 
         const method = "POST";
@@ -71,7 +75,7 @@ function onSave() {
         };
         fetch(url, { method, headers, body })
             .then(async (response) => {
-                const resultDto:FrameworkMessageAndResultInterface = await response.json();
+                const resultDto: FrameworkMessageAndResultInterface = await response.json();
                 alert(resultDto.message);
             })
             .catch((error) => { alert(error); });
@@ -83,10 +87,10 @@ function onBatchByFile() {
     getAuthorizedPromiseArea().then(token => {
         // 最小と標準で接続先切り替え(起動条件のパラメータ内容は変わらない)
         if (isVisibleFormat.value === formatMin) {
-            url = "http://localhost:6080/regist-bulk-master-min/execute-person";
+            url = urlBack + "/regist-bulk-master-min/execute-person";
         }
         if (isVisibleFormat.value === formatStd) {
-            url = "http://localhost:6080/regist-bulk-master-std/execute-person";
+            url = urlBack + "/regist-bulk-master-std/execute-person";
         }
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);

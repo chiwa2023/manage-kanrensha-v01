@@ -4,9 +4,13 @@ import UploadContentCapsuleInterface from '../../../dto/storage_file/uploadConte
 import UploadContentCapsuleDto from '../../../dto/storage_file/uploadContentCapsuleDto';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
 import type LookAheadCsvResultInterface from '../../../dto/storage_file/lookAheadCsvResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
 //props,emit
 const emits = defineEmits(["sendStorageFileInterface"]);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // 文字コード
 const capsuleDto: Ref<UploadContentCapsuleInterface> = ref(new UploadContentCapsuleDto());
@@ -46,7 +50,7 @@ async function readTextFile() {
                     if (reader.result !== null) {
                         capsuleDto.value.uploadFileDto.fileContent = String(reader.result);
                         getAuthorizedPromiseArea().then(token => {
-                            const url = "http://localhost:6080/csv/look-ahead";
+                            const url = urlBack + "/csv/look-ahead";
                             const method = "POST";
                             const body = JSON.stringify(capsuleDto.value);
                             const headers = {

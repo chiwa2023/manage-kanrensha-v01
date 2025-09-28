@@ -1,6 +1,13 @@
 export default class RoutePathConstants {
 
-    /** ログインページ */
+    /** back側アクセスドメイン */
+    static readonly DOMAIN_BACK: string = "http://localhost:6080";
+    //static readonly DOMAIN_BACK: string = "http://host.docker.internal:6080";
+
+    /** back側アクセスパス */
+    static readonly PATH_BACK: string = ""; // TODO 設定時には追加
+
+    /** 業務パス */
     static readonly BASE_PATH: string = "/manage-kanrensha";
 
     /** ログインページ */

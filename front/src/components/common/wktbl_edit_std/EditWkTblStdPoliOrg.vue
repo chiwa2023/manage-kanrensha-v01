@@ -11,6 +11,9 @@ import type WkTblMasterPoliOrgInterface from '../../../entity/wkTblMasterPoliOrg
 import WkTblMasterPoliOrgEntity from '../../../entity/wkTblMasterPoliOrgEntity';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // 政治団体区分定数
 const poliOrgKbnNoSelect: string = PoliOrgDantaiKbnConstants.NO_SELECT;
 const poliOrgKbnSeitou: string = PoliOrgDantaiKbnConstants.SEITOU;
@@ -24,6 +27,7 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblStdPoliOrgCapsuleInterface from '../../../dto/wktbl_std/updateWkTblStdPoliOrgCapsuleDto';
 import UpdateWkTblStdPoliOrgCapsuleDto from '../../../dto/wktbl_std/updateWkTblStdPoliOrgCapsuleDto';
 import type UpdateWkTblStdPoliOrgResultInterface from '../../../dto/wktbl_std/updateWkTblStdPoliOrgResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
 const pageOptionPoliOrg: Ref<SelectOptionNumberInterface[]> = ref([]);
 const poliOrgCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -43,7 +47,7 @@ const poliOrgResultDto: Ref<SearchWkTblStdPoliOrgPagingResultInterface> = ref(ne
 function onSearchPoliOrg() {
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-std/search-poli-org";
+        const url = urlBack + "/regist-bulk-master-std/search-poli-org";
         const method = "POST";
         const body = JSON.stringify(poliOrgCapsuleDto.value);
         const headers = {
@@ -84,7 +88,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblMasterPoliOrgEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-master-std/update-poli-org";
+        const url = urlBack + "/regist-bulk-master-std/update-poli-org";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {
@@ -156,7 +160,7 @@ function onHideData() {
         <!-- ページング -->
         <select v-model="poliOrgCapsuleDto.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionPoliOrg" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table class="std">
@@ -276,7 +280,7 @@ function onHideData() {
                 <select v-model="entityEdit.dantaiKbn">
                     <option :value=poliOrgKbnNoSelect> </option>
                     <option :value=poliOrgKbnSeitou>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitou)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSeitouShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSeitouShibu) }}</option>
                     <option :value=poliOrgKbnSeijishikin>{{
@@ -284,7 +288,7 @@ function onHideData() {
                     <option :value=poliOrgKbn18Jou2KouDantai>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbn18Jou2KouDantai) }}</option>
                     <option :value=poliOrgKbnSonota>{{ PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonota)
-                        }}</option>
+                    }}</option>
                     <option :value=poliOrgKbnSonotaShibu>{{
                         PoliOrgDantaiKbnConstants.getLabel(poliOrgKbnSonotaShibu) }}</option>
                 </select>

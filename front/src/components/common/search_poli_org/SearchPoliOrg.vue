@@ -6,10 +6,15 @@ import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTe
 import NaturalTextSearchPagingCapsuleDto from '../../../dto/naturalTextSearchPagingCapsuleDto';
 import type SearchKanrenshaPoliOrgResultInterface from '../../../dto/kanrensha/searchKanrenshaPoliOrgResultDto';
 import PoliOrgDantaiKbnConstants from '../../../dto/partner_poli_org/poliOrgDantaiKbnConstants';
+import RoutePathConstants from '../../../routePathConstants';
 
 //props,emit
 const props = defineProps<{ isFooter: boolean }>();
 const emits = defineEmits(["sendCancelPoliOrgNo", "sendPoliOrgNoInterface"]);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 const poliOrgList: Ref<MasterPoliticalOrganizationInterface[]> = ref([])
 
 function onSearch() {
@@ -21,7 +26,7 @@ function onSearch() {
         capsuleDto.limit = 30;
         capsuleDto.pageNumber = 0;
 
-        const url = "http://localhost:6080/user-kanrensha/search-poli-org";
+        const url = urlBack + "/user-kanrensha/search-poli-org";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {
@@ -117,7 +122,7 @@ function onSave(selectedRow: number) {
                     <td>{{ entity.partnerName }}</td>
                     <td>{{ entity.allAddress }}</td>
                     <td>{{ entity.poliOrgDelegate }}</td>
-                    <td>{{ PoliOrgDantaiKbnConstants.getLabel( entity.dantaiKbn) }}</td>
+                    <td>{{ PoliOrgDantaiKbnConstants.getLabel(entity.dantaiKbn) }}</td>
                     <td><button @click="onSave(entity.masterPoliticalOrganizationId)">選択</button>
                     </td>
                 </tr>

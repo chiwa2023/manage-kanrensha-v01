@@ -1,15 +1,19 @@
 ﻿<script setup lang="ts">
-import { ref,  type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import mockGetCorpList from './mock/mockGetCorpList';
 import type MasterCorporationInterface from '../../../entity/masterCorporationEntity';
 import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
 import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTextSearchPagingCapsuleDto';
 import NaturalTextSearchPagingCapsuleDto from '../../../dto/naturalTextSearchPagingCapsuleDto';
 import type SearchKanrenshaCorpResultInterface from '../../../dto/kanrensha/searchKanrenshaCorpResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
 //props,emit
-const props = defineProps<{  isFooter: boolean }>();
+const props = defineProps<{ isFooter: boolean }>();
 const emits = defineEmits(["sendCorpNoInterface", "sendCanceelCorpNo"]);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 //const listProps: ComputedRef<CorpInterface[]> = computed(() => { return props.list });
 const listCorp: Ref<MasterCorporationInterface[]> = ref([]);
@@ -32,7 +36,7 @@ function onCorpSearch() {
         capsuleDto.limit = 30;
         capsuleDto.pageNumber = 0;
 
-        const url = "http://localhost:6080/user-kanrensha/search-corp";
+        const url = urlBack + "/user-kanrensha/search-corp";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {

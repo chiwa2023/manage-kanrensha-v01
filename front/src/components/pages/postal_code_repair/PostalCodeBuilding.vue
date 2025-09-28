@@ -30,7 +30,7 @@ const capsuleDtoItem: Ref<SearchPostalIllegularCapsuleInterface> = ref(new Searc
 //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
 //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
 //
-//         const url = "http://localhost:6080/postal-irregular/building";
+//         const url = urlBack + "/postal-irregular/building";
 //         const method = "POST";
 //         const body = JSON.stringify(null);
 //         const headers = {
@@ -72,7 +72,7 @@ function onChangeEdit(id: number) {
     //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
     //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
     //
-    //         const url = "http://localhost:6080/postal-irregular/building-detail";
+    //         const url = urlBack + "/postal-irregular/building-detail";
     //         const method = "POST";
     //         const body = JSON.stringify(null);
     //         const headers = {
@@ -114,7 +114,7 @@ function onSave() {
     //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
     //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
     //
-    //         const url = "http://localhost:6080/postal-irregular/save-building";
+    //         const url = urlBack + "/postal-irregular/save-building";
     //         const method = "POST";
     //         const body = JSON.stringify(null);
     //         const headers = {
@@ -148,7 +148,7 @@ function onSave() {
         <!-- ページング -->
         <select v-model="capsuleDtoItem.pageNumber" @change="onChangePaging">
             <option v-for="option in pageOptionIllegular" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
 

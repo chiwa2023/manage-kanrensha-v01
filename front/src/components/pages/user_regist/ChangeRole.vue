@@ -10,7 +10,12 @@ import type FrameworkCapsuleInterface from '../../../dto/frameworkCapsuleDto';
 import FrameworkCapsuleDto from '../../../dto/frameworkCapsuleDto';
 import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
 import UserRoleConstants from '../../../dto/user/userRoleConstants';
+
 const BLANK: string = "";
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -59,7 +64,7 @@ function onSave() {
         capsuleDto.value.userPersonLeastDto = userLeastDto.value;
         if (token !== "") {
             // パスワード更新
-            const url = "http://localhost:6080/user-role/change";
+            const url = urlBack + "/user-role/change";
             const method = "POST";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {

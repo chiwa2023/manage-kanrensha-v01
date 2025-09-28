@@ -10,6 +10,9 @@ import AllUserInfo from '../../common/user_info/AllUserInfo.vue';
 import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import RoutePathConstants from '../../../routePathConstants';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -33,7 +36,7 @@ function onSave() {
     getAuthorizedPromiseArea().then(token => {
         if (token !== "") {
             // パスワード更新
-            const url = "http://localhost:6080/edit-user/reflesh-password";
+            const url = urlBack + "/edit-user/reflesh-password";
             const method = "POST";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {

@@ -5,18 +5,21 @@ import type NewComerInterface from '../../../dto/user/newComerDto';
 import NewComerDto from '../../../dto/user/newComerDto';
 import RoutePathConstants from '../../../routePathConstants';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 const sessionStorage = window["sessionStorage"];
 
 // 入力用Dto
 const newComer: Ref<NewComerInterface> = ref(new NewComerDto());
 
 function onRegistMail() {
-    const date:Date = new Date();
+    const date: Date = new Date();
     date.setDate(date.getDate() + 1);
     newComer.value.limitDateTime = date;
 
     // メールアドレスを用いて新規登録用コードを発行
-    const url = "http://localhost:6080/add-user/publish-code";
+    const url = urlBack + "0/add-user/publish-code";
     const method = "POST";
     const body = JSON.stringify(newComer.value);
     const headers = {

@@ -5,10 +5,14 @@ import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseAre
 import type NaturalTextSearchPagingCapsuleInterface from '../../../dto/naturalTextSearchPagingCapsuleDto';
 import NaturalTextSearchPagingCapsuleDto from '../../../dto/naturalTextSearchPagingCapsuleDto';
 import type SearchKanrenshaPersonResultInterface from '../../../dto/kanrensha/searchKanrenshaPersonResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
 //props,emit
 const props = defineProps<{ isFooter: boolean }>();
 const emits = defineEmits(["sendPersonNoInterface", "sendCanceelPersonNo"]);
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const listPerson: Ref<MasterPersonInterface[]> = ref([]);
 
@@ -22,7 +26,7 @@ function onPersonSearch() {
         capsuleDto.limit = 30;
         capsuleDto.pageNumber = 0;
 
-        const url = "http://localhost:6080/user-kanrensha/search-person";
+        const url = urlBack + "/user-kanrensha/search-person";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {

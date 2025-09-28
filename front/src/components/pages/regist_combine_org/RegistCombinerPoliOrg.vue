@@ -13,6 +13,10 @@ import type FrameworkMessageAndResultInterface from '../../../dto/frameworkMessa
 import StorageFileDto from '../../../dto/storage_file/storageFileDto';
 import type RetryWktblBatchCapsuleInterface from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
 import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -42,7 +46,7 @@ function onCancel() {
 
 function onSave() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-combine/retry";
+        const url = urlBack + "/regist-combine/retry";
         const method = "POST";
         const body = JSON.stringify(retryCapsuleDto.value);
         const headers = {
@@ -66,7 +70,7 @@ function onSave() {
 function onBatchByFile() {
     getAuthorizedPromiseArea().then(token => {
 
-        const url = "http://localhost:6080/regist-combine/execute-poli-org";
+        const url = urlBack + "/regist-combine/execute-poli-org";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {

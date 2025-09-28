@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     host: false,
-    port: 5273
+    port: 5273,
+    allowedHosts: ['host.docker.internal']
   },
-  base:'/manage-kanrensha'
+  base: '/manage-kanrensha'
 })

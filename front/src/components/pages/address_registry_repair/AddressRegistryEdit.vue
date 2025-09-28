@@ -33,7 +33,7 @@ function onSearchLocalGov() {
     //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
     //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
     //
-    //         const url = "http://localhost:6080/local-gov/search";
+    //         const url = urlBack + "/local-gov/search";
     //         const method = "POST";
     //         const body = JSON.stringify(null);
     //         const headers = {
@@ -77,7 +77,7 @@ function onChangeEditLocalGov(id: number) {
     //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
     //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
     //
-    //         const url = "http://localhost:6080/address-regi-rsdt/search";
+    //         const url = urlBack + "/address-regi-rsdt/search";
     //         const method = "POST";
     //         const body = JSON.stringify(null);
     //         const headers = {
@@ -132,7 +132,7 @@ function onSave() {
     //         // const conditionDto: SaveAddressRegistoryCapsuleInterface = new SaveAddressRegistoryCapsuleEntity();
     //         // conditionDto.addressRsdtTemplateEntity = entityEdit.value;
     //
-    //         const url = "http://localhost:6080/address-regi-rsdt/save";
+    //         const url = urlBack + "/address-regi-rsdt/save";
     //         const method = "POST";
     //         const body = JSON.stringify(null);
     //         const headers = {
@@ -184,7 +184,7 @@ function onSave() {
         <!-- ページング -->
         <select v-model="capsuleDtoLocalGov.pageNumber" @change="onChangePagingLocalGov">
             <option v-for="option in pageOptionLocalGov" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
 
@@ -213,7 +213,7 @@ function onSave() {
         <!-- ページング -->
         <select v-model="capsuleDtoRsdt.pageNumber" @change="onChangePagingRsdt">
             <option v-for="option in pageOptionRsdt" :key="option.value" :value="option.value"> {{ option.text
-            }}
+                }}
             </option>
         </select><br>
         <table>

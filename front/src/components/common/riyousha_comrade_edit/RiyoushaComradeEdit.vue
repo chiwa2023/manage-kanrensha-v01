@@ -29,6 +29,9 @@ const props = defineProps<{ baseEntity: RiyoushaComradeEntityInterface, isEditNe
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 const inputComradeDto: Ref<RiyoushaComradeDtoInterface> = ref(new RiyoushaComradeDto());
 inputComradeDto.value.isNotOrg = props.baseEntity.isNotOrg;
 
@@ -48,7 +51,7 @@ function onChangeEntity() {
         capsuleDto.userPersonLeastDto = props.userDto;
 
         getAuthorizedPromiseArea().then(token => {
-            const url = "http://localhost:6080/user-riyousha/get-comrade";
+            const url = urlBack + "/user-riyousha/get-comrade";
             const method = "POST";
             const body = JSON.stringify(capsuleDto);
             const headers = {
@@ -103,7 +106,7 @@ function onSave() {
     capsuleDto.userPersonLeastDto = props.userDto;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/save-comrade";
+        const url = urlBack + "/user-riyousha/save-comrade";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {
@@ -130,7 +133,7 @@ function onSave() {
 
 function onDeletePerson(posIndex: number) {
     // 指定位置のEntity削除
-    inputComradeDto.value.listPerson.splice(posIndex,1);
+    inputComradeDto.value.listPerson.splice(posIndex, 1);
 }
 
 function getOrgLabel(isNotOrg: boolean) {
@@ -146,8 +149,7 @@ function getOrgLabel(isNotOrg: boolean) {
     </div>
     <div class="right-area">
         <span><input type="radio" v-model="inputComradeDto.isNotOrg" :value="true" disabled="true">個人</span>
-        <span class="left-space"><input type="radio" v-model="inputComradeDto.isNotOrg" :value="false"
-                disabled="true">
+        <span class="left-space"><input type="radio" v-model="inputComradeDto.isNotOrg" :value="false" disabled="true">
             団体</span>
         <div v-if="props.isEditNew">
             <br>
@@ -183,7 +185,7 @@ function getOrgLabel(isNotOrg: boolean) {
                         <th>姓名・名称</th>
                         <th>&nbsp;</th>
                     </tr>
-                    <tr v-for="(entity,index) of inputComradeDto.listPerson" :key="entity.riyoushaComradeId">
+                    <tr v-for="(entity, index) of inputComradeDto.listPerson" :key="entity.riyoushaComradeId">
                         <td>{{ getOrgLabel(entity.isNotOrg) }}</td>
                         <td>({{ entity.riyoushaComradeCode }}) <br> {{ entity.riyoushaComradeName }}</td>
                         <td><button @click="onDeletePerson(index)">削除</button></td>

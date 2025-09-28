@@ -10,6 +10,9 @@ import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto'
 import router from '../../../router';
 import RoutePathConstants from '../../../routePathConstants';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 // ユーザメニューで取得したユーザを保持
 const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
 function recieveUser(user: UserPersonLeastInterface) {
@@ -25,7 +28,7 @@ function onEdit() {
         capsuleDto.value.userPersonLeastDto = userLeastDto.value;
         if (token !== "") {
             // パスワード更新
-            const url = "http://localhost:6080/";
+            const url = urlBack + "/";
             const method = "POST";
             const body = JSON.stringify(capsuleDto.value);
             const headers = {

@@ -16,8 +16,13 @@ import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type UpdateWkTblCombineOrgCapsuleInterface from '../../../dto/wktbl_combine/updateWkTblCombineOrgCapsuleDto';
 import UpdateWkTblCombineOrgCapsuleDto from '../../../dto/wktbl_combine/updateWkTblCombineOrgCapsuleDto';
 import type UpdateWkTblCombineOrgResultInterface from '../../../dto/wktbl_combine/updateWkTblCombineOrgResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
+//props,emit
 const props = defineProps<{ orgType: string }>();
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const pageOptionCombine: Ref<SelectOptionNumberInterface[]> = ref([]);
 const combineCapsuleDto: Ref<SearchWkTblPagingCapsuleInterface> = ref(new SearchWkTblPagingCapsuleDto());
@@ -48,7 +53,7 @@ function onSearchCorp() {
 
     // TODO 企業と政治団体検索切り替え
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-combine/search-" + props.orgType;
+        const url = urlBack + "/regist-combine/search-" + props.orgType;
         const method = "POST";
         const body = JSON.stringify(combineCapsuleDto.value);
         const headers = {
@@ -124,7 +129,7 @@ function onEditUpdate() {
     editCapsuleDto.value.wkTblPartnerCombineOrgEntity = entityEdit.value;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-combine/update";
+        const url = urlBack + "/regist-combine/update";
         const method = "POST";
         const body = JSON.stringify(editCapsuleDto.value);
         const headers = {

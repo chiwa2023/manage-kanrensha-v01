@@ -31,6 +31,10 @@ const props = defineProps<{ isEditNew: boolean, userDto: UserPersonLeastInterfac
 const SERVER_STATUS_OK: number = 200;
 // const SERVER_STATUS_ERROR: number = 400;
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
+
 const inputComradeDto: Ref<RiyoushaComradeDtoInterface> = ref(new RiyoushaComradeDto());
 inputComradeDto.value.isNotOrg = false;
 
@@ -42,7 +46,7 @@ const optionCapsuleDto: FrameworkCapsuleInterface = new FrameworkCapsuleDto();
 const optionResultDto: Ref<PickupOrgSelectOptionResultInterface> = ref(new PickupOrgSelectOptionResultDto());
 optionCapsuleDto.userPersonLeastDto = props.userDto;
 getAuthorizedPromiseArea().then(token => {
-    const url = "http://localhost:6080/user-riyousha/org-comrade-option";
+    const url = urlBack + "/user-riyousha/org-comrade-option";
     const method = "POST";
     const body = JSON.stringify(optionCapsuleDto);
     const headers = {
@@ -82,7 +86,7 @@ function getComradeDto() {
     capsuleDto.masterId = masterId;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/get-comrade-by-id";
+        const url = urlBack + "/user-riyousha/get-comrade-by-id";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {
@@ -131,7 +135,7 @@ function onSave() {
     capsuleDto.userPersonLeastDto = props.userDto;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/save-comrade";
+        const url = urlBack + "/user-riyousha/save-comrade";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {
@@ -164,10 +168,10 @@ function getOrgLabel(isNotOrg: boolean) {
     return isNotOrg ? "個人" : "組織";
 }
 
-function onInviteDantai(){
+function onInviteDantai() {
     // 現在選択中の組織をSessioStrageに保持してコード送信画面へ遷移
     const sessionStorage = window["sessionStorage"];
-    const optionDto:SelectOptionNumberInterface = listOrgOptions.value.filter((e) => selectedOrg.value ===  e.value)[0];
+    const optionDto: SelectOptionNumberInterface = listOrgOptions.value.filter((e) => selectedOrg.value === e.value)[0];
     sessionStorage.setItem("orgId", String(optionDto.value));
     sessionStorage.setItem("orgName", String(optionDto.text));
     router.push(RoutePathConstants.PAGE_INVITE_COMRADE_PERSON);

@@ -6,12 +6,15 @@ import type LoginUserResultInterface from './dto/login/loginUserResultDto';
 import router from './router';
 import RoutePathConstants from './routePathConstants';
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
 const sessionStorage = window["sessionStorage"];
 
 // ログイン後にログイン画面に戻ってきたときはログアウト処理
 const userText: string | null = sessionStorage.getItem("userDto");
 if (userText !== null) {
-    const url = "http://localhost:6080/logout";
+    const url = urlBack + "/logout";
     const method = "POST";
     const headers = {
         'Accept': 'application/json',
@@ -46,7 +49,7 @@ if (loginErrorText !== null) {
 
 const user: Ref<LoginUserCapsuleInterface> = ref(new LoginUserCapsuleDto());
 function onLogin() {
-    const url = "http://localhost:6080/login";
+    const url = urlBack + "/login";
     const method = "POST";
     const body = JSON.stringify(user.value);
     const headers = {

@@ -18,16 +18,23 @@ import type GetRiyoushaAdminCapsuleInterface from '../../../dto/riyousha/getRiyo
 import GetRiyoushaAdminCapsuleDto from '../../../dto/riyousha/getRiyoushaAdminCapsuleDto';
 import type FrameworkMessageAndResultInterface from '../../../dto/frameworkMessageAndResultDto';
 import type GetRiyoushaAdminResultInterface from '../../../dto/riyousha/getRiyoushaAdminResultDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+
+// props,emmits
+const props = defineProps<{ baseEntity: RiyoushaAdminEntityInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // よく使う定数
 // const BLANK: string = "";
 // const SERVER_STATUS_ERROR: number = 400;
 const SERVER_STATUS_OK: number = 200;
 
-// props,emmits
-const props = defineProps<{ baseEntity: RiyoushaAdminEntityInterface, isEditNew: boolean, userDto: UserPersonLeastInterface }>();
 const inputAdminDto: Ref<RiyoushaAdminDtoInterface> = ref(new RiyoushaAdminDto());
 const isNotOrgRadio: ComputedRef<string> = computed(() => inputAdminDto.value.isNotOrg ? "1" : "0");
+
 
 if (props.baseEntity.riyoushaAdminId != 0) {
     const capsuleDto: GetRiyoushaAdminCapsuleInterface = new GetRiyoushaAdminCapsuleDto();
@@ -35,7 +42,7 @@ if (props.baseEntity.riyoushaAdminId != 0) {
     capsuleDto.userPersonLeastDto = props.userDto;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/get-admin";
+        const url = urlBack + "/user-riyousha/get-admin";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {
@@ -85,7 +92,7 @@ function onSave() {
     capsuleDto.userPersonLeastDto = props.userDto;
 
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/user-riyousha/save-admin";
+        const url = urlBack + "/user-riyousha/save-admin";
         const method = "POST";
         const body = JSON.stringify(capsuleDto);
         const headers = {

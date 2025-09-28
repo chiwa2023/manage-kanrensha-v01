@@ -15,8 +15,12 @@ import SaveKanrenshaPoliOrgCapsuleDto from '../../../dto/partner_poli_org/saveKa
 import type MasterPersonInterface from '../../../entity/masterPersonEntity';
 import type InputAddressDto from '../../../dto/Input_address/inputAddressDto';
 
+// props,emit
 const props = defineProps<{ editDto: PoliOrgNoInterface, isEditNew: boolean, userDto: UserPersonLeastInterface, isCombineUser: boolean }>();
 const editPoliOrgDto: ComputedRef<PoliOrgNoInterface> = computed(() => props.editDto)
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // よく使う定数
 const BLANK: string = "";
@@ -107,9 +111,9 @@ function onSave() {
     // 編集か新規作成かでアクセス先を変えるだけ
     let url = BLANK;
     if (props.isEditNew) {
-        url = "http://localhost:6080/add-user/partner-poli-org";
+        url = urlBack + "/add-user/partner-poli-org";
     } else {
-        url = "http://localhost:6080/user-kanrensha/edit-poli-org";
+        url = urlBack + "/user-kanrensha/edit-poli-org";
     }
 
     getAuthorizedPromiseArea().then(token => {

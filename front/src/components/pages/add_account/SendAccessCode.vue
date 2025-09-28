@@ -9,9 +9,12 @@ import RoutePathConstants from '../../../routePathConstants';
 const sessionStorage = window["sessionStorage"];
 const newComer: Ref<NewComerInterface> = ref(new NewComerDto());
 
-const dtoJson:string|null = sessionStorage.getItem("new-comer");
-const regiCode:Ref<string> = ref(""); 
-if(null !== dtoJson){
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
+const dtoJson: string | null = sessionStorage.getItem("new-comer");
+const regiCode: Ref<string> = ref("");
+if (null !== dtoJson) {
     newComer.value = JSON.parse(dtoJson);
     regiCode.value = newComer.value.registCode;
     newComer.value.registCode = "";
@@ -19,7 +22,7 @@ if(null !== dtoJson){
 
 function onCheckSendCode() {
     // メールアドレスを用いて新規登録用コードを発行
-    const url = "http://localhost:6080/add-user/check-code";
+    const url = urlBack + "/add-user/check-code";
     const method = "POST";
     const body = JSON.stringify(newComer.value);
     const headers = {
@@ -32,7 +35,7 @@ function onCheckSendCode() {
             if (status === 200) {
                 const resultDto: NewComerInterface = await response.json();
                 if (resultDto.isSuccess) {
-                sessionStorage.setItem("new-comer", JSON.stringify(resultDto));
+                    sessionStorage.setItem("new-comer", JSON.stringify(resultDto));
                     alert("コードチェックができました");
                     router.push(RoutePathConstants.PAGE_SWITCH_USER_KBN);
                 } else {

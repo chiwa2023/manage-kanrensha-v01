@@ -13,6 +13,10 @@ import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto'
 import UserPersonLeastDto from '../../../dto/user/userPersonLeastDto';
 import type RetryWktblBatchCapsuleInterface from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
 import RetryWktblBatchCapsuleDto from '../../../dto/add_xml/retryWktblBatchCapsuleDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // サンプル表示
 const templateViewButtonText: ComputedRef<String> = computed(() => isVisibleTemplate.value ? "CSVサンプルを隠す" : "CSVサンプルを表示する");
@@ -29,7 +33,7 @@ function onCancel() {
 
 function onSave() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/retry-corp";
+        const url = urlBack + "/regist-bulk-history/retry-corp";
         const method = "POST";
         const body = JSON.stringify(retryCapsuleDto.value);
         const headers = {
@@ -39,7 +43,7 @@ function onSave() {
         };
         fetch(url, { method, headers, body })
             .then(async (response) => {
-                const resultDto:FrameworkMessageAndResultInterface = await response.json();
+                const resultDto: FrameworkMessageAndResultInterface = await response.json();
                 alert(resultDto.message);
             })
             .catch((error) => { alert(error); });
@@ -48,7 +52,7 @@ function onSave() {
 
 function onBatchByFile() {
     getAuthorizedPromiseArea().then(token => {
-        const url = "http://localhost:6080/regist-bulk-history/execute-corp";
+        const url = urlBack + "/regist-bulk-history/execute-corp";
         const method = "POST";
         const body = JSON.stringify(capsuleDto.value);
         const headers = {
@@ -80,7 +84,7 @@ if (userDtoText !== null) {
 capsuleDto.value.userPersonLeastDto = userDto.value;
 
 // 再処理起動条件(ユーザ)
-const retryCapsuleDto:Ref<RetryWktblBatchCapsuleInterface> = ref(new RetryWktblBatchCapsuleDto());
+const retryCapsuleDto: Ref<RetryWktblBatchCapsuleInterface> = ref(new RetryWktblBatchCapsuleDto());
 retryCapsuleDto.value.userDto = userDto.value;
 
 // ファイル保全情報受信
