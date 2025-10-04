@@ -62,7 +62,10 @@ function recieveUser(user: UserPersonLeastInterface) {
     <RouterLink :to=RoutePathConstants.PAGE_ACCEPT_MANAGER_PERSON>個人と組織紐づけ承認</RouterLink><br>
 
     <hr>
-    <RouterLink to="/">ログインページ</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_SEARCH_TASK_PLAN>タスク計画検索</RouterLink><br>
+
+    <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_LOGIN>ログインページ</RouterLink><br>
 
 </template>
 <style scoped></style>

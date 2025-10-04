@@ -31,6 +31,9 @@ function recieveUser(user: UserPersonLeastInterface) {
     <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY>関連者履歴データダウンロード差分(公開文書記載水準)</RouterLink><br>
     <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN>関連者マスタ最小ダウンロード差分(公開文書記載水準)</RouterLink><br>
 
+    <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_SEARCH_TASK_PLAN>タスク計画検索</RouterLink><br>
+
     <RouterLink :to="RoutePathConstants.PAGE_LOGIN">ログインページ</RouterLink><br>
 
 </template>

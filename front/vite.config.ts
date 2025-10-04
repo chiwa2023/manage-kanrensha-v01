@@ -5,8 +5,9 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   server: {
-    host: true,
+    host: false,
     port: 5273,
     allowedHosts: ['host.docker.internal']
-  }
-});
+  },
+    base: '/manage-kanrensha'
+})

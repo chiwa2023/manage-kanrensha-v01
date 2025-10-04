@@ -12,6 +12,7 @@ userDto.value.listRoles.push(UserRoleConstants.ROLE_COMRADE);
 userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_PERSON);
 userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_CORP);
 userDto.value.listRoles.push(UserRoleConstants.ROLE_PARTNER_POLI_ORG);
+userDto.value.userPersonCode=190;
 sessionStorage.setItem("userDto", JSON.stringify(userDto.value));
 
 </script>

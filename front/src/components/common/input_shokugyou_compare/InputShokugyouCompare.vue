@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import { computed, ref, type ComputedRef, type Ref } from 'vue';
+import { ref, toRaw, type Ref } from 'vue';
 import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import SearchCorpNo from '../search_corp_no/SearchCorpNo.vue';
 import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
@@ -11,7 +11,8 @@ const props = defineProps<{ editDto: InputShokugyouDto, isfooter: boolean }>();
 const emits = defineEmits(["sendCancelInputShokugyou", "sendInputShokugyouInterface"]);
 
 const BLANK: string = "";
-const inputShokugyouDto: ComputedRef<InputShokugyouInterface> = computed(() => props.editDto);
+const inputShokugyouDto: Ref<InputShokugyouInterface> = ref(structuredClone(toRaw(props.editDto)));
+const previousShokugyouDto: Ref<InputShokugyouInterface> = ref(structuredClone(toRaw(props.editDto)));
 
 /** 生成職業文字列を送信する */
 function sendAllShokugyou() {
@@ -104,7 +105,7 @@ function recieveCancelCorpNo() {
 
 
 function onSave() {
-    emits("sendInputShokugyouInterface",inputShokugyouDto.value);
+    emits("sendInputShokugyouInterface", inputShokugyouDto.value);
 }
 
 
@@ -112,6 +113,11 @@ function onCancel() {
     emits("sendCancelInputShokugyou");
 }
 
+// 前データ表示切替
+const isShowPrevious: Ref<boolean> = ref(true);
+function onShowPrevious() {
+    isShowPrevious.value = !isShowPrevious.value;
+}
 </script>
 <template>
     <div v-if="isfooter">
@@ -171,7 +177,46 @@ function onCancel() {
         </div>
         <input type="text" v-model="inputShokugyouDto.shokugyouUserWrite" class="max-input" @input="sendAllShokugyou">
     </div>
-    <div class="clear-both"></div>
+    <div class="clear-both"><br></div>
+
+    <hr>
+
+    <div class="one-line">
+        編集前データを確認 <button @click="onShowPrevious">表示／非表示</button>
+    </div>
+
+    <div class="clear-both"><br></div>
+
+    <div v-if="isShowPrevious">
+
+        <div class="left-area">
+            職業
+        </div>
+        <div class="right-area">
+            <input type="text" v-model="previousShokugyouDto.allShokugyou" disabled="true">
+        </div>
+        <div class="clear-both"><br></div>
+
+        <div class="left-area">
+            職業(1)
+        </div>
+        <div class="right-area">
+            <input type="text" v-model="previousShokugyouDto.gyoushu" disabled="true"></input><input type="text"
+                v-model="previousShokugyouDto.yakushoku" disabled="true" class="left-space"></input>
+        </div>
+        <div class="clear-both"></div>
+        <div class="left-area">
+            職業(2)
+        </div>
+        <div class="right-area">
+            <input type="text" v-model="previousShokugyouDto.corpNo" class="code-input" disabled="true">
+            <input type="text" v-model="previousShokugyouDto.corpAddress" class="code-input left-space" disabled="true">
+            <input type="text" v-model="previousShokugyouDto.corpName" class="left-space name-input" disabled="true">
+            <input type="text" v-model="previousShokugyouDto.shokugyouUserWrite" class="max-input">
+        </div>
+        <div class="clear-both"><br></div>
+        <hr>
+    </div>
 
     <div class="footer" v-if="isfooter">
         <button @click="onCancel" class="footer-button">キャンセル</button>

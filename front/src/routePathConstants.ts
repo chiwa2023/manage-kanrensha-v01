@@ -1,6 +1,6 @@
 export default class RoutePathConstants {
 
-    /** ログインページ */
+    /** ベース */
     static readonly BASE_PATH: string = "/manage-kanrensha";
 
     /** ログインページ */
@@ -28,7 +28,7 @@ export default class RoutePathConstants {
     static readonly PAGE_POSTAL_SABUN: string = this.BASE_PATH + "/postal-code-sabun";
 
     /** アドレス・ベース・レジストリ編集 */
-    static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry=edit";
+    static readonly PAGE_ADDRESS_REGI_EDIT: string = this.BASE_PATH + "/address-registry-edit";
     /** アドレス・ベース・レジストリ差分 */
     static readonly PAGE_ADDRESS_REGI_SABUN: string = this.BASE_PATH + "/address=registry-sabun";
 
@@ -142,5 +142,8 @@ export default class RoutePathConstants {
     static readonly PAGE_INVITE_MANAGER_PERSON: string = this.BASE_PATH + "/invite-manager";
     /** 運営者組織に招待を個人が承認 */
     static readonly PAGE_ACCEPT_MANAGER_PERSON: string = this.BASE_PATH + "/accept-manager";
+
+    /** タスク計画検索 */
+    static readonly PAGE_SEARCH_TASK_PLAN: string = this.BASE_PATH + "/search-task-plan";
 
 }

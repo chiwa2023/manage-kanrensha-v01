@@ -111,7 +111,11 @@ const routes = [
     { path: RoutePathConstants.PAGE_ACCEPT_MANAGER_PERSON, name: "AcceptManagerPerson", component: () => import("./components/pages/manager_regist/AcceptManagerPerson.vue") },
 
     // TODO 開発終了時に削除する コンポーネント台紙
-    { path: "/component", name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },
+    { path: RoutePathConstants.PAGE_COMPONENT, name: "BaseComponent", component: () => import("./components/BaseComponent.vue") },
+
+
+    // タスク計画検索
+    { path: RoutePathConstants.PAGE_SEARCH_TASK_PLAN, name: "SearchTaskPlan", component: () => import("./components/pages/search_task_plan/SearchTaskPlan.vue") },
 ];
 
 const router = createRouter({

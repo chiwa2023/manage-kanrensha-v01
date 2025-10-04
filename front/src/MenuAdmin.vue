@@ -40,6 +40,9 @@ function recieveUser(user: UserPersonLeastInterface) {
     <RouterLink :to=RoutePathConstants.PAGE_SEARCH_RIYOUSHA>利用者検索／編集</RouterLink><br>
 
     <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_SEARCH_TASK_PLAN>タスク計画検索</RouterLink><br>
+
+    <hr>
     <RouterLink :to="RoutePathConstants.PAGE_LOGIN">ログインページ</RouterLink><br>
 
 </template>
