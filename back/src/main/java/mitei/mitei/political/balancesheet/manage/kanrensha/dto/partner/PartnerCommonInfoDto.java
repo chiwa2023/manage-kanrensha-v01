@@ -44,15 +44,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
         return kanrenshaKbn;
     }
 
-//    /**
-//     * 関連者区分を設定する
-//     *
-//     * @param kanrenshaKbn 関連者区分
-//     */
-//    public void setKanrenshaKbn(final Short kanrenshaKbn) {
-//        this.kanrenshaKbn = kanrenshaKbn;
-//    }
-
     /** 関連者名称 */
     private String partnerName;
 
@@ -64,15 +55,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     public String getPartnerName() {
         return partnerName;
     }
-
-//    /**
-//     * 関連者名称を設定する
-//     *
-//     * @param partnerName 関連者名称
-//     */
-//    public void setPartnerName(final String partnerName) {
-//        this.partnerName = partnerName;
-//    }
 
     /** 関連者全住所 */
     private String allAddress;
@@ -86,15 +68,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
         return allAddress;
     }
 
-//    /**
-//     * 関連者全住所を設定する
-//     *
-//     * @param allAddress 関連者全住所
-//     */
-//    public void setAllAddress(final String allAddress) {
-//        this.allAddress = allAddress;
-//    }
-
     /** 認識キー */
     private String recognizedKey;
 
@@ -107,15 +80,6 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
         return recognizedKey;
     }
 
-//    /**
-//     * 認識キーを設定する
-//     *
-//     * @param recognizedKey 認識キー
-//     */
-//    public void setRecognizedKey(final String recognizedKey) {
-//        this.recognizedKey = recognizedKey;
-//    }
-
     /** 関連者コード */
     private String kanrenshaCode;
 
@@ -127,14 +91,5 @@ public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
     public String getKanrenshaCode() {
         return kanrenshaCode;
     }
-
-//    /**
-//     * 関連者コードを設定する
-//     *
-//     * @param kanrenshaCode 関連者コード
-//     */
-//    public void setKanrenshaCode(final String kanrenshaCode) {
-//        this.kanrenshaCode = kanrenshaCode;
-//    }
 
 }

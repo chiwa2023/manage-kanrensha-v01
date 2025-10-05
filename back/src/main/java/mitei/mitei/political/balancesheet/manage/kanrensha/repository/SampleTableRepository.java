@@ -12,6 +12,11 @@ import mitei.mitei.political.balancesheet.manage.kanrensha.entity.SampleTableEnt
  */
 public interface SampleTableRepository extends JpaRepository<SampleTableEntity, Integer> {
 
+    /**
+     * テーブルsample_tableの存在確認をする
+     *
+     * @return 存在する場合はテーブル名
+     */
     @Query(value = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES"
             + "    WHERE table_schema = 'manage_kanrensha' AND table_name = 'sample_table' ", nativeQuery = true)
     List<String> findMyself();

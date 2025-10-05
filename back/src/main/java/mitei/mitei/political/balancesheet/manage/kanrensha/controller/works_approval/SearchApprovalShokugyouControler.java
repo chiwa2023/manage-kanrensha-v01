@@ -8,21 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.works_approval.SearchApprovalShokugyouResultDto;
 import mitei.mitei.political.balancesheet.manage.kanrensha.dto.works_approval.SearchWorksApprovalCapsuleDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.works_approval.SearchWorksApprovalResultDto;
-import mitei.mitei.political.balancesheet.manage.kanrensha.service.works_approval.SearchApprovalAddressService;
 import mitei.mitei.political.balancesheet.manage.kanrensha.service.works_approval.SearchApprovalShokugyouService;
 
 /**
- * 未承認変更データ検索Controller
+ * 作業承認職業検索Controller
  */
 @RestController
 @RequestMapping("/works-approval")
-public class SearchWorksApprovalController {
-
-    /** 関連者住所承認作業検索Service */
-    @Autowired
-    private SearchApprovalAddressService searchApprovalAddressService;
+public class SearchApprovalShokugyouControler {
 
     /** 関連者住所承認作業検索Service */
     @Autowired
@@ -34,15 +29,12 @@ public class SearchWorksApprovalController {
      * @param capsuleDto 検索条件Dto
      * @return 検索結果レスポンス
      */
-    @PostMapping("/search-both")
-    public ResponseEntity<SearchWorksApprovalResultDto> practice(
+    @PostMapping("/search-shokugyou")
+    public ResponseEntity<SearchApprovalShokugyouResultDto> practice(
             final @RequestBody SearchWorksApprovalCapsuleDto capsuleDto) {
 
-        SearchWorksApprovalResultDto resultDto = new SearchWorksApprovalResultDto();
-        resultDto.setResultDtoAddress(searchApprovalAddressService.practice(capsuleDto));
-        resultDto.setResultDtoShokugyou(searchApprovalShokugyouService.practice(capsuleDto));
-
-        return ResponseEntity.status(HttpResponseStatus.OK.code()).body(resultDto);
+        return ResponseEntity.status(HttpResponseStatus.OK.code())
+                .body(searchApprovalShokugyouService.practice(capsuleDto));
     }
 
 }
