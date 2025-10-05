@@ -208,7 +208,7 @@ public class CombineOrgCsvProcessor
         }
 
         // 紐づけ団体が企業団体の場合
-        if (KanrenshaKbnConstants.CORP.equals(entity.getKanrenshaKbn())) {
+        if (KanrenshaKbnConstants.CORP== entity.getKanrenshaKbn()) { 
             Optional<MasterCorporationEntity> optionalCorp = masterCorporationRepository
                     .findFirstByCorpKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
                             SetTableDataHistoryUtil.INSERT_STATE);
@@ -218,7 +218,7 @@ public class CombineOrgCsvProcessor
         }
 
         // 紐づけ団体が政治団体の場合
-        if (KanrenshaKbnConstants.POLI_ORG.equals(entity.getKanrenshaKbn())) {
+        if (KanrenshaKbnConstants.POLI_ORG == entity.getKanrenshaKbn()) {
             Optional<MasterPoliticalOrganizationEntity> optionalPoliOrg = masterPoliticalOrganizationRepository
                     .findFirstByPoliOrgKanrenshaCodeAndIsLatest(entity.getOrgKanrenshaCode(),
                             SetTableDataHistoryUtil.INSERT_STATE);

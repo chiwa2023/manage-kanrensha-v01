@@ -30,12 +30,12 @@ public class CorsConfig {
      */
     @Bean
     protected CorsFilter corsFilter() {
-        
+
         List<String> listAllow = new ArrayList<>();
         listAllow.add(ALLOW_URL_KANRENSHA);
         listAllow.add(ALLOW_URL_PORT);
         listAllow.add(ALLOW_URL_DOCKER);
-        
+
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(listAllow);
         config.setAllowCredentials(true);
