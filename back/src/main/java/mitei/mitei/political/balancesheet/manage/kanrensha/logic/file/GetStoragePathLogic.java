@@ -51,6 +51,8 @@ public class GetStoragePathLogic {
      */
     public Path practice(final UserPersonLeastDto userPersonLeastDto) throws IOException {
 
+        // TODO クラス名変更(User情報存在を明確に)
+        
         // 冗長だが毎回ディレクトリの有無を確認する
         Path parentPath = Paths.get(storageFolder);
         if (!Files.exists(parentPath) || !Files.isDirectory(parentPath)) {

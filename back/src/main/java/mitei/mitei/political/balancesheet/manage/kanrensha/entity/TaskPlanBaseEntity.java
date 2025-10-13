@@ -1,4 +1,4 @@
-package mitei.mitei.political.balancesheet.manage.kanrensha.entity.year.y2025;
+package mitei.mitei.political.balancesheet.manage.kanrensha.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,15 +9,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import mitei.mitei.political.balancesheet.manage.kanrensha.entity.AllTabeDataHistoryInterface;
 
 /**
  * task_plan_2025接続用Entity
  */
 @Entity
-@Table(name = "task_plan_2025")
-public class TaskPlan2025Entity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
+public class TaskPlanBaseEntity implements Serializable, AllTabeDataHistoryInterface { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;

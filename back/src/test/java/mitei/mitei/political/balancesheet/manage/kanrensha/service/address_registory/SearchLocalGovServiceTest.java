@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,6 +34,7 @@ class SearchLocalGovServiceTest {
     private SearchLocalGovService searchLocalGovService;
 
     @Test
+    @Tag("TableTruncate")
     void test() {
 
         // メッセージを出す都合で0件の場合は失敗扱い
