@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -61,6 +62,7 @@ class SaveFileLogicTest {
     }
 
     @Test
+    @Tag("TableTruncate")
     void test() throws Exception {
         String fileName = "mt_parcel_city011011.csv";
         UserPersonLeastDto userDto = CreateLeastUserForTestUtil.practice();

@@ -68,7 +68,7 @@ public class UploadFileDto implements Serializable { // NOPMD DataClass
     }
 
     /**
-     * ファイル内容(Base64)をせ
+     * ファイル内容(Base64)を設定する
      *
      * @param fileContent ファイル内容(Base64)
      */

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -53,6 +54,7 @@ class CompressZipPointedFileLogicTest {
     }
 
     @Test
+    @Tag("TableTruncate")
     void test() throws Exception {
 
         Path pathRoot = Paths.get(storageFolder, "/190/test");

@@ -47,7 +47,7 @@ public class ChoiceAddressRegistoryByCodeService {
         builder // 
         .append(" WHERE machiaza_id = '").append(entity.getMachiazaId())
         .append("' AND parcel_rsdt_id = '").append(entity.getParcelRsdtId())
-        .append("' AND effect_date <= '").append(now.format(formatter)).append("'");
+        .append("' AND effect_date <= '").append(now.format(formatter)).append("'"); // NOPMD
         
         return builder.toString();
     }

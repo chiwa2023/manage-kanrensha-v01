@@ -3,6 +3,7 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.logic.file;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,6 +30,7 @@ class GetTempFilePathLogicTest {
     private GetTempFilePathLogic getTempFilePathLogic;
 
     @Test
+    @Tag("TableTruncate")
     void test() {
 
         final String fileName = "abcde.csv";
