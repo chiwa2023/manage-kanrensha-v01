@@ -3,6 +3,10 @@ import { ref, type Ref } from 'vue';
 import router from '../../../router';
 import type NewComerInterface from '../../../dto/user/newComerDto';
 import NewComerDto from '../../../dto/user/newComerDto';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const sessionStorage = window["sessionStorage"];
 
@@ -10,12 +14,12 @@ const sessionStorage = window["sessionStorage"];
 const newComer: Ref<NewComerInterface> = ref(new NewComerDto());
 
 function onRegistMail() {
-    const date:Date = new Date();
+    const date: Date = new Date();
     date.setDate(date.getDate() + 1);
     newComer.value.limitDateTime = date;
 
     // メールアドレスを用いて新規登録用コードを発行
-    const url = "http://localhost:6080/add-user/publish-code";
+    const url = urlBack + "0/add-user/publish-code";
     const method = "POST";
     const body = JSON.stringify(newComer.value);
     const headers = {
@@ -32,7 +36,7 @@ function onRegistMail() {
                 sessionStorage.setItem("new-comer", JSON.stringify(resultDto));
                 sessionStorage.setItem("regist-code", resultDto.registCode);
                 alert("登録番号を発行できました");
-                router.push("/send-access-code");
+                router.push(RoutePathConstants.PAGE_SEND_ACCESS_CODE);
             } else {
                 alert("発行できませんでした");
             }

@@ -1,0 +1,94 @@
+package mitei.mitei.political.balancesheet.manage.kanrensha.dto.partner;
+
+import java.io.Serializable;
+
+import lombok.Value;
+
+/**
+ * 関連者個人・企業・政治団体共通Dto
+ */
+@Value
+public class PartnerCommonInfoDto implements Serializable { // NOPMD DataClass
+
+    /** Serialize id */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * コンストラクタ
+     *
+     * @param kanrenshaKbn  関連者区分
+     * @param partnerName   企業団体名称
+     * @param allAddress    全住所
+     * @param recognizedKey 団体代表者
+     * @param kanrenshaCode 関連者コード
+     */
+    public PartnerCommonInfoDto(final Long kanrenshaKbn, final String partnerName, final String allAddress,
+            final String recognizedKey, final String kanrenshaCode) {
+        super();
+        this.kanrenshaKbn = (short) Math.toIntExact(kanrenshaKbn); // 業務的に0,1,2,3のみ
+        this.partnerName = partnerName;
+        this.allAddress = allAddress;
+        this.recognizedKey = recognizedKey;
+        this.kanrenshaCode = kanrenshaCode;
+    }
+
+    /** 関連者区分 */
+    private Short kanrenshaKbn;
+
+    /**
+     * 関連者区分を取得する
+     *
+     * @return 関連者区分
+     */
+    public Short getKanrenshaKbn() {
+        return kanrenshaKbn;
+    }
+
+    /** 関連者名称 */
+    private String partnerName;
+
+    /**
+     * 関連者名称を取得する
+     *
+     * @return 関連者名称
+     */
+    public String getPartnerName() {
+        return partnerName;
+    }
+
+    /** 関連者全住所 */
+    private String allAddress;
+
+    /**
+     * 関連者全住所を取得する
+     *
+     * @return 関連者全住所
+     */
+    public String getAllAddress() {
+        return allAddress;
+    }
+
+    /** 認識キー */
+    private String recognizedKey;
+
+    /**
+     * 認識キーを取得する
+     *
+     * @return 認識キー
+     */
+    public String getRecognizedKey() {
+        return recognizedKey;
+    }
+
+    /** 関連者コード */
+    private String kanrenshaCode;
+
+    /**
+     * 関連者コードを取得する
+     *
+     * @return 関連者コード
+     */
+    public String getKanrenshaCode() {
+        return kanrenshaCode;
+    }
+}

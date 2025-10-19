@@ -12,10 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateDokujiCodeForCorpUtil {
 
-    
     /** ハイフンを除いた文字数 */
     private static final int CODE_LENGTH = 20;
-    
+
     /**
      * 処理を行う
      *
@@ -29,13 +28,13 @@ public class CreateDokujiCodeForCorpUtil {
         final String empty = "";
 
         String words = empty;
-        if(!Objects.isNull(dataSeiki)) {
+        if (!Objects.isNull(dataSeiki)) {
             words = dataSeiki;
         }
-        
+
         // 余分なハイフンを除去して20文字に
-        String seiki = Normalizer.normalize(words, Normalizer.Form.NFKC).replaceAll(hyphen, "");
-        
+        String seiki = Normalizer.normalize(words, Normalizer.Form.NFKC).replaceAll(hyphen, empty);
+
         int size = CODE_LENGTH - seiki.length();
         String randomText = RandomStringUtils.secure().nextAlphanumeric(size);
 
@@ -45,7 +44,7 @@ public class CreateDokujiCodeForCorpUtil {
         final int pos2 = 5;
         final int pos3 = 7;
         final int pos4 = 13;
-        
+
         builder.append(allText.substring(0, pos1)).append(hyphen) // 改行
                 .append(allText.substring(pos1, pos2)).append(hyphen) // 改行
                 .append(allText.substring(pos2, pos3)).append(hyphen) // 改行

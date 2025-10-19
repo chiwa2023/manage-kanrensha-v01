@@ -1,0 +1,4 @@
+DELETE FROM `wk_tbl_master_poli_org_judge`;
+ALTER TABLE `wk_tbl_master_poli_org_judge` auto_increment = 0;
+INSERT INTO `wk_tbl_master_poli_org_judge` (`wk_tbl_master_poli_org_judge_id`,`wk_tbl_master_poli_org_id`,`is_latest`,`is_affected`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (626,0,1,0,219,190,'代表者　太郎','2025-07-21 08:21:04',0,0,'','1948-07-28 23:00:00');
+INSERT INTO `wk_tbl_master_poli_org_judge` (`wk_tbl_master_poli_org_judge_id`,`wk_tbl_master_poli_org_id`,`is_latest`,`is_affected`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (627,0,1,0,253,231,'ユーザ','2025-07-21 08:21:04',0,0,'','1948-07-28 23:00:00');

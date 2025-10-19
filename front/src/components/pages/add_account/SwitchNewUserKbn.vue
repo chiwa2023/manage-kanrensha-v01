@@ -5,6 +5,10 @@ import NewComerDto from '../../../dto/user/newComerDto';
 import { ref, type Ref } from 'vue';
 import type LoginUserResultInterface from '../../../dto/login/loginUserResultDto';
 import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 // 入力用Dto
 const sessionStorage = window["sessionStorage"];
@@ -18,7 +22,7 @@ if (null !== dtoJson) {
 // 権限を選択してもらう
 function onRegistUser() {
     // パスワード、権限、ニックネームを登録
-    const url = "http://localhost:6080/add-user/user";
+    const url = urlBack + "/add-user/user";
     const method = "POST";
     const body = JSON.stringify(newComer.value);
     const headers = {
@@ -36,17 +40,17 @@ function onRegistUser() {
                 switch (newComer.value.role) {
                     case "manager":
                         // 管理者
-                        router.push("/input-manager");
+                        router.push(RoutePathConstants.PAGE_INPUT_MANAGER);
                         break;
                     case "comrade":
                         // APIユーザ
-                        router.push("/input-comrade");
+                        router.push(RoutePathConstants.PAGE_INPUT_COMRADE);
                         break;
                     case "partner_person":
                     case "partner_corp":
                     case "partner_poli_org":
                         // 関連者
-                        router.push("/input-kanrensha");
+                        router.push(RoutePathConstants.PAGE_INPUT_KANRENSHA);
                         break;
                     default:
                         alert("権限設定が登録できませんでした");
@@ -118,7 +122,7 @@ function changeVisiblePassword() {
     </div>
     <div class="right-area">
         <input type="radio" id="role" v-model="newComer.role" value="manager">このサイトで<span
-            class="explain">大量・一括関連者データ編集</span>を行いたい<span class="kbn">管理者</span><br>
+            class="explain">大量・一括関連者データ編集</span>を行いたい<span class="kbn">運営者</span><br>
         <input type="radio" id="role" v-model="newComer.role" value="comrade">自作ソフトウェアに<span
             class="explain">このサイトの関連者情報を取り込みたい</span><span class="kbn">APIユーザ</span><br>
         <input type="radio" id="role" v-model="newComer.role" value="partner_person"><span

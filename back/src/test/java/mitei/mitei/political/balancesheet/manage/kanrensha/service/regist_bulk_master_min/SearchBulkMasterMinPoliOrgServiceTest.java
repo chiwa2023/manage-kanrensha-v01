@@ -1,0 +1,75 @@
+package mitei.mitei.political.balancesheet.manage.kanrensha.service.regist_bulk_master_min;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.add_xml.SearchWkTbPagingCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.wktbl_min.SearchWkTblMinPoliOrgPagingResultDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.utils.CreateLeastUserForTestUtil;
+
+/**
+ * SearchBulkMasterMinPoliOrgService単体テスト
+ */
+@SpringJUnitConfig
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
+class SearchBulkMasterMinPoliOrgServiceTest {
+    // CHECKSTYLE:OFF
+
+    /** テスト対象 */
+    @Autowired
+    private SearchBulkMasterMinPoliOrgService searchBulkMasterMinPoliOrgService;
+
+    @Test
+    @Tag("TableTruncate")
+    @Sql("sample_wk_tbl_partner_poli_org_add_min.sql")
+    void test() {
+        SearchWkTbPagingCapsuleDto capsuleDto00 = this.createCapsuleDto();
+        SearchWkTblMinPoliOrgPagingResultDto resultDto00 = searchBulkMasterMinPoliOrgService.practice(capsuleDto00);
+        assertEquals(1, resultDto00.getAllCount());
+
+        SearchWkTbPagingCapsuleDto capsuleDto01 = this.createCapsuleDto();
+        capsuleDto01.setHasHistorry(true);
+        SearchWkTblMinPoliOrgPagingResultDto resultDto01 = searchBulkMasterMinPoliOrgService.practice(capsuleDto01);
+        assertEquals(2, resultDto01.getAllCount());
+
+        SearchWkTbPagingCapsuleDto capsuleDto02 = this.createCapsuleDto();
+        capsuleDto02.setHasHistorry(true);
+        capsuleDto02.setHasAffectNot(true);
+        SearchWkTblMinPoliOrgPagingResultDto resultDto02 =searchBulkMasterMinPoliOrgService.practice(capsuleDto02);
+        assertEquals(3, resultDto02.getAllCount());
+
+        SearchWkTbPagingCapsuleDto capsuleDto03 = this.createCapsuleDto();
+        capsuleDto03.setHasHistorry(true);
+        capsuleDto03.setHasAffectNot(true);
+        capsuleDto03.setHasFinished(true);
+        SearchWkTblMinPoliOrgPagingResultDto resultDto03 = searchBulkMasterMinPoliOrgService.practice(capsuleDto03);
+        assertEquals(4, resultDto03.getAllCount());
+
+        // 検索条件変更によるページ番号初期化
+        SearchWkTbPagingCapsuleDto capsuleDto04 = this.createCapsuleDto();
+        capsuleDto04.setPageNumber(100);
+        SearchWkTblMinPoliOrgPagingResultDto resultDto04 = searchBulkMasterMinPoliOrgService.practice(capsuleDto04);
+        assertEquals(0, resultDto04.getPageNumber());
+    }
+
+    private SearchWkTbPagingCapsuleDto createCapsuleDto() {
+        SearchWkTbPagingCapsuleDto capsuleDto = new SearchWkTbPagingCapsuleDto();
+        capsuleDto.setLimit(30);
+        capsuleDto.setPageNumber(0);
+        capsuleDto.setUserLeast(CreateLeastUserForTestUtil.practice());
+
+        return capsuleDto;
+    }
+}

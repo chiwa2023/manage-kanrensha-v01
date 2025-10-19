@@ -3,22 +3,53 @@ import { ref, type Ref } from 'vue';
 import type LoginUserCapsuleInterface from './dto/login/loginUserCapsuleDto';
 import LoginUserCapsuleDto from './dto/login/loginUserCapsuleDto';
 import type LoginUserResultInterface from './dto/login/loginUserResultDto';
-import UserPersonLeastDto from './dto/user/userPersonLeastDto';
 import router from './router';
+import RoutePathConstants from './routePathConstants';
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
 const sessionStorage = window["sessionStorage"];
 
-//const THIS_PAGE_ROLE: string = "ROLE_admin";
-//const userDto: Ref<UserPersonLeastDto> = ref(new UserPersonLeastDto());
-//userDto.value.listRoles.push(THIS_PAGE_ROLE);
-//userDto.value.listRoles.push("ROLE_manager");
-//userDto.value.listRoles.push("ROLE_comrade");
-//userDto.value.listRoles.push("ROLE_partner");
-//sessionStorage.setItem("userDto", JSON.stringify(userDto.value));
+// ログイン後にログイン画面に戻ってきたときはログアウト処理
+const userText: string | null = sessionStorage.getItem("userDto");
+if (userText !== null) {
+    const url = urlBack + "/logout";
+    const method = "POST";
+    const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    };
+    fetch(url, { method, headers })
+        .then(async (response) => {
+            const status = await response.status;
+            if (status !== 200) {
+                // TODO ログアウト失敗時の対処方法を修正する
+                alert("ログアウトに失敗しました" + status);
+            } else {
+                sessionStorage.removeItem("userDto")
+            }
+        })
+        .catch((error) => { alert(error); });
+}
+
+const loginErrorText: string | null = sessionStorage.getItem("loginError");
+if (loginErrorText !== null) {
+    alert(loginErrorText);
+    sessionStorage.removeItem("loginError");
+}
+
+// const THIS_PAGE_ROLE: string = "ROLE_admin";
+// const userDto: Ref<UserPersonLeastDto> = ref(new UserPersonLeastDto());
+// userDto.value.listRoles.push(THIS_PAGE_ROLE);
+// userDto.value.listRoles.push("ROLE_manager");
+// userDto.value.listRoles.push("ROLE_comrade");
+// userDto.value.listRoles.push("ROLE_partner");
+// sessionStorage.setItem("userDto", JSON.stringify(userDto.value));
 
 const user: Ref<LoginUserCapsuleInterface> = ref(new LoginUserCapsuleDto());
 function onLogin() {
-    const url = "http://localhost:6080/login";
+    const url = urlBack + "/login";
     const method = "POST";
     const body = JSON.stringify(user.value);
     const headers = {
@@ -34,19 +65,23 @@ function onLogin() {
                 sessionStorage.setItem("userDto", JSON.stringify(resultDto.userPersonLeastDto));
                 sessionStorage.setItem("jwtToken", JSON.stringify(resultDto.jwtTokenDto));
                 switch (resultDto.userPersonLeastDto.listRoles[0]) {
+                    case "ROLE_admin":
+                        // 管理者
+                        router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+                        break;
                     case "ROLE_manager":
                         // 管理者
-                        router.push("/menu-manager");
+                        router.push(RoutePathConstants.PAGE_MENU_MANAGER);
                         break;
                     case "ROLE_comrade":
                         // APIユーザ
-                        router.push("/menu-comrade");
+                        router.push(RoutePathConstants.PAGE_MENU_COMRADE);
                         break;
                     case "ROLE_partner_person":
                     case "ROLE_partner_corp":
                     case "ROLE_partner_poli_org":
                         // 関連者
-                        router.push("/menu-partner");
+                        router.push(RoutePathConstants.PAGE_MENU_PARTNER);
                         break;
                     default:
                         alert("権限設定が登録できませんでした");
@@ -102,7 +137,7 @@ function changeVisiblePassword() {
             </div>
             <button @click="onLogin">ログイン</button><br>
             <br>
-            <RouterLink to="/add-account">新規登録ですか?</RouterLink><br>
+            <RouterLink :to=RoutePathConstants.PAGE_ADD_ACCOUNT>新規登録ですか?</RouterLink><br>
             <br>
             <RouterLink to="/reset_password/propose">※パスワードを忘れたので再発行</RouterLink><br>
         </div>
@@ -110,15 +145,14 @@ function changeVisiblePassword() {
 
     <div style="clear: both;"></div>
 
-    <!--
     <hr>
-    <RouterLink to="/menu-manager">管理者メニュー</RouterLink><br>
-    <RouterLink to="/menu-comrade">APIユーザメニュー</RouterLink><br>
-    <RouterLink to="/menu-kanrensha">関連者メニュー</RouterLink><br>
-     -->
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_HISTORY>関連者履歴データダウンロード(公開文書記載水準)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_MIN>関連者マスタ最小ダウンロード(公開文書記載水準)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_HISTORY>関連者履歴データダウンロード差分(公開文書記載水準)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_MIN>関連者マスタ最小ダウンロード差分(公開文書記載水準)</RouterLink><br>
 
     <hr>
-    <RouterLink to="/component">コンポーネント作成台紙</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_COMPONENT>コンポーネント作成台紙</RouterLink><br>
 
 </template>
 <style scoped></style>

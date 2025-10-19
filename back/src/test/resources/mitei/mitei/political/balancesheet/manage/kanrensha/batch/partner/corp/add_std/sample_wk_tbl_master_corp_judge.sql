@@ -1,0 +1,4 @@
+DELETE FROM `wk_tbl_master_corp_judge`;
+ALTER TABLE `wk_tbl_master_corp_judge` auto_increment = 0;
+INSERT INTO `wk_tbl_master_corp_judge` (`wk_tbl_master_corp_judge_id`,`wk_tbl_master_corp_id`,`is_latest`,`is_affected`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (246,197,1,0,215,190,'ユーザ','2022-12-05 12:34:56',1,1,'ユーザ','1948-07-29 00:00:00');
+INSERT INTO `wk_tbl_master_corp_judge` (`wk_tbl_master_corp_judge_id`,`wk_tbl_master_corp_id`,`is_latest`,`is_affected`,`insert_user_id`,`insert_user_code`,`insert_user_name`,`insert_timestamp`,`delete_user_id`,`delete_user_code`,`delete_user_name`,`delete_timestamp`) VALUES (247,197,0,0,256,230,'ユーザ','2022-12-05 12:34:56',1,1,'ユーザ','1948-07-29 00:00:00');

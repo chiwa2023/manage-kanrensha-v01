@@ -23,13 +23,13 @@ public class SearchAddressFloorPostalService {
     /**
      * 処理を行う
      *
-     * @param lgCode 地方自治体コード
+     * @param lgCode     地方自治体コード
      * @param postalCode 郵便番号
      * @return 検索結果
      */
     @SuppressWarnings("unchecked")
     public PostalCodeBuildingResultDto practice(final String lgCode, final String postalCode) {
-        
+
         // 行政区住居を検索しないの場合、郵便番号で該当データを取得する
         String sql = "SELECT address_building AS value,address_building AS text" + " FROM address_rsdt_" + lgCode
                 + "  WHERE postal_code = '" + postalCode + "' AND address_building <> ''";

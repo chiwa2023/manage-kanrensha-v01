@@ -1,20 +1,20 @@
 ﻿<script setup lang="ts">
-import AdminInfo from './common/user_info/AdminInfo.vue';
-import ComradeInfo from './common/user_info/ComradeInfo.vue';
-import ManagerInfo from './common/user_info/ManagerInfo.vue';
-import PartnerInfo from './common/user_info/PartnerInfo.vue';
+import { ref, type Ref } from 'vue';
+import RiyoushaAdminEdit from './common/riyousha_admin_edit/RiyoushaAdminEdit.vue';
+import UserPersonLeastDto from './../dto/user/userPersonLeastDto';
+import type RiyoushaAdminInterface from '../dto/riyousha/riyoushaAdminDto';
+import RiyoushaAdminDto from '../dto/riyousha/riyoushaAdminDto';
+
+const userDto: Ref<UserPersonLeastDto> = ref(new UserPersonLeastDto());
+userDto.value.listRoles.push("ROLE_manager");
+const editDto: RiyoushaAdminInterface = new RiyoushaAdminDto();
+//editDto.isNotOrg = true;
 
 </script>
 <template>
-    <AdminInfo></AdminInfo>
-    <hr>
-    <ManagerInfo></ManagerInfo>
-    <hr>
-    <ComradeInfo></ComradeInfo>
-    <hr>
-    <PartnerInfo></PartnerInfo>
-    <hr>
     <h1>コンポーネントをページと関係なく作成するための台紙</h1>
+
+    <RiyoushaAdminEdit :edit-dto="editDto" :is-edit-new="true" :user-dto="userDto"></RiyoushaAdminEdit>
 
 </template>
 <style scoped></style>

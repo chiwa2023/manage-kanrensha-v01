@@ -2,142 +2,65 @@
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import InputAddressDto from '../../../dto/Input_address/inputAddressDto';
 import ViewInputAddress from '../input_address/ViewInputAddress.vue';
-import SearchCorpNo from '../search_corp_no/SearchCorpNo.vue';
-import type CorpNoInterface from '../../../dto/partner_corp/corpNoDto';
 import ViewInputPersonName from '../input_person_name/ViewInputPersonName.vue';
 import InputPersonNameInterface from '../../../dto/input_person_name/inputPersonNameDto';
 import InputPersonNameDto from '../../../dto/input_person_name/inputPersonNameDto';
 import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
+import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
+import InputShokugyou from '../input_shokugyou/InputShokugyou.vue';
+import type InputShokugyouInterface from '../../../dto/input_shokugyou/inputShokugyouDto';
+import InputShokugyouDto from '../../../dto/input_shokugyou/inputShokugyouDto';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import UserRoleConstants from '../../../dto/user/userRoleConstants';
+import InputAccess from '../input_access/InputAccess.vue';
+import type SaveKanrenshaPersonCapsuleInterface from '../../../dto/partner_person/saveKanrenshaPersonCapsuleDto';
+import SaveKanrenshaPersonCapsuleDto from '../../../dto/partner_person/saveKanrenshaPersonCapsuleDto';
 
-const props = defineProps<{ editDto: PersonNoInterface }>();
-const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => { return props.editDto });
+// props,emmits
+const props = defineProps<{ editDto: PersonNoInterface, isEditNew: boolean, isCombineUser: boolean, userDto: UserPersonLeastInterface }>();
+const inputPersonNoDto: ComputedRef<PersonNoInterface> = computed(() => props.editDto);
 
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
+// よく使う定数
 const BLANK: string = "";
-
-// 職業入力定義
-const yakushokuFree: string = "所属なし";
-const yakushokuGeneral: string = "一般職員";
-const yakushokuDirector: string = "役職者";
-const yakushokuNoJob: string = "定職なし";
-
-// 職業入力用
-const allShokugyou: ComputedRef<string> = computed(() => {
-    // return gyoushu.value + yakushoku.value; 
-
-    switch (inputPersonNoDto.value.yakushoku) {
-        // フリーランス
-        case yakushokuFree:
-            isShokugyoEdit.value = false;
-            if (BLANK === inputPersonNoDto.value.shokugyouUserWrite) {
-                return inputPersonNoDto.value.gyoushu + "業従事者";
-            } else {
-                return inputPersonNoDto.value.shokugyouUserWrite;
-            }
-        // 団体所属者
-        case yakushokuGeneral:
-            isShokugyoEdit.value = false;
-            if (BLANK === inputPersonNoDto.value.shokugyouUserWrite) {
-                return inputPersonNoDto.value.gyoushu + "業社員・職員";
-            } else {
-                return inputPersonNoDto.value.shokugyouUserWrite;
-            }
-
-        // 役職者
-        case yakushokuDirector:
-            isShokugyoEdit.value = true;
-            if (BLANK === corpNo.value) {
-                return inputPersonNoDto.value.gyoushu + "業役職者(社名記載拒否)";
-            } else {
-                return corpName.value + "(" + corpPrefecture.value + ")" + "役員";
-            }
-        // 定職なし
-        case yakushokuNoJob:
-            isShokugyoEdit.value = false;
-            return inputPersonNoDto.value.shokugyouUserWrite;
-        default:
-            isShokugyoEdit.value = true;
-            return "";
-    }
-});
-const isShokugyoEdit: Ref<boolean> = ref(true);
-
-/**
- * 法人情報受信
- */
-function recieveCorpNoInterface(sendDto: CorpNoInterface) {
-
-    corpNo.value = sendDto.corpNo;
-    corpPrefecture.value = sendDto.inputAddress.addressPostal;
-    corpName.value = sendDto.corpName;
-
-    //非表示
-    isCorpSearch.value = false;
-}
-
-/**
- * 関連者検索キャンセル
- */
-function recieveCancelCorpNo() {
-    //非表示
-    isCorpSearch.value = false;
-}
-
-// 検索リスト
-const listCorp: Ref<CorpNoInterface[]> = ref([]);
-
-
-function onCancel() {
-    alert("キャンセル");
-}
-function onSave() {
-    alert("保存");
-}
-
-// 企業団体検索
-const corpNo: Ref<string> = ref("");
-const corpPrefecture: Ref<string> = ref("");
-const corpName: Ref<string> = ref("");
-const isCorpSearch: Ref<boolean> = ref(false);
-
-/**
- * 法人検索表示
- */
-function onSearchCorpNo() {
-    isCorpSearch.value = true;
-}
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
 
 /**
  *住所編集受信
  */
 function recieveInputAddressInterface(sendDto: InputAddressDto) {
-    inputPersonNoDto.value.inputAddress = sendDto;
+    inputPersonNoDto.value.inputAddressDto = sendDto;
+    inputPersonNoDto.value.inputAddressDto.addressAll = sendDto.addressPostal;
 }
-
 
 function resetData() {
     // コードのリセット
-    inputPersonNoDto.value.personNo = BLANK;
+    inputPersonNoDto.value.personKanrenshaCode = BLANK;
     // 名前情報のリセット
-    inputPersonNoDto.value.inputName = new InputPersonNameDto();
+    inputPersonNoDto.value.inputPersonNameDto = new InputPersonNameDto();
     // 住所情報のリセット   
-    inputPersonNoDto.value.inputAddress = new InputAddressDto();
+    inputPersonNoDto.value.inputAddressDto = new InputAddressDto();
     // 職業情報のリセット   
-    inputPersonNoDto.value.gyoushu = BLANK;
-    inputPersonNoDto.value.yakushoku = BLANK;
-    inputPersonNoDto.value.shokugyouUserWrite = BLANK;
+    inputPersonNoDto.value.inputShokugyouDto = new InputShokugyouDto();
 
 }
 
 function recieveInputPersonNameInterface(sendDto: InputPersonNameInterface) {
 
-    inputPersonNoDto.value.inputName = sendDto;
+    inputPersonNoDto.value.inputPersonNameDto = sendDto;
 }
 
 /**
  * すでに同じ法人番号で登録されているかチェック
  */
 function onCheckAlreadyRegist() {
-    if (inputPersonNoDto.value.personNo !== BLANK) {
+    if (inputPersonNoDto.value.personKanrenshaCode !== BLANK) {
         alert("現在既存または新規と確定したデータを編集中です");
     } else {
         // 仮で時効の秒数基準で既存だったり新規だったり動作を変更する
@@ -145,10 +68,10 @@ function onCheckAlreadyRegist() {
         const date: Date = new Date();
         if (date.getSeconds() % 2 == 0) {
             alert("新規データでした");
-            inputPersonNoDto.value.personNo = "新規";
+            inputPersonNoDto.value.personKanrenshaCode = "新規";
         } else {
             alert("既存データが存在します。変更が必要な場合はデータ検索からやり直してください");
-            inputPersonNoDto.value.personNo = "12-tye12er";
+            inputPersonNoDto.value.personKanrenshaCode = "12-tye12er";
         }
     }
 }
@@ -181,7 +104,7 @@ function nationarityConfirm() {
     //     .catch((error) => { alert(error); });
 
     // 国籍確認mock実装
-    switch (parseInt(inputPersonNoDto.value.inputAddress.tel3) % 3) {
+    switch (parseInt(inputPersonNoDto.value.inputAddressDto.tel3) % 3) {
         case 0:
             alert("日本国籍保持");
             break;
@@ -197,10 +120,62 @@ function nationarityConfirm() {
         default:
             break;
     }
-
-
-
 }
+
+function onCancel() {
+    const role: string = props.userDto.listRoles[0];
+    if (UserRoleConstants.ROLE_ADMIN === role) {
+        router.push(RoutePathConstants.PAGE_MENU_ADMIN);
+        return;
+    }
+    if (UserRoleConstants.ROLE_MANAGER === role) {
+        router.push(RoutePathConstants.PAGE_MENU_MANAGER);
+        return;
+    }
+    router.push(RoutePathConstants.PAGE_MENU_PARTNER);
+}
+
+function onSave() {
+
+    // 編集か新規作成かでアクセス先を変えるだけ
+    let url = BLANK;
+    if (props.isEditNew) {
+        url = urlBack + "/add-user/partner-person";
+    } else {
+        url = urlBack + "/user-kanrensha/edit-person";
+    }
+
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<SaveKanrenshaPersonCapsuleInterface> = ref(new SaveKanrenshaPersonCapsuleDto());
+        inputPersonNoDto.value.isCombineUser = props.isCombineUser;
+        capsuleDto.value.userPersonLeastDto = props.userDto;
+        capsuleDto.value.kanrenshaPersonDto = inputPersonNoDto.value;
+        if (token !== BLANK) {
+            // 保存処理
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: FrameworkResultInterface = await response.json();
+                    alert(resultDto.message);
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
+}
+
+function recieveInputShokugyouInterface(sendDto: InputShokugyouInterface) {
+    inputPersonNoDto.value.inputShokugyouDto = sendDto;
+}
+
 </script>
 <template>
 
@@ -210,7 +185,7 @@ function nationarityConfirm() {
         姓名
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.inputName.allName" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputPersonNameDto.allName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -218,7 +193,7 @@ function nationarityConfirm() {
         住所
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.inputAddress.addressPostal" disabled="true" class="max-input">
+        <input type="text" v-model="inputPersonNoDto.inputAddressDto.addressAll" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -226,7 +201,7 @@ function nationarityConfirm() {
         職業
     </div>
     <div class="right-area">
-        <input type="text" disabled="true" v-model="allShokugyou" class="max-input">
+        <input type="text" disabled="true" v-model="inputPersonNoDto.inputShokugyouDto.allShokugyou" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -238,7 +213,7 @@ function nationarityConfirm() {
         (編集→)新規作成
     </div>
     <div class="right-area">
-        <button @click="resetData">入力情報のリセット</button>
+        <button @click="resetData" :disabled="!isEditNew">入力情報のリセット</button>
     </div>
     <div class="clear-both"></div>
 
@@ -246,87 +221,23 @@ function nationarityConfirm() {
         政治資金関連者コード(個人)
     </div>
     <div class="right-area">
-        <input type="text" v-model="inputPersonNoDto.personNo" disabled="true"><button class="left-space"
+        <input type="text" v-model="inputPersonNoDto.personKanrenshaCode" disabled="true"><button class="left-space"
             @click="onCheckAlreadyRegist">重複確認</button>
     </div>
     <div class="clear-both"></div>
 
     <!-- 姓名入力 -->
-    <ViewInputPersonName :edit-dto="inputPersonNoDto.inputName" :is-raise-edit-view="true"
+    <ViewInputPersonName :edit-dto="inputPersonNoDto.inputPersonNameDto" :is-raise-edit-view="true"
         @send-input-person-name-interface="recieveInputPersonNameInterface"></ViewInputPersonName>
 
     <!-- 住所入力 -->
-    <ViewInputAddress :edit-dto="inputPersonNoDto.inputAddress" :is-raise-edit-view="true"
+    <ViewInputAddress :edit-dto="inputPersonNoDto.inputAddressDto" :is-raise-edit-view="true"
         @send-input-address-interface="recieveInputAddressInterface"></ViewInputAddress>
 
-    <div class="left-area">
-        職業(1)
-    </div>
-    <div class="right-area">
-        <span>業種(日本標準産業分類)&nbsp;<select v-model="inputPersonNoDto.gyoushu">
-                <option value=""></option>
-                <option value="農林"> A.農業，林業</option>
-                <option value="水産">B.漁業</option>
-                <option value="鉱業">C.鉱業，採石業，砂利採取業</option>
-                <option value="建設">D.建設業</option>
-                <option value="製造">E.製造業</option>
-                <option value="インフラ">F.電気・ガス・熱供給・水道業</option>
-                <option value="情報通信">G.情報通信業</option>
-                <option value="運輸">H.運輸業，郵便業</option>
-                <option value="流通小売">I.卸売業，小売業</option>
-                <option value="金融">J.金融業，保険業</option>
-                <option value="不動産">K.不動産業，物品賃貸業</option>
-                <option value="学術研究">L.学術研究，専門・技術サービス業</option>
-                <option value="宿泊飲食">M.宿泊業，飲食サービス業</option>
-                <option value="娯楽">N.生活関連サービス業，娯楽業</option>
-                <option value="教育学習">O.教育，学習支援業</option>
-                <option value="医療・福祉">P.医療，福祉</option>
-                <option value="複合">Q.複合サービス事業</option>
-                <option value="その他サービス">R.サービス業（他に分類されないもの）</option>
-                <option value="公務">S.公務（他に分類されるものを除く）</option>
-                <option value="分類不能">T.分類不能の産業</option>
-            </select></span>
-        <span class="left-space">役職&nbsp;<select v-model="inputPersonNoDto.yakushoku">
-                <option :value="yakushokuFree">フリーランス(所属団体なし・法人登記なし)</option>
-                <option :value="yakushokuGeneral">課長級以下職員(パート含む)</option>
-                <option :value="yakushokuDirector">法人役員(一人企業の社長)</option>
-                <option :value="yakushokuNoJob">定職なし</option>
-            </select></span>
-    </div>
-    <div class="clear-both"></div>
-    <div class="left-area">
-        職業(2)
-    </div>
-    <div class="right-area">
-        <div v-if="yakushokuDirector !== inputPersonNoDto.yakushoku"><input type="text"
-                v-model="inputPersonNoDto.shokugyouUserWrite" :disabled="isShokugyoEdit" class="max-input"></div>
-        <div v-if="yakushokuDirector === inputPersonNoDto.yakushoku">
-            <input type="text" v-model="corpNo" class="code-input">
-            <input type="text" v-model="corpPrefecture" class="code-input left-space">
-            <input type="text" v-model="corpName" class="left-space text-input">
-            <button class="left-space" @click="onSearchCorpNo">企業／団体検索</button>
-        </div>
-    </div>
-    <div class="clear-both"></div>
-
+    <!-- 職業入力 -->
+    <InputShokugyou :isfooter="false" :edit-dto="inputPersonNoDto.inputShokugyouDto"
+        @send-input-shokugyou-interface="recieveInputShokugyouInterface"></InputShokugyou>
     <hr>
-
-    <h3>連絡先(情報確認のため使用、非公開)</h3>
-    <div class="left-area">
-        メールアドレス
-    </div>
-    <div class="right-area">
-        <input type="email">
-    </div>
-    <div class="clear-both"></div>
-
-    <div class="left-area">
-        SNSアカウント
-    </div>
-    <div class="right-area">
-        <input type="email">
-    </div>
-    <div class="clear-both"></div>
 
     <h3>編集内容(違反判定情報)</h3>
 
@@ -334,8 +245,23 @@ function nationarityConfirm() {
         国籍
     </div>
     <div class="right-area">
-        <input type="checkbox" v-model="isGaikokuHoujin" disabled="true">外国人である<span class="left-space"><button
+        <input type="checkbox" v-model="inputPersonNoDto.isForeign">外国人である<span class="left-space"><button
                 @click="nationarityConfirm">確認する</button></span>
+    </div>
+    <div class="clear-both"></div>
+
+    <!-- 連絡先入力 -->
+    <InputAccess :edit-dto="editDto.inputAccessDto"></InputAccess>
+
+    <hr>
+
+    <h3>変更履歴</h3>
+
+    <div class="left-area">
+        履歴表示
+    </div>
+    <div class="right-area">
+        <button>展開</button>
     </div>
     <div class="clear-both"></div>
 
@@ -345,16 +271,6 @@ function nationarityConfirm() {
         <button @click="onSave" class="footer-button left-space">送信</button>
     </div>
 
-    <div v-if="isCorpSearch" class="overBackground"></div>
-    <div v-if="isCorpSearch">
-        <div class="overComponent">
-            <SearchCorpNo :list="listCorp" :is-footer="true" @send-corp-no-interface="recieveCorpNoInterface"
-                @send-canceel-corp-no="recieveCancelCorpNo"></SearchCorpNo>
-        </div>
-    </div>
-
 </template>
-
-
 
 <style scoped></style>

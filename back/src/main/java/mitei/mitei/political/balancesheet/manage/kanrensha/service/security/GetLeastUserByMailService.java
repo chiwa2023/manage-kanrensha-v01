@@ -34,6 +34,7 @@ public class GetLeastUserByMailService {
 
         UserPersonLeastDto personDto = new UserPersonLeastDto();
 
+        // ユーザ呼び出し
         Optional<UserPersonEntity> optional = userPersonRepository.findLatestByMail(email);
         if (!optional.isEmpty()) {
             UserPersonEntity entity = optional.get();
@@ -42,6 +43,7 @@ public class GetLeastUserByMailService {
             personDto.setUserPersonName(entity.getUserPersonName());
         }
 
+        // 権限呼び出し
         List<String> listAuh = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         personDto.setListRoles(listAuh);

@@ -9,17 +9,35 @@ import CheckRegistCorpResultInterface from '../../../dto/partner_corp/checkRegis
 import mockCheckAlreadyRegist from './mock/mockCheckAlreadyRegist';
 import HoujinSbtsConstants from '../../../dto/partner_corp/houjinSbtsConstants';
 import SearchPersonNo from '../search_person_no/SearchPersonNo.vue';
-import type PersonNoInterface from '../../../dto/partner_person/personNoDto';
+import type UserPersonLeastInterface from '../../../dto/user/userPersonLeastDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type FrameworkResultInterface from '../../../dto/frameworkResultDto';
+import router from '../../../router';
+import RoutePathConstants from '../../../routePathConstants';
+import InputAccess from '../input_access/InputAccess.vue';
+import InputKanrenshaPersonLeastDto from '../../../dto/input_person_name/inputKanrenshaPersonLeastDto';
+import type SaveKanrenshaCorpCapsuleInterface from '../../../dto/partner_corp/saveKanrenshaCorpCapsuleDto';
+import SaveKanrenshaCorpCapsuleDto from '../../../dto/partner_corp/saveKanrenshaCorpCapsuleDto';
+import type MasterPersonInterface from '../../../entity/masterPersonEntity';
 
-const props = defineProps<{ editDto: CorpNoInterface }>();
+// props,emit
+const props = defineProps<{ editDto: CorpNoInterface, userDto: UserPersonLeastInterface, isEditNew: boolean, isCombineUser: boolean }>();
 const editCorpDto: ComputedRef<CorpNoInterface> = computed(() => { return props.editDto });
+
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
+
+// よく使う定数
+const BLANK: string = "";
+// const SERVER_STATUS_OK: number = 200;
+// const SERVER_STATUS_ERROR: number = 400;
 
 // 編集用Dto
 const addressDtoStored: Ref<InputAddressDto> = ref(new InputAddressDto());
 
 const allCorpName: ComputedRef<string> = computed(() => {
-    if (editCorpDto.value.isShiten) { return editCorpDto.value.corpName + "　" + branchName.value; }
-     else { return editCorpDto.value.corpName; }
+    if (editCorpDto.value.isShiten) { return editCorpDto.value.inputOrgNameDto.orgName + "　" + branchName.value; }
+    else { return editCorpDto.value.inputOrgNameDto.orgName; }
 });
 
 // 検索リスト
@@ -27,10 +45,10 @@ const listCorp: Ref<CorpNoInterface[]> = ref([]);
 
 // 法人検索
 const isCorpSearch: Ref<boolean> = ref(false);
-const corpName: Ref<string> = ref("");
-const corpNameKana: Ref<string> = ref("");
-const branchName: Ref<string> = ref("");
-const branchNamekana: Ref<string> = ref("");
+const corpName: Ref<string> = ref(BLANK);
+const corpNameKana: Ref<string> = ref(BLANK);
+const branchName: Ref<string> = ref(BLANK);
+const branchNamekana: Ref<string> = ref(BLANK);
 const isGaikokuHoujin: ComputedRef<boolean> = computed(() => HoujinSbtsConstants.GAIKOKU === editCorpDto.value.houjinSbts);
 
 function onHoujinSearch() {
@@ -44,30 +62,29 @@ function recieveCorpNoInterface(sendDto: HoujinNoInterface) {
 
     // 法人番号から取得情報の設定
     editCorpDto.value.houjinNo = sendDto.houjinNo;
-    editCorpDto.value.corpName = sendDto.houjinName;
+    editCorpDto.value.inputOrgNameDto.orgName = sendDto.houjinName;
     editCorpDto.value.houjinSbts = sendDto.houjinSbts;
     corpName.value = sendDto.houjinName;
     corpNameKana.value = sendDto.houjinNameKana;
     const postalCode: string = sendDto.postalcode;
     // 郵便番号が正常7桁の場合は分割
     if (7 === postalCode.length) {
-        editCorpDto.value.inputAddress.postalcode1 = postalCode.substring(0, 3);
-        editCorpDto.value.inputAddress.postalcode2 = postalCode.substring(3, 7);
+        editCorpDto.value.inputAddressDto.postalcode1 = postalCode.substring(0, 3);
+        editCorpDto.value.inputAddressDto.postalcode2 = postalCode.substring(3, 7);
     } else {
-        editCorpDto.value.inputAddress.postalcode1 = postalCode;
+        editCorpDto.value.inputAddressDto.postalcode1 = postalCode;
     }
-    editCorpDto.value.inputAddress.addressPostal = sendDto.addressPrefecture + sendDto.addressCity;
-    editCorpDto.value.inputAddress.addressBlock = sendDto.addressBlock;
-    editCorpDto.value.inputAddress.addressBuilding = "";
+    editCorpDto.value.inputAddressDto.addressPostal = sendDto.addressPrefecture + sendDto.addressCity;
+    editCorpDto.value.inputAddressDto.addressBlock = sendDto.addressBlock;
+    editCorpDto.value.inputAddressDto.addressBuilding = BLANK;
     // 支店フラグ悪用防止用に検索時情報をストア
-    addressDtoStored.value = structuredClone(toRaw(editCorpDto.value.inputAddress));
+    addressDtoStored.value = structuredClone(toRaw(editCorpDto.value.inputAddressDto));
 
     // 法人番号DBに代表者情報はないので初期化
-    editCorpDto.value.orgDelegateCode = "";
-    editCorpDto.value.orgDelegate = "";
+    editCorpDto.value.orgDelegateLeastDto = new InputKanrenshaPersonLeastDto();
 
     // コード確認を別ボタンでする
-    editCorpDto.value.corpNo = "";
+    editCorpDto.value.corpKanrenshaCode = BLANK;
 
     //非表示
     isCorpSearch.value = false;
@@ -85,8 +102,8 @@ function recieveCancelCorpNo() {
  * すでに同じ法人番号で登録されているかチェック
  */
 function onCheckAlreadyRegist() {
-    const resultDto: CheckRegistCorpResultInterface = mockCheckAlreadyRegist(editCorpDto.value.corpNo, editCorpDto.value.houjinNo);
-    editCorpDto.value.corpNo = resultDto.savedCorpNo;
+    const resultDto: CheckRegistCorpResultInterface = mockCheckAlreadyRegist(editCorpDto.value.corpKanrenshaCode, editCorpDto.value.houjinNo);
+    editCorpDto.value.corpKanrenshaCode = resultDto.savedCorpNo;
     alert(resultDto.message);
     listCorp.value.splice(0);
     for (const dto of resultDto.listCorptDto) {
@@ -114,19 +131,64 @@ function recieveCancelPersonNo() {
 /**
  * 選択された関連者個人を受信を表示する
  */
-function recievePersonNoInterface(sendDto: PersonNoInterface) {
-    editCorpDto.value.orgDelegate = sendDto.nameAll;
-    editCorpDto.value.orgDelegateCode = sendDto.personNo;
+function recievePersonNoInterface(sendDto: MasterPersonInterface) {
+    editCorpDto.value.orgDelegateLeastDto.personKanrenshaCode = sendDto.personKanrenshaCode;
+    editCorpDto.value.orgDelegateLeastDto.personName = sendDto.partnerName;
 
     isPersonSearch.value = false;
 }
 
+/**
+ *住所編集受信
+ */
+function recieveInputAddressInterface(sendDto: InputAddressDto) {
+    editCorpDto.value.inputAddressDto = sendDto;
+    editCorpDto.value.inputAddressDto.addressAll = sendDto.addressPostal;
+}
+
+function resetData() {
+    // コードのリセット
+    //editCorpDto.value.corpNo = BLANK;
+}
 
 function onCancel() {
-    alert("キャンセル");
+    router.push(RoutePathConstants.PAGE_LOGIN);
 }
 function onSave() {
-    alert("保存");
+
+    // 編集か新規作成かでアクセス先を変えるだけ
+    let url = BLANK;
+    if (props.isEditNew) {
+        url = urlBack + "/add-user/partner-corp";
+    } else {
+        url = urlBack + "/user-kanrensha/edit-corp";
+    }
+
+    getAuthorizedPromiseArea().then(token => {
+        const capsuleDto: Ref<SaveKanrenshaCorpCapsuleInterface> = ref(new SaveKanrenshaCorpCapsuleDto());
+        editCorpDto.value.isCombineUser = props.isCombineUser;
+        capsuleDto.value.userPersonLeastDto = props.userDto;
+        capsuleDto.value.kanrenshaCorpDto = editCorpDto.value;
+        if (token !== BLANK) {
+            // 保存処理
+            const method = "POST";
+            const body = JSON.stringify(capsuleDto.value);
+            const headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-AUTH-TOKEN': 'Bearer ' + token
+            };
+            fetch(url, { method, headers, body })
+                .then(async (response) => {
+                    // 結果を受け取ってメッセージ表示
+                    const resultDto: FrameworkResultInterface = await response.json();
+                    alert(resultDto.message);
+                })
+                .catch((e) => { alert(e); });
+        } else {
+            alert("エラーのつもり");
+        }
+    });
 }
 </script>
 <template>
@@ -143,7 +205,7 @@ function onSave() {
         住所
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.inputAddress.addressPostal" disabled="true" class="max-input">
+        <input type="text" v-model="editCorpDto.inputAddressDto.addressAll" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -151,7 +213,7 @@ function onSave() {
         代表者
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.orgDelegate" disabled="true" class="max-input">
+        <input type="text" v-model="editCorpDto.orgDelegateLeastDto.personName" disabled="true" class="max-input">
     </div>
     <div class="clear-both"></div>
 
@@ -160,10 +222,18 @@ function onSave() {
     <h3>編集内容(連絡先)</h3>
 
     <div class="left-area">
+        (編集→)新規作成
+    </div>
+    <div class="right-area">
+        <button @click="resetData" :disabled="!isEditNew">入力情報のリセット</button>
+    </div>
+    <div class="clear-both"></div>
+
+    <div class="left-area">
         政治資金関連者コード(企業団体)
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.corpNo" disabled="true"><button class="left-space"
+        <input type="text" v-model="editCorpDto.corpKanrenshaCode" disabled="true"><button class="left-space"
             @click="onCheckAlreadyRegist">重複確認</button>
     </div>
     <div class="clear-both"></div>
@@ -172,7 +242,7 @@ function onSave() {
         法人番号
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.houjinNo" class="text-input" disabled="true"><button class="left-space"
+        <input type="text" v-model="editCorpDto.houjinNo" class="name-input" disabled="true"><button class="left-space"
             @click="onHoujinSearch">検索</button>
     </div>
     <div class="clear-both"></div>
@@ -186,12 +256,12 @@ function onSave() {
     <div class="clear-both"></div>
 
     <div class="left-area">
-        商号名称カナ
+        商号名称かな
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.corpNameKana" class="text-input" disabled="true">
+        <input type="text" v-model="editCorpDto.inputOrgNameDto.orgNameKana" class="name-input">
         <span class="left-space" v-if="editCorpDto.isShiten">支店：<input type="text" v-model="branchNamekana"
-                class="text-input" :disabled="!editCorpDto.isShiten"></span>
+                class="name-input" :disabled="!editCorpDto.isShiten"></span>
     </div>
     <div class="clear-both"></div>
 
@@ -199,22 +269,24 @@ function onSave() {
         商号名称
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.corpName" class="text-input" disabled="true">
+        <input type="text" v-model="editCorpDto.inputOrgNameDto.orgName" class="name-input">
         <span class="left-space" v-if="editCorpDto.isShiten">支店：<input type="text" v-model="branchName"
-                class="text-input" :disabled="!editCorpDto.isShiten"></span>
+                class="name-input" :disabled="!editCorpDto.isShiten"></span>
     </div>
     <div class="clear-both"></div>
     <br>
-    <ViewInputAddress :edit-dto="editCorpDto.inputAddress" :is-raise-edit-view="editCorpDto.isShiten">
+    <ViewInputAddress :edit-dto="editCorpDto.inputAddressDto" :is-raise-edit-view="true"
+        @send-input-address-interface="recieveInputAddressInterface">
     </ViewInputAddress>
     <br>
     <div class="left-area">
         団体代表者
     </div>
     <div class="right-area">
-        <input type="text" v-model="editCorpDto.orgDelegateCode" class="code-input" disabled="true">
-        <input type="text" v-model="editCorpDto.orgDelegate" class="text-input left-space" disabled="true"><button
-            class="left-space" @click="onPersonSearch">検索</button>
+        <input type="text" v-model="editCorpDto.orgDelegateLeastDto.personKanrenshaCode" class="code-input"
+            disabled="true">
+        <input type="text" v-model="editCorpDto.orgDelegateLeastDto.personName" class="name-input left-space"
+            disabled="true"><button class="left-space" @click="onPersonSearch">検索</button>
     </div>
     <div class="clear-both"></div>
     <hr>
@@ -229,7 +301,18 @@ function onSave() {
     </div>
     <div class="clear-both"></div>
 
+    <!-- 連絡先入力 -->
+    <InputAccess :edit-dto="editCorpDto.inputAccessDto"></InputAccess>
 
+    <hr>
+    <h3>変更履歴</h3>
+    <div class="left-area">
+        履歴表示
+    </div>
+    <div class="right-area">
+        <button>展開</button>
+    </div>
+    <div class="clear-both"></div>
 
     <div class="footer">
         <button @click="onCancel" class="footer-button">キャンセル</button>
@@ -238,6 +321,7 @@ function onSave() {
 
     <hr>
 
+    <!-- 法人番号検索 -->
     <div v-if="isCorpSearch" class="overBackground"></div>
     <div v-if="isCorpSearch">
         <div class="overComponent">
@@ -246,6 +330,7 @@ function onSave() {
         </div>
     </div>
 
+    <!-- 関連者個人検索 -->
     <div v-if="isPersonSearch" class="overBackground"></div>
     <div v-if="isPersonSearch">
         <div class="overComponent">

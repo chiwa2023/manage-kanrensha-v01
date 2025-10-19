@@ -1,69 +1,67 @@
 ﻿<script setup lang="ts">
+import { ref, type Ref } from 'vue';
 import ManagerInfo from './components/common/user_info/ManagerInfo.vue';
+import type UserPersonLeastInterface from './dto/user/userPersonLeastDto';
+import UserPersonLeastDto from './dto/user/userPersonLeastDto';
+import RoutePathConstants from './routePathConstants';
 
-
-// function getLoginInfo() {
-
-//     const jwtText: string | null = sessionStorage.getItem("jwtToken");
-//     let jwtToken: JwtTokenInterface = new JwtTokenDto();
-//     if (jwtText === null) {
-//         alert("jwtを取得できませんでした");
-//         return;
-//     } else {
-//         jwtToken = JSON.parse(jwtText);
-//     }
-//     alert("アクセストークン" + jwtToken.accessToken);
-//     alert("アクセストークン有効期限" + jwtToken.expiresAt);
-
-
-//     const dto = sessionStorage.getItem("userDto");
-//     const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
-//     if (dto !== null) {
-//         userLeastDto.value = JSON.parse(dto);
-//     }
-//     alert("ユーザ名" + userLeastDto.value.userPersonName);
-// }
-
-
-// function doAnything() {
-
-//     getAuthorizedPromiseArea().then(token => {
-//         if (token !== "") {
-//             const conditionDto: PostalCodeCapsuleInterface = new PostalCodeCapsuleDto();
-//             conditionDto.selectedPostal = 33;
-//             conditionDto.isGyouseikuData = true;
-
-//             const url = "http://localhost:6080/postal-search/block";
-//             const method = "POST";
-//             const body = JSON.stringify(conditionDto);
-//             const headers = {
-//                 'Accept': 'application/json',
-//                 'Content-Type': 'application/json',
-//                 'X-AUTH-TOKEN': 'Bearer ' + token
-//             };
-//             fetch(url, { method, headers, body })
-//                 .then(async (response) => {
-//                     const resultDto: PostalCodeBlockResultInterface = await response.json();
-
-//                     alert(resultDto.listOptions[0].text);
-//                 })
-//                 .catch((e) => { alert(e); });
-//         } else {
-//             alert("エラーのつもり");
-//         }
-//     });
-
-// }
+// ユーザメニューで取得したユーザを保持
+const userLeastDto: Ref<UserPersonLeastInterface> = ref(new UserPersonLeastDto());
+function recieveUser(user: UserPersonLeastInterface) {
+    userLeastDto.value = user;
+}
 
 </script>
 <template>
     <!-- ユーザメニュー兼チェック -->
-    <ManagerInfo></ManagerInfo>
+    <ManagerInfo @send-user="recieveUser"></ManagerInfo>
     <hr>
 
     <h2>管理者用メニュー</h2>
 
-    <RouterLink to="/partner_manage">関連者管理</RouterLink><br>
+    <h3>関連者メニュー</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_PARTNER_MANAGE>関連者管理</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_WORKS_APPROVAL>作業内容承認</RouterLink><br>
+
+    <hr>
+
+    <h3>郵便番号メニュー</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_POSTAL_BUILDING>フロア郵便番号住所追加</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_POSTAL_EDIT>郵便番号編集</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_POSTAL_SABUN>郵便番号差分更新</RouterLink><br>
+    <hr>
+
+    <h3>アドレス・ベース・レジストリ</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_ADDRESS_REGI_EDIT>アドレス・ベース・レジストリ編集</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_ADDRESS_REGI_SABUN>アドレス・ベース・レジストリ差分更新</RouterLink><br>
+    <hr>
+
+    <h3>関連者履歴一括登録</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_HISTORY_CORP>企業・団体履歴登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_HISTORY_PERSON>個人履歴登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_HISTORY_POLI_ORG>政治団体履歴登録</RouterLink><br>
+
+    <h3>関連者マスタ一括登録</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_CORP>企業・団体マスタ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_PERSON>個人マスタ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_BULK_MASTER_POLI_ORG>政治団体マスタ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_COMBINE_CORP>個人－企業／団体紐づけ登録</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_REGI_COMBINE_POLI_ORG>個人－政治団体紐づけ登録</RouterLink><br>
+
+    <hr>
+    <h3>関連者XMLから一括登録</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_ADD_XML>関連者XMLから一括登録</RouterLink><br>
+
+    <hr>
+    <h3>関連者マスタ標準データダウンロード</h3>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_MASTER_STD>関連者マスタ標準データダウンロード</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_DOWNLOAD_SABUN_MASTER_STD>差分関連者マスタ標準データダウンロード</RouterLink><br>
+
+    <hr>
+    <RouterLink :to=RoutePathConstants.PAGE_EDIT_MANAGER>所属組織編集(登録)</RouterLink><br>
+    <RouterLink :to=RoutePathConstants.PAGE_ACCEPT_MANAGER_PERSON>個人と組織紐づけ承認</RouterLink><br>
+
+    <hr>
     <RouterLink to="/">ログインページ</RouterLink><br>
 
 </template>

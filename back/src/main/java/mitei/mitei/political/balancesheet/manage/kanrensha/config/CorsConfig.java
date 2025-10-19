@@ -1,6 +1,7 @@
 package mitei.mitei.political.balancesheet.manage.kanrensha.config;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +16,12 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class CorsConfig {
 
-    /** サイトをまたいでアクセスを許可するURL(自front側) */
-    private static final String ALLOW_URL_CREATE = "http://localhost:5173";
+    /** サイトをまたいでアクセスを許可するURL(自front側・開発用) */
+    public static final String ALLOW_URL_KANRENSHA = "http://localhost:5273";
+    /** ポート違い */
+    public static final String ALLOW_URL_PORT = "http://localhost:5274";
+    /** Dockerドメイン */
+    public static final String ALLOW_URL_DOCKER = "http://host.docker.internal:5274";
 
     /**
      * クロスサイトアクセスフィルタ
@@ -25,8 +30,14 @@ public class CorsConfig {
      */
     @Bean
     protected CorsFilter corsFilter() {
+
+        List<String> listAllow = new ArrayList<>();
+        listAllow.add(ALLOW_URL_KANRENSHA);
+        listAllow.add(ALLOW_URL_PORT);
+        listAllow.add(ALLOW_URL_DOCKER);
+
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList(ALLOW_URL_CREATE));
+        config.setAllowedOrigins(listAllow);
         config.setAllowCredentials(true);
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");

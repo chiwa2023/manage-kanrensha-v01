@@ -10,7 +10,7 @@ const emits = defineEmits(["sendInputAddressInterface", "sendCanceelinputAddress
 /** 入力用Dto */
 const inputAddressDto: ComputedRef<InputAddressDto> = computed(() => { return props.editDto });
 const isInput: Ref<boolean> = ref(false);
-const backupAddressDto: Ref<InputAddressDto>= ref(new InputAddressDto());
+const backupAddressDto: Ref<InputAddressDto> = ref(new InputAddressDto());
 
 /**
  * 関連者検索コンポーネント表示
@@ -24,19 +24,18 @@ function onInputAddress() {
  * 関連者検索キャンセル
  */
 function recieveCancelInputAddress() {
-
-    inputAddressDto.value.addressAll = backupAddressDto.value.tel1;
-    inputAddressDto.value.orginAddressAll = backupAddressDto.value.tel1;
+    inputAddressDto.value.addressAll = backupAddressDto.value.addressAll;
+    inputAddressDto.value.orginAddressAll = backupAddressDto.value.orginAddressAll;
 
     inputAddressDto.value.postalcode1 = backupAddressDto.value.postalcode1;
     inputAddressDto.value.postalcode2 = backupAddressDto.value.postalcode2;
 
     inputAddressDto.value.addressPostal = backupAddressDto.value.addressPostal;
-    inputAddressDto.value.isEditAddressPostal = backupAddressDto.value.isEditAddressPostal;
+    inputAddressDto.value.isPostalEdit = backupAddressDto.value.isPostalEdit;
     inputAddressDto.value.addressBlock = backupAddressDto.value.addressBlock;
-    inputAddressDto.value.isEditAddressBlock = backupAddressDto.value.isEditAddressBlock;
+    inputAddressDto.value.isBlockEdit = backupAddressDto.value.isBlockEdit;
     inputAddressDto.value.addressBuilding = backupAddressDto.value.addressBuilding;
-    inputAddressDto.value.isEditAddressBuilding = backupAddressDto.value.isEditAddressBuilding;
+    inputAddressDto.value.isBuildingEdit = backupAddressDto.value.isBuildingEdit;
 
     inputAddressDto.value.lgCode = backupAddressDto.value.lgCode;
     inputAddressDto.value.machiazaId = backupAddressDto.value.machiazaId;
@@ -46,7 +45,7 @@ function recieveCancelInputAddress() {
     inputAddressDto.value.tel1 = backupAddressDto.value.tel1;
     inputAddressDto.value.tel2 = backupAddressDto.value.tel2;
     inputAddressDto.value.tel3 = backupAddressDto.value.tel3;
-    
+
     //非表示
     isInput.value = false;
 }
@@ -57,18 +56,18 @@ function recieveCancelInputAddress() {
  */
 function recieveInputAddressInterface(sendDto: InputAddressDto) {
 
-    inputAddressDto.value.addressAll = sendDto.tel1;
-    inputAddressDto.value.orginAddressAll = sendDto.tel1;
+    inputAddressDto.value.addressAll = sendDto.addressAll;
+    inputAddressDto.value.orginAddressAll = sendDto.orginAddressAll;
 
     inputAddressDto.value.postalcode1 = sendDto.postalcode1;
     inputAddressDto.value.postalcode2 = sendDto.postalcode2;
 
     inputAddressDto.value.addressPostal = sendDto.addressPostal;
-    inputAddressDto.value.isEditAddressPostal = sendDto.isEditAddressPostal;
+    inputAddressDto.value.isPostalEdit = sendDto.isPostalEdit;
     inputAddressDto.value.addressBlock = sendDto.addressBlock;
-    inputAddressDto.value.isEditAddressBlock = sendDto.isEditAddressBlock;
+    inputAddressDto.value.isBlockEdit = sendDto.isBlockEdit;
     inputAddressDto.value.addressBuilding = sendDto.addressBuilding;
-    inputAddressDto.value.isEditAddressBuilding = sendDto.isEditAddressBuilding;
+    inputAddressDto.value.isBuildingEdit = sendDto.isBuildingEdit;
 
     inputAddressDto.value.lgCode = sendDto.lgCode;
     inputAddressDto.value.machiazaId = sendDto.machiazaId;
@@ -78,6 +77,8 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
     inputAddressDto.value.tel1 = sendDto.tel1;
     inputAddressDto.value.tel2 = sendDto.tel2;
     inputAddressDto.value.tel3 = sendDto.tel3;
+
+    emits("sendInputAddressInterface", inputAddressDto.value);
 
     //非表示
     isInput.value = false;
@@ -132,7 +133,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
             disabled="true">
     </div>
     <div class="clear-both"></div>
-
+    <!-- 電話番号は連絡先に移行
     <div class="left-area">
         電話番号
     </div>
@@ -142,6 +143,7 @@ function recieveInputAddressInterface(sendDto: InputAddressDto) {
         <input v-model="inputAddressDto.tel3" type="text" class="code-input" disabled="true">
     </div>
     <div class="clear-both"></div>
+    -->
 
     <div v-if="isInput" class="overBackground"></div>
     <div v-if="isInput">

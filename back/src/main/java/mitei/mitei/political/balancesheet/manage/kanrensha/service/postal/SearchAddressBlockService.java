@@ -36,7 +36,7 @@ public class SearchAddressBlockService {
     /**
      * 処理を行う
      *
-     * @param tableid テーブルId
+     * @param tableid         テーブルId
      * @param isGyouseikuData 自治体住居検索
      * @return 検索結果
      */
@@ -64,7 +64,7 @@ public class SearchAddressBlockService {
             resultDto.setListOptions(list);
 
             return resultDto;
-            
+
         } else {
 
             // 自治体住居を検索しない場合不規則に郵便番号でアクセスして取得

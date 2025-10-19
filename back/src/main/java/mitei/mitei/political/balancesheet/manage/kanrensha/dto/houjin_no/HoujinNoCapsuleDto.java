@@ -2,12 +2,12 @@ package mitei.mitei.political.balancesheet.manage.kanrensha.dto.houjin_no;
 
 import java.io.Serializable;
 
-import mitei.mitei.political.balancesheet.manage.kanrensha.dto.AbstractPagingLongCapsuleDto;
+import mitei.mitei.political.balancesheet.manage.kanrensha.dto.AbstractPagingLongDto;
 
 /**
  * 法人番号検索条件格納Dto
  */
-public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements Serializable { // NOPMD DataClass
+public class HoujinNoCapsuleDto extends AbstractPagingLongDto implements Serializable { // NOPMD DataClass
 
     /** Serialize id */
     private static final long serialVersionUID = 1L;
@@ -121,6 +121,7 @@ public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements 
      *
      * @return 抽出件数
      */
+    @Override
     public Integer getLimit() {
         return limit;
     }
@@ -130,6 +131,7 @@ public class HoujinNoCapsuleDto extends AbstractPagingLongCapsuleDto implements 
      *
      * @param limit 抽出件数
      */
+    @Override
     public void setLimit(final Integer limit) {
         this.limit = limit;
     }

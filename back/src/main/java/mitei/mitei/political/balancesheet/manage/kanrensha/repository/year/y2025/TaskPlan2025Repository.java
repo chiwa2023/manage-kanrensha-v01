@@ -1,0 +1,91 @@
+package mitei.mitei.political.balancesheet.manage.kanrensha.repository.year.y2025;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+
+import jakarta.persistence.LockModeType;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.TaskPlanBaseEntity;
+import mitei.mitei.political.balancesheet.manage.kanrensha.entity.year.y2025.TaskPlan2025Entity;
+
+/**
+ * task_plan_2025接続用Repository
+ */
+public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity, Integer> {
+
+    /**
+     * 最大コードを取得する
+     *
+     * @return 最大コードをもつEntity
+     */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<TaskPlan2025Entity> findFirstByOrderByTaskPlanCodeDesc();
+
+    /**
+     * 更新日時降順で同一コードを取得する(履歴)
+     *
+     * @param taskPlanCode タスク計画コード
+     * @return タスク計画リスト
+     */
+    List<TaskPlan2025Entity> findByTaskPlanCodeOrderByInsertTimestampAsc(Integer taskPlanCode);
+
+    /**
+     * タスク計画を検索条件で検索する
+     *
+     * @param startDateTime 開始日時検索条件
+     * @param endDateTime   終了日時検索条件
+     * @param searchWord    検索語
+     * @param pageable      ページング
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM task_plan_2025" //
+            + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
+            + "       AND is_latest = 1" //
+            + "       AND CASE" //
+            + "              WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
+            + "              ELSE 1=1"//
+            + "           END", nativeQuery = true)
+    List<TaskPlanBaseEntity> findTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord,
+            Pageable pageable);
+
+    /**
+     * 検索条件該当件数を取得する
+     *
+     * @param startDateTime 開始日時検索条件
+     * @param endDateTime   終了日時検索条件
+     * @param searchWord    検索語
+     * @return 該当件数
+     */
+    @Query(value = "SELECT count(*) FROM task_plan_2025" //
+            + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
+            + "       AND is_latest = 1" //
+            + "       AND CASE" //
+            + "              WHEN ?3 <> '' THEN MATCH(task_plan_name) AGAINST (?3 IN BOOLEAN MODE)" //
+            + "              ELSE 1=1"//
+            + "           END", nativeQuery = true)
+    Integer countTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord);
+
+    /**
+     * ページングで検索する
+     *
+     * @param limit 取得件数
+     * @param offset 取得開始位置
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM task_plan_2025 limit ?1 offset ?2" , nativeQuery = true)
+    List<TaskPlanBaseEntity> findAllItems(Integer limit,Integer offset);
+
+    /**
+     * 全検索の件数を取得する
+     *
+     * @return 全件数
+     */
+    @Query(value = "SELECT count(*) FROM task_plan_2025" , nativeQuery = true)
+    Integer countAllItems();
+
+}

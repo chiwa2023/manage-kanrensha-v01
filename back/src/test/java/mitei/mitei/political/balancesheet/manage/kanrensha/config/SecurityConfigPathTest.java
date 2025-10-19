@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -38,11 +40,19 @@ class SecurityConfigPathTest {
     @Test
     void testPostal() throws Exception {
 
+        PostalCodeCapsuleDto capsuleDto = new PostalCodeCapsuleDto();
+        capsuleDto.setPostal1("123");
+        capsuleDto.setPostal2("4567");
+
+        ObjectMapper objectMapper = GetObjectMapperWithTimeModuleUtil.practice();
+
         String path = "/postal-search/postal";
 
-        // MockUserと一緒に実行していないためサーバステータスがUNAUTHORIZED(401)
+        // ユーザが存在しないため401
         assertEquals(HttpStatus.UNAUTHORIZED.value(),
-                mockMvc.perform(post(path)).andExpect(status().isUnauthorized()).andReturn().getResponse().getStatus()); // NOPMD
+                mockMvc.perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) // NOPMD
+                        .contentType(MediaType.APPLICATION_JSON_VALUE) // Content Typeを指定
+                        ).andExpect(status().isUnauthorized()).andReturn().getResponse().getStatus());
     }
 
     @Test
@@ -60,8 +70,8 @@ class SecurityConfigPathTest {
         // MockUserと一緒に実行しているため正常終了
         assertEquals(HttpStatus.OK.value(),
                 mockMvc.perform(post(path).content(objectMapper.writeValueAsString(capsuleDto)) // NOPMD
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)) // Content Typeを指定
-                        .andExpect(status().isOk()).andReturn().getResponse().getStatus());
+                        .contentType(MediaType.APPLICATION_JSON_VALUE) // Content Typeを指定
+                        ).andExpect(status().isOk()).andReturn().getResponse().getStatus());
     }
 
     @Test
@@ -70,7 +80,25 @@ class SecurityConfigPathTest {
         String path = "/login";
 
         // 認証外のため、ボディにが引数が入っていないことによるサーバステータスBAD_REQUEST(400)
+        // ログインそのものの有効性はLoginUserOperatorControllerTestで確認
         assertEquals(HttpStatus.BAD_REQUEST.value(),
                 mockMvc.perform(post(path)).andExpect(status().isBadRequest()).andReturn().getResponse().getStatus()); // NOPMD
     }
+    
+    @Test
+    @WithMockUser
+    void testLogout() throws Exception {
+        // MockUserを設定しているのでログイン情報がMockで存在する
+        assertEquals(UsernamePasswordAuthenticationToken.class, SecurityContextHolder.getContext().getAuthentication().getClass());
+        String path = "/logout";
+
+        // logoutは自動で/に遷移しようとする
+        assertEquals(HttpStatus.FOUND.value(),
+                mockMvc.perform(post(path)).andExpect(status().isFound()).andReturn().getResponse().getStatus()); // NOPMD
+
+        // ログアウト後はログイン情報を取得しようとしても存在しない
+        assertEquals(null, SecurityContextHolder.getContext().getAuthentication());
+
+    }
+
 }

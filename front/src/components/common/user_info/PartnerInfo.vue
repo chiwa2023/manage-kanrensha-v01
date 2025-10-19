@@ -4,10 +4,15 @@ import UserPersonLeastDto from './../../../dto/user/userPersonLeastDto';
 import router from '../../../router';
 import type SelectOptionStringInterface from '../../../dto/selectOptionStringDto';
 import getRoleMenuOpions from '../../../dto/user/getRoleMenuOpions';
+import RoutePathConstants from '../../../routePathConstants';
+import UserRoleConstants from '../../../dto/user/userRoleConstants';
 
-const ROLE_PERSON: string = "ROLE_partner_person";
-const ROLE_CORP: string = "ROLE_partner_corp";
-const ROLE_POLI_ORG: string = "ROLE_partner_poli_org";
+// props,emits
+const emits = defineEmits(["sendUser"]);
+
+const ROLE_PERSON: string = UserRoleConstants.ROLE_PARTNER_PERSON;
+const ROLE_CORP: string = UserRoleConstants.ROLE_PARTNER_CORP;
+const ROLE_POLI_ORG: string = UserRoleConstants.ROLE_PARTNER_POLI_ORG;
 
 // ユーザ情報を持ってくる
 const userDto: Ref<UserPersonLeastDto> = ref(new UserPersonLeastDto());
@@ -15,17 +20,20 @@ const sessionStorage = window["sessionStorage"];
 const userDtoText: string | null = sessionStorage.getItem("userDto");
 if (userDtoText !== null) {
     userDto.value = JSON.parse(userDtoText);
-    if ((!userDto.value.listRoles.includes(ROLE_PERSON))
-        && (!userDto.value.listRoles.includes(ROLE_CORP))
-        && (!userDto.value.listRoles.includes(ROLE_POLI_ORG))) {
+    if (userDto.value.listRoles.includes(ROLE_PERSON)
+        || userDto.value.listRoles.includes(ROLE_CORP)
+        || userDto.value.listRoles.includes(ROLE_POLI_ORG)) {
+        emits("sendUser", userDto.value);
+    } else {
         // roleが存在しない
         alert("操作権限が存在しません。再ログインしてください。");
-        router.push("/");
+        router.push(RoutePathConstants.PAGE_LOGIN);
+
     }
 } else {
     // ユーザ情報が存在しない
     alert("ユーザ情報が存在しません。再ログインしてください。");
-    router.push("/");
+    router.push(RoutePathConstants.PAGE_LOGIN);
 }
 
 const listRouter: Ref<SelectOptionStringInterface[]> = ref(getRoleMenuOpions(userDto.value.listRoles));
@@ -40,7 +48,6 @@ const moveRole: Ref<string> = ref("");
 function onMoveRole() {
     const route: string = listRouter.value.filter((e) => { return e.text === moveRole.value })[0].value;
     router.push(route);
-    router.go(0);
 }
 const isMoveMenu: ComputedRef<boolean> = computed(() => listRouter.value.length > 0);
 
@@ -54,7 +61,7 @@ const isMoveMenu: ComputedRef<boolean> = computed(() => listRouter.value.length 
             <!-- 必要アイコンはここに追加 -->
             <div style="padding-right: 2.5%;">
                 <div style="float: right;" class="left-space">
-                    <img src="../../../../partner.png" style="width: 80px;" @click="onInfo">
+                    <img src="../../../assets/partner.png" style="width: 80px;" @click="onInfo">
                 </div>
                 <div class="left-space">
                     <br>

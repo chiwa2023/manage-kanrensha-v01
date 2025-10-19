@@ -1,163 +1,123 @@
 ﻿<script setup lang="ts">
-// import { Ref, ref, onBeforeMount } from "vue";
-// import createCheckTransactionDto from "../../../dto/common_check/createCheckTransactionDto";
-// import SessionStorageCommonCheck from "../../../dto/common_check/sessionStorageCommonCheck";
-// import ProposeCsvReadTemplateEntity from "../../../entity/proposeCsvReadTemplateEntity";
-// import TemplateFrameworkCapsuleDto from "../../../dto/template/templateFrameworkCapsuleDto";
-// import { getFinancialKbnName } from "../../../dto/financial/financialOrgConstants";
+import { ref, type Ref } from 'vue';
+import UploadContentCapsuleInterface from '../../../dto/storage_file/uploadContentCapsuleDto';
+import UploadContentCapsuleDto from '../../../dto/storage_file/uploadContentCapsuleDto';
+import getAuthorizedPromiseArea from '../../../dto/login/getAuthorizedPromiseArea';
+import type LookAheadCsvResultInterface from '../../../dto/storage_file/lookAheadCsvResultDto';
+import RoutePathConstants from '../../../routePathConstants';
 
-// //props,emit
-// const props = defineProps<{ isEditable: boolean }>();
-// const emits = defineEmits(["sendCancelSearchProposeReadCsvTemplate", "sendProposeReadCsvtemplateInterface"]);
+//props,emit
+const emits = defineEmits(["sendStorageFileInterface"]);
 
-// /** 表示行 */
-// const list: Ref<ProposeCsvReadTemplateEntity[]> = ref([]);
-// /** ラジオボタン選択 */
-// const selectedRow: Ref<number> = ref(0);
+// back側アクセス
+const urlBack: string = RoutePathConstants.DOMAIN_BACK + RoutePathConstants.PATH_BACK;
 
-// //初期表示
-// onBeforeMount(async () => {
-//     //検索条件を設定していないので表示の時に検索を行う
-//     onSearch();
-// });
+// 文字コード
+const capsuleDto: Ref<UploadContentCapsuleInterface> = ref(new UploadContentCapsuleDto());
+capsuleDto.value.uploadFileDto.charset = "UTF-8";
+const sessionStorage = window["sessionStorage"];
+const userDtoText: string | null = sessionStorage.getItem("userDto");
+if (userDtoText !== null) {
+    capsuleDto.value.userDto = JSON.parse(userDtoText);
+}
 
-// /**  
-//  * 選択行を通知する
-//  * @param rowId その行のDtoのId
-//  */
-// function onSelectChange(rowId: number) {
-//     if (true === props.isEditable) {
-//         sendData(rowId);
-//     }
-// }
+//ファイル指定ダイアログ
+const selectFileInput: Ref<HTMLInputElement | undefined> = ref<HTMLInputElement>();
+const tableData: Ref<string[][]> = ref([[]]);
 
-// /**  
-//  * 入力内容を選択する
-//  */
-// function onSelect() {
-//     sendData(selectedRow.value);
-// }
+/**
+ * ファイル選択ダイアログを表示する
+ */
+function onReadButton() {
+    if (selectFileInput.value !== undefined) {
+        selectFileInput.value.click();
+    }
+}
 
-// /**  
-//  * 選択データを送信する
-//  * @param rowId その行のDtoのId
-//  */
-// function sendData(rowId: number) {
-//     //PrimaryIdをKeyにしているので、1件だけに絞られることが保証されている
-//     const selectedDto: ProposeCsvReadTemplateEntity = list.value.filter((dto) => dto.proposeCsvReadTemplateId == rowId)[0];
-//     emits("sendProposeReadCsvtemplateInterface", selectedDto);
-// }
-// /**  
-//  * 入力内容を破棄する
-//  */
-// function onCancel() {
-//     emits("sendCancelSearchProposeReadCsvTemplate");
-// }
+/**
+ * 指定されたファイルを読み込む
+ */
+async function readTextFile() {
+    if (selectFileInput.value !== null) {
+        if (selectFileInput.value !== undefined) {
+            if (selectFileInput.value.files !== null) {
+                const file: File = selectFileInput.value.files[0];
+                capsuleDto.value.uploadFileDto.fileName = file.name;
+                // ファイルをバイト取得
+                const reader: FileReader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = async () => {
+                    if (reader.result !== null) {
+                        capsuleDto.value.uploadFileDto.fileContent = String(reader.result);
+                        getAuthorizedPromiseArea().then(token => {
+                            const url = urlBack + "/csv/look-ahead";
+                            const method = "POST";
+                            const body = JSON.stringify(capsuleDto.value);
+                            const headers = {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-AUTH-TOKEN': 'Bearer ' + token
+                            };
+                            fetch(url, { method, headers, body })
+                                .then(async (response) => {
+                                    if (response.status < 400) {
+                                        const resultDto: LookAheadCsvResultInterface = await response.json();
 
-// /**  
-//  * 削除ボタンを押下された行を削除する
-//  * @param rowId その行のDtoのId
-//  */
-// function deleteRow(rowId: number) {
-//     const newList: ProposeCsvReadTemplateEntity[] = list.value.filter((dto) => dto.proposeCsvReadTemplateId != rowId);
-//     list.value = newList;
-// }
-// /**  
-//  * 最終行のあとに行追加を行う
-//  */
-// function addRow() {
-//     let maxId = 0;
-//     for (const dto of list.value) {
-//         if (maxId < dto.proposeCsvReadTemplateId) {
-//             maxId = dto.proposeCsvReadTemplateId;
-//         }
-//     }
-//     const addDto: ProposeCsvReadTemplateEntity = new ProposeCsvReadTemplateEntity();
-//     addDto.proposeCsvReadTemplateId = maxId + 1;
-//     list.value.push(addDto);
-// }
+                                        if (response.status === 200) {
+                                            tableData.value = resultDto.tableData;
+                                            //TODO 保存したファイル情報は親に渡す
+                                            emits("sendStorageFileInterface", resultDto.storageFileDto);
+                                        } else {
+                                            alert(resultDto.message);
+                                        }
+                                    }
+                                })
+                                .catch((error) => { alert(error); });
+                        });
+                    }
+                }
+            } else {
+                alert("ユーザが取れない");
+            }
+        }
+    }
+}
 
-//検索語
-//const searchWords: Ref<string> = ref("");
+function removeQuote(data: string): string {
+    return data.replace('"', '').replace('"', '');
+}
 
-// /**  
-//  * 検索条件に基づき検索を行う
-//  */
-// async function onSearch() {
-//     //実接続
-//     //セッションストレージ取得
-//     const templateFrameworkCapsuleDto: TemplateFrameworkCapsuleDto = new TemplateFrameworkCapsuleDto;
-
-//     templateFrameworkCapsuleDto.checkSecurityDto = SessionStorageCommonCheck.getSecurity();
-//     templateFrameworkCapsuleDto.checkPrivilegeDto = SessionStorageCommonCheck.getPrivilege();
-//     //編集フラグがある場合は、そのフラグ(の反転した値)を照会フラグに設定する
-//     templateFrameworkCapsuleDto.checkTransactionDto = createCheckTransactionDto(false);
-
-//     //独自変数設定はなし
-
-//     //申請中の読み取りCSV仕様を一覧する
-//     const url = "http://localhost:8080/propose-read-csv-template/search-all";
-//     const method = "POST";
-//     const body = JSON.stringify(templateFrameworkCapsuleDto);
-//     const headers = {
-//         'Accept': 'application/json',
-//         'Content-Type': 'application/json'
-//     };
-
-    // fetch(url, { method, headers, body })
-    //     .then(async (response) => {
-
-    //         list.value = await response.json();
-
-    //     })
-    //     .catch((error) => { alert(error); });
-// }
-
-// /**
-//  * 金融機関区分名称を取得する
-//  * @param kbn 金融機関区分名称
-//  */
-// function getKbnName(kbn: number): string {
-//     return getFinancialKbnName(kbn);
-// }
 </script>
 <template>
-    <!-- 
-    <h3>csv読み取りテンプレート</h3>
-    <div class="online">
-        検索結果の表示
+    <h3>CSVファイル選択</h3>
+    <div class="left-area">
+        読取りファイルの指定<br>
+    </div>
+    <div class="right-area">
+        <input ref="selectFileInput" type="file" accept=".csv" @change="readTextFile" style="display:none;">
+        <button @click="onReadButton">ファイルを指定して読み取り</button>
+        文字が読めない場合
+        <select v-model="capsuleDto.uploadFileDto.charset">
+            <option value="UTF-8">UTF-8</option>
+            <option value="Shift_JIS">Shift_JIS(Windows)</option>
+        </select>
+    </div>
+    <div class="clear-both"></div>
 
-        <table style="width:95%;">
-            <tr>
-                <th style="width:10%;">&nbsp;</th>
-                <th>コード</th>
-                <th>名前</th>
-                <th>区分名称</th>
-                <th>金融機関コード</th>
-                <th>金融機関名称</th>
-                <th v-if="props.isEditable" style="width:20%;">&nbsp;</th>
-            </tr>
-            <tr v-for="searchedDto in list" :key="searchedDto.proposeCsvReadTemplateId">
-                <td style="text-align: center;"><input type="radio" id="searchedDto.proposeCsvReadTemplateId"
-                        :value="searchedDto.proposeCsvReadTemplateId" v-model="selectedRow"
-                        @click="onSelectChange(searchedDto.proposeCsvReadTemplateId)" /></td>
-                <td style="text-align: right;">{{ searchedDto.proposeCsvReadTemplateCode }}</td>
-                <td>{{ searchedDto.proposeCsvReadTemplateName }}</td>
-                <td>{{ getKbnName(searchedDto.financialOrgKbn) }}</td>
-                <td>{{ searchedDto.financialOrgCode }}</td>
-                <td>{{ searchedDto.financialOrgName }}</td>
-                <td v-if="props.isEditable" style="text-align: center;"><button
-                        @click="deleteRow(searchedDto.proposeCsvReadTemplateId)">削除</button></td>
-            </tr>
+    <h3>読み取り結果(最初の10行)</h3>
+    <div class="one-line">
+        <table>
+            <tbody>
+                <tr v-for="row, index of tableData" :key="index">
+                    <td v-for="cell, index of row" :key="index">
+                        {{ removeQuote(cell) }}
+                    </td>
+                </tr>
+            </tbody>
         </table>
-        <button v-if="props.isEditable" @click="addRow">新規行追加</button>
     </div>
-    <br>
-    <div class="footer" v-if="!props.isEditable">
-        <button @click="onCancel" class="footer-button">キャンセル</button>
-        <button @click="onSelect" class="footer-button">選択</button>
-    </div>
-     -->
+    <div class="clear-both"></div>
+
 </template>
 <style scoped>
 table {
