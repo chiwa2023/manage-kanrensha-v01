@@ -42,6 +42,9 @@ public class CreateSearchConditionMapByYearLogic {
     public Map<Integer, PeriodDatetimeCapsuleDtoInterface> practice(final PeriodDatetimeCapsuleDtoInterface capsuleDto)
             throws InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
 
+        
+        
+        
         Map<Integer, PeriodDatetimeCapsuleDtoInterface> map = new TreeMap<>();
 
         int yearStart = capsuleDto.getStartDate().getYear(); // NOPMD

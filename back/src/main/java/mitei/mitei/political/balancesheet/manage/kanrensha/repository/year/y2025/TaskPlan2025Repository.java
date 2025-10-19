@@ -43,7 +43,7 @@ public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity
      * @param pageable      ページング
      * @return 検索結果
      */
-    @Query(value = "SELECT * FROM test_manage_kanrensha.task_plan_2025" //
+    @Query(value = "SELECT * FROM task_plan_2025" //
             + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
             + "       AND is_latest = 1" //
             + "       AND CASE" //
@@ -61,7 +61,7 @@ public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity
      * @param searchWord    検索語
      * @return 該当件数
      */
-    @Query(value = "SELECT count(*) FROM test_manage_kanrensha.task_plan_2025" //
+    @Query(value = "SELECT count(*) FROM task_plan_2025" //
             + "   WHERE insert_timestamp BETWEEN ?1 AND ?2" //
             + "       AND is_latest = 1" //
             + "       AND CASE" //
@@ -69,4 +69,23 @@ public interface TaskPlan2025Repository extends JpaRepository<TaskPlan2025Entity
             + "              ELSE 1=1"//
             + "           END", nativeQuery = true)
     Integer countTaskPlan(LocalDateTime startDateTime, LocalDateTime endDateTime, String searchWord);
+
+    /**
+     * ページングで検索する
+     *
+     * @param limit 取得件数
+     * @param offset 取得開始位置
+     * @return 検索結果
+     */
+    @Query(value = "SELECT * FROM task_plan_2025 limit ?1 offset ?2" , nativeQuery = true)
+    List<TaskPlanBaseEntity> findAllItems(Integer limit,Integer offset);
+
+    /**
+     * 全検索の件数を取得する
+     *
+     * @return 全件数
+     */
+    @Query(value = "SELECT count(*) FROM task_plan_2025" , nativeQuery = true)
+    Integer countAllItems();
+
 }
