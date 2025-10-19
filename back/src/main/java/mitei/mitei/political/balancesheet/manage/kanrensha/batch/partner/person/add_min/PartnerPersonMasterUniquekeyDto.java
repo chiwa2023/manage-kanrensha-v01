@@ -44,15 +44,6 @@ public class PartnerPersonMasterUniquekeyDto implements Serializable { // NOPMD 
         return partnerName;
     }
 
-    /**
-     * 個人名を設定する
-     *
-     * @param partnerName 個人名
-     */
-    public void setPartnerName(final String partnerName) {
-        this.partnerName = partnerName;
-    }
-
     /** 個人全住所 */
     @Id
     @Column(name = "all_address")
@@ -67,15 +58,6 @@ public class PartnerPersonMasterUniquekeyDto implements Serializable { // NOPMD 
         return allAddress;
     }
 
-    /**
-     * 個人全住所を設定する
-     *
-     * @param allAddress 個人全住所
-     */
-    public void setAllAddress(final String allAddress) {
-        this.allAddress = allAddress;
-    }
-
     /** 個人代表者 */
     @Id
     @Column(name = "person_shokugyou")
@@ -88,15 +70,6 @@ public class PartnerPersonMasterUniquekeyDto implements Serializable { // NOPMD 
      */
     public String getPersonShokugyou() {
         return personShokugyou;
-    }
-
-    /**
-     * 個人職業を設定する
-     *
-     * @param personShokugyou 個人職業
-     */
-    public void setPersonShokugyou(final String personShokugyou) {
-        this.personShokugyou = personShokugyou;
     }
 
 }
